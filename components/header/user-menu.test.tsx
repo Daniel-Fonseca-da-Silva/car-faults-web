@@ -48,10 +48,9 @@ describe("UserMenu", () => {
       screen.getByRole("button", { name: "Account menu for Ana" })
     );
 
-    expect(screen.getByRole("menuitem", { name: "Profile" })).toHaveAttribute(
-      "href",
-      "/profile"
-    );
+    expect(
+      await screen.findByRole("menuitem", { name: "Profile" })
+    ).toHaveAttribute("href", "/profile");
     expect(
       screen.getByRole("menuitem", { name: "Log out" })
     ).toBeInTheDocument();

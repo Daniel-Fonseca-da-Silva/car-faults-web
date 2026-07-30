@@ -97,10 +97,9 @@ describe("SiteHeader", () => {
       screen.getByRole("button", { name: "Account menu for Ana" })
     );
 
-    expect(screen.getByRole("menuitem", { name: "Profile" })).toHaveAttribute(
-      "href",
-      "/profile"
-    );
+    expect(
+      await screen.findByRole("menuitem", { name: "Profile" })
+    ).toHaveAttribute("href", "/profile");
   });
 
   it("opens the mobile navigation sheet when the menu button is pressed", async () => {
