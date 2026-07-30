@@ -54,7 +54,7 @@ describe("VehicleSearchForm", () => {
     expect(pushMock).not.toHaveBeenCalled();
   });
 
-  it("navigates to /defects with the filled-in fields as query params", async () => {
+  it("navigates straight to the vehicle presentation page when make, model and year are all filled in", async () => {
     const user = userEvent.setup();
     render(<VehicleSearchForm />);
 
@@ -63,10 +63,7 @@ describe("VehicleSearchForm", () => {
     await user.type(screen.getByLabelText("Year"), "2018");
     await user.click(screen.getByRole("button", { name: "Search faults" }));
 
-    expect(pushMock).toHaveBeenCalledWith({
-      pathname: "/defects",
-      query: { make: "Volkswagen", model: "Golf", year: "2018" },
-    });
+    expect(pushMock).toHaveBeenCalledWith("/defects/volkswagen/golf/2018");
   });
 
   it("allows submitting with only the model filled in", async () => {

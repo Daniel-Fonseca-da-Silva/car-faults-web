@@ -28,7 +28,7 @@ const config = {
       statements: 90,
     },
   },
-  coverageReporters: ['text', 'lcov'],
+  coverageReporters: ['text', 'text-summary', 'lcov'],
 }
 
 module.exports = createJestConfig(config)
