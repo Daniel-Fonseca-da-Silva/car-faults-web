@@ -1,6 +1,5 @@
-import { Calendar, Cog, DoorOpen, Fuel, Gauge } from "lucide-react";
+import { Calendar, Cog, DoorOpen, Fuel, Gauge, type LucideIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import type { ComponentType } from "react";
 
 import { formatYearRange } from "@/lib/utils";
 import type { VehicleLookup } from "@/types/lookup";
@@ -11,7 +10,7 @@ interface VehicleTechSpecsProps {
 
 interface SpecTile {
   key: string;
-  icon: ComponentType<{ className?: string; "aria-hidden"?: string }>;
+  icon: LucideIcon;
   label: string;
   value: string;
 }
