@@ -26,5 +26,9 @@
   "login": {
     "title": "Sign in | CarFaults",
     "description": "Sign in to your CarFaults account to browse faults, recalls and vehicle comparisons."
+  },
+  "profile": {
+    "title": "My account | CarFaults",
+    "description": "View your profile, usage stats and saved vehicles on CarFaults."
   }
 }

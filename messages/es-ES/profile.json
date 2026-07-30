@@ -1,0 +1,38 @@
+{
+  "eyebrow": "Cuenta",
+  "identity": {
+    "memberSince": "Miembro desde {date}",
+    "onlineStatus": "En línea"
+  },
+  "account": {
+    "title": "Información de la cuenta",
+    "email": "Correo electrónico",
+    "createdAt": "Creado el",
+    "updatedAt": "Actualizado el",
+    "id": "ID de la cuenta",
+    "copyId": "Copiar ID de la cuenta",
+    "copied": "ID copiado"
+  },
+  "stats": {
+    "searches": "Búsquedas realizadas",
+    "defectsConsulted": "Defectos consultados",
+    "savedVehicles": "Vehículos guardados",
+    "votes": "Votos emitidos"
+  },
+  "vehicles": {
+    "title": "Vehículos guardados",
+    "count": "{count} vehículos",
+    "empty": "Todavía no has guardado ningún vehículo.",
+    "knownIssuesCount": "{count} defectos",
+    "viewDetails": "Ver detalles de {brand} {model}"
+  },
+  "dangerZone": {
+    "title": "Zona de riesgo",
+    "deleteAccount": "Eliminar cuenta",
+    "deleteAccountDescription": "Elimina permanentemente todos tus datos. Esta acción no se puede deshacer.",
+    "confirmTitle": "¿Estás seguro?",
+    "confirmDescription": "Tu cuenta y todos los datos asociados se eliminarán de forma permanente. Esta acción no se puede revertir.",
+    "confirmCancel": "Cancelar",
+    "confirmDelete": "Sí, eliminar cuenta"
+  }
+}

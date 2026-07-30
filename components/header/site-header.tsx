@@ -1,11 +1,12 @@
 import { getTranslations } from "next-intl/server";
 
 import { Logo } from "@/components/brand/logo";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Link } from "@/i18n/navigation";
+import { profileUser } from "@/lib/mocks/profile";
 
 import { LocaleSwitcher } from "./locale-switcher";
 import { MobileNav } from "./mobile-nav";
+import { UserMenu } from "./user-menu";
 
 const NAV_ITEMS = ["recalls", "defects", "compare", "about"] as const;
 
@@ -36,15 +37,7 @@ export async function SiteHeader() {
 
         <div className="hidden items-center gap-3 md:flex">
           <LocaleSwitcher />
-          <Link
-            href="/login"
-            className="flex items-center gap-2 rounded-full border border-border/60 py-1 pl-1 pr-3 transition-colors hover:bg-muted"
-          >
-            <Avatar title={t("avatarAlt", { name: "Ana" })}>
-              <AvatarFallback>A</AvatarFallback>
-            </Avatar>
-            <span className="text-sm font-medium text-foreground">Ana.</span>
-          </Link>
+          <UserMenu name={profileUser.name} avatarUrl={profileUser.avatarUrl} />
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
