@@ -4,12 +4,16 @@ import type { ReactNode } from "react";
 
 import { SiteHeader } from "./site-header";
 
+const pushMock = jest.fn();
+
 const navDict: Record<string, string> = {
   recalls: "Recalls",
   defects: "Defects",
   compare: "Compare",
   about: "About",
   menu: "Menu",
+  profile: "Profile",
+  logout: "Log out",
 };
 
 jest.mock("next-intl/server", () => ({
@@ -17,6 +21,7 @@ jest.mock("next-intl/server", () => ({
     if (namespace === "nav") {
       return (key: string, values?: Record<string, unknown>) => {
         if (key === "avatarAlt") return `${values?.name}'s avatar`;
+        if (key === "accountMenu") return `Account menu for ${values?.name}`;
         return navDict[key] ?? key;
       };
     }
@@ -28,7 +33,11 @@ jest.mock("next-intl", () => ({
   useLocale: () => "en-GB",
   useTranslations: (namespace: string) => {
     if (namespace === "nav") {
-      return (key: string) => navDict[key] ?? key;
+      return (key: string, values?: Record<string, unknown>) => {
+        if (key === "avatarAlt") return `${values?.name}'s avatar`;
+        if (key === "accountMenu") return `Account menu for ${values?.name}`;
+        return navDict[key] ?? key;
+      };
     }
     if (namespace === "common") {
       return (key: string) => (key === "language" ? "Language" : key);
@@ -51,10 +60,14 @@ jest.mock("@/i18n/navigation", () => ({
     </a>
   ),
   usePathname: () => "/",
-  useRouter: () => ({ replace: jest.fn(), push: jest.fn() }),
+  useRouter: () => ({ replace: jest.fn(), push: pushMock }),
 }));
 
 describe("SiteHeader", () => {
+  beforeEach(() => {
+    pushMock.mockClear();
+  });
+
   it("renders the primary navigation links", async () => {
     const jsx = await SiteHeader();
     render(jsx);
@@ -75,14 +88,19 @@ describe("SiteHeader", () => {
     expect(homeLinks[0]).toHaveTextContent("CARFAULTS");
   });
 
-  it("links the avatar to the login page", async () => {
+  it("opens the account menu with a profile link", async () => {
+    const user = userEvent.setup();
     const jsx = await SiteHeader();
     render(jsx);
 
-    const loginLinks = screen
-      .getAllByRole("link")
-      .filter((link) => link.getAttribute("href") === "/login");
-    expect(loginLinks.length).toBeGreaterThan(0);
+    await user.click(
+      screen.getByRole("button", { name: "Account menu for Ana" })
+    );
+
+    expect(screen.getByRole("menuitem", { name: "Profile" })).toHaveAttribute(
+      "href",
+      "/profile"
+    );
   });
 
   it("opens the mobile navigation sheet when the menu button is pressed", async () => {

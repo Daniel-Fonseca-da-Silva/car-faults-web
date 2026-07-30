@@ -1,4 +1,4 @@
-import { cn, formatYearRange, slugify } from './utils'
+import { cn, formatLongDate, formatYearRange, getInitials, slugify } from './utils'
 
 describe('cn', () => {
   it('returns a single class unchanged', () => {
@@ -57,5 +57,39 @@ describe('formatYearRange', () => {
 
   it('renders a single year when yearTo is null', () => {
     expect(formatYearRange(1994, null)).toBe('1994')
+  })
+})
+
+describe('formatLongDate', () => {
+  it('formats an ISO date string in Portuguese', () => {
+    expect(formatLongDate('2026-07-17T10:00:00.000Z', 'pt-PT')).toBe(
+      '17 de julho de 2026'
+    )
+  })
+
+  it('formats an ISO date string in British English', () => {
+    expect(formatLongDate('2026-07-17T10:00:00.000Z', 'en-GB')).toBe(
+      '17 July 2026'
+    )
+  })
+
+  it('formats an ISO date string in Spanish', () => {
+    expect(formatLongDate('2026-07-17T10:00:00.000Z', 'es-ES')).toBe(
+      '17 de julio de 2026'
+    )
+  })
+})
+
+describe('getInitials', () => {
+  it('returns the first letter of the first two words', () => {
+    expect(getInitials('Ana Silva')).toBe('AS')
+  })
+
+  it('returns a single initial for a single-word name', () => {
+    expect(getInitials('Ana')).toBe('A')
+  })
+
+  it('ignores extra words and repeated spaces', () => {
+    expect(getInitials('Ana  Maria Silva Santos')).toBe('AM')
   })
 })
