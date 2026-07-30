@@ -1,0 +1,38 @@
+{
+  "eyebrow": "Account",
+  "identity": {
+    "memberSince": "Member since {date}",
+    "onlineStatus": "Online"
+  },
+  "account": {
+    "title": "Account information",
+    "email": "Email",
+    "createdAt": "Created on",
+    "updatedAt": "Updated on",
+    "id": "Account ID",
+    "copyId": "Copy account ID",
+    "copied": "ID copied"
+  },
+  "stats": {
+    "searches": "Searches made",
+    "defectsConsulted": "Defects consulted",
+    "savedVehicles": "Saved vehicles",
+    "votes": "Votes cast"
+  },
+  "vehicles": {
+    "title": "Saved vehicles",
+    "count": "{count} vehicles",
+    "empty": "You haven't saved any vehicles yet.",
+    "knownIssuesCount": "{count} defects",
+    "viewDetails": "View details for {brand} {model}"
+  },
+  "dangerZone": {
+    "title": "Danger zone",
+    "deleteAccount": "Delete account",
+    "deleteAccountDescription": "Permanently deletes all your data. This action cannot be undone.",
+    "confirmTitle": "Are you sure?",
+    "confirmDescription": "Your account and all associated data will be permanently deleted. This action cannot be reverted.",
+    "confirmCancel": "Cancel",
+    "confirmDelete": "Yes, delete account"
+  }
+}

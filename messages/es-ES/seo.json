@@ -26,5 +26,9 @@
   "login": {
     "title": "Iniciar sesión | CarFaults",
     "description": "Accede a tu cuenta de CarFaults para consultar defectos, recalls y comparaciones de vehículos."
+  },
+  "profile": {
+    "title": "Mi cuenta | CarFaults",
+    "description": "Consulta tu perfil, estadísticas de uso y vehículos guardados en CarFaults."
   }
 }

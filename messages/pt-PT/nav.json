@@ -4,5 +4,8 @@
   "compare": "Comparar",
   "about": "Sobre",
   "menu": "Menu",
-  "avatarAlt": "Avatar de {name}"
+  "avatarAlt": "Avatar de {name}",
+  "accountMenu": "Menu da conta de {name}",
+  "profile": "Perfil",
+  "logout": "Sair"
 }
