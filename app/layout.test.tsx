@@ -6,6 +6,10 @@ jest.mock('next/font/google', () => ({
   Geist_Mono: () => ({ variable: '--font-geist-mono' }),
 }))
 
+jest.mock('next-intl/server', () => ({
+  getLocale: jest.fn(async () => 'en-GB'),
+}))
+
 // React 19 treats <html> as a singleton and renders it to document.documentElement,
 // not inside the RTL container div. Suppress the expected nesting warning.
 beforeAll(() => {
@@ -17,22 +21,22 @@ afterAll(() => {
 })
 
 describe('RootLayout', () => {
-  it('renders children', () => {
-    const { getByText } = render(
-      <RootLayout>
-        <p>page content</p>
-      </RootLayout>,
-    )
+  it('renders children', async () => {
+    const jsx = await RootLayout({ children: <p>page content</p> })
+    const { getByText } = render(jsx)
     expect(getByText('page content')).toBeInTheDocument()
   })
 
-  it('sets lang="en-GB" on the html element', () => {
-    render(<RootLayout><span /></RootLayout>)
+  it('sets lang from the negotiated locale on the html element', async () => {
+    const jsx = await RootLayout({ children: <span /> })
+    render(jsx)
     expect(document.documentElement).toHaveAttribute('lang', 'en-GB')
   })
 
-  it('applies font variables to html className', () => {
-    render(<RootLayout><span /></RootLayout>)
+  it('applies the dark theme class and font variables to the html element', async () => {
+    const jsx = await RootLayout({ children: <span /> })
+    render(jsx)
+    expect(document.documentElement.className).toContain('dark')
     expect(document.documentElement.className).toContain('--font-geist-sans')
     expect(document.documentElement.className).toContain('--font-geist-mono')
   })

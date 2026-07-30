@@ -1,0 +1,26 @@
+{
+  "title": "Find your vehicle's faults",
+  "statusActive": "Database active",
+  "fields": {
+    "make": "Make",
+    "makePlaceholder": "e.g. Volkswagen",
+    "model": "Model",
+    "modelPlaceholder": "e.g. Golf",
+    "year": "Year",
+    "yearPlaceholder": "e.g. 2018",
+    "engine": "Engine",
+    "enginePlaceholder": "e.g. 2.0 TDI",
+    "fuel": "Fuel",
+    "fuelPlaceholder": "Select fuel type",
+    "doors": "Doors (optional)",
+    "doorsPlaceholder": "Select number of doors"
+  },
+  "fuelOptions": {
+    "petrol": "Petrol",
+    "diesel": "Diesel",
+    "hybrid": "Hybrid",
+    "electric": "Electric"
+  },
+  "submit": "Search faults",
+  "validation": "Enter at least a make or a model."
+}

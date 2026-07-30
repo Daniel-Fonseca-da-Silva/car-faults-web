@@ -1,0 +1,18 @@
+{
+  "hero": {
+    "eyebrow": "Base de datos de fiabilidad automotriz",
+    "titleBeforeHighlight": "Conoce los",
+    "titleHighlight": "defectos",
+    "titleAfterHighlight": "antes de comprar",
+    "subtitle": "Busca averías crónicas por marca, modelo, año y motor — reportadas por miles de propietarios reales."
+  },
+  "stats": {
+    "reports": { "value": "1.2M+", "label": "Reportes de propietarios" },
+    "vehicles": { "value": "8.400+", "label": "Vehículos catalogados" },
+    "faults": { "value": "34.000+", "label": "Defectos documentados" }
+  },
+  "topFaults": {
+    "title": "Defectos más reportados",
+    "subtitle": "Los problemas crónicos más reportados esta semana."
+  }
+}

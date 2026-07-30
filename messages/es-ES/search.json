@@ -1,0 +1,26 @@
+{
+  "title": "Encuentra los defectos de tu vehículo",
+  "statusActive": "Base de datos activa",
+  "fields": {
+    "make": "Marca",
+    "makePlaceholder": "ej.: Volkswagen",
+    "model": "Modelo",
+    "modelPlaceholder": "ej.: Golf",
+    "year": "Año",
+    "yearPlaceholder": "ej.: 2018",
+    "engine": "Motor",
+    "enginePlaceholder": "ej.: 2.0 TDI",
+    "fuel": "Combustible",
+    "fuelPlaceholder": "Selecciona el combustible",
+    "doors": "Puertas (opcional)",
+    "doorsPlaceholder": "Selecciona el número de puertas"
+  },
+  "fuelOptions": {
+    "petrol": "Gasolina",
+    "diesel": "Diésel",
+    "hybrid": "Híbrido",
+    "electric": "Eléctrico"
+  },
+  "submit": "Buscar defectos",
+  "validation": "Indica al menos la marca o el modelo."
+}

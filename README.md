@@ -2,7 +2,7 @@
 
 Frontend for **Car Faults** — a SaaS focused on **chronic reliability by vehicle model**: what typically fails on a given make / model / year / engine, how severe it is, typical cost and how it gets fixed.
 
-Initial market: **Portugal** (later ES/FR). Product languages: `pt-PT` and `en-GB`.
+Initial market: **Portugal** (later ES/FR). Product languages: `pt-PT` (default), `en-GB` and `es-ES`.
 
 ## What we are
 
@@ -22,10 +22,39 @@ Known-issue information is fragmented across forums, YouTube, ADAC/TÜV reports,
 |-------|------------|
 | Framework | Next.js 16 (App Router) + React 19 |
 | Styling | Tailwind CSS + shadcn/ui |
+| i18n | [next-intl](https://next-intl.dev) (`pt-PT` / `en-GB` / `es-ES`, locale-prefixed routes) |
 | Tests | Jest + React Testing Library |
 | Backend | [car-faults-api](../car-faults-api) (Nest) — never calls AI directly |
 
 No Supabase, Prisma, or Mapbox — those were leftovers from the original template and have been removed.
+
+## Project structure
+
+```
+app/
+  layout.tsx                 # <html>/<body>, fonts, locale read via next-intl
+  [locale]/
+    layout.tsx                # NextIntlClientProvider, SiteHeader, SiteFooter
+    page.tsx                  # Landing: hero, search, stats, top faults
+    recalls/ | compare/ | about/  # Stub pages ("coming soon")
+    defects/page.tsx          # pSEO hub (filterable via searchParams)
+    defects/[make]/[model]/[year]/page.tsx  # pSEO vehicle profile
+    not-found.tsx
+  sitemap.ts
+  robots.ts
+components/
+  ui/          # shadcn primitives (unmodified API)
+  layout/      # site-header, site-footer, site-shell, locale-switcher, mobile-nav
+  home/        # hero-section, vehicle-search-form, stats-bar, top-faults-section
+  faults/      # fault-card, fault-card-grid
+  brand/       # logo
+i18n/          # next-intl routing, navigation and request config
+messages/      # pt-PT/, en-GB/, es-ES/ — one JSON file per namespace
+lib/mocks/     # fixture vehicles + top faults (no backend integration yet)
+types/vehicle.ts
+```
+
+Vehicle/fault data currently comes from local fixtures in `lib/mocks/` — wiring this page to `car-faults-api` is a follow-up.
 
 ## MVP / What this app does
 
