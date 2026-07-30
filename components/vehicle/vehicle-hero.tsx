@@ -1,0 +1,46 @@
+import { getTranslations } from "next-intl/server";
+import Image from "next/image";
+
+import type { VehicleLookup } from "@/types/lookup";
+
+const FALLBACK_IMAGE_SRC = "/login/classic-mini-shadowy-garage.webp";
+
+interface VehicleHeroProps {
+  vehicle: VehicleLookup;
+}
+
+export async function VehicleHero({ vehicle }: VehicleHeroProps) {
+  const t = await getTranslations("faults.vehicle");
+  const title = `${vehicle.brand} ${vehicle.model}`;
+
+  return (
+    <div className="relative aspect-video w-full overflow-hidden rounded-2xl sm:aspect-[21/9]">
+      <Image
+        src={vehicle.imageUrl ?? FALLBACK_IMAGE_SRC}
+        alt={title}
+        fill
+        priority
+        sizes="(min-width: 1024px) 1024px, 100vw"
+        className="object-cover"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/10"
+      />
+
+      <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
+        <p className="text-sm font-semibold tracking-widest text-primary uppercase">
+          {t("eyebrow")}
+        </p>
+        <h1 className="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">
+          {title}
+          {vehicle.name && vehicle.name !== title && (
+            <span className="block text-lg font-medium text-muted-foreground">
+              {vehicle.name}
+            </span>
+          )}
+        </h1>
+      </div>
+    </div>
+  );
+}

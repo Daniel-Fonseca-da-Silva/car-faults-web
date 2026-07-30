@@ -19,6 +19,7 @@ import {
   NativeSelectOption,
 } from "@/components/ui/native-select";
 import { useRouter } from "@/i18n/navigation";
+import { slugify } from "@/lib/utils";
 
 const FUEL_OPTIONS = ["petrol", "diesel", "hybrid", "electric"] as const;
 const DOOR_OPTIONS = [2, 3, 4, 5] as const;
@@ -44,6 +45,13 @@ export function VehicleSearchForm() {
     }
 
     setShowValidationError(false);
+
+    if (make.trim() && model.trim() && year.trim()) {
+      router.push(
+        `/defects/${slugify(make.trim())}/${slugify(model.trim())}/${year.trim()}`
+      );
+      return;
+    }
 
     const query: Record<string, string> = {};
     if (make.trim()) query.make = make.trim();
