@@ -4,5 +4,6 @@ export const messageNamespaces = [
   "home",
   "search",
   "faults",
+  "auth",
   "seo",
 ] as const;

@@ -22,5 +22,9 @@
   "about": {
     "title": "About | CarFaults",
     "description": "Learn about CarFaults' mission."
+  },
+  "login": {
+    "title": "Sign in | CarFaults",
+    "description": "Sign in to your CarFaults account to browse faults, recalls and vehicle comparisons."
   }
 }
