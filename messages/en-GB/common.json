@@ -1,0 +1,22 @@
+{
+  "brand": "CarFaults",
+  "locales": {
+    "pt-PT": "Português (PT)",
+    "en-GB": "English (UK)",
+    "es-ES": "Español (ES)"
+  },
+  "language": "Language",
+  "footer": {
+    "disclaimer": "Data sourced from public reports and regulatory bodies. Not a substitute for a technical inspection.",
+    "copyright": "© {year}"
+  },
+  "comingSoon": {
+    "title": "Coming soon",
+    "description": "This feature is being prepared. Check back soon."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist or has been moved.",
+    "backHome": "Back to homepage"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "severity": {
+    "low": "Baixa",
+    "medium": "Média",
+    "high": "Alta",
+    "critical": "Crítica"
+  },
+  "reportsCount": "{count} relatos",
+  "viewReports": "Ver relatos",
+  "typicalCost": "Custo típico",
+  "costRange": "{min}€ – {max}€",
+  "engines": "Motores",
+  "doors": "Portas",
+  "relatedYears": "Outros anos deste modelo",
+  "disclaimer": "As informações apresentadas resultam de relatos de proprietários e não substituem uma inspeção mecânica.",
+  "faultsListTitle": "Defeitos conhecidos",
+  "noFaults": "Ainda não há defeitos reportados para este veículo.",
+  "hub": {
+    "title": "Defeitos por veículo",
+    "subtitle": "Explore os defeitos crónicos mais reportados por marca e modelo.",
+    "resultsFor": "Resultados para \"{query}\"",
+    "noResults": "Nenhum veículo encontrado com estes filtros.",
+    "allVehicles": "Todos os veículos"
+  }
+}

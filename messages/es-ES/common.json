@@ -1,0 +1,22 @@
+{
+  "brand": "CarFaults",
+  "locales": {
+    "pt-PT": "Português (PT)",
+    "en-GB": "English (UK)",
+    "es-ES": "Español (ES)"
+  },
+  "language": "Idioma",
+  "footer": {
+    "disclaimer": "Datos obtenidos de informes públicos y organismos reguladores. No sustituye una evaluación técnica.",
+    "copyright": "© {year}"
+  },
+  "comingSoon": {
+    "title": "Próximamente",
+    "description": "Esta funcionalidad se está preparando. Vuelve pronto."
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o ha sido movida.",
+    "backHome": "Volver al inicio"
+  }
+}

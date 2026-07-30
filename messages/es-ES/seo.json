@@ -1,0 +1,26 @@
+{
+  "home": {
+    "title": "CarFaults — Defectos crónicos por marca y modelo",
+    "description": "Busca averías crónicas por marca, modelo, año y motor antes de comprar un coche usado."
+  },
+  "defectsHub": {
+    "title": "Defectos por vehículo | CarFaults",
+    "description": "Explora los defectos crónicos más reportados por marca y modelo."
+  },
+  "vehiclePage": {
+    "titleTemplate": "Defectos del {make} {model} {year} | CarFaults",
+    "descriptionTemplate": "Conoce los defectos crónicos más reportados del {make} {model} {year}: gravedad, coste típico y reportes de propietarios."
+  },
+  "recalls": {
+    "title": "Recalls | CarFaults",
+    "description": "Consulta recalls oficiales por marca y modelo."
+  },
+  "compare": {
+    "title": "Comparar vehículos | CarFaults",
+    "description": "Compara la fiabilidad entre diferentes vehículos."
+  },
+  "about": {
+    "title": "Acerca de | CarFaults",
+    "description": "Conoce la misión de CarFaults."
+  }
+}

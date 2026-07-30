@@ -1,0 +1,26 @@
+{
+  "home": {
+    "title": "CarFaults — Chronic faults by make and model",
+    "description": "Search chronic issues by make, model, year and engine before buying a used car."
+  },
+  "defectsHub": {
+    "title": "Faults by vehicle | CarFaults",
+    "description": "Explore the most reported chronic issues by make and model."
+  },
+  "vehiclePage": {
+    "titleTemplate": "{make} {model} {year} faults | CarFaults",
+    "descriptionTemplate": "Discover the most reported chronic faults of the {make} {model} {year}: severity, typical cost and owner reports."
+  },
+  "recalls": {
+    "title": "Recalls | CarFaults",
+    "description": "Check official recalls by make and model."
+  },
+  "compare": {
+    "title": "Compare vehicles | CarFaults",
+    "description": "Compare reliability across different vehicles."
+  },
+  "about": {
+    "title": "About | CarFaults",
+    "description": "Learn about CarFaults' mission."
+  }
+}
