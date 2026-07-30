@@ -1,50 +1,55 @@
 import { render, screen } from "@testing-library/react";
-import type { ReactNode } from "react";
+import Link from "next/link";
 
 import { locales } from "@/i18n/locales";
-import { vehicles } from "@/lib/mocks/vehicles";
+import type { LookupFuelType } from "@/types/lookup";
 
 import VehiclePage, {
   generateMetadata,
   generateStaticParams,
 } from "./page";
 
-jest.mock("@/lib/mocks/vehicles", () => {
-  const actual: typeof import("@/lib/mocks/vehicles") = jest.requireActual(
-    "@/lib/mocks/vehicles"
+jest.mock("@/lib/mocks/lookup-results", () => {
+  const actual: typeof import("@/lib/mocks/lookup-results") = jest.requireActual(
+    "@/lib/mocks/lookup-results"
   );
-  const extendedVehicles = [
-    ...actual.vehicles,
-    {
-      makeSlug: "tesla",
-      make: "Tesla",
-      modelSlug: "model-3",
+
+  const noIssuesVehicle = {
+    vehicle: {
+      id: "veh-tesla-model-3",
+      brand: "Tesla",
       model: "Model 3",
-      year: 2022,
-      doors: [4],
-      engines: [
-        {
-          code: "EV",
-          label: "Electric",
-          fuel: "electric",
-          displacementLitres: 0,
-        },
-      ],
-      reportCount: 0,
-      faults: [],
+      name: null,
+      yearFrom: 2022,
+      yearTo: 2022,
+      engine: "Electric",
+      doors: 4,
+      fuelType: "electric" as LookupFuelType,
+      imageUrl: null,
+      techSpecs: { power_hp: 283 },
     },
-  ];
+    knownIssues: [],
+  };
+
+  const extendedResults = [...actual.lookupResults, noIssuesVehicle];
+
+  function slug(value: string): string {
+    return value.toLowerCase().replace(/\s+/g, "-");
+  }
 
   return {
     ...actual,
-    vehicles: extendedVehicles,
-    findVehicle: (makeSlug: string, modelSlug: string, year: number) =>
-      extendedVehicles.find(
-        (vehicle) =>
-          vehicle.makeSlug === makeSlug &&
-          vehicle.modelSlug === modelSlug &&
-          vehicle.year === year
-      ),
+    lookupResults: extendedResults,
+    findLookup: (makeSlug: string, modelSlug: string, year: number) =>
+      extendedResults.find((result) => {
+        const vehicleYearTo = result.vehicle.yearTo ?? result.vehicle.yearFrom;
+        return (
+          slug(result.vehicle.brand) === makeSlug &&
+          slug(result.vehicle.model) === modelSlug &&
+          year >= result.vehicle.yearFrom &&
+          year <= vehicleYearTo
+        );
+      }),
   };
 });
 
@@ -61,59 +66,66 @@ jest.mock("next-intl/server", () => ({
   setRequestLocale: jest.fn(),
 }));
 
-jest.mock("@/i18n/navigation", () => ({
-  Link: ({
-    href,
-    children,
-    ...props
-  }: {
-    href: string;
-    children?: ReactNode;
-  }) => (
-    <a href={href} {...props}>
-      {children}
-    </a>
+jest.mock("@/components/vehicle/vehicle-hero", () => ({
+  VehicleHero: ({ vehicle }: { vehicle: { brand: string; model: string } }) => (
+    <div data-testid="vehicle-hero">
+      {vehicle.brand} {vehicle.model}
+    </div>
   ),
 }));
 
+jest.mock("@/components/vehicle/vehicle-tech-specs", () => ({
+  VehicleTechSpecs: ({ vehicle }: { vehicle: { engine: string } }) => (
+    <div data-testid="vehicle-tech-specs">{vehicle.engine}</div>
+  ),
+}));
+
+jest.mock("@/components/vehicle/known-issues-summary", () => ({
+  KnownIssuesSummary: ({ total }: { total: number }) => (
+    <div data-testid="known-issues-summary">{total}</div>
+  ),
+}));
+
+jest.mock("@/components/vehicle/known-issues-accordion", () => ({
+  KnownIssuesAccordion: ({ knownIssues }: { knownIssues: unknown[] }) => (
+    <div data-testid="known-issues-accordion">{knownIssues.length}</div>
+  ),
+}));
+
+jest.mock("@/components/vehicle/vehicle-back-link", () => ({
+  VehicleBackLink: () => <Link href="/">Nova busca</Link>,
+}));
+
 describe("VehiclePage", () => {
-  it("renders the vehicle title, specs and known faults", async () => {
+  it("renders the hero, specs, summary and known issues for a matching vehicle", async () => {
     const jsx = await VehiclePage({
       params: Promise.resolve({
         locale: "pt-PT",
         make: "volkswagen",
-        model: "golf",
-        year: "2018",
+        model: "polo",
+        year: "1996",
       }),
     });
     render(jsx);
 
+    expect(screen.getByTestId("vehicle-hero")).toHaveTextContent(
+      "Volkswagen Polo"
+    );
+    expect(screen.getByTestId("vehicle-tech-specs")).toHaveTextContent("1.0");
+    expect(screen.getByTestId("known-issues-summary")).toHaveTextContent("2");
+    expect(screen.getByTestId("known-issues-accordion")).toHaveTextContent(
+      "2"
+    );
+    expect(screen.getByRole("link", { name: "Nova busca" })).toHaveAttribute(
+      "href",
+      "/"
+    );
     expect(
-      screen.getByRole("heading", { name: "Volkswagen Golf 2018", level: 1 })
-    ).toBeInTheDocument();
-    expect(screen.getByText("Timing chain tensioner wear")).toBeInTheDocument();
-    expect(screen.getByText("DSG mechatronic failure")).toBeInTheDocument();
+      document.querySelectorAll('script[type="application/ld+json"]')
+    ).toHaveLength(2);
   });
 
-  it("renders links to other model years", async () => {
-    const jsx = await VehiclePage({
-      params: Promise.resolve({
-        locale: "pt-PT",
-        make: "volkswagen",
-        model: "golf",
-        year: "2018",
-      }),
-    });
-    render(jsx);
-
-    const link2019 = screen.getByRole("link", { name: "2019" });
-    const link2020 = screen.getByRole("link", { name: "2020" });
-
-    expect(link2019).toHaveAttribute("href", "/defects/volkswagen/golf/2019");
-    expect(link2020).toHaveAttribute("href", "/defects/volkswagen/golf/2020");
-  });
-
-  it("shows a no-faults message and skips the FAQ structured data when the vehicle has none", async () => {
+  it("shows a no-known-issues message and skips the FAQ structured data when there are none", async () => {
     const jsx = await VehiclePage({
       params: Promise.resolve({
         locale: "pt-PT",
@@ -124,7 +136,10 @@ describe("VehiclePage", () => {
     });
     render(jsx);
 
-    expect(screen.getByText("faults.noFaults")).toBeInTheDocument();
+    expect(
+      screen.getByText("faults.vehicle.noKnownIssues")
+    ).toBeInTheDocument();
+    expect(screen.queryByTestId("known-issues-accordion")).not.toBeInTheDocument();
     expect(
       document.querySelectorAll('script[type="application/ld+json"]')
     ).toHaveLength(1);
@@ -150,8 +165,8 @@ describe("generateMetadata", () => {
       params: Promise.resolve({
         locale: "pt-PT",
         make: "volkswagen",
-        model: "golf",
-        year: "2018",
+        model: "polo",
+        year: "1996",
       }),
     });
 
@@ -176,14 +191,16 @@ describe("generateMetadata", () => {
 });
 
 describe("generateStaticParams", () => {
-  it("returns a param entry for every vehicle in every supported locale", () => {
+  it("returns a param entry for every year of every vehicle in every supported locale", () => {
+    const { listLookupStaticParams } = jest.requireActual(
+      "@/lib/mocks/lookup-results"
+    ) as typeof import("@/lib/mocks/lookup-results");
+
     expect(generateStaticParams()).toEqual(
       locales.flatMap((locale) =>
-        vehicles.map((vehicle) => ({
+        listLookupStaticParams().map((paramSet) => ({
           locale,
-          make: vehicle.makeSlug,
-          model: vehicle.modelSlug,
-          year: String(vehicle.year),
+          ...paramSet,
         }))
       )
     );

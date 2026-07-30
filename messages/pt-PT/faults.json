@@ -7,19 +7,39 @@
   },
   "reportsCount": "{count} relatos",
   "viewReports": "Ver relatos",
-  "typicalCost": "Custo típico",
-  "costRange": "{min}€ – {max}€",
-  "engines": "Motores",
-  "doors": "Portas",
-  "relatedYears": "Outros anos deste modelo",
   "disclaimer": "As informações apresentadas resultam de relatos de proprietários e não substituem uma inspeção mecânica.",
-  "faultsListTitle": "Defeitos conhecidos",
-  "noFaults": "Ainda não há defeitos reportados para este veículo.",
   "hub": {
     "title": "Defeitos por veículo",
     "subtitle": "Explore os defeitos crónicos mais reportados por marca e modelo.",
     "resultsFor": "Resultados para \"{query}\"",
     "noResults": "Nenhum veículo encontrado com estes filtros.",
     "allVehicles": "Todos os veículos"
+  },
+  "vehicle": {
+    "eyebrow": "Veículo encontrado",
+    "newSearch": "Nova busca",
+    "years": "Anos",
+    "engine": "Motor",
+    "fuel": "Combustível",
+    "doors": "Portas",
+    "power": "Potência",
+    "fuelTypes": {
+      "gasoline": "Gasolina",
+      "diesel": "Diesel",
+      "electric": "Elétrico",
+      "gpl": "GPL",
+      "hybrid": "Híbrido"
+    },
+    "summaryBanner": "{count} defeitos conhecidos identificados",
+    "knownIssuesTitle": "Defeitos conhecidos",
+    "noKnownIssues": "Ainda não há defeitos conhecidos reportados para este veículo.",
+    "atKm": "aos {km} km",
+    "solutionsCount": "{count} soluções",
+    "sources": "Fontes",
+    "communitySolutions": "Soluções da comunidade",
+    "viewSteps": "Ver passo a passo",
+    "hideSteps": "Ocultar passo a passo",
+    "estimatedCost": "Custo estimado",
+    "helpful": "Foi útil?"
   }
 }
