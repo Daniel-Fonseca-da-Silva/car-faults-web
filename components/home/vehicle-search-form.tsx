@@ -1,0 +1,191 @@
+"use client";
+
+import { Search } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useState, type FormEvent } from "react";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@/components/ui/native-select";
+import { useRouter } from "@/i18n/navigation";
+
+const FUEL_OPTIONS = ["petrol", "diesel", "hybrid", "electric"] as const;
+const DOOR_OPTIONS = [2, 3, 4, 5] as const;
+
+export function VehicleSearchForm() {
+  const t = useTranslations("search");
+  const router = useRouter();
+
+  const [make, setMake] = useState("");
+  const [model, setModel] = useState("");
+  const [year, setYear] = useState("");
+  const [engine, setEngine] = useState("");
+  const [fuel, setFuel] = useState("");
+  const [doors, setDoors] = useState("");
+  const [showValidationError, setShowValidationError] = useState(false);
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!make.trim() && !model.trim()) {
+      setShowValidationError(true);
+      return;
+    }
+
+    setShowValidationError(false);
+
+    const query: Record<string, string> = {};
+    if (make.trim()) query.make = make.trim();
+    if (model.trim()) query.model = model.trim();
+    if (year.trim()) query.year = year.trim();
+    if (engine.trim()) query.engine = engine.trim();
+    if (fuel) query.fuel = fuel;
+    if (doors) query.doors = doors;
+
+    router.push({ pathname: "/defects", query });
+  }
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between gap-3">
+        <h2 className="text-lg font-semibold text-foreground">{t("title")}</h2>
+        <Badge variant="secondary" className="gap-1.5">
+          <span
+            className="size-1.5 rounded-full bg-emerald-500"
+            aria-hidden="true"
+          />
+          {t("statusActive")}
+        </Badge>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} noValidate>
+          <FieldGroup>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <Field>
+                <FieldLabel htmlFor="vehicle-make">
+                  {t("fields.make")}
+                </FieldLabel>
+                <Input
+                  id="vehicle-make"
+                  name="make"
+                  value={make}
+                  onChange={(event) => setMake(event.target.value)}
+                  placeholder={t("fields.makePlaceholder")}
+                  className="h-11"
+                />
+              </Field>
+
+              <Field>
+                <FieldLabel htmlFor="vehicle-model">
+                  {t("fields.model")}
+                </FieldLabel>
+                <Input
+                  id="vehicle-model"
+                  name="model"
+                  value={model}
+                  onChange={(event) => setModel(event.target.value)}
+                  placeholder={t("fields.modelPlaceholder")}
+                  className="h-11"
+                />
+              </Field>
+
+              <Field>
+                <FieldLabel htmlFor="vehicle-year">
+                  {t("fields.year")}
+                </FieldLabel>
+                <Input
+                  id="vehicle-year"
+                  name="year"
+                  type="number"
+                  inputMode="numeric"
+                  value={year}
+                  onChange={(event) => setYear(event.target.value)}
+                  placeholder={t("fields.yearPlaceholder")}
+                  className="h-11"
+                />
+              </Field>
+
+              <Field>
+                <FieldLabel htmlFor="vehicle-engine">
+                  {t("fields.engine")}
+                </FieldLabel>
+                <Input
+                  id="vehicle-engine"
+                  name="engine"
+                  value={engine}
+                  onChange={(event) => setEngine(event.target.value)}
+                  placeholder={t("fields.enginePlaceholder")}
+                  className="h-11"
+                />
+              </Field>
+
+              <Field>
+                <FieldLabel htmlFor="vehicle-fuel">
+                  {t("fields.fuel")}
+                </FieldLabel>
+                <NativeSelect
+                  id="vehicle-fuel"
+                  name="fuel"
+                  value={fuel}
+                  onChange={(event) => setFuel(event.target.value)}
+                  className="h-11 [&_select]:h-11"
+                >
+                  <NativeSelectOption value="">
+                    {t("fields.fuelPlaceholder")}
+                  </NativeSelectOption>
+                  {FUEL_OPTIONS.map((option) => (
+                    <NativeSelectOption key={option} value={option}>
+                      {t(`fuelOptions.${option}`)}
+                    </NativeSelectOption>
+                  ))}
+                </NativeSelect>
+              </Field>
+
+              <Field>
+                <FieldLabel htmlFor="vehicle-doors">
+                  {t("fields.doors")}
+                </FieldLabel>
+                <NativeSelect
+                  id="vehicle-doors"
+                  name="doors"
+                  value={doors}
+                  onChange={(event) => setDoors(event.target.value)}
+                  className="h-11 [&_select]:h-11"
+                >
+                  <NativeSelectOption value="">
+                    {t("fields.doorsPlaceholder")}
+                  </NativeSelectOption>
+                  {DOOR_OPTIONS.map((option) => (
+                    <NativeSelectOption key={option} value={option}>
+                      {option}
+                    </NativeSelectOption>
+                  ))}
+                </NativeSelect>
+              </Field>
+            </div>
+
+            {showValidationError && (
+              <FieldError>{t("validation")}</FieldError>
+            )}
+
+            <Button type="submit" className="h-11 w-full gap-2 sm:w-auto">
+              <Search aria-hidden="true" />
+              {t("submit")}
+            </Button>
+          </FieldGroup>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
