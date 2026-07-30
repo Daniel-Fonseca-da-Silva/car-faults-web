@@ -22,5 +22,9 @@
   "about": {
     "title": "Sobre | CarFaults",
     "description": "Conheça a missão da CarFaults."
+  },
+  "login": {
+    "title": "Entrar | CarFaults",
+    "description": "Acesse a sua conta CarFaults para consultar defeitos, recalls e comparações de veículos."
   }
 }

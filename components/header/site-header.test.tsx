@@ -75,6 +75,16 @@ describe("SiteHeader", () => {
     expect(homeLinks[0]).toHaveTextContent("CARFAULTS");
   });
 
+  it("links the avatar to the login page", async () => {
+    const jsx = await SiteHeader();
+    render(jsx);
+
+    const loginLinks = screen
+      .getAllByRole("link")
+      .filter((link) => link.getAttribute("href") === "/login");
+    expect(loginLinks.length).toBeGreaterThan(0);
+  });
+
   it("opens the mobile navigation sheet when the menu button is pressed", async () => {
     const user = userEvent.setup();
     const jsx = await SiteHeader();
