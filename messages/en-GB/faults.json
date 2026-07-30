@@ -7,19 +7,39 @@
   },
   "reportsCount": "{count} reports",
   "viewReports": "View reports",
-  "typicalCost": "Typical cost",
-  "costRange": "€{min} – €{max}",
-  "engines": "Engines",
-  "doors": "Doors",
-  "relatedYears": "Other years of this model",
   "disclaimer": "The information shown comes from owner reports and does not replace a mechanical inspection.",
-  "faultsListTitle": "Known faults",
-  "noFaults": "No faults have been reported for this vehicle yet.",
   "hub": {
     "title": "Faults by vehicle",
     "subtitle": "Explore the most reported chronic issues by make and model.",
     "resultsFor": "Results for \"{query}\"",
     "noResults": "No vehicles found matching these filters.",
     "allVehicles": "All vehicles"
+  },
+  "vehicle": {
+    "eyebrow": "Vehicle found",
+    "newSearch": "New search",
+    "years": "Years",
+    "engine": "Engine",
+    "fuel": "Fuel",
+    "doors": "Doors",
+    "power": "Power",
+    "fuelTypes": {
+      "gasoline": "Petrol",
+      "diesel": "Diesel",
+      "electric": "Electric",
+      "gpl": "LPG",
+      "hybrid": "Hybrid"
+    },
+    "summaryBanner": "{count} known issues found",
+    "knownIssuesTitle": "Known issues",
+    "noKnownIssues": "No known issues have been reported for this vehicle yet.",
+    "atKm": "at {km} km",
+    "solutionsCount": "{count} solutions",
+    "sources": "Sources",
+    "communitySolutions": "Community solutions",
+    "viewSteps": "View step-by-step",
+    "hideSteps": "Hide step-by-step",
+    "estimatedCost": "Estimated cost",
+    "helpful": "Helpful?"
   }
 }
