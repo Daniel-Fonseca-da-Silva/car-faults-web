@@ -42,3 +42,7 @@ next-env.d.ts
 
 # Skills
 .agents
+prompts
+.claude
+.agents
+help.txt
