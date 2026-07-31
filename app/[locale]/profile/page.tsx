@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { redirect } from "next/navigation";
 
 import { SiteShell } from "@/components/layout/site-shell";
 import { ProfileDashboard } from "@/components/profile/profile-dashboard";
@@ -33,7 +34,12 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const { user, stats, vehicles } = getProfilePageData();
+  const data = await getProfilePageData();
+  if (!data) {
+    redirect(`/${locale}/login`);
+  }
+
+  const { user, stats, vehicles } = data;
 
   return (
     <SiteShell className="py-12 sm:py-16">

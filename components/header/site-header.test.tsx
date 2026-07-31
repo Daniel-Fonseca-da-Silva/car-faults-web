@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { SiteHeader } from "./site-header";
 
 const pushMock = jest.fn();
+const getCurrentUserMock = jest.fn();
 
 const navDict: Record<string, string> = {
   recalls: "Recalls",
@@ -14,6 +15,7 @@ const navDict: Record<string, string> = {
   menu: "Menu",
   profile: "Profile",
   logout: "Log out",
+  login: "Sign in",
 };
 
 jest.mock("next-intl/server", () => ({
@@ -63,9 +65,22 @@ jest.mock("@/i18n/navigation", () => ({
   useRouter: () => ({ replace: jest.fn(), push: pushMock }),
 }));
 
+jest.mock("@/lib/api/users", () => ({
+  getCurrentUser: () => getCurrentUserMock(),
+}));
+
 describe("SiteHeader", () => {
   beforeEach(() => {
     pushMock.mockClear();
+    getCurrentUserMock.mockReset();
+    getCurrentUserMock.mockResolvedValue({
+      id: "u1",
+      email: "ana@example.com",
+      name: "Ana Silva",
+      avatarUrl: null,
+      createdAt: "2026-01-01T00:00:00.000Z",
+      updatedAt: "2026-01-01T00:00:00.000Z",
+    });
   });
 
   it("renders the primary navigation links", async () => {
@@ -88,7 +103,7 @@ describe("SiteHeader", () => {
     expect(homeLinks[0]).toHaveTextContent("CARFAULTS");
   });
 
-  it("opens the account menu with a profile link", async () => {
+  it("opens the account menu with a profile link when signed in", async () => {
     const user = userEvent.setup();
     const jsx = await SiteHeader();
     render(jsx);
@@ -100,6 +115,16 @@ describe("SiteHeader", () => {
     expect(
       await screen.findByRole("menuitem", { name: "Profile" })
     ).toHaveAttribute("href", "/profile");
+  });
+
+  it("shows a sign-in call to action when signed out", async () => {
+    getCurrentUserMock.mockResolvedValue(null);
+    const jsx = await SiteHeader();
+    render(jsx);
+
+    const signInCtas = screen.getAllByRole("button", { name: "Sign in" });
+    expect(signInCtas.length).toBeGreaterThan(0);
+    expect(signInCtas[0]).toHaveAttribute("href", "/login");
   });
 
   it("opens the mobile navigation sheet when the menu button is pressed", async () => {

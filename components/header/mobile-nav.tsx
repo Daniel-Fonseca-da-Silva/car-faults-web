@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, Menu } from "lucide-react";
+import { LogIn, LogOut, Menu } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -14,19 +14,24 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Link, useRouter } from "@/i18n/navigation";
-import { profileUser } from "@/lib/mocks/profile";
+import { logout } from "@/lib/auth/logout";
 import { getInitials } from "@/lib/utils";
+import type { UserProfile } from "@/types/user";
 
 const NAV_ITEMS = ["recalls", "defects", "compare", "about"] as const;
 
-export function MobileNav() {
+type MobileNavProps = {
+  user: UserProfile | null;
+};
+
+export function MobileNav({ user }: MobileNavProps) {
   const t = useTranslations("nav");
   const router = useRouter();
-  const firstName = profileUser.name.split(" ")[0];
 
-  function handleLogout() {
-    // Stub only: no session/JWT clearing until auth is wired.
+  async function handleLogout() {
+    await logout();
     router.push("/login");
+    router.refresh();
   }
 
   return (
@@ -64,36 +69,55 @@ export function MobileNav() {
           ))}
         </nav>
         <div className="mt-auto border-t border-border">
-          <SheetClose
-            nativeButton={false}
-            render={
-              <Link
-                href="/profile"
-                className="flex items-center gap-2 px-4 py-4 hover:bg-muted"
-              />
-            }
-          >
-            <Avatar>
-              <AvatarImage
-                src={profileUser.avatarUrl ?? undefined}
-                alt={profileUser.name}
-              />
-              <AvatarFallback>{getInitials(profileUser.name)}</AvatarFallback>
-            </Avatar>
-            <span className="text-sm text-muted-foreground">{firstName}</span>
-          </SheetClose>
-          <SheetClose
-            render={
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="flex w-full items-center gap-2 px-4 py-4 text-sm text-destructive hover:bg-muted"
-              />
-            }
-          >
-            <LogOut aria-hidden="true" className="size-4" />
-            {t("logout")}
-          </SheetClose>
+          {user ? (
+            <>
+              <SheetClose
+                nativeButton={false}
+                render={
+                  <Link
+                    href="/profile"
+                    className="flex items-center gap-2 px-4 py-4 hover:bg-muted"
+                  />
+                }
+              >
+                <Avatar>
+                  <AvatarImage
+                    src={user.avatarUrl ?? undefined}
+                    alt={user.name}
+                  />
+                  <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+                </Avatar>
+                <span className="text-sm text-muted-foreground">
+                  {user.name.split(" ")[0]}
+                </span>
+              </SheetClose>
+              <SheetClose
+                render={
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-2 px-4 py-4 text-sm text-destructive hover:bg-muted"
+                  />
+                }
+              >
+                <LogOut aria-hidden="true" className="size-4" />
+                {t("logout")}
+              </SheetClose>
+            </>
+          ) : (
+            <SheetClose
+              nativeButton={false}
+              render={
+                <Link
+                  href="/login"
+                  className="flex items-center gap-2 px-4 py-4 text-sm font-medium text-foreground hover:bg-muted"
+                />
+              }
+            >
+              <LogIn aria-hidden="true" className="size-4" />
+              {t("login")}
+            </SheetClose>
+          )}
         </div>
       </SheetContent>
     </Sheet>

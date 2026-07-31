@@ -1,9 +1,3 @@
-export interface AuthUser {
-  name: string;
-  email: string;
-}
+import type { UserProfile } from "@/types/user";
 
-export interface LoginFormValues {
-  email: string;
-  password: string;
-}
+export type AuthUser = UserProfile;
