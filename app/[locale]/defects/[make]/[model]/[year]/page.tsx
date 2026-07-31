@@ -8,37 +8,65 @@ import { KnownIssuesSummary } from "@/components/vehicle/known-issues-summary";
 import { VehicleBackLink } from "@/components/vehicle/vehicle-back-link";
 import { VehicleHero } from "@/components/vehicle/vehicle-hero";
 import { VehicleTechSpecs } from "@/components/vehicle/vehicle-tech-specs";
-import { routing } from "@/i18n/routing";
-import {
-  countSeverities,
-  findLookup,
-  listLookupStaticParams,
-} from "@/lib/mocks/lookup-results";
+import type { Locale } from "@/i18n/locales";
+import { getVehicleLookup } from "@/lib/api/lookups";
+import { countSeverities } from "@/lib/lookup/count-severities";
+import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
 import { formatYearRange } from "@/lib/utils";
+import type { LookupResponse } from "@/types/lookup";
 
-export function generateStaticParams() {
-  return routing.locales.flatMap((locale) =>
-    listLookupStaticParams().map((params) => ({ locale, ...params }))
-  );
+interface VehiclePageParams {
+  locale: Locale;
+  make: string;
+  model: string;
+  year: string;
+}
+
+interface VehiclePageSearchParams {
+  brand?: string;
+  model?: string;
+  engine?: string;
+  fuelType?: string;
+  doors?: string;
 }
 
 interface VehiclePageProps {
-  params: Promise<{
-    locale: string;
-    make: string;
-    model: string;
-    year: string;
-  }>;
+  params: Promise<VehiclePageParams>;
+  searchParams: Promise<VehiclePageSearchParams>;
+}
+
+async function resolveLookup(
+  params: VehiclePageParams,
+  searchParams: VehiclePageSearchParams
+): Promise<LookupResponse | null> {
+  const { brand, model, engine, fuelType, doors } = searchParams;
+  if (!brand || !model || !engine || !fuelType) {
+    return null;
+  }
+
+  return getVehicleLookup({
+    brand,
+    model,
+    year: Number(params.year),
+    engine,
+    fuelType,
+    doors: doors ? Number(doors) : undefined,
+    language: mapLookupLanguage(params.locale),
+  }).catch(() => null);
 }
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: VehiclePageProps): Promise<Metadata> {
-  const { locale, make, model, year } = await params;
-  const lookup = findLookup(make, model, Number(year));
+  const resolvedParams = await params;
+  const lookup = await resolveLookup(resolvedParams, await searchParams);
   if (!lookup) return {};
 
-  const t = await getTranslations({ locale, namespace: "seo.vehiclePage" });
+  const t = await getTranslations({
+    locale: resolvedParams.locale,
+    namespace: "seo.vehiclePage",
+  });
   const templateValues = {
     make: lookup.vehicle.brand,
     model: lookup.vehicle.model,
@@ -51,11 +79,14 @@ export async function generateMetadata({
   };
 }
 
-export default async function VehiclePage({ params }: VehiclePageProps) {
-  const { locale, make, model, year } = await params;
-  setRequestLocale(locale);
+export default async function VehiclePage({
+  params,
+  searchParams,
+}: VehiclePageProps) {
+  const resolvedParams = await params;
+  setRequestLocale(resolvedParams.locale);
 
-  const lookup = findLookup(make, model, Number(year));
+  const lookup = await resolveLookup(resolvedParams, await searchParams);
   if (!lookup) {
     notFound();
   }

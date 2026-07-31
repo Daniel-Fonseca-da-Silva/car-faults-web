@@ -19,10 +19,17 @@ import {
   NativeSelectOption,
 } from "@/components/ui/native-select";
 import { useRouter } from "@/i18n/navigation";
-import { slugify } from "@/lib/utils";
+import { buildLookupHref } from "@/lib/lookup/build-lookup-href";
 
-const FUEL_OPTIONS = ["petrol", "diesel", "hybrid", "electric"] as const;
+const FUEL_OPTIONS = [
+  "gasoline",
+  "diesel",
+  "electric",
+  "gpl",
+  "hybrid",
+] as const;
 const DOOR_OPTIONS = [2, 3, 4, 5] as const;
+const ELECTRIC_ENGINE_SENTINEL = "electric";
 
 export function VehicleSearchForm() {
   const t = useTranslations("search");
@@ -36,6 +43,9 @@ export function VehicleSearchForm() {
   const [doors, setDoors] = useState("");
   const [showValidationError, setShowValidationError] = useState(false);
 
+  const isElectric = fuel === ELECTRIC_ENGINE_SENTINEL;
+  const effectiveEngine = isElectric ? ELECTRIC_ENGINE_SENTINEL : engine.trim();
+
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -46,9 +56,16 @@ export function VehicleSearchForm() {
 
     setShowValidationError(false);
 
-    if (make.trim() && model.trim() && year.trim()) {
+    if (make.trim() && model.trim() && year.trim() && effectiveEngine && fuel) {
       router.push(
-        `/defects/${slugify(make.trim())}/${slugify(model.trim())}/${year.trim()}`
+        buildLookupHref({
+          brand: make.trim(),
+          model: model.trim(),
+          year: Number(year.trim()),
+          engine: effectiveEngine,
+          fuelType: fuel,
+          doors: doors ? Number(doors) : null,
+        })
       );
       return;
     }
@@ -57,7 +74,7 @@ export function VehicleSearchForm() {
     if (make.trim()) query.make = make.trim();
     if (model.trim()) query.model = model.trim();
     if (year.trim()) query.year = year.trim();
-    if (engine.trim()) query.engine = engine.trim();
+    if (effectiveEngine) query.engine = effectiveEngine;
     if (fuel) query.fuel = fuel;
     if (doors) query.doors = doors;
 
@@ -124,19 +141,21 @@ export function VehicleSearchForm() {
                 />
               </Field>
 
-              <Field>
-                <FieldLabel htmlFor="vehicle-engine">
-                  {t("fields.engine")}
-                </FieldLabel>
-                <Input
-                  id="vehicle-engine"
-                  name="engine"
-                  value={engine}
-                  onChange={(event) => setEngine(event.target.value)}
-                  placeholder={t("fields.enginePlaceholder")}
-                  className="h-11"
-                />
-              </Field>
+              {!isElectric && (
+                <Field>
+                  <FieldLabel htmlFor="vehicle-engine">
+                    {t("fields.engine")}
+                  </FieldLabel>
+                  <Input
+                    id="vehicle-engine"
+                    name="engine"
+                    value={engine}
+                    onChange={(event) => setEngine(event.target.value)}
+                    placeholder={t("fields.enginePlaceholder")}
+                    className="h-11"
+                  />
+                </Field>
+              )}
 
               <Field>
                 <FieldLabel htmlFor="vehicle-fuel">

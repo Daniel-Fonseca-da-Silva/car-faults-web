@@ -1,3 +1,5 @@
+import type { LookupFuelType } from "@/types/lookup";
+
 export interface UserVehicle {
   id: string;
   vehicleModelId: string | null;
@@ -7,6 +9,7 @@ export interface UserVehicle {
   engine: string;
   name: string | null;
   doors: number | null;
+  fuelType: LookupFuelType | null;
   createdAt: string;
   updatedAt: string;
   /** Presentation-only field: known issue count is not part of the list endpoint. */
