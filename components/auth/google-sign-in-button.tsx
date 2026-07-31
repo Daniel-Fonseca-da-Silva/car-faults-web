@@ -1,8 +1,9 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
+import { getApiBaseUrl } from "@/lib/api/config";
 
 function GoogleIcon() {
   return (
@@ -29,13 +30,18 @@ function GoogleIcon() {
 
 export function GoogleSignInButton() {
   const t = useTranslations("auth");
+  const locale = useLocale();
+
+  function handleClick() {
+    window.location.href = `${getApiBaseUrl()}/v1/auth/google?state=${locale}`;
+  }
 
   return (
     <Button
       type="button"
       variant="outline"
       className="h-11 w-full gap-2"
-      onClick={(event) => event.preventDefault()}
+      onClick={handleClick}
     >
       <GoogleIcon />
       {t("google")}

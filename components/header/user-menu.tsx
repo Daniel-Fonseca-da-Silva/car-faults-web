@@ -1,9 +1,10 @@
 "use client";
 
-import { LogOut, User } from "lucide-react";
+import { LogIn, LogOut, User } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,22 +13,39 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Link, useRouter } from "@/i18n/navigation";
+import { logout } from "@/lib/auth/logout";
 import { getInitials } from "@/lib/utils";
+import type { UserProfile } from "@/types/user";
 
 type UserMenuProps = {
-  name: string;
-  avatarUrl: string | null;
+  user: UserProfile | null;
 };
 
-export function UserMenu({ name, avatarUrl }: UserMenuProps) {
+export function UserMenu({ user }: UserMenuProps) {
   const t = useTranslations("nav");
   const router = useRouter();
-  const firstName = name.split(" ")[0];
 
-  function handleLogout() {
-    // Stub only: no session/JWT clearing until auth is wired.
+  async function handleLogout() {
+    await logout();
     router.push("/login");
+    router.refresh();
   }
+
+  if (!user) {
+    return (
+      <Button
+        render={<Link href="/login" />}
+        nativeButton={false}
+        variant="outline"
+        className="gap-2"
+      >
+        <LogIn aria-hidden="true" />
+        {t("login")}
+      </Button>
+    );
+  }
+
+  const firstName = user.name.split(" ")[0];
 
   return (
     <DropdownMenu>
@@ -36,8 +54,8 @@ export function UserMenu({ name, avatarUrl }: UserMenuProps) {
         className="flex items-center gap-2 rounded-full border border-primary/60 py-1 pl-1 pr-3 transition-colors hover:bg-muted"
       >
         <Avatar title={t("avatarAlt", { name: firstName })}>
-          <AvatarImage src={avatarUrl ?? undefined} alt={name} />
-          <AvatarFallback>{getInitials(name)}</AvatarFallback>
+          <AvatarImage src={user.avatarUrl ?? undefined} alt={user.name} />
+          <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
         </Avatar>
         <span className="text-sm font-medium text-foreground">{firstName}</span>
       </DropdownMenuTrigger>

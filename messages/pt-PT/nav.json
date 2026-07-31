@@ -7,5 +7,6 @@
   "avatarAlt": "Avatar de {name}",
   "accountMenu": "Menu da conta de {name}",
   "profile": "Perfil",
-  "logout": "Sair"
+  "logout": "Sair",
+  "login": "Entrar"
 }
