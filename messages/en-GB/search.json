@@ -23,5 +23,7 @@
     "hybrid": "Hybrid"
   },
   "submit": "Search faults",
-  "validation": "Enter at least a make or a model."
+  "verifying": "Verifying...",
+  "validation": "Enter at least a make or a model.",
+  "captchaError": "Verification failed. Please complete the challenge again."
 }
