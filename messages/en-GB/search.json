@@ -16,10 +16,11 @@
     "doorsPlaceholder": "Select number of doors"
   },
   "fuelOptions": {
-    "petrol": "Petrol",
+    "gasoline": "Petrol",
     "diesel": "Diesel",
-    "hybrid": "Hybrid",
-    "electric": "Electric"
+    "electric": "Electric",
+    "gpl": "LPG",
+    "hybrid": "Hybrid"
   },
   "submit": "Search faults",
   "validation": "Enter at least a make or a model."

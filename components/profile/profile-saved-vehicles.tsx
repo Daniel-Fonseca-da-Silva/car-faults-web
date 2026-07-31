@@ -5,8 +5,7 @@ import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
-import { findLookup } from "@/lib/mocks/lookup-results";
-import { slugify } from "@/lib/utils";
+import { buildLookupHref } from "@/lib/lookup/build-lookup-href";
 import type { UserVehicle } from "@/types/user-vehicle";
 
 interface ProfileSavedVehiclesProps {
@@ -35,13 +34,15 @@ export async function ProfileSavedVehicles({
       ) : (
         <ul className="mt-4 divide-y divide-border">
           {vehicles.map((vehicle) => {
-            const makeSlug = slugify(vehicle.brand);
-            const modelSlug = slugify(vehicle.model);
-            const hasLookup = Boolean(
-              findLookup(makeSlug, modelSlug, vehicle.year)
-            );
-            const href = hasLookup
-              ? `/defects/${makeSlug}/${modelSlug}/${vehicle.year}`
+            const href = vehicle.fuelType
+              ? buildLookupHref({
+                  brand: vehicle.brand,
+                  model: vehicle.model,
+                  year: vehicle.year,
+                  engine: vehicle.engine,
+                  fuelType: vehicle.fuelType,
+                  doors: vehicle.doors,
+                })
               : null;
 
             const row: ReactNode = (

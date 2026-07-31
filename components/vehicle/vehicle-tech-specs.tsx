@@ -4,6 +4,8 @@ import { getTranslations } from "next-intl/server";
 import { formatYearRange } from "@/lib/utils";
 import type { VehicleLookup } from "@/types/lookup";
 
+const ELECTRIC_ENGINE_SENTINEL = "electric";
+
 interface VehicleTechSpecsProps {
   vehicle: VehicleLookup;
 }
@@ -18,6 +20,9 @@ interface SpecTile {
 export async function VehicleTechSpecs({ vehicle }: VehicleTechSpecsProps) {
   const t = await getTranslations("faults.vehicle");
   const powerHp = vehicle.techSpecs?.power_hp;
+  const isElectric =
+    vehicle.fuelType === "electric" &&
+    vehicle.engine === ELECTRIC_ENGINE_SENTINEL;
 
   const specs: SpecTile[] = [
     {
@@ -30,7 +35,7 @@ export async function VehicleTechSpecs({ vehicle }: VehicleTechSpecsProps) {
       key: "engine",
       icon: Cog,
       label: t("engine"),
-      value: vehicle.engine,
+      value: isElectric ? t("fuelTypes.electric") : vehicle.engine,
     },
     {
       key: "fuel",

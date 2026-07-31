@@ -16,10 +16,11 @@
     "doorsPlaceholder": "Selecciona el número de puertas"
   },
   "fuelOptions": {
-    "petrol": "Gasolina",
+    "gasoline": "Gasolina",
     "diesel": "Diésel",
-    "hybrid": "Híbrido",
-    "electric": "Eléctrico"
+    "electric": "Eléctrico",
+    "gpl": "GLP",
+    "hybrid": "Híbrido"
   },
   "submit": "Buscar defectos",
   "validation": "Indica al menos la marca o el modelo."
