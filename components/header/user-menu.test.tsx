@@ -2,13 +2,27 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
 
+import type { UserProfile } from "@/types/user";
+
 import { UserMenu } from "./user-menu";
 
 const pushMock = jest.fn();
+const refreshMock = jest.fn();
+const logoutMock = jest.fn();
 
 const navDict: Record<string, string> = {
   profile: "Profile",
   logout: "Log out",
+  login: "Sign in",
+};
+
+const user: UserProfile = {
+  id: "u1",
+  email: "ana@example.com",
+  name: "Ana Silva",
+  avatarUrl: null,
+  createdAt: "2026-01-01T00:00:00.000Z",
+  updatedAt: "2026-01-01T00:00:00.000Z",
 };
 
 jest.mock("next-intl", () => ({
@@ -32,19 +46,30 @@ jest.mock("@/i18n/navigation", () => ({
       {children}
     </a>
   ),
-  useRouter: () => ({ push: pushMock, replace: jest.fn() }),
+  useRouter: () => ({
+    push: pushMock,
+    refresh: refreshMock,
+    replace: jest.fn(),
+  }),
+}));
+
+jest.mock("@/lib/auth/logout", () => ({
+  logout: () => logoutMock(),
 }));
 
 describe("UserMenu", () => {
   beforeEach(() => {
     pushMock.mockClear();
+    refreshMock.mockClear();
+    logoutMock.mockClear();
+    logoutMock.mockResolvedValue(undefined);
   });
 
   it("opens a menu with profile and logout options", async () => {
-    const user = userEvent.setup();
-    render(<UserMenu name="Ana Silva" avatarUrl={null} />);
+    const testUser = userEvent.setup();
+    render(<UserMenu user={user} />);
 
-    await user.click(
+    await testUser.click(
       screen.getByRole("button", { name: "Account menu for Ana" })
     );
 
@@ -56,17 +81,30 @@ describe("UserMenu", () => {
     ).toBeInTheDocument();
   });
 
-  it("navigates to login when logout is pressed", async () => {
-    const user = userEvent.setup();
-    render(<UserMenu name="Ana Silva" avatarUrl={null} />);
+  it("logs out and navigates to login when logout is pressed", async () => {
+    const testUser = userEvent.setup();
+    render(<UserMenu user={user} />);
 
-    await user.click(
+    await testUser.click(
       screen.getByRole("button", { name: "Account menu for Ana" })
     );
 
-    const logoutItem = await screen.findByRole("menuitem", { name: "Log out" });
-    await user.click(logoutItem);
+    const logoutItem = await screen.findByRole("menuitem", {
+      name: "Log out",
+    });
+    await testUser.click(logoutItem);
 
+    expect(logoutMock).toHaveBeenCalled();
     expect(pushMock).toHaveBeenCalledWith("/login");
+    expect(refreshMock).toHaveBeenCalled();
+  });
+
+  it("renders a sign-in link when there is no user", () => {
+    render(<UserMenu user={null} />);
+
+    expect(screen.getByRole("button", { name: "Sign in" })).toHaveAttribute(
+      "href",
+      "/login"
+    );
   });
 });
