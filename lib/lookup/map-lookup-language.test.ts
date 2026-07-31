@@ -12,4 +12,8 @@ describe("mapLookupLanguage", () => {
   it("passes es-ES through unchanged", () => {
     expect(mapLookupLanguage("es-ES")).toBe("es-ES");
   });
+
+  it("falls back to the default locale for unknown values", () => {
+    expect(mapLookupLanguage("fr-FR")).toBe("pt-PT");
+  });
 });
