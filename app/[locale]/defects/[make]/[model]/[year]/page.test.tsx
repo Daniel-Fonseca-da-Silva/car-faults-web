@@ -1,57 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import Link from "next/link";
 
-import { locales } from "@/i18n/locales";
-import type { LookupFuelType } from "@/types/lookup";
+import type { LookupResponse } from "@/types/lookup";
 
-import VehiclePage, {
-  generateMetadata,
-  generateStaticParams,
-} from "./page";
+import VehiclePage, { generateMetadata } from "./page";
 
-jest.mock("@/lib/mocks/lookup-results", () => {
-  const actual: typeof import("@/lib/mocks/lookup-results") = jest.requireActual(
-    "@/lib/mocks/lookup-results"
-  );
+const getVehicleLookupMock = jest.fn();
 
-  const noIssuesVehicle = {
-    vehicle: {
-      id: "veh-tesla-model-3",
-      brand: "Tesla",
-      model: "Model 3",
-      name: null,
-      yearFrom: 2022,
-      yearTo: 2022,
-      engine: "Electric",
-      doors: 4,
-      fuelType: "electric" as LookupFuelType,
-      imageUrl: null,
-      techSpecs: { power_hp: 283 },
-    },
-    knownIssues: [],
-  };
-
-  const extendedResults = [...actual.lookupResults, noIssuesVehicle];
-
-  function slug(value: string): string {
-    return value.toLowerCase().replace(/\s+/g, "-");
-  }
-
-  return {
-    ...actual,
-    lookupResults: extendedResults,
-    findLookup: (makeSlug: string, modelSlug: string, year: number) =>
-      extendedResults.find((result) => {
-        const vehicleYearTo = result.vehicle.yearTo ?? result.vehicle.yearFrom;
-        return (
-          slug(result.vehicle.brand) === makeSlug &&
-          slug(result.vehicle.model) === modelSlug &&
-          year >= result.vehicle.yearFrom &&
-          year <= vehicleYearTo
-        );
-      }),
-  };
-});
+jest.mock("@/lib/api/lookups", () => ({
+  getVehicleLookup: (...args: unknown[]) => getVehicleLookupMock(...args),
+}));
 
 jest.mock("next-intl/server", () => ({
   getTranslations: async (arg: string | { namespace: string }) => {
@@ -96,8 +54,57 @@ jest.mock("@/components/vehicle/vehicle-back-link", () => ({
   VehicleBackLink: () => <Link href="/">Nova busca</Link>,
 }));
 
+const poloLookup: LookupResponse = {
+  vehicle: {
+    id: "veh-polo-6n1",
+    brand: "Volkswagen",
+    model: "Polo",
+    name: "Polo 6N1",
+    yearFrom: 1994,
+    yearTo: 1999,
+    engine: "1.0",
+    doors: 3,
+    fuelType: "gasoline",
+    imageUrl: null,
+    techSpecs: { power_hp: 50 },
+  },
+  knownIssues: [
+    {
+      id: "polo-6n1-gearbox-synchros",
+      title: "Problematic gearbox",
+      description: "Synchros wear out prematurely.",
+      severity: "high",
+      typicalKm: 120000,
+      sources: null,
+      fixes: [],
+    },
+    {
+      id: "polo-6n1-window-regulator",
+      title: "Electric window regulator failure",
+      description: "The front window regulator cable can snap or jam.",
+      severity: "low",
+      typicalKm: 90000,
+      sources: null,
+      fixes: [],
+    },
+  ],
+};
+
+const validSearchParams = {
+  brand: "Volkswagen",
+  model: "Polo",
+  engine: "1.0",
+  fuelType: "gasoline",
+};
+
 describe("VehiclePage", () => {
+  afterEach(() => {
+    getVehicleLookupMock.mockReset();
+  });
+
   it("renders the hero, specs, summary and known issues for a matching vehicle", async () => {
+    getVehicleLookupMock.mockResolvedValue(poloLookup);
+
     const jsx = await VehiclePage({
       params: Promise.resolve({
         locale: "pt-PT",
@@ -105,9 +112,19 @@ describe("VehiclePage", () => {
         model: "polo",
         year: "1996",
       }),
+      searchParams: Promise.resolve(validSearchParams),
     });
     render(jsx);
 
+    expect(getVehicleLookupMock).toHaveBeenCalledWith({
+      brand: "Volkswagen",
+      model: "Polo",
+      year: 1996,
+      engine: "1.0",
+      fuelType: "gasoline",
+      doors: undefined,
+      language: "pt-PT",
+    });
     expect(screen.getByTestId("vehicle-hero")).toHaveTextContent(
       "Volkswagen Polo"
     );
@@ -125,7 +142,48 @@ describe("VehiclePage", () => {
     ).toHaveLength(2);
   });
 
+  it("passes the es-ES locale through as the API request language", async () => {
+    getVehicleLookupMock.mockResolvedValue(poloLookup);
+
+    await VehiclePage({
+      params: Promise.resolve({
+        locale: "es-ES",
+        make: "volkswagen",
+        model: "polo",
+        year: "1996",
+      }),
+      searchParams: Promise.resolve(validSearchParams),
+    });
+
+    expect(getVehicleLookupMock).toHaveBeenCalledWith(
+      expect.objectContaining({ language: "es-ES" })
+    );
+  });
+
+  it("passes doors through when present in the query", async () => {
+    getVehicleLookupMock.mockResolvedValue(poloLookup);
+
+    await VehiclePage({
+      params: Promise.resolve({
+        locale: "pt-PT",
+        make: "volkswagen",
+        model: "polo",
+        year: "1996",
+      }),
+      searchParams: Promise.resolve({ ...validSearchParams, doors: "3" }),
+    });
+
+    expect(getVehicleLookupMock).toHaveBeenCalledWith(
+      expect.objectContaining({ doors: 3 })
+    );
+  });
+
   it("shows a no-known-issues message and skips the FAQ structured data when there are none", async () => {
+    getVehicleLookupMock.mockResolvedValue({
+      ...poloLookup,
+      knownIssues: [],
+    });
+
     const jsx = await VehiclePage({
       params: Promise.resolve({
         locale: "pt-PT",
@@ -133,6 +191,7 @@ describe("VehiclePage", () => {
         model: "model-3",
         year: "2022",
       }),
+      searchParams: Promise.resolve(validSearchParams),
     });
     render(jsx);
 
@@ -145,7 +204,7 @@ describe("VehiclePage", () => {
     ).toHaveLength(1);
   });
 
-  it("triggers a not-found response for an unknown vehicle", async () => {
+  it("triggers a not-found response when required query fields are missing", async () => {
     await expect(
       VehiclePage({
         params: Promise.resolve({
@@ -154,13 +213,54 @@ describe("VehiclePage", () => {
           model: "model-3",
           year: "2018",
         }),
+        searchParams: Promise.resolve({}),
+      })
+    ).rejects.toThrow();
+
+    expect(getVehicleLookupMock).not.toHaveBeenCalled();
+  });
+
+  it("triggers a not-found response when the API returns an error", async () => {
+    getVehicleLookupMock.mockRejectedValue(new Error("Failed to load vehicle lookup: 500"));
+
+    await expect(
+      VehiclePage({
+        params: Promise.resolve({
+          locale: "pt-PT",
+          make: "tesla",
+          model: "model-3",
+          year: "2018",
+        }),
+        searchParams: Promise.resolve(validSearchParams),
+      })
+    ).rejects.toThrow();
+  });
+
+  it("triggers a not-found response when the lookup is not found (null)", async () => {
+    getVehicleLookupMock.mockResolvedValue(null);
+
+    await expect(
+      VehiclePage({
+        params: Promise.resolve({
+          locale: "pt-PT",
+          make: "tesla",
+          model: "model-3",
+          year: "2018",
+        }),
+        searchParams: Promise.resolve(validSearchParams),
       })
     ).rejects.toThrow();
   });
 });
 
 describe("generateMetadata", () => {
+  afterEach(() => {
+    getVehicleLookupMock.mockReset();
+  });
+
   it("builds a localized title and description for a known vehicle", async () => {
+    getVehicleLookupMock.mockResolvedValue(poloLookup);
+
     const metadata = await generateMetadata({
       params: Promise.resolve({
         locale: "pt-PT",
@@ -168,6 +268,7 @@ describe("generateMetadata", () => {
         model: "polo",
         year: "1996",
       }),
+      searchParams: Promise.resolve(validSearchParams),
     });
 
     expect(metadata.title).toContain("seo.vehiclePage.titleTemplate");
@@ -176,7 +277,7 @@ describe("generateMetadata", () => {
     );
   });
 
-  it("returns an empty object for an unknown vehicle", async () => {
+  it("returns an empty object when the query is missing required fields", async () => {
     const metadata = await generateMetadata({
       params: Promise.resolve({
         locale: "pt-PT",
@@ -184,25 +285,10 @@ describe("generateMetadata", () => {
         model: "model-3",
         year: "2018",
       }),
+      searchParams: Promise.resolve({}),
     });
 
     expect(metadata).toEqual({});
-  });
-});
-
-describe("generateStaticParams", () => {
-  it("returns a param entry for every year of every vehicle in every supported locale", () => {
-    const { listLookupStaticParams } = jest.requireActual(
-      "@/lib/mocks/lookup-results"
-    ) as typeof import("@/lib/mocks/lookup-results");
-
-    expect(generateStaticParams()).toEqual(
-      locales.flatMap((locale) =>
-        listLookupStaticParams().map((paramSet) => ({
-          locale,
-          ...paramSet,
-        }))
-      )
-    );
+    expect(getVehicleLookupMock).not.toHaveBeenCalled();
   });
 });

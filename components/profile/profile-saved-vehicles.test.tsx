@@ -47,6 +47,7 @@ const linkedVehicle: UserVehicle = {
   engine: "1.0",
   name: "Polo 6N1",
   doors: 3,
+  fuelType: "gasoline",
   createdAt: "2026-01-12T09:30:00.000Z",
   updatedAt: "2026-01-12T09:30:00.000Z",
   knownIssuesCount: 2,
@@ -61,26 +62,30 @@ const unlinkedVehicle: UserVehicle = {
   engine: "1.0",
   name: null,
   doors: 5,
+  fuelType: null,
   createdAt: "2026-02-03T14:15:00.000Z",
   updatedAt: "2026-02-03T14:15:00.000Z",
   knownIssuesCount: 4,
 };
 
 describe("ProfileSavedVehicles", () => {
-  it("links to the vehicle page when a matching lookup exists", async () => {
+  it("links to the vehicle page when fuelType is present", async () => {
     const jsx = await ProfileSavedVehicles({ vehicles: [linkedVehicle] });
     render(jsx);
 
     const link = screen.getByRole("link", {
       name: "Ver detalhes de Volkswagen Polo",
     });
-    expect(link).toHaveAttribute("href", "/defects/volkswagen/polo/1996");
+    expect(link).toHaveAttribute(
+      "href",
+      "/defects/volkswagen/polo/1996?brand=Volkswagen&model=Polo&engine=1.0&fuelType=gasoline&doors=3"
+    );
     expect(screen.getByText("Volkswagen Polo")).toBeInTheDocument();
     expect(screen.getByText("1996")).toBeInTheDocument();
     expect(screen.getByText("2 defeitos")).toBeInTheDocument();
   });
 
-  it("renders vehicles without a matching lookup as plain, unlinked rows", async () => {
+  it("renders vehicles without a fuelType (no linked vehicle model) as plain, unlinked rows", async () => {
     const jsx = await ProfileSavedVehicles({ vehicles: [unlinkedVehicle] });
     render(jsx);
 

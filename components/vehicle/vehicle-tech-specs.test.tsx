@@ -14,6 +14,7 @@ jest.mock("next-intl/server", () => ({
       "faults.vehicle.power": "Potência",
       "faults.vehicle.fuelTypes.gasoline": "Gasolina",
       "faults.vehicle.fuelTypes.diesel": "Diesel",
+      "faults.vehicle.fuelTypes.electric": "Elétrico",
     };
     return (key: string) => dict[`${namespace}.${key}`] ?? key;
   },
@@ -52,6 +53,21 @@ describe("VehicleTechSpecs", () => {
     render(jsx);
 
     expect(screen.getByText("1994")).toBeInTheDocument();
+  });
+
+  it("shows the translated fuel type instead of the raw sentinel for electric vehicles", async () => {
+    const jsx = await VehicleTechSpecs({
+      vehicle: {
+        ...baseVehicle,
+        engine: "electric",
+        fuelType: "electric",
+        techSpecs: null,
+      },
+    });
+    render(jsx);
+
+    expect(screen.getAllByText("Elétrico")).toHaveLength(2);
+    expect(screen.queryByText("electric")).not.toBeInTheDocument();
   });
 
   it("falls back to a dash for missing fuel type, doors and power", async () => {
