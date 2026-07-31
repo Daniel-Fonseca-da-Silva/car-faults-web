@@ -23,5 +23,7 @@
     "hybrid": "Híbrido"
   },
   "submit": "Buscar defeitos",
-  "validation": "Indique pelo menos a marca ou o modelo."
+  "verifying": "A verificar...",
+  "validation": "Indique pelo menos a marca ou o modelo.",
+  "captchaError": "Falha na verificação. Complete o desafio novamente."
 }

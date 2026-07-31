@@ -1,9 +1,10 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 
+import { TurnstileWidget } from "@/components/security/turnstile-widget";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -19,7 +20,7 @@ import {
   NativeSelectOption,
 } from "@/components/ui/native-select";
 import { useRouter } from "@/i18n/navigation";
-import { buildLookupHref } from "@/lib/lookup/build-lookup-href";
+import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
 
 const FUEL_OPTIONS = [
   "gasoline",
@@ -34,6 +35,7 @@ const ELECTRIC_ENGINE_SENTINEL = "electric";
 export function VehicleSearchForm() {
   const t = useTranslations("search");
   const router = useRouter();
+  const locale = useLocale();
 
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
@@ -42,9 +44,56 @@ export function VehicleSearchForm() {
   const [fuel, setFuel] = useState("");
   const [doors, setDoors] = useState("");
   const [showValidationError, setShowValidationError] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [widgetResetSignal, setWidgetResetSignal] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCaptchaError, setShowCaptchaError] = useState(false);
 
   const isElectric = fuel === ELECTRIC_ENGINE_SENTINEL;
   const effectiveEngine = isElectric ? ELECTRIC_ENGINE_SENTINEL : engine.trim();
+  const isFullSearch = Boolean(
+    make.trim() && model.trim() && year.trim() && effectiveEngine && fuel
+  );
+
+  function resetWidget() {
+    setTurnstileToken(null);
+    setWidgetResetSignal((signal) => signal + 1);
+  }
+
+  async function submitFullSearch() {
+    if (!turnstileToken) return;
+
+    setIsSubmitting(true);
+    setShowCaptchaError(false);
+
+    try {
+      const response = await fetch("/api/lookup/prepare", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          brand: make.trim(),
+          model: model.trim(),
+          year: Number(year.trim()),
+          engine: effectiveEngine,
+          fuelType: fuel,
+          doors: doors ? Number(doors) : null,
+          language: mapLookupLanguage(locale),
+          turnstileToken,
+        }),
+      });
+
+      if (!response.ok) {
+        setShowCaptchaError(true);
+        resetWidget();
+        return;
+      }
+
+      const { href } = (await response.json()) as { href: string };
+      router.push(href);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -56,17 +105,8 @@ export function VehicleSearchForm() {
 
     setShowValidationError(false);
 
-    if (make.trim() && model.trim() && year.trim() && effectiveEngine && fuel) {
-      router.push(
-        buildLookupHref({
-          brand: make.trim(),
-          model: model.trim(),
-          year: Number(year.trim()),
-          engine: effectiveEngine,
-          fuelType: fuel,
-          doors: doors ? Number(doors) : null,
-        })
-      );
+    if (isFullSearch) {
+      void submitFullSearch();
       return;
     }
 
@@ -206,9 +246,24 @@ export function VehicleSearchForm() {
               <FieldError>{t("validation")}</FieldError>
             )}
 
-            <Button type="submit" className="h-11 w-full gap-2 sm:w-auto">
+            {isFullSearch && (
+              <TurnstileWidget
+                onSuccess={setTurnstileToken}
+                onExpire={() => setTurnstileToken(null)}
+                onError={() => setTurnstileToken(null)}
+                resetSignal={widgetResetSignal}
+              />
+            )}
+
+            {showCaptchaError && <FieldError>{t("captchaError")}</FieldError>}
+
+            <Button
+              type="submit"
+              className="h-11 w-full gap-2 sm:w-auto"
+              disabled={isFullSearch && (!turnstileToken || isSubmitting)}
+            >
               <Search aria-hidden="true" />
-              {t("submit")}
+              {isSubmitting ? t("verifying") : t("submit")}
             </Button>
           </FieldGroup>
         </form>
