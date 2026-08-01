@@ -67,6 +67,28 @@
       "invalidImageType": "Formato de imagen no compatible.",
       "submitError": "No se pudo publicar el comentario. Inténtalo de nuevo.",
       "deleteError": "No se pudo eliminar el comentario. Inténtalo de nuevo."
+    },
+    "reviews": {
+      "title": "Valora este defecto",
+      "count": "{count} valoraciones",
+      "empty": "Todavía no hay valoraciones. Sé el primero en valorar este defecto.",
+      "loadError": "No se pudieron cargar las valoraciones.",
+      "averageLabel": "Valoración media",
+      "ratingLabel": "Tu valoración",
+      "commentPlaceholder": "Comparte tu experiencia (opcional)...",
+      "publish": "Publicar valoración",
+      "submitting": "Publicando...",
+      "yourBadge": "tu valoración",
+      "edit": "Editar",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "confirmDeleteDescription": "Esta acción no se puede deshacer.",
+      "confirmDeleteConfirm": "Eliminar",
+      "loginToReview": "Inicia sesión para valorar este defecto.",
+      "loginCta": "Iniciar sesión",
+      "submitError": "No se pudo publicar la valoración. Inténtalo de nuevo.",
+      "deleteError": "No se pudo eliminar la valoración. Inténtalo de nuevo."
     }
   }
 }

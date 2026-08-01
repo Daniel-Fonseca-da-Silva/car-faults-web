@@ -67,6 +67,28 @@
       "invalidImageType": "Unsupported image format.",
       "submitError": "Couldn't post the comment. Please try again.",
       "deleteError": "Couldn't delete the comment. Please try again."
+    },
+    "reviews": {
+      "title": "Rate this issue",
+      "count": "{count} reviews",
+      "empty": "No reviews yet. Be the first to rate this issue.",
+      "loadError": "Couldn't load reviews.",
+      "averageLabel": "Average rating",
+      "ratingLabel": "Your rating",
+      "commentPlaceholder": "Share your experience (optional)...",
+      "publish": "Publish review",
+      "submitting": "Publishing...",
+      "yourBadge": "your review",
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "confirmDeleteDescription": "This action cannot be undone.",
+      "confirmDeleteConfirm": "Delete",
+      "loginToReview": "Sign in to rate this issue.",
+      "loginCta": "Sign in",
+      "submitError": "Couldn't submit the review. Please try again.",
+      "deleteError": "Couldn't delete the review. Please try again."
     }
   }
 }
