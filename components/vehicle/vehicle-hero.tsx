@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import type { VehicleLookup } from "@/types/lookup";
 
-const FALLBACK_IMAGE_SRC = "/login/classic-mini-shadowy-garage.webp";
+const FALLBACK_IMAGE_SRC = "/show/citroen-2CV.webp";
 
 interface VehicleHeroProps {
   vehicle: VehicleLookup;
@@ -12,11 +12,15 @@ interface VehicleHeroProps {
 export async function VehicleHero({ vehicle }: VehicleHeroProps) {
   const t = await getTranslations("faults.vehicle");
   const title = `${vehicle.brand} ${vehicle.model}`;
+  const imageSrc =
+    vehicle.imageUrl && vehicle.imageUrl.trim().length > 0
+      ? vehicle.imageUrl
+      : FALLBACK_IMAGE_SRC;
 
   return (
     <div className="relative aspect-video w-full overflow-hidden rounded-2xl sm:aspect-[21/9]">
       <Image
-        src={vehicle.imageUrl ?? FALLBACK_IMAGE_SRC}
+        src={imageSrc}
         alt={title}
         fill
         priority
