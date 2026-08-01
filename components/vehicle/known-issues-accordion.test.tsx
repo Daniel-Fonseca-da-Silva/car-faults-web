@@ -20,6 +20,20 @@ jest.mock("@/components/vehicle/issue-comments", () => ({
   ),
 }));
 
+jest.mock("@/components/vehicle/issue-reviews", () => ({
+  IssueReviews: ({
+    knownIssueId,
+    currentUser,
+  }: {
+    knownIssueId: string;
+    currentUser: UserProfile | null;
+  }) => (
+    <div data-testid={`issue-reviews-${knownIssueId}`}>
+      {currentUser ? currentUser.name : "guest"}
+    </div>
+  ),
+}));
+
 jest.mock("@/i18n/navigation", () => ({
   useRouter: () => ({ push: jest.fn() }),
 }));
@@ -146,7 +160,20 @@ describe("KnownIssuesAccordion", () => {
     );
   });
 
-  it("passes the current user through to the comments section", async () => {
+  it("renders the reviews section for the expanded issue as a guest", async () => {
+    const user = userEvent.setup();
+    render(
+      <KnownIssuesAccordion knownIssues={knownIssues} currentUser={null} />
+    );
+
+    await user.click(clickTrigger("Problematic gearbox"));
+
+    expect(screen.getByTestId("issue-reviews-issue-1")).toHaveTextContent(
+      "guest"
+    );
+  });
+
+  it("passes the current user through to the comments and reviews sections", async () => {
     const user = userEvent.setup();
     const currentUser = {
       id: "u1",
@@ -166,6 +193,9 @@ describe("KnownIssuesAccordion", () => {
     await user.click(clickTrigger("Problematic gearbox"));
 
     expect(screen.getByTestId("issue-comments-issue-1")).toHaveTextContent(
+      "Ana Silva"
+    );
+    expect(screen.getByTestId("issue-reviews-issue-1")).toHaveTextContent(
       "Ana Silva"
     );
   });

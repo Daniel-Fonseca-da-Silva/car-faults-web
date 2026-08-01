@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { IssueComments } from "@/components/vehicle/issue-comments";
 import { IssueFixCard } from "@/components/vehicle/issue-fix-card";
+import { IssueReviews } from "@/components/vehicle/issue-reviews";
 import { SeverityBadge } from "@/components/vehicle/severity-badge";
 import type { KnownIssue } from "@/types/lookup";
 import type { UserProfile } from "@/types/user";
@@ -53,6 +54,11 @@ export function KnownIssuesAccordion({
                 {t("vehicle.sources")}: {issue.sources.join(", ")}
               </p>
             )}
+
+            <IssueReviews
+              knownIssueId={issue.id}
+              currentUser={currentUser}
+            />
 
             {issue.fixes.length > 0 && (
               <div className="mt-4 space-y-3">
