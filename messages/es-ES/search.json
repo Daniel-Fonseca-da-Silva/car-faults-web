@@ -4,6 +4,7 @@
   "fields": {
     "make": "Marca",
     "makePlaceholder": "ej.: Volkswagen",
+    "makeNoResults": "No hay marcas coincidentes. Se usará el texto escrito.",
     "model": "Modelo",
     "modelPlaceholder": "ej.: Golf",
     "year": "Año",

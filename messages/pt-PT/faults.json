@@ -67,6 +67,28 @@
       "invalidImageType": "Formato de imagem não suportado.",
       "submitError": "Não foi possível publicar o comentário. Tenta novamente.",
       "deleteError": "Não foi possível eliminar o comentário. Tenta novamente."
+    },
+    "reviews": {
+      "title": "Avaliar este defeito",
+      "count": "{count} avaliações",
+      "empty": "Ainda sem avaliações. Sê o primeiro a avaliar este defeito.",
+      "loadError": "Não foi possível carregar as avaliações.",
+      "averageLabel": "Avaliação média",
+      "ratingLabel": "A tua avaliação",
+      "commentPlaceholder": "Partilha a tua experiência (opcional)...",
+      "publish": "Publicar avaliação",
+      "submitting": "A publicar...",
+      "yourBadge": "a tua avaliação",
+      "edit": "Editar",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "confirmDeleteDescription": "Esta ação não pode ser revertida.",
+      "confirmDeleteConfirm": "Eliminar",
+      "loginToReview": "Inicia sessão para avaliar este defeito.",
+      "loginCta": "Entrar",
+      "submitError": "Não foi possível publicar a avaliação. Tenta novamente.",
+      "deleteError": "Não foi possível eliminar a avaliação. Tenta novamente."
     }
   }
 }

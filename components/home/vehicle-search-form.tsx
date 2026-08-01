@@ -9,6 +9,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
+  Combobox,
+  ComboboxCollection,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox";
+import {
   Field,
   FieldError,
   FieldGroup,
@@ -21,6 +30,7 @@ import {
 } from "@/components/ui/native-select";
 import { useRouter } from "@/i18n/navigation";
 import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
+import { EUROPEAN_VEHICLE_MAKES } from "@/lib/mocks/vehicle-makes";
 
 const FUEL_OPTIONS = [
   "gasoline",
@@ -31,6 +41,9 @@ const FUEL_OPTIONS = [
 ] as const;
 const DOOR_OPTIONS = [2, 3, 4, 5] as const;
 const ELECTRIC_ENGINE_SENTINEL = "electric";
+// Base UI clears the input when the popup closes without a selected item.
+// Keep free-text makes so unmatched brands can still be searched.
+const COMBOBOX_INPUT_CLEAR_REASON = "input-clear";
 
 export function VehicleSearchForm() {
   const t = useTranslations("search");
@@ -141,14 +154,41 @@ export function VehicleSearchForm() {
                 <FieldLabel htmlFor="vehicle-make">
                   {t("fields.make")}
                 </FieldLabel>
-                <Input
-                  id="vehicle-make"
-                  name="make"
-                  value={make}
-                  onChange={(event) => setMake(event.target.value)}
-                  placeholder={t("fields.makePlaceholder")}
-                  className="h-11"
-                />
+                <Combobox
+                  items={EUROPEAN_VEHICLE_MAKES}
+                  value={EUROPEAN_VEHICLE_MAKES.includes(make) ? make : null}
+                  onValueChange={(value) => {
+                    if (value != null) {
+                      setMake(value);
+                    }
+                  }}
+                  inputValue={make}
+                  onInputValueChange={(value, eventDetails) => {
+                    if (eventDetails.reason === COMBOBOX_INPUT_CLEAR_REASON) {
+                      return;
+                    }
+                    setMake(value);
+                  }}
+                >
+                  <ComboboxInput
+                    id="vehicle-make"
+                    name="make"
+                    placeholder={t("fields.makePlaceholder")}
+                    className="h-11 w-full"
+                  />
+                  <ComboboxContent>
+                    <ComboboxEmpty>{t("fields.makeNoResults")}</ComboboxEmpty>
+                    <ComboboxList>
+                      <ComboboxCollection>
+                        {(item: string) => (
+                          <ComboboxItem key={item} value={item}>
+                            {item}
+                          </ComboboxItem>
+                        )}
+                      </ComboboxCollection>
+                    </ComboboxList>
+                  </ComboboxContent>
+                </Combobox>
               </Field>
 
               <Field>
