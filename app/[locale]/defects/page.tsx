@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { AdSenseUnit } from "@/components/ads/adsense-unit";
 import { FaultCardGrid } from "@/components/faults/fault-card-grid";
 import { SiteShell } from "@/components/layout/site-shell";
 import { routing } from "@/i18n/routing";
 import { vehicles } from "@/lib/mocks/vehicles";
 import type { TopFaultEntry } from "@/types/vehicle";
+
+// Placeholder — replace with the real AdSense ad unit slot ID once created.
+const DEFECTS_HUB_AD_SLOT = "0000000001";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -97,6 +101,8 @@ export default async function DefectsHubPage({
           <p className="text-muted-foreground">{t("noResults")}</p>
         )}
       </div>
+
+      <AdSenseUnit slot={DEFECTS_HUB_AD_SLOT} />
     </SiteShell>
   );
 }

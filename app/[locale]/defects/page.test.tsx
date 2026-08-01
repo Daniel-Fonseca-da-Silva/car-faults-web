@@ -44,6 +44,12 @@ jest.mock("@/components/faults/fault-card-grid", () => ({
   ),
 }));
 
+jest.mock("@/components/ads/adsense-unit", () => ({
+  AdSenseUnit: ({ slot }: { slot: string }) => (
+    <div data-testid="adsense-unit">{slot}</div>
+  ),
+}));
+
 describe("DefectsHubPage", () => {
   it("renders the hub title and subtitle when there is no query", async () => {
     const jsx = await DefectsHubPage({

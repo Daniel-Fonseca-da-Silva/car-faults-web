@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
+import { AdSenseUnit } from "@/components/ads/adsense-unit";
 import { SiteShell } from "@/components/layout/site-shell";
 import { KnownIssuesAccordion } from "@/components/vehicle/known-issues-accordion";
 import { KnownIssuesSummary } from "@/components/vehicle/known-issues-summary";
@@ -14,6 +15,9 @@ import { countSeverities } from "@/lib/lookup/count-severities";
 import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
 import { formatYearRange } from "@/lib/utils";
 import type { LookupResponse } from "@/types/lookup";
+
+// Placeholder — replace with the real AdSense ad unit slot ID once created.
+const VEHICLE_PAGE_AD_SLOT = "0000000000";
 
 interface VehiclePageParams {
   locale: Locale;
@@ -155,6 +159,8 @@ export default async function VehiclePage({
       ) : (
         <KnownIssuesAccordion knownIssues={knownIssues} />
       )}
+
+      <AdSenseUnit slot={VEHICLE_PAGE_AD_SLOT} />
 
       <p className="mt-10 text-xs text-muted-foreground/80">
         {t("disclaimer")}
