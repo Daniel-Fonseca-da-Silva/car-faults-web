@@ -54,6 +54,12 @@ jest.mock("@/components/vehicle/vehicle-back-link", () => ({
   VehicleBackLink: () => <Link href="/">Nova busca</Link>,
 }));
 
+jest.mock("@/components/ads/adsense-unit", () => ({
+  AdSenseUnit: ({ slot }: { slot: string }) => (
+    <div data-testid="adsense-unit">{slot}</div>
+  ),
+}));
+
 const poloLookup: LookupResponse = {
   vehicle: {
     id: "veh-polo-6n1",
