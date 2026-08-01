@@ -6,9 +6,14 @@ import type { LookupResponse } from "@/types/lookup";
 import VehiclePage, { generateMetadata } from "./page";
 
 const getVehicleLookupMock = jest.fn();
+const getCurrentUserMock = jest.fn();
 
 jest.mock("@/lib/api/lookups", () => ({
   getVehicleLookup: (...args: unknown[]) => getVehicleLookupMock(...args),
+}));
+
+jest.mock("@/lib/api/users", () => ({
+  getCurrentUser: (...args: unknown[]) => getCurrentUserMock(...args),
 }));
 
 jest.mock("next-intl/server", () => ({
@@ -45,8 +50,17 @@ jest.mock("@/components/vehicle/known-issues-summary", () => ({
 }));
 
 jest.mock("@/components/vehicle/known-issues-accordion", () => ({
-  KnownIssuesAccordion: ({ knownIssues }: { knownIssues: unknown[] }) => (
-    <div data-testid="known-issues-accordion">{knownIssues.length}</div>
+  KnownIssuesAccordion: ({
+    knownIssues,
+    currentUser,
+  }: {
+    knownIssues: unknown[];
+    currentUser: { name: string } | null;
+  }) => (
+    <div data-testid="known-issues-accordion">
+      {knownIssues.length}
+      {currentUser ? `:${currentUser.name}` : ""}
+    </div>
   ),
 }));
 
@@ -104,8 +118,13 @@ const validSearchParams = {
 };
 
 describe("VehiclePage", () => {
+  beforeEach(() => {
+    getCurrentUserMock.mockResolvedValue(null);
+  });
+
   afterEach(() => {
     getVehicleLookupMock.mockReset();
+    getCurrentUserMock.mockReset();
   });
 
   it("renders the hero, specs, summary and known issues for a matching vehicle", async () => {
@@ -146,6 +165,33 @@ describe("VehiclePage", () => {
     expect(
       document.querySelectorAll('script[type="application/ld+json"]')
     ).toHaveLength(2);
+  });
+
+  it("passes the current user through to the known issues accordion", async () => {
+    getVehicleLookupMock.mockResolvedValue(poloLookup);
+    getCurrentUserMock.mockResolvedValue({
+      id: "u1",
+      name: "Ana Silva",
+      email: "ana@example.com",
+      avatarUrl: null,
+      createdAt: "2026-01-01T00:00:00.000Z",
+      updatedAt: "2026-01-01T00:00:00.000Z",
+    });
+
+    const jsx = await VehiclePage({
+      params: Promise.resolve({
+        locale: "pt-PT",
+        make: "volkswagen",
+        model: "polo",
+        year: "1996",
+      }),
+      searchParams: Promise.resolve(validSearchParams),
+    });
+    render(jsx);
+
+    expect(screen.getByTestId("known-issues-accordion")).toHaveTextContent(
+      "2:Ana Silva"
+    );
   });
 
   it("passes the es-ES locale through as the API request language", async () => {
