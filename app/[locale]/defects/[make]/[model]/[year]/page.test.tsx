@@ -7,6 +7,8 @@ import VehiclePage, { generateMetadata } from "./page";
 
 const getVehicleLookupMock = jest.fn();
 const getCurrentUserMock = jest.fn();
+const getCurrentUserVehiclesMock = jest.fn();
+const getVehicleFavoriteStatusMock = jest.fn();
 
 jest.mock("@/lib/api/lookups", () => ({
   getVehicleLookup: (...args: unknown[]) => getVehicleLookupMock(...args),
@@ -14,6 +16,13 @@ jest.mock("@/lib/api/lookups", () => ({
 
 jest.mock("@/lib/api/users", () => ({
   getCurrentUser: (...args: unknown[]) => getCurrentUserMock(...args),
+  getCurrentUserVehicles: (...args: unknown[]) =>
+    getCurrentUserVehiclesMock(...args),
+}));
+
+jest.mock("@/lib/api/activity-logs", () => ({
+  getVehicleFavoriteStatus: (...args: unknown[]) =>
+    getVehicleFavoriteStatusMock(...args),
 }));
 
 jest.mock("next-intl/server", () => ({
@@ -30,8 +39,20 @@ jest.mock("next-intl/server", () => ({
 }));
 
 jest.mock("@/components/vehicle/vehicle-hero", () => ({
-  VehicleHero: ({ vehicle }: { vehicle: { brand: string; model: string } }) => (
-    <div data-testid="vehicle-hero">
+  VehicleHero: ({
+    vehicle,
+    garageVehicleId,
+    isFavorited,
+  }: {
+    vehicle: { brand: string; model: string };
+    garageVehicleId: string | null;
+    isFavorited: boolean;
+  }) => (
+    <div
+      data-testid="vehicle-hero"
+      data-garage-vehicle-id={garageVehicleId ?? ""}
+      data-is-favorited={String(isFavorited)}
+    >
       {vehicle.brand} {vehicle.model}
     </div>
   ),
@@ -120,11 +141,18 @@ const validSearchParams = {
 describe("VehiclePage", () => {
   beforeEach(() => {
     getCurrentUserMock.mockResolvedValue(null);
+    getCurrentUserVehiclesMock.mockResolvedValue([]);
+    getVehicleFavoriteStatusMock.mockResolvedValue({
+      vehicleModelId: "veh-polo-6n1",
+      favorited: false,
+    });
   });
 
   afterEach(() => {
     getVehicleLookupMock.mockReset();
     getCurrentUserMock.mockReset();
+    getCurrentUserVehiclesMock.mockReset();
+    getVehicleFavoriteStatusMock.mockReset();
   });
 
   it("renders the hero, specs, summary and known issues for a matching vehicle", async () => {
@@ -191,6 +219,92 @@ describe("VehiclePage", () => {
 
     expect(screen.getByTestId("known-issues-accordion")).toHaveTextContent(
       "2:Ana Silva"
+    );
+  });
+
+  it("does not fetch garage or favorite state for guests", async () => {
+    getVehicleLookupMock.mockResolvedValue(poloLookup);
+
+    await VehiclePage({
+      params: Promise.resolve({
+        locale: "pt-PT",
+        make: "volkswagen",
+        model: "polo",
+        year: "1996",
+      }),
+      searchParams: Promise.resolve(validSearchParams),
+    });
+
+    expect(getCurrentUserVehiclesMock).not.toHaveBeenCalled();
+    expect(getVehicleFavoriteStatusMock).not.toHaveBeenCalled();
+  });
+
+  it("matches the garage vehicle by vehicle model id and year, and passes the favorite status for a logged-in user", async () => {
+    getVehicleLookupMock.mockResolvedValue(poloLookup);
+    getCurrentUserMock.mockResolvedValue({
+      id: "u1",
+      name: "Ana Silva",
+      email: "ana@example.com",
+      avatarUrl: null,
+      createdAt: "2026-01-01T00:00:00.000Z",
+      updatedAt: "2026-01-01T00:00:00.000Z",
+    });
+    getCurrentUserVehiclesMock.mockResolvedValue([
+      { id: "uv-other", vehicleModelId: "veh-polo-6n1", year: 1994 },
+      { id: "uv-match", vehicleModelId: "veh-polo-6n1", year: 1996 },
+    ]);
+    getVehicleFavoriteStatusMock.mockResolvedValue({
+      vehicleModelId: "veh-polo-6n1",
+      favorited: true,
+    });
+
+    const jsx = await VehiclePage({
+      params: Promise.resolve({
+        locale: "pt-PT",
+        make: "volkswagen",
+        model: "polo",
+        year: "1996",
+      }),
+      searchParams: Promise.resolve(validSearchParams),
+    });
+    render(jsx);
+
+    expect(getVehicleFavoriteStatusMock).toHaveBeenCalledWith(
+      "veh-polo-6n1"
+    );
+    const hero = screen.getByTestId("vehicle-hero");
+    expect(hero).toHaveAttribute("data-garage-vehicle-id", "uv-match");
+    expect(hero).toHaveAttribute("data-is-favorited", "true");
+  });
+
+  it("leaves the garage vehicle id null when no saved vehicle matches the year", async () => {
+    getVehicleLookupMock.mockResolvedValue(poloLookup);
+    getCurrentUserMock.mockResolvedValue({
+      id: "u1",
+      name: "Ana Silva",
+      email: "ana@example.com",
+      avatarUrl: null,
+      createdAt: "2026-01-01T00:00:00.000Z",
+      updatedAt: "2026-01-01T00:00:00.000Z",
+    });
+    getCurrentUserVehiclesMock.mockResolvedValue([
+      { id: "uv-other", vehicleModelId: "veh-polo-6n1", year: 1994 },
+    ]);
+
+    const jsx = await VehiclePage({
+      params: Promise.resolve({
+        locale: "pt-PT",
+        make: "volkswagen",
+        model: "polo",
+        year: "1996",
+      }),
+      searchParams: Promise.resolve(validSearchParams),
+    });
+    render(jsx);
+
+    expect(screen.getByTestId("vehicle-hero")).toHaveAttribute(
+      "data-garage-vehicle-id",
+      ""
     );
   });
 

@@ -18,6 +18,21 @@
   "vehicle": {
     "eyebrow": "Vehículo encontrado",
     "newSearch": "Nueva búsqueda",
+    "actions": {
+      "addToGarage": "Añadir al garaje",
+      "removeFromGarage": "Quitar del garaje",
+      "addToGarageAriaLabel": "Añadir {vehicle} al garaje",
+      "removeFromGarageAriaLabel": "Quitar {vehicle} del garaje",
+      "favorite": "Marcar como favorito",
+      "unfavorite": "Quitar de favoritos",
+      "favoriteAriaLabel": "Marcar {vehicle} como favorito",
+      "unfavoriteAriaLabel": "Quitar {vehicle} de favoritos",
+      "guestHint": "Inicia sesión para guardar este vehículo",
+      "guestCta": "Entrar",
+      "garageConflictError": "Este vehículo ya está en tu garaje",
+      "garageGenericError": "No se pudo añadir al garaje. Inténtalo de nuevo.",
+      "favoriteGenericError": "No se pudieron actualizar los favoritos. Inténtalo de nuevo."
+    },
     "years": "Años",
     "engine": "Motor",
     "fuel": "Combustible",

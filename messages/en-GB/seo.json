@@ -30,5 +30,9 @@
   "profile": {
     "title": "My account | CarFaults",
     "description": "View your profile, usage stats and saved vehicles on CarFaults."
+  },
+  "garage": {
+    "title": "My garage | CarFaults",
+    "description": "View your favourite vehicles and their known issues in your CarFaults garage."
   }
 }

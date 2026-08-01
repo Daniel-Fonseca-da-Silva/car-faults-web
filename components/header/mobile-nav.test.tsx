@@ -16,6 +16,7 @@ const navDict: Record<string, string> = {
   compare: "Comparar",
   about: "Sobre",
   menu: "Menu",
+  garage: "Garagem",
   logout: "Sair",
   login: "Entrar",
 };
@@ -73,6 +74,17 @@ describe("MobileNav", () => {
 
     const profileLink = screen.getByRole("button", { name: /Ana/i });
     expect(profileLink).toHaveAttribute("href", "/profile");
+  });
+
+  it("links to the garage page when signed in", async () => {
+    const testUser = userEvent.setup();
+    render(<MobileNav user={user} />);
+
+    await testUser.click(screen.getByRole("button", { name: "Menu" }));
+
+    expect(
+      screen.getByRole("button", { name: "Garagem" })
+    ).toHaveAttribute("href", "/garage");
   });
 
   it("renders the primary navigation links inside the sheet", async () => {

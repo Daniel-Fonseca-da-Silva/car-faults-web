@@ -25,6 +25,7 @@ describe("EUROPEAN_VEHICLE_MAKES", () => {
     "Peugeot",
     "Ford",
     "Citroën",
+    "Dacia",
     "Honda",
     "Toyota",
     "Fiat",

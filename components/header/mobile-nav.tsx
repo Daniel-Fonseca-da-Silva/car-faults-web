@@ -1,6 +1,6 @@
 "use client";
 
-import { LogIn, LogOut, Menu } from "lucide-react";
+import { LogIn, LogOut, Menu, Warehouse } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -90,6 +90,18 @@ export function MobileNav({ user }: MobileNavProps) {
                 <span className="text-sm text-muted-foreground">
                   {user.name.split(" ")[0]}
                 </span>
+              </SheetClose>
+              <SheetClose
+                nativeButton={false}
+                render={
+                  <Link
+                    href="/garage"
+                    className="flex items-center gap-2 px-4 py-4 text-sm font-medium text-foreground hover:bg-muted"
+                  />
+                }
+              >
+                <Warehouse aria-hidden="true" className="size-4" />
+                {t("garage")}
               </SheetClose>
               <SheetClose
                 render={

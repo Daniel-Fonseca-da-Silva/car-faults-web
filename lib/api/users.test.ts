@@ -2,9 +2,13 @@
  * @jest-environment node
  */
 import {
+  createCurrentUserVehicle,
+  deleteCurrentUserVehicle,
   getCurrentUser,
   getCurrentUserStats,
+  getCurrentUserVehicle,
   getCurrentUserVehicles,
+  UserVehicleConflictError,
 } from "./users";
 
 const serverApiFetchMock = jest.fn();
@@ -92,6 +96,118 @@ describe("getCurrentUserVehicles", () => {
 
     await expect(getCurrentUserVehicles()).rejects.toThrow(
       "Failed to load current user vehicles: 500"
+    );
+  });
+
+  it("appends the language query param when given", async () => {
+    serverApiFetchMock.mockResolvedValue(jsonResponse([]));
+
+    await getCurrentUserVehicles("pt-PT");
+
+    expect(serverApiFetchMock).toHaveBeenCalledWith(
+      "/v1/user-vehicles?language=pt-PT"
+    );
+  });
+});
+
+describe("getCurrentUserVehicle", () => {
+  afterEach(() => {
+    serverApiFetchMock.mockReset();
+  });
+
+  it("returns the vehicle detail on a successful response", async () => {
+    const vehicle = {
+      id: "uv1",
+      brand: "Fiat",
+      model: "Uno",
+      knownIssues: [],
+    };
+    serverApiFetchMock.mockResolvedValue(jsonResponse(vehicle));
+
+    await expect(getCurrentUserVehicle("uv1")).resolves.toEqual(vehicle);
+    expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/user-vehicles/uv1");
+  });
+
+  it("returns null on a 404 response", async () => {
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
+
+    await expect(getCurrentUserVehicle("missing")).resolves.toBeNull();
+  });
+
+  it("throws on other error responses", async () => {
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
+
+    await expect(getCurrentUserVehicle("uv1")).rejects.toThrow(
+      "Failed to load current user vehicle: 500"
+    );
+  });
+
+  it("appends the language query param when given", async () => {
+    serverApiFetchMock.mockResolvedValue(jsonResponse({ id: "uv1" }));
+
+    await getCurrentUserVehicle("uv1", "pt-PT");
+
+    expect(serverApiFetchMock).toHaveBeenCalledWith(
+      "/v1/user-vehicles/uv1?language=pt-PT"
+    );
+  });
+});
+
+describe("createCurrentUserVehicle", () => {
+  afterEach(() => {
+    serverApiFetchMock.mockReset();
+  });
+
+  it("returns the created vehicle on a successful response", async () => {
+    const vehicle = { id: "uv1", brand: "Fiat", model: "Uno", year: 2001 };
+    serverApiFetchMock.mockResolvedValue(jsonResponse(vehicle));
+
+    await expect(
+      createCurrentUserVehicle({ vehicleModelId: "vm-1", year: 2001 })
+    ).resolves.toEqual(vehicle);
+    expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/user-vehicles", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ vehicleModelId: "vm-1", year: 2001 }),
+    });
+  });
+
+  it("throws a UserVehicleConflictError on a 409 response", async () => {
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 409 }));
+
+    await expect(
+      createCurrentUserVehicle({ vehicleModelId: "vm-1", year: 2001 })
+    ).rejects.toThrow(UserVehicleConflictError);
+  });
+
+  it("throws on other error responses", async () => {
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
+
+    await expect(
+      createCurrentUserVehicle({ vehicleModelId: "vm-1", year: 2001 })
+    ).rejects.toThrow("Failed to add vehicle to garage: 500");
+  });
+});
+
+describe("deleteCurrentUserVehicle", () => {
+  afterEach(() => {
+    serverApiFetchMock.mockReset();
+  });
+
+  it("calls the delete endpoint on a successful response", async () => {
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 204 }));
+
+    await expect(deleteCurrentUserVehicle("uv1")).resolves.toBeUndefined();
+    expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/user-vehicles/uv1", {
+      method: "DELETE",
+    });
+  });
+
+  it("throws on an error response", async () => {
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
+
+    await expect(deleteCurrentUserVehicle("uv1")).rejects.toThrow(
+      "Failed to delete current user vehicle: 404"
     );
   });
 });

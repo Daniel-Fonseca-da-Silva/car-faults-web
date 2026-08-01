@@ -41,6 +41,7 @@ const vehicles: UserVehicle[] = [
     name: "Polo 6N1",
     doors: 3,
     fuelType: "gasoline",
+    imageUrl: null,
     createdAt: "2026-01-12T09:30:00.000Z",
     updatedAt: "2026-01-12T09:30:00.000Z",
     knownIssuesCount: 2,
