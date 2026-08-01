@@ -7,6 +7,7 @@
   "avatarAlt": "{name}'s avatar",
   "accountMenu": "Account menu for {name}",
   "profile": "Profile",
+  "garage": "Garage",
   "logout": "Log out",
   "login": "Sign in"
 }

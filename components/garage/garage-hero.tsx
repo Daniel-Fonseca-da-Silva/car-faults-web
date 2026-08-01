@@ -1,0 +1,47 @@
+import { getTranslations } from "next-intl/server";
+import Image from "next/image";
+
+import type { UserVehicleDetail } from "@/types/user-vehicle";
+
+const FALLBACK_IMAGE_SRC = "/garage/1951-volkswagen-beetle-garage-scene.webp";
+
+interface GarageHeroProps {
+  vehicle: UserVehicleDetail | null;
+}
+
+export async function GarageHero({ vehicle }: GarageHeroProps) {
+  const t = await getTranslations("garage.hero");
+  const title = vehicle ? `${vehicle.brand} ${vehicle.model}` : null;
+  const imageSrc = vehicle?.imageUrl?.trim() || FALLBACK_IMAGE_SRC;
+
+  return (
+    <div className="relative aspect-video w-full overflow-hidden rounded-2xl sm:aspect-[21/9]">
+      <Image
+        src={imageSrc}
+        alt={title ?? t("fallbackAlt")}
+        fill
+        priority
+        sizes="(min-width: 1024px) 1024px, 100vw"
+        className="object-cover"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/10"
+      />
+
+      <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
+        <p className="text-sm font-semibold tracking-widest text-primary uppercase">
+          {t("eyebrow")}
+        </p>
+        <h1 className="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">
+          {title ?? t("emptyTitle")}
+          {vehicle && (
+            <span className="block text-lg font-medium text-muted-foreground">
+              {vehicle.year}
+            </span>
+          )}
+        </h1>
+      </div>
+    </div>
+  );
+}

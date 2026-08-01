@@ -1,0 +1,22 @@
+{
+  "hero": {
+    "eyebrow": "Garage",
+    "emptyTitle": "Your garage is empty",
+    "fallbackAlt": "Classic garage scene"
+  },
+  "list": {
+    "title": "Your favourite vehicles",
+    "empty": "You don't have any vehicles in your garage yet.",
+    "knownIssuesCount": "{count} defects",
+    "remove": "Remove from garage",
+    "removeAriaLabel": "Remove {vehicle} from garage",
+    "removeConfirmTitle": "Remove vehicle?",
+    "removeConfirmDescription": "Are you sure you want to remove {vehicle} from your garage?",
+    "removeCancel": "Cancel"
+  },
+  "issues": {
+    "title": "Known issues",
+    "empty": "There are no known issues for this vehicle yet.",
+    "viewDetails": "View details"
+  }
+}

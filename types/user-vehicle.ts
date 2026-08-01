@@ -1,4 +1,4 @@
-import type { LookupFuelType } from "@/types/lookup";
+import type { KnownIssue, LookupFuelType } from "@/types/lookup";
 
 export interface UserVehicle {
   id: string;
@@ -10,8 +10,12 @@ export interface UserVehicle {
   name: string | null;
   doors: number | null;
   fuelType: LookupFuelType | null;
+  imageUrl: string | null;
+  knownIssuesCount: number;
   createdAt: string;
   updatedAt: string;
-  /** Presentation-only field: known issue count is not part of the list endpoint. */
-  knownIssuesCount?: number;
+}
+
+export interface UserVehicleDetail extends UserVehicle {
+  knownIssues: KnownIssue[];
 }

@@ -1,0 +1,22 @@
+{
+  "hero": {
+    "eyebrow": "Garaje",
+    "emptyTitle": "Tu garaje está vacío",
+    "fallbackAlt": "Escena de garaje clásico"
+  },
+  "list": {
+    "title": "Tus vehículos favoritos",
+    "empty": "Todavía no tienes vehículos en tu garaje.",
+    "knownIssuesCount": "{count} defectos",
+    "remove": "Quitar del garaje",
+    "removeAriaLabel": "Quitar {vehicle} del garaje",
+    "removeConfirmTitle": "¿Quitar vehículo?",
+    "removeConfirmDescription": "¿Seguro que quieres quitar {vehicle} de tu garaje?",
+    "removeCancel": "Cancelar"
+  },
+  "issues": {
+    "title": "Problemas conocidos",
+    "empty": "Todavía no hay problemas conocidos para este vehículo.",
+    "viewDetails": "Ver detalles"
+  }
+}

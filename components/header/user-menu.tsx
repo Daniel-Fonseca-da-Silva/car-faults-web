@@ -1,6 +1,6 @@
 "use client";
 
-import { LogIn, LogOut, User } from "lucide-react";
+import { LogIn, LogOut, User, Warehouse } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -68,6 +68,14 @@ export function UserMenu({ user }: UserMenuProps) {
         >
           <User aria-hidden="true" />
           {t("profile")}
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          nativeButton={false}
+          render={<Link href="/garage" />}
+          className="cursor-pointer"
+        >
+          <Warehouse aria-hidden="true" />
+          {t("garage")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem

@@ -9,6 +9,7 @@ export const EUROPEAN_VEHICLE_MAKES: readonly string[] = [
   "BYD",
   "Changan",
   "Citroën",
+  "Dacia",
   "Dodge",
   "Dongfeng",
   "Ferrari",

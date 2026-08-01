@@ -18,6 +18,21 @@
   "vehicle": {
     "eyebrow": "Vehicle found",
     "newSearch": "New search",
+    "actions": {
+      "addToGarage": "Add to garage",
+      "removeFromGarage": "Remove from garage",
+      "addToGarageAriaLabel": "Add {vehicle} to garage",
+      "removeFromGarageAriaLabel": "Remove {vehicle} from garage",
+      "favorite": "Favourite",
+      "unfavorite": "Remove from favourites",
+      "favoriteAriaLabel": "Favourite {vehicle}",
+      "unfavoriteAriaLabel": "Remove {vehicle} from favourites",
+      "guestHint": "Sign in to save this vehicle",
+      "guestCta": "Sign in",
+      "garageConflictError": "This vehicle is already in your garage",
+      "garageGenericError": "Couldn't add to garage. Please try again.",
+      "favoriteGenericError": "Couldn't update favourites. Please try again."
+    },
     "years": "Years",
     "engine": "Engine",
     "fuel": "Fuel",
