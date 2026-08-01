@@ -13,29 +13,25 @@ describe("AuthCallbackPage", () => {
     redirectMock.mockClear();
   });
 
-  it("redirects to the session route handler with the token and locale", async () => {
+  it("redirects to the session route handler with the code and locale", async () => {
     await expect(
       AuthCallbackPage({
         params: Promise.resolve({ locale: "pt-PT" }),
-        searchParams: Promise.resolve({ token: "jwt-token" }),
+        searchParams: Promise.resolve({ code: "xyz123" }),
       })
-    ).rejects.toThrow(
-      "REDIRECT:/api/auth/session?token=jwt-token&locale=pt-PT"
-    );
+    ).rejects.toThrow("REDIRECT:/api/auth/session?code=xyz123&locale=pt-PT");
   });
 
-  it("url-encodes the token", async () => {
+  it("url-encodes the code", async () => {
     await expect(
       AuthCallbackPage({
         params: Promise.resolve({ locale: "en-GB" }),
-        searchParams: Promise.resolve({ token: "a.b c" }),
+        searchParams: Promise.resolve({ code: "a.b c" }),
       })
-    ).rejects.toThrow(
-      "REDIRECT:/api/auth/session?token=a.b%20c&locale=en-GB"
-    );
+    ).rejects.toThrow("REDIRECT:/api/auth/session?code=a.b%20c&locale=en-GB");
   });
 
-  it("redirects to login when there is no token", async () => {
+  it("redirects to login when there is no code", async () => {
     await expect(
       AuthCallbackPage({
         params: Promise.resolve({ locale: "pt-PT" }),
