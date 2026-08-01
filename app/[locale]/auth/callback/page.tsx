@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 interface AuthCallbackPageProps {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ token?: string }>;
+  searchParams: Promise<{ code?: string }>;
 }
 
 export default async function AuthCallbackPage({
@@ -10,13 +10,13 @@ export default async function AuthCallbackPage({
   searchParams,
 }: AuthCallbackPageProps) {
   const { locale } = await params;
-  const { token } = await searchParams;
+  const { code } = await searchParams;
 
-  if (!token) {
+  if (!code) {
     redirect(`/${locale}/login`);
   }
 
   redirect(
-    `/api/auth/session?token=${encodeURIComponent(token)}&locale=${locale}`
+    `/api/auth/session?code=${encodeURIComponent(code)}&locale=${locale}`
   );
 }
