@@ -40,6 +40,33 @@
     "viewSteps": "Ver passo a passo",
     "hideSteps": "Ocultar passo a passo",
     "estimatedCost": "Custo estimado",
-    "helpful": "Foi útil?"
+    "helpful": "Foi útil?",
+    "loginToVote": "Inicia sessão para votar",
+    "voteError": "Não foi possível registar o voto. Tenta novamente.",
+    "comments": {
+      "title": "Comentários",
+      "count": "{count} comentários",
+      "empty": "Ainda não há comentários. Sê o primeiro a comentar.",
+      "loadError": "Não foi possível carregar os comentários.",
+      "placeholder": "Escreve um comentário...",
+      "publish": "Publicar",
+      "publishing": "A publicar...",
+      "addImage": "Adicionar foto",
+      "removeImage": "Remover foto",
+      "imageAlt": "Foto do concerto",
+      "edit": "Editar",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "confirmDeleteTitle": "Eliminar comentário?",
+      "confirmDeleteDescription": "Esta ação não pode ser revertida.",
+      "confirmDeleteConfirm": "Eliminar",
+      "loginToComment": "Inicia sessão para comentar.",
+      "loginCta": "Entrar",
+      "imageTooLarge": "A imagem excede o limite de 5 MB.",
+      "invalidImageType": "Formato de imagem não suportado.",
+      "submitError": "Não foi possível publicar o comentário. Tenta novamente.",
+      "deleteError": "Não foi possível eliminar o comentário. Tenta novamente."
+    }
   }
 }

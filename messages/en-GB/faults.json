@@ -40,6 +40,33 @@
     "viewSteps": "View step-by-step",
     "hideSteps": "Hide step-by-step",
     "estimatedCost": "Estimated cost",
-    "helpful": "Helpful?"
+    "helpful": "Helpful?",
+    "loginToVote": "Sign in to vote",
+    "voteError": "Couldn't register your vote. Please try again.",
+    "comments": {
+      "title": "Comments",
+      "count": "{count} comments",
+      "empty": "No comments yet. Be the first to comment.",
+      "loadError": "Couldn't load comments.",
+      "placeholder": "Write a comment...",
+      "publish": "Post",
+      "publishing": "Posting...",
+      "addImage": "Add photo",
+      "removeImage": "Remove photo",
+      "imageAlt": "Repair photo",
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "confirmDeleteTitle": "Delete comment?",
+      "confirmDeleteDescription": "This action cannot be undone.",
+      "confirmDeleteConfirm": "Delete",
+      "loginToComment": "Sign in to leave a comment.",
+      "loginCta": "Sign in",
+      "imageTooLarge": "The image exceeds the 5 MB limit.",
+      "invalidImageType": "Unsupported image format.",
+      "submitError": "Couldn't post the comment. Please try again.",
+      "deleteError": "Couldn't delete the comment. Please try again."
+    }
   }
 }
