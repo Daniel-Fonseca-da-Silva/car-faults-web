@@ -1,4 +1,11 @@
-import { cn, formatLongDate, formatYearRange, getInitials, slugify } from './utils'
+import {
+  cn,
+  formatLongDate,
+  formatRelativeTime,
+  formatYearRange,
+  getInitials,
+  slugify,
+} from './utils'
 
 describe('cn', () => {
   it('returns a single class unchanged', () => {
@@ -77,6 +84,43 @@ describe('formatLongDate', () => {
     expect(formatLongDate('2026-07-17T10:00:00.000Z', 'es-ES')).toBe(
       '17 de julio de 2026'
     )
+  })
+})
+
+describe('formatRelativeTime', () => {
+  const now = new Date('2026-07-17T12:00:00.000Z')
+
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(now)
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
+  })
+
+  it('formats minutes in the past', () => {
+    const date = new Date(now.getTime() - 5 * 60 * 1000)
+    expect(formatRelativeTime(date, 'en-GB')).toBe('5 minutes ago')
+  })
+
+  it('formats hours in the past', () => {
+    const date = new Date(now.getTime() - 3 * 60 * 60 * 1000)
+    expect(formatRelativeTime(date, 'en-GB')).toBe('3 hours ago')
+  })
+
+  it('formats days in the past', () => {
+    const date = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000)
+    expect(formatRelativeTime(date, 'en-GB')).toBe('2 days ago')
+  })
+
+  it('formats seconds in the past', () => {
+    const date = new Date(now.getTime() - 10 * 1000)
+    expect(formatRelativeTime(date, 'en-GB')).toBe('10 seconds ago')
+  })
+
+  it('formats dates in Portuguese', () => {
+    const date = new Date(now.getTime() - 60 * 60 * 1000)
+    expect(formatRelativeTime(date, 'pt-PT')).toBe('há 1 hora')
   })
 })
 

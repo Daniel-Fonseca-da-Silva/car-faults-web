@@ -40,6 +40,33 @@
     "viewSteps": "Ver paso a paso",
     "hideSteps": "Ocultar paso a paso",
     "estimatedCost": "Coste estimado",
-    "helpful": "¿Útil?"
+    "helpful": "¿Útil?",
+    "loginToVote": "Inicia sesión para votar",
+    "voteError": "No se pudo registrar el voto. Inténtalo de nuevo.",
+    "comments": {
+      "title": "Comentarios",
+      "count": "{count} comentarios",
+      "empty": "Todavía no hay comentarios. Sé el primero en comentar.",
+      "loadError": "No se pudieron cargar los comentarios.",
+      "placeholder": "Escribe un comentario...",
+      "publish": "Publicar",
+      "publishing": "Publicando...",
+      "addImage": "Añadir foto",
+      "removeImage": "Quitar foto",
+      "imageAlt": "Foto de la reparación",
+      "edit": "Editar",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "confirmDeleteTitle": "¿Eliminar comentario?",
+      "confirmDeleteDescription": "Esta acción no se puede deshacer.",
+      "confirmDeleteConfirm": "Eliminar",
+      "loginToComment": "Inicia sesión para comentar.",
+      "loginCta": "Iniciar sesión",
+      "imageTooLarge": "La imagen supera el límite de 5 MB.",
+      "invalidImageType": "Formato de imagen no compatible.",
+      "submitError": "No se pudo publicar el comentario. Inténtalo de nuevo.",
+      "deleteError": "No se pudo eliminar el comentario. Inténtalo de nuevo."
+    }
   }
 }

@@ -2,8 +2,27 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import type { KnownIssue } from "@/types/lookup";
+import type { UserProfile } from "@/types/user";
 
 import { KnownIssuesAccordion } from "./known-issues-accordion";
+
+jest.mock("@/components/vehicle/issue-comments", () => ({
+  IssueComments: ({
+    knownIssueId,
+    currentUser,
+  }: {
+    knownIssueId: string;
+    currentUser: UserProfile | null;
+  }) => (
+    <div data-testid={`issue-comments-${knownIssueId}`}>
+      {currentUser ? currentUser.name : "guest"}
+    </div>
+  ),
+}));
+
+jest.mock("@/i18n/navigation", () => ({
+  useRouter: () => ({ push: jest.fn() }),
+}));
 
 jest.mock("next-intl", () => ({
   useTranslations: () => {
@@ -70,7 +89,9 @@ function clickTrigger(title: string) {
 
 describe("KnownIssuesAccordion", () => {
   it("lists every known issue with its severity and solution count", () => {
-    render(<KnownIssuesAccordion knownIssues={knownIssues} />);
+    render(
+      <KnownIssuesAccordion knownIssues={knownIssues} currentUser={null} />
+    );
 
     expect(screen.getByText("Problematic gearbox")).toBeInTheDocument();
     expect(screen.getByText("Minor electrical fault")).toBeInTheDocument();
@@ -82,7 +103,9 @@ describe("KnownIssuesAccordion", () => {
 
   it("reveals the description, sources and fix cards once expanded", async () => {
     const user = userEvent.setup();
-    render(<KnownIssuesAccordion knownIssues={knownIssues} />);
+    render(
+      <KnownIssuesAccordion knownIssues={knownIssues} currentUser={null} />
+    );
 
     expect(
       screen.queryByText("Synchros wear out prematurely.")
@@ -99,12 +122,51 @@ describe("KnownIssuesAccordion", () => {
 
   it("does not render a community solutions section when there are no fixes", async () => {
     const user = userEvent.setup();
-    render(<KnownIssuesAccordion knownIssues={knownIssues} />);
+    render(
+      <KnownIssuesAccordion knownIssues={knownIssues} currentUser={null} />
+    );
 
     await user.click(clickTrigger("Minor electrical fault"));
 
     expect(
       screen.queryByText("Soluções da comunidade")
     ).not.toBeInTheDocument();
+  });
+
+  it("renders the comments section for the expanded issue as a guest", async () => {
+    const user = userEvent.setup();
+    render(
+      <KnownIssuesAccordion knownIssues={knownIssues} currentUser={null} />
+    );
+
+    await user.click(clickTrigger("Problematic gearbox"));
+
+    expect(screen.getByTestId("issue-comments-issue-1")).toHaveTextContent(
+      "guest"
+    );
+  });
+
+  it("passes the current user through to the comments section", async () => {
+    const user = userEvent.setup();
+    const currentUser = {
+      id: "u1",
+      name: "Ana Silva",
+      email: "ana@example.com",
+      avatarUrl: null,
+      createdAt: "2026-01-01T00:00:00.000Z",
+      updatedAt: "2026-01-01T00:00:00.000Z",
+    };
+    render(
+      <KnownIssuesAccordion
+        knownIssues={knownIssues}
+        currentUser={currentUser}
+      />
+    );
+
+    await user.click(clickTrigger("Problematic gearbox"));
+
+    expect(screen.getByTestId("issue-comments-issue-1")).toHaveTextContent(
+      "Ana Silva"
+    );
   });
 });

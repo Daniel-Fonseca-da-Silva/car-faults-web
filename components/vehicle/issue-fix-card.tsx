@@ -5,11 +5,15 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
+import { useRouter } from "@/i18n/navigation";
+import { removeFixVote, voteFix } from "@/lib/api/fixes";
 import { cn } from "@/lib/utils";
 import type { FixVote, IssueFix } from "@/types/lookup";
+import type { UserProfile } from "@/types/user";
 
 interface IssueFixCardProps {
   fix: IssueFix;
+  currentUser: UserProfile | null;
 }
 
 function formatCostEur(
@@ -24,17 +28,48 @@ function formatCostEur(
   return `${value}€`;
 }
 
-export function IssueFixCard({ fix }: IssueFixCardProps) {
+export function IssueFixCard({ fix, currentUser }: IssueFixCardProps) {
   const t = useTranslations("faults");
+  const router = useRouter();
   const [expanded, setExpanded] = useState(false);
+  const [likes, setLikes] = useState(fix.likes);
+  const [dislikes, setDislikes] = useState(fix.dislikes);
   const [myVote, setMyVote] = useState<FixVote | null>(fix.myVote ?? null);
+  const [voting, setVoting] = useState(false);
+  const [voteError, setVoteError] = useState(false);
 
   const cost = formatCostEur(fix.estimatedCostEur);
-  const likes = fix.likes + (myVote === "like" ? 1 : 0);
-  const dislikes = fix.dislikes + (myVote === "dislike" ? 1 : 0);
 
-  function handleVote(nextVote: FixVote) {
-    setMyVote((currentVote) => (currentVote === nextVote ? null : nextVote));
+  async function handleVote(nextVote: FixVote) {
+    if (!currentUser) {
+      router.push("/login");
+      return;
+    }
+    if (voting) return;
+
+    setVoting(true);
+    setVoteError(false);
+
+    try {
+      if (myVote === nextVote) {
+        await removeFixVote(fix.id);
+        setMyVote(null);
+        if (nextVote === "like") {
+          setLikes((current) => current - 1);
+        } else {
+          setDislikes((current) => current - 1);
+        }
+      } else {
+        const updated = await voteFix(fix.id, nextVote);
+        setLikes(updated.likes);
+        setDislikes(updated.dislikes);
+        setMyVote(updated.myVote ?? null);
+      }
+    } catch {
+      setVoteError(true);
+    } finally {
+      setVoting(false);
+    }
   }
 
   return (
@@ -65,14 +100,15 @@ export function IssueFixCard({ fix }: IssueFixCardProps) {
         <p className="mt-3 text-sm text-muted-foreground">{fix.steps}</p>
       )}
 
-      <div className="mt-4 flex items-center gap-3 text-sm text-muted-foreground">
+      <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
         <span>{t("vehicle.helpful")}</span>
         <button
           type="button"
           onClick={() => handleVote("like")}
           aria-pressed={myVote === "like"}
+          disabled={voting}
           className={cn(
-            "flex items-center gap-1 rounded-full border border-border px-2 py-1 transition-colors hover:border-primary hover:text-primary",
+            "flex items-center gap-1 rounded-full border border-border px-2 py-1 transition-colors hover:border-primary hover:text-primary disabled:pointer-events-none disabled:opacity-50",
             myVote === "like" && "border-primary text-primary"
           )}
         >
@@ -83,14 +119,23 @@ export function IssueFixCard({ fix }: IssueFixCardProps) {
           type="button"
           onClick={() => handleVote("dislike")}
           aria-pressed={myVote === "dislike"}
+          disabled={voting}
           className={cn(
-            "flex items-center gap-1 rounded-full border border-border px-2 py-1 transition-colors hover:border-primary hover:text-primary",
+            "flex items-center gap-1 rounded-full border border-border px-2 py-1 transition-colors hover:border-primary hover:text-primary disabled:pointer-events-none disabled:opacity-50",
             myVote === "dislike" && "border-primary text-primary"
           )}
         >
           <ThumbsDown aria-hidden="true" className="size-3.5" />
           {dislikes}
         </button>
+        {!currentUser && (
+          <span className="text-xs">{t("vehicle.loginToVote")}</span>
+        )}
+        {voteError && (
+          <span className="text-xs text-destructive">
+            {t("vehicle.voteError")}
+          </span>
+        )}
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ import { VehicleHero } from "@/components/vehicle/vehicle-hero";
 import { VehicleTechSpecs } from "@/components/vehicle/vehicle-tech-specs";
 import type { Locale } from "@/i18n/locales";
 import { getVehicleLookup } from "@/lib/api/lookups";
+import { getCurrentUser } from "@/lib/api/users";
 import { countSeverities } from "@/lib/lookup/count-severities";
 import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
 import { formatYearRange } from "@/lib/utils";
@@ -98,6 +99,7 @@ export default async function VehiclePage({
   const { vehicle, knownIssues } = lookup;
   const t = await getTranslations("faults");
   const severityCounts = countSeverities(knownIssues);
+  const currentUser = await getCurrentUser();
 
   const vehicleJsonLd = {
     "@context": "https://schema.org",
@@ -157,7 +159,10 @@ export default async function VehiclePage({
           {t("vehicle.noKnownIssues")}
         </p>
       ) : (
-        <KnownIssuesAccordion knownIssues={knownIssues} />
+        <KnownIssuesAccordion
+          knownIssues={knownIssues}
+          currentUser={currentUser}
+        />
       )}
 
       <AdSenseUnit slot={VEHICLE_PAGE_AD_SLOT} />

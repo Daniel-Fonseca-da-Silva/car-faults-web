@@ -8,16 +8,20 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { IssueComments } from "@/components/vehicle/issue-comments";
 import { IssueFixCard } from "@/components/vehicle/issue-fix-card";
 import { SeverityBadge } from "@/components/vehicle/severity-badge";
 import type { KnownIssue } from "@/types/lookup";
+import type { UserProfile } from "@/types/user";
 
 interface KnownIssuesAccordionProps {
   knownIssues: KnownIssue[];
+  currentUser: UserProfile | null;
 }
 
 export function KnownIssuesAccordion({
   knownIssues,
+  currentUser,
 }: KnownIssuesAccordionProps) {
   const t = useTranslations("faults");
 
@@ -56,10 +60,19 @@ export function KnownIssuesAccordion({
                   {t("vehicle.communitySolutions")}
                 </p>
                 {issue.fixes.map((fix) => (
-                  <IssueFixCard key={fix.id} fix={fix} />
+                  <IssueFixCard
+                    key={fix.id}
+                    fix={fix}
+                    currentUser={currentUser}
+                  />
                 ))}
               </div>
             )}
+
+            <IssueComments
+              knownIssueId={issue.id}
+              currentUser={currentUser}
+            />
           </AccordionContent>
         </AccordionItem>
       ))}
