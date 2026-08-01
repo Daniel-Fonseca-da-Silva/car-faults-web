@@ -1,4 +1,4 @@
-import { getApiBaseUrl, getTurnstileSiteKey } from "./config";
+import { getAdsenseClientId, getApiBaseUrl, getTurnstileSiteKey } from "./config";
 
 describe("getApiBaseUrl", () => {
   const originalEnv = process.env.NEXT_PUBLIC_API_URL;
@@ -39,5 +39,31 @@ describe("getTurnstileSiteKey", () => {
     expect(() => getTurnstileSiteKey()).toThrow(
       "NEXT_PUBLIC_TURNSTILE_SITE_KEY is not set"
     );
+  });
+});
+
+describe("getAdsenseClientId", () => {
+  const originalEnv = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+
+  afterEach(() => {
+    process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID = originalEnv;
+  });
+
+  it("returns the configured AdSense client id", () => {
+    process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID = "ca-pub-1234567890123456";
+
+    expect(getAdsenseClientId()).toBe("ca-pub-1234567890123456");
+  });
+
+  it("returns undefined when NEXT_PUBLIC_ADSENSE_CLIENT_ID is not set", () => {
+    delete process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+
+    expect(getAdsenseClientId()).toBeUndefined();
+  });
+
+  it("returns undefined when NEXT_PUBLIC_ADSENSE_CLIENT_ID is empty", () => {
+    process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID = "";
+
+    expect(getAdsenseClientId()).toBeUndefined();
   });
 });

@@ -17,3 +17,11 @@ export function getTurnstileSiteKey(): string {
 
   return siteKey;
 }
+
+/**
+ * Returns undefined when unset.
+ * Without a client id the AdSense script stays off and units show a local placeholder.
+ */
+export function getAdsenseClientId(): string | undefined {
+  return process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || undefined;
+}
