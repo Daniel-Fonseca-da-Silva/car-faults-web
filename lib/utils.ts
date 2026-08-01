@@ -29,6 +29,29 @@ export function formatLongDate(date: string | Date, locale: string): string {
   }).format(new Date(date))
 }
 
+const RELATIVE_TIME_UNITS: { unit: Intl.RelativeTimeFormatUnit; ms: number }[] = [
+  { unit: "year", ms: 365 * 24 * 60 * 60 * 1000 },
+  { unit: "month", ms: 30 * 24 * 60 * 60 * 1000 },
+  { unit: "day", ms: 24 * 60 * 60 * 1000 },
+  { unit: "hour", ms: 60 * 60 * 1000 },
+  { unit: "minute", ms: 60 * 1000 },
+]
+
+export function formatRelativeTime(date: string | Date, locale: string): string {
+  const target = new Date(date).getTime()
+  const diffMs = target - Date.now()
+  const absMs = Math.abs(diffMs)
+  const formatter = new Intl.RelativeTimeFormat(locale, { numeric: "auto" })
+
+  for (const { unit, ms } of RELATIVE_TIME_UNITS) {
+    if (absMs >= ms) {
+      return formatter.format(Math.round(diffMs / ms), unit)
+    }
+  }
+
+  return formatter.format(Math.round(diffMs / 1000), "second")
+}
+
 export function getInitials(name: string): string {
   return name
     .split(" ")
