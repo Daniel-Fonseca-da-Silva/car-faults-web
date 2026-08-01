@@ -16,6 +16,7 @@ jest.mock("next-intl", () => ({
       statusActive: "Database active",
       "fields.make": "Make",
       "fields.makePlaceholder": "e.g. Volkswagen",
+      "fields.makeNoResults": "No matching make. Your typed name will be used.",
       "fields.model": "Model",
       "fields.modelPlaceholder": "e.g. Golf",
       "fields.year": "Year",
@@ -396,6 +397,42 @@ describe("VehicleSearchForm", () => {
     await user.selectOptions(screen.getByLabelText("Fuel"), "diesel");
 
     expect(screen.getByLabelText("Engine")).toHaveValue("2.0 TDI");
+  });
+
+  it("selects a make from the dropdown list and uses it in the partial search", async () => {
+    const user = userEvent.setup();
+    render(<VehicleSearchForm />);
+
+    await user.type(screen.getByLabelText("Make"), "Volks");
+    await user.click(await screen.findByRole("option", { name: "Volkswagen" }));
+    await user.click(screen.getByRole("button", { name: "Search faults" }));
+
+    expect(pushMock).toHaveBeenCalledWith({
+      pathname: "/defects",
+      query: { make: "Volkswagen" },
+    });
+  });
+
+  it("keeps a typed make that does not match any known brand for the partial search", async () => {
+    const user = userEvent.setup();
+    render(<VehicleSearchForm />);
+
+    await user.type(screen.getByLabelText("Make"), "Skodaa");
+
+    expect(
+      await screen.findByText(
+        "No matching make. Your typed name will be used."
+      )
+    ).toBeInTheDocument();
+
+    // Close the open combobox so the form is no longer inert.
+    await user.keyboard("{Escape}");
+    await user.click(screen.getByRole("button", { name: "Search faults" }));
+
+    expect(pushMock).toHaveBeenCalledWith({
+      pathname: "/defects",
+      query: { make: "Skodaa" },
+    });
   });
 
   it("includes the engine, fuel and doors fields in the query when filled in", async () => {

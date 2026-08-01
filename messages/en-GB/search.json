@@ -4,6 +4,7 @@
   "fields": {
     "make": "Make",
     "makePlaceholder": "e.g. Volkswagen",
+    "makeNoResults": "No matching make. Your typed name will be used.",
     "model": "Model",
     "modelPlaceholder": "e.g. Golf",
     "year": "Year",
