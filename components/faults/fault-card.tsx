@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
+import { buildLookupHref } from "@/lib/lookup/build-lookup-href";
 import type { FaultSeverity } from "@/types/vehicle";
 
 interface FaultCardProps {
@@ -12,6 +13,9 @@ interface FaultCardProps {
   model: string;
   modelSlug: string;
   year: number;
+  engine: string;
+  fuelType?: string;
+  doors?: number;
   faultTitle: string;
   severity: FaultSeverity;
   reportCount: number;
@@ -33,6 +37,9 @@ export async function FaultCard({
   model,
   modelSlug,
   year,
+  engine,
+  fuelType,
+  doors,
   faultTitle,
   severity,
   reportCount,
@@ -40,7 +47,11 @@ export async function FaultCard({
   const t = await getTranslations("faults");
   const SeverityIcon =
     severity === "high" || severity === "critical" ? Flame : AlertTriangle;
-  const href = `/defects/${makeSlug}/${modelSlug}/${year}`;
+  // The vehicle page resolves its lookup from the query string, not just the
+  // path segments — without fuelType there's no valid lookup to link to.
+  const href = fuelType
+    ? buildLookupHref({ brand: make, model, year, engine, fuelType, doors })
+    : `/defects/${makeSlug}/${modelSlug}/${year}`;
 
   return (
     <Card className="flex h-full flex-col justify-between transition-colors hover:border-primary/50">

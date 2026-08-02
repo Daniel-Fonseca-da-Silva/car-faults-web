@@ -66,6 +66,7 @@ export default async function DefectsHubPage({
 
   const entries: TopFaultEntry[] = filtered.map((vehicle) => {
     const topFault = vehicle.faults[0];
+    const primaryEngine = vehicle.engines[0];
     return {
       id: `${vehicle.makeSlug}-${vehicle.modelSlug}-${vehicle.year}`,
       vehicle: {
@@ -74,6 +75,9 @@ export default async function DefectsHubPage({
         modelSlug: vehicle.modelSlug,
         model: vehicle.model,
         year: vehicle.year,
+        engine: primaryEngine?.label ?? "",
+        fuelType: primaryEngine?.fuel,
+        doors: vehicle.doors[0],
       },
       faultTitle: topFault?.title ?? "",
       severity: topFault?.severity ?? "low",

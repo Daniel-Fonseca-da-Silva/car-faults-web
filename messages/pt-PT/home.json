@@ -7,12 +7,13 @@
     "subtitle": "Pesquise avarias crónicas por marca, modelo, ano e motor - reportadas por milhares de proprietários reais."
   },
   "stats": {
-    "reports": { "value": "1.2M+", "label": "Relatos de proprietários" },
-    "vehicles": { "value": "8.400+", "label": "Veículos catalogados" },
-    "faults": { "value": "34.000+", "label": "Defeitos documentados" }
+    "reports": { "label": "Relatos de proprietários" },
+    "vehicles": { "label": "Veículos catalogados" },
+    "faults": { "label": "Defeitos documentados" }
   },
   "topFaults": {
     "title": "Defeitos mais relatados",
-    "subtitle": "Os problemas crónicos mais reportados esta semana."
+    "subtitle": "Os problemas crónicos mais reportados esta semana.",
+    "empty": "Ainda não há defeitos reportados."
   }
 }

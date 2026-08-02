@@ -52,6 +52,21 @@ export function formatRelativeTime(date: string | Date, locale: string): string 
   return formatter.format(Math.round(diffMs / 1000), "second")
 }
 
+const COMPACT_NOTATION_THRESHOLD = 1_000_000
+
+export function formatCompactCount(value: number, locale: string): string {
+  const formatter =
+    value >= COMPACT_NOTATION_THRESHOLD
+      ? new Intl.NumberFormat(locale, {
+          notation: "compact",
+          maximumFractionDigits: 1,
+        })
+      : new Intl.NumberFormat(locale)
+
+  // ICU compact suffixes vary by case across runtimes (e.g. "1.2m" vs "1.2M").
+  return `${formatter.format(value).toLocaleUpperCase(locale)}+`
+}
+
 export function getInitials(name: string): string {
   return name
     .split(" ")
