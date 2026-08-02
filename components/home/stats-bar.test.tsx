@@ -2,14 +2,18 @@ import { render, screen } from "@testing-library/react";
 
 import { StatsBar } from "./stats-bar";
 
+const getPlatformStatsMock = jest.fn();
+
+jest.mock("@/lib/api/platform", () => ({
+  getPlatformStats: (...args: unknown[]) => getPlatformStatsMock(...args),
+}));
+
 jest.mock("next-intl/server", () => ({
+  getLocale: async () => "en-GB",
   getTranslations: async (namespace: string) => {
     const dict: Record<string, string> = {
-      "home.stats.reports.value": "1.2M+",
       "home.stats.reports.label": "Owner reports",
-      "home.stats.vehicles.value": "8,400+",
       "home.stats.vehicles.label": "Vehicles catalogued",
-      "home.stats.faults.value": "34,000+",
       "home.stats.faults.label": "Documented faults",
     };
     return (key: string) => dict[`${namespace}.${key}`] ?? key;
@@ -17,7 +21,17 @@ jest.mock("next-intl/server", () => ({
 }));
 
 describe("StatsBar", () => {
-  it("renders each stat value and label", async () => {
+  afterEach(() => {
+    getPlatformStatsMock.mockReset();
+  });
+
+  it("renders each stat formatted with locale grouping and a plus suffix, alongside its label", async () => {
+    getPlatformStatsMock.mockResolvedValue({
+      reportsCount: 1234567,
+      vehiclesCount: 8400,
+      faultsCount: 34000,
+    });
+
     const jsx = await StatsBar();
     render(jsx);
 
