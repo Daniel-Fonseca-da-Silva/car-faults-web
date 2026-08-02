@@ -1,5 +1,6 @@
 import {
   cn,
+  formatCompactCount,
   formatLongDate,
   formatRelativeTime,
   formatYearRange,
@@ -121,6 +122,24 @@ describe('formatRelativeTime', () => {
   it('formats dates in Portuguese', () => {
     const date = new Date(now.getTime() - 60 * 60 * 1000)
     expect(formatRelativeTime(date, 'pt-PT')).toBe('há 1 hora')
+  })
+})
+
+describe('formatCompactCount', () => {
+  it('formats a count below the compact threshold with locale grouping and a plus suffix', () => {
+    expect(formatCompactCount(8400, 'en-GB')).toBe('8,400+')
+  })
+
+  it('does not switch to compact notation just below one million', () => {
+    expect(formatCompactCount(999999, 'en-GB')).toBe('999,999+')
+  })
+
+  it('switches to compact notation at one million', () => {
+    expect(formatCompactCount(1234567, 'en-GB')).toBe('1.2M+')
+  })
+
+  it('uses locale-specific grouping', () => {
+    expect(formatCompactCount(34000, 'es-ES')).toBe('34.000+')
   })
 })
 

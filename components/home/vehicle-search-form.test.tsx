@@ -62,7 +62,14 @@ jest.mock("@/components/security/turnstile-widget", () => ({
   },
 }));
 
-async function completeCaptcha(user: ReturnType<typeof userEvent.setup>) {
+type TestUser = ReturnType<typeof userEvent.setup>;
+
+function createUser(): TestUser {
+  // Controlled Base UI combobox drops keystrokes with the default typing delay.
+  return userEvent.setup({ delay: null });
+}
+
+async function completeCaptcha(user: TestUser) {
   await waitFor(() => expect(turnstileOnSuccess).toBeDefined());
   act(() => turnstileOnSuccess?.("test-turnstile-token"));
   await waitFor(() =>
@@ -71,6 +78,50 @@ async function completeCaptcha(user: ReturnType<typeof userEvent.setup>) {
     ).toBeEnabled()
   );
   await user.click(screen.getByRole("button", { name: "Search faults" }));
+}
+
+/**
+ * Set the make in one input event and close the popup so later fields keep focus.
+ * Character-by-character typing races the controlled Combobox and leaves partial values.
+ */
+async function chooseMake(user: TestUser, make: string) {
+  const input = screen.getByLabelText("Make");
+  await user.click(input);
+  await user.paste(make);
+  await waitFor(() => expect(input).toHaveValue(make));
+  await user.keyboard("{Escape}");
+}
+
+async function fillFullSearchFields(
+  user: TestUser,
+  options: {
+    make?: string;
+    model?: string;
+    year?: string;
+    engine?: string;
+    fuel?: string;
+    doors?: string;
+  } = {}
+) {
+  const {
+    make = "Volkswagen",
+    model = "Golf",
+    year = "2018",
+    engine = "2.0 TDI",
+    fuel = "diesel",
+    doors,
+  } = options;
+
+  await chooseMake(user, make);
+  await user.type(screen.getByLabelText("Model"), model);
+  await user.type(screen.getByLabelText("Year"), year);
+  if (fuel !== "electric") {
+    await user.type(screen.getByLabelText("Engine"), engine);
+  }
+  await user.selectOptions(screen.getByLabelText("Fuel"), fuel);
+  if (doors) {
+    await user.selectOptions(screen.getByLabelText("Doors (optional)"), doors);
+  }
 }
 
 describe("VehicleSearchForm", () => {
@@ -86,7 +137,7 @@ describe("VehicleSearchForm", () => {
   });
 
   it("shows a validation error when submitting without make or model", async () => {
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
     await user.click(screen.getByRole("button", { name: "Search faults" }));
@@ -98,29 +149,21 @@ describe("VehicleSearchForm", () => {
   });
 
   it("does not show the Turnstile widget until all 5 fields are filled in", async () => {
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
     expect(screen.queryByTestId("turnstile-widget")).not.toBeInTheDocument();
 
-    await user.type(screen.getByLabelText("Make"), "Volkswagen");
-    await user.type(screen.getByLabelText("Model"), "Golf");
-    await user.type(screen.getByLabelText("Year"), "2018");
-    await user.type(screen.getByLabelText("Engine"), "2.0 TDI");
-    await user.selectOptions(screen.getByLabelText("Fuel"), "diesel");
+    await fillFullSearchFields(user);
 
     expect(screen.getByTestId("turnstile-widget")).toBeInTheDocument();
   });
 
   it("disables submit for a full search until the Turnstile challenge succeeds", async () => {
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
-    await user.type(screen.getByLabelText("Make"), "Volkswagen");
-    await user.type(screen.getByLabelText("Model"), "Golf");
-    await user.type(screen.getByLabelText("Year"), "2018");
-    await user.type(screen.getByLabelText("Engine"), "2.0 TDI");
-    await user.selectOptions(screen.getByLabelText("Fuel"), "diesel");
+    await fillFullSearchFields(user);
 
     expect(screen.getByRole("button", { name: "Search faults" })).toBeDisabled();
   });
@@ -132,14 +175,10 @@ describe("VehicleSearchForm", () => {
         href: "/defects/volkswagen/golf/2018?brand=Volkswagen&model=Golf&engine=2.0+TDI&fuelType=diesel",
       }),
     });
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
-    await user.type(screen.getByLabelText("Make"), "Volkswagen");
-    await user.type(screen.getByLabelText("Model"), "Golf");
-    await user.type(screen.getByLabelText("Year"), "2018");
-    await user.type(screen.getByLabelText("Engine"), "2.0 TDI");
-    await user.selectOptions(screen.getByLabelText("Fuel"), "diesel");
+    await fillFullSearchFields(user);
 
     await completeCaptcha(user);
 
@@ -173,15 +212,10 @@ describe("VehicleSearchForm", () => {
         href: "/defects/volkswagen/golf/2018?brand=Volkswagen&model=Golf&engine=2.0+TDI&fuelType=diesel&doors=5",
       }),
     });
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
-    await user.type(screen.getByLabelText("Make"), "Volkswagen");
-    await user.type(screen.getByLabelText("Model"), "Golf");
-    await user.type(screen.getByLabelText("Year"), "2018");
-    await user.type(screen.getByLabelText("Engine"), "2.0 TDI");
-    await user.selectOptions(screen.getByLabelText("Fuel"), "diesel");
-    await user.selectOptions(screen.getByLabelText("Doors (optional)"), "5");
+    await fillFullSearchFields(user, { doors: "5" });
 
     await completeCaptcha(user);
 
@@ -209,14 +243,10 @@ describe("VehicleSearchForm", () => {
 
   it("shows an error and resets the widget when the prepare request fails", async () => {
     fetchMock.mockResolvedValue({ ok: false, json: async () => ({}) });
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
-    await user.type(screen.getByLabelText("Make"), "Volkswagen");
-    await user.type(screen.getByLabelText("Model"), "Golf");
-    await user.type(screen.getByLabelText("Year"), "2018");
-    await user.type(screen.getByLabelText("Engine"), "2.0 TDI");
-    await user.selectOptions(screen.getByLabelText("Fuel"), "diesel");
+    await fillFullSearchFields(user);
 
     await completeCaptcha(user);
 
@@ -234,14 +264,10 @@ describe("VehicleSearchForm", () => {
   });
 
   it("clears the token when the Turnstile challenge expires", async () => {
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
-    await user.type(screen.getByLabelText("Make"), "Volkswagen");
-    await user.type(screen.getByLabelText("Model"), "Golf");
-    await user.type(screen.getByLabelText("Year"), "2018");
-    await user.type(screen.getByLabelText("Engine"), "2.0 TDI");
-    await user.selectOptions(screen.getByLabelText("Fuel"), "diesel");
+    await fillFullSearchFields(user);
 
     await waitFor(() => expect(turnstileOnSuccess).toBeDefined());
     act(() => turnstileOnSuccess?.("test-turnstile-token"));
@@ -261,14 +287,10 @@ describe("VehicleSearchForm", () => {
   });
 
   it("clears the token when the Turnstile widget errors", async () => {
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
-    await user.type(screen.getByLabelText("Make"), "Volkswagen");
-    await user.type(screen.getByLabelText("Model"), "Golf");
-    await user.type(screen.getByLabelText("Year"), "2018");
-    await user.type(screen.getByLabelText("Engine"), "2.0 TDI");
-    await user.selectOptions(screen.getByLabelText("Fuel"), "diesel");
+    await fillFullSearchFields(user);
 
     await waitFor(() => expect(turnstileOnSuccess).toBeDefined());
     act(() => turnstileOnSuccess?.("test-turnstile-token"));
@@ -288,10 +310,10 @@ describe("VehicleSearchForm", () => {
   });
 
   it("falls back to the hub with a query when make, model and year are filled in but engine or fuel are missing", async () => {
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
-    await user.type(screen.getByLabelText("Make"), "Volkswagen");
+    await chooseMake(user, "Volkswagen");
     await user.type(screen.getByLabelText("Model"), "Golf");
     await user.type(screen.getByLabelText("Year"), "2018");
     await user.click(screen.getByRole("button", { name: "Search faults" }));
@@ -304,7 +326,7 @@ describe("VehicleSearchForm", () => {
   });
 
   it("allows submitting with only the model filled in", async () => {
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
     await user.type(screen.getByLabelText("Model"), "Golf");
@@ -317,7 +339,7 @@ describe("VehicleSearchForm", () => {
   });
 
   it("hides the engine field once electric fuel is selected", async () => {
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
     expect(screen.getByLabelText("Engine")).toBeInTheDocument();
@@ -334,13 +356,15 @@ describe("VehicleSearchForm", () => {
         href: "/defects/tesla/model-3/2022?brand=Tesla&model=Model+3&engine=electric&fuelType=electric",
       }),
     });
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
-    await user.type(screen.getByLabelText("Make"), "Tesla");
-    await user.type(screen.getByLabelText("Model"), "Model 3");
-    await user.type(screen.getByLabelText("Year"), "2022");
-    await user.selectOptions(screen.getByLabelText("Fuel"), "electric");
+    await fillFullSearchFields(user, {
+      make: "Tesla",
+      model: "Model 3",
+      year: "2022",
+      fuel: "electric",
+    });
 
     await completeCaptcha(user);
 
@@ -367,10 +391,10 @@ describe("VehicleSearchForm", () => {
   });
 
   it("still requires the engine field for a full submit when fuel is not electric", async () => {
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
-    await user.type(screen.getByLabelText("Make"), "Volkswagen");
+    await chooseMake(user, "Volkswagen");
     await user.type(screen.getByLabelText("Model"), "Golf");
     await user.type(screen.getByLabelText("Year"), "2018");
     await user.selectOptions(screen.getByLabelText("Fuel"), "diesel");
@@ -389,7 +413,7 @@ describe("VehicleSearchForm", () => {
   });
 
   it("restores the engine field when fuel changes away from electric", async () => {
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
     await user.type(screen.getByLabelText("Engine"), "2.0 TDI");
@@ -400,10 +424,12 @@ describe("VehicleSearchForm", () => {
   });
 
   it("selects a make from the dropdown list and uses it in the partial search", async () => {
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
-    await user.type(screen.getByLabelText("Make"), "Volks");
+    const makeInput = screen.getByLabelText("Make");
+    await user.click(makeInput);
+    await user.paste("Volks");
     await user.click(await screen.findByRole("option", { name: "Volkswagen" }));
     await user.click(screen.getByRole("button", { name: "Search faults" }));
 
@@ -414,10 +440,12 @@ describe("VehicleSearchForm", () => {
   });
 
   it("keeps a typed make that does not match any known brand for the partial search", async () => {
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
-    await user.type(screen.getByLabelText("Make"), "Skodaa");
+    const makeInput = screen.getByLabelText("Make");
+    await user.click(makeInput);
+    await user.paste("Skodaa");
 
     expect(
       await screen.findByText(
@@ -436,10 +464,10 @@ describe("VehicleSearchForm", () => {
   });
 
   it("includes the engine, fuel and doors fields in the query when filled in", async () => {
-    const user = userEvent.setup();
+    const user = createUser();
     render(<VehicleSearchForm />);
 
-    await user.type(screen.getByLabelText("Make"), "Volkswagen");
+    await chooseMake(user, "Volkswagen");
     await user.type(screen.getByLabelText("Engine"), "2.0 TDI");
     await user.selectOptions(screen.getByLabelText("Fuel"), "diesel");
     await user.selectOptions(screen.getByLabelText("Doors (optional)"), "5");

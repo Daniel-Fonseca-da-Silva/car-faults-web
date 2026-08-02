@@ -17,6 +17,9 @@ export function FaultCardGrid({ entries }: FaultCardGridProps) {
           model={entry.vehicle.model}
           modelSlug={entry.vehicle.modelSlug}
           year={entry.vehicle.year}
+          engine={entry.vehicle.engine}
+          fuelType={entry.vehicle.fuelType}
+          doors={entry.vehicle.doors}
           faultTitle={entry.faultTitle}
           severity={entry.severity}
           reportCount={entry.reportCount}

@@ -1,10 +1,15 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { FaultCardGrid } from "@/components/faults/fault-card-grid";
-import { topFaults } from "@/lib/mocks/top-faults";
+import { getTopFaults } from "@/lib/api/platform";
+import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
 
 export async function TopFaultsSection() {
-  const t = await getTranslations("home.topFaults");
+  const [t, locale] = await Promise.all([
+    getTranslations("home.topFaults"),
+    getLocale(),
+  ]);
+  const entries = await getTopFaults(mapLookupLanguage(locale));
 
   return (
     <section className="py-12 sm:py-16">
@@ -14,7 +19,11 @@ export async function TopFaultsSection() {
         </h2>
         <p className="mt-1 text-muted-foreground">{t("subtitle")}</p>
       </div>
-      <FaultCardGrid entries={topFaults} />
+      {entries.length > 0 ? (
+        <FaultCardGrid entries={entries} />
+      ) : (
+        <p className="text-muted-foreground">{t("empty")}</p>
+      )}
     </section>
   );
 }
