@@ -21,3 +21,25 @@ export async function uploadCommentImage(
 
   return (await response.json()) as UploadCommentImageResult;
 }
+
+export interface UploadVehicleImageResult {
+  url: string;
+}
+
+export async function uploadVehicleImage(
+  file: File
+): Promise<UploadVehicleImageResult> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await apiFetch("/v1/storage/vehicle-images", {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to upload vehicle image: ${response.status}`);
+  }
+
+  return (await response.json()) as UploadVehicleImageResult;
+}

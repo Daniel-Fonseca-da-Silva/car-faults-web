@@ -1,0 +1,108 @@
+{
+  "common": {
+    "save": "Save",
+    "saving": "Saving…",
+    "create": "Create",
+    "creating": "Creating…",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleting": "Deleting…",
+    "edit": "Edit",
+    "error": "Something went wrong. Please try again.",
+    "notFound": "Not found."
+  },
+  "dashboard": {
+    "title": "Admin",
+    "description": "Manage the vehicle catalog, known issues and fixes.",
+    "vehiclesCardTitle": "Vehicle catalog",
+    "vehiclesCardDescription": "Create, edit and remove vehicle models, known issues and fixes.",
+    "goToVehicles": "Manage vehicles"
+  },
+  "vehicles": {
+    "title": "Vehicles",
+    "description": "Search and manage the vehicle catalog.",
+    "searchBrandPlaceholder": "Brand",
+    "searchModelPlaceholder": "Model",
+    "search": "Search",
+    "newVehicle": "New vehicle",
+    "empty": "No vehicles found.",
+    "columnBrand": "Brand",
+    "columnModel": "Model",
+    "columnYears": "Years",
+    "columnEngine": "Engine",
+    "columnFuelType": "Fuel",
+    "previous": "Previous",
+    "next": "Next",
+    "pageInfo": "Page {page} of {totalPages}"
+  },
+  "newVehiclePage": {
+    "title": "New vehicle",
+    "description": "Add a vehicle model to the catalog."
+  },
+  "vehicleForm": {
+    "brand": "Brand",
+    "model": "Model",
+    "name": "Display name",
+    "yearFrom": "Year from",
+    "yearTo": "Year to",
+    "engine": "Engine",
+    "doors": "Doors",
+    "fuelType": "Fuel type",
+    "fuelTypeNone": "Not set",
+    "fuelTypeGasoline": "Gasoline",
+    "fuelTypeDiesel": "Diesel",
+    "fuelTypeElectric": "Electric",
+    "fuelTypeGpl": "LPG",
+    "fuelTypeHybrid": "Hybrid",
+    "image": "Catalog photo",
+    "uploadImage": "Upload photo",
+    "removeImage": "Remove photo",
+    "invalidImageType": "Please choose a JPEG, PNG or WEBP image.",
+    "imageTooLarge": "The image must be smaller than 5 MB."
+  },
+  "vehicleDetail": {
+    "backToVehicles": "Back to vehicles",
+    "knownIssuesTitle": "Known issues",
+    "addIssue": "New known issue",
+    "noIssues": "No known issues yet.",
+    "deleteVehicle": "Delete vehicle",
+    "deleteConfirmTitle": "Delete this vehicle?",
+    "deleteConfirmDescription": "This removes {vehicle} and hides it from public lookups. This cannot be undone from here.",
+    "columnTitle": "Title",
+    "columnSeverity": "Severity",
+    "columnLocale": "Locale"
+  },
+  "newIssuePage": {
+    "title": "New known issue",
+    "description": "Add a known issue for {vehicle}."
+  },
+  "issueForm": {
+    "title": "Title",
+    "description": "Description",
+    "severity": "Severity",
+    "severityLow": "Low",
+    "severityMedium": "Medium",
+    "severityHigh": "High",
+    "severityCritical": "Critical",
+    "locale": "Locale",
+    "typicalKm": "Typical mileage (km)",
+    "sources": "Sources",
+    "sourcesHint": "One URL per line."
+  },
+  "issueDetail": {
+    "backToVehicle": "Back to vehicle",
+    "fixesTitle": "Fixes",
+    "noFixes": "No fixes yet.",
+    "addFix": "New fix",
+    "deleteIssue": "Delete known issue",
+    "deleteConfirmTitle": "Delete this known issue?",
+    "deleteConfirmDescription": "This removes \"{issue}\" and its fixes. This cannot be undone from here."
+  },
+  "fixForm": {
+    "summary": "Summary",
+    "steps": "Steps",
+    "estimatedCostEur": "Estimated cost (EUR)",
+    "addFix": "Add fix",
+    "editFix": "Edit fix"
+  }
+}

@@ -13,6 +13,7 @@ const logoutMock = jest.fn();
 const navDict: Record<string, string> = {
   profile: "Profile",
   garage: "Garage",
+  admin: "Admin",
   logout: "Log out",
   login: "Sign in",
 };
@@ -21,6 +22,7 @@ const user: UserProfile = {
   id: "u1",
   email: "ana@example.com",
   name: "Ana Silva",
+  role: "user",
   avatarUrl: null,
   createdAt: "2026-01-01T00:00:00.000Z",
   updatedAt: "2026-01-01T00:00:00.000Z",
@@ -101,6 +103,33 @@ describe("UserMenu", () => {
     expect(logoutMock).toHaveBeenCalled();
     expect(pushMock).toHaveBeenCalledWith("/login");
     expect(refreshMock).toHaveBeenCalled();
+  });
+
+  it("does not show an admin link for a regular user", async () => {
+    const testUser = userEvent.setup();
+    render(<UserMenu user={user} />);
+
+    await testUser.click(
+      screen.getByRole("button", { name: "Account menu for Ana" })
+    );
+
+    await screen.findByRole("menuitem", { name: "Profile" });
+    expect(
+      screen.queryByRole("menuitem", { name: "Admin" })
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows an admin link for an admin user", async () => {
+    const testUser = userEvent.setup();
+    render(<UserMenu user={{ ...user, role: "admin" }} />);
+
+    await testUser.click(
+      screen.getByRole("button", { name: "Account menu for Ana" })
+    );
+
+    expect(
+      await screen.findByRole("menuitem", { name: "Admin" })
+    ).toHaveAttribute("href", "/admin");
   });
 
   it("renders a sign-in link when there is no user", () => {
