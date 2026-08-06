@@ -20,6 +20,7 @@ const user: UserProfile = {
   id: "b3a5c1d2-4e6f-4a8b-9c0d-1e2f3a4b5c6d",
   email: "ana@example.com",
   name: "Ana Silva",
+  role: "user",
   avatarUrl: null,
   createdAt: "2026-07-17T10:00:00.000Z",
   updatedAt: "2026-07-17T10:00:00.000Z",

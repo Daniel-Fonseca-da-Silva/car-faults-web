@@ -56,6 +56,18 @@ describe("proxy", () => {
     expect(intlMiddlewareMock).not.toHaveBeenCalled();
   });
 
+  it("redirects unauthenticated requests to a protected admin route to login", () => {
+    const request = new NextRequest("https://web.example.com/en-GB/admin");
+
+    const response = proxy(request);
+
+    expect(response.status).toBe(307);
+    expect(response.headers.get("location")).toBe(
+      "https://web.example.com/en-GB/login"
+    );
+    expect(intlMiddlewareMock).not.toHaveBeenCalled();
+  });
+
   it("delegates to the intl middleware when the session cookie is present", () => {
     const request = new NextRequest("https://web.example.com/en-GB/profile");
     request.cookies.set("access_token", "jwt-token");

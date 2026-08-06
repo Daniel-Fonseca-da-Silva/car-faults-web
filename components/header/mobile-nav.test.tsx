@@ -17,6 +17,7 @@ const navDict: Record<string, string> = {
   about: "Sobre",
   menu: "Menu",
   garage: "Garagem",
+  admin: "Admin",
   logout: "Sair",
   login: "Entrar",
 };
@@ -25,6 +26,7 @@ const user: UserProfile = {
   id: "u1",
   email: "ana@example.com",
   name: "Ana Silva",
+  role: "user",
   avatarUrl: null,
   createdAt: "2026-01-01T00:00:00.000Z",
   updatedAt: "2026-01-01T00:00:00.000Z",
@@ -85,6 +87,28 @@ describe("MobileNav", () => {
     expect(
       screen.getByRole("button", { name: "Garagem" })
     ).toHaveAttribute("href", "/garage");
+  });
+
+  it("does not show an admin link for a regular user", async () => {
+    const testUser = userEvent.setup();
+    render(<MobileNav user={user} />);
+
+    await testUser.click(screen.getByRole("button", { name: "Menu" }));
+
+    expect(
+      screen.queryByRole("button", { name: "Admin" })
+    ).not.toBeInTheDocument();
+  });
+
+  it("links to the admin page for an admin user", async () => {
+    const testUser = userEvent.setup();
+    render(<MobileNav user={{ ...user, role: "admin" }} />);
+
+    await testUser.click(screen.getByRole("button", { name: "Menu" }));
+
+    expect(
+      screen.getByRole("button", { name: "Admin" })
+    ).toHaveAttribute("href", "/admin");
   });
 
   it("renders the primary navigation links inside the sheet", async () => {
