@@ -8,4 +8,5 @@ export const messageNamespaces = [
   "profile",
   "seo",
   "garage",
+  "admin",
 ] as const;

@@ -6,7 +6,7 @@ import { SESSION_COOKIE_NAME } from "./lib/api/constants";
 
 const intlMiddleware = createMiddleware(routing);
 
-const PROTECTED_PATH_PATTERN = /^\/([^/]+)\/(profile|garage)(\/|$)/;
+const PROTECTED_PATH_PATTERN = /^\/([^/]+)\/(profile|garage|admin)(\/|$)/;
 
 export default function proxy(request: NextRequest) {
   const match = PROTECTED_PATH_PATTERN.exec(request.nextUrl.pathname);

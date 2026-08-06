@@ -34,5 +34,9 @@
   "garage": {
     "title": "A minha garagem | CarFaults",
     "description": "Consulte os teus veículos favoritos e os problemas conhecidos na tua garagem CarFaults."
+  },
+  "admin": {
+    "title": "Admin | CarFaults",
+    "description": "Gerir o catálogo de veículos, problemas conhecidos e soluções."
   }
 }

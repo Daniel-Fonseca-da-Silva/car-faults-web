@@ -8,6 +8,7 @@
   "accountMenu": "Menú de cuenta de {name}",
   "profile": "Perfil",
   "garage": "Garaje",
+  "admin": "Admin",
   "logout": "Cerrar sesión",
   "login": "Iniciar sesión"
 }

@@ -1,0 +1,108 @@
+{
+  "common": {
+    "save": "Guardar",
+    "saving": "A guardar…",
+    "create": "Criar",
+    "creating": "A criar…",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "deleting": "A eliminar…",
+    "edit": "Editar",
+    "error": "Ocorreu um erro. Tente novamente.",
+    "notFound": "Não encontrado."
+  },
+  "dashboard": {
+    "title": "Admin",
+    "description": "Gerir o catálogo de veículos, problemas conhecidos e soluções.",
+    "vehiclesCardTitle": "Catálogo de veículos",
+    "vehiclesCardDescription": "Criar, editar e remover modelos de veículos, problemas conhecidos e soluções.",
+    "goToVehicles": "Gerir veículos"
+  },
+  "vehicles": {
+    "title": "Veículos",
+    "description": "Pesquisar e gerir o catálogo de veículos.",
+    "searchBrandPlaceholder": "Marca",
+    "searchModelPlaceholder": "Modelo",
+    "search": "Pesquisar",
+    "newVehicle": "Novo veículo",
+    "empty": "Nenhum veículo encontrado.",
+    "columnBrand": "Marca",
+    "columnModel": "Modelo",
+    "columnYears": "Anos",
+    "columnEngine": "Motor",
+    "columnFuelType": "Combustível",
+    "previous": "Anterior",
+    "next": "Seguinte",
+    "pageInfo": "Página {page} de {totalPages}"
+  },
+  "newVehiclePage": {
+    "title": "Novo veículo",
+    "description": "Adicionar um modelo de veículo ao catálogo."
+  },
+  "vehicleForm": {
+    "brand": "Marca",
+    "model": "Modelo",
+    "name": "Nome a apresentar",
+    "yearFrom": "Ano inicial",
+    "yearTo": "Ano final",
+    "engine": "Motor",
+    "doors": "Portas",
+    "fuelType": "Tipo de combustível",
+    "fuelTypeNone": "Não definido",
+    "fuelTypeGasoline": "Gasolina",
+    "fuelTypeDiesel": "Diesel",
+    "fuelTypeElectric": "Elétrico",
+    "fuelTypeGpl": "GPL",
+    "fuelTypeHybrid": "Híbrido",
+    "image": "Foto do catálogo",
+    "uploadImage": "Carregar foto",
+    "removeImage": "Remover foto",
+    "invalidImageType": "Escolha uma imagem JPEG, PNG ou WEBP.",
+    "imageTooLarge": "A imagem deve ter menos de 5 MB."
+  },
+  "vehicleDetail": {
+    "backToVehicles": "Voltar aos veículos",
+    "knownIssuesTitle": "Problemas conhecidos",
+    "addIssue": "Novo problema conhecido",
+    "noIssues": "Ainda não há problemas conhecidos.",
+    "deleteVehicle": "Eliminar veículo",
+    "deleteConfirmTitle": "Eliminar este veículo?",
+    "deleteConfirmDescription": "Isto remove {vehicle} e oculta-o das pesquisas públicas. Esta ação não pode ser desfeita aqui.",
+    "columnTitle": "Título",
+    "columnSeverity": "Gravidade",
+    "columnLocale": "Idioma"
+  },
+  "newIssuePage": {
+    "title": "Novo problema conhecido",
+    "description": "Adicionar um problema conhecido para {vehicle}."
+  },
+  "issueForm": {
+    "title": "Título",
+    "description": "Descrição",
+    "severity": "Gravidade",
+    "severityLow": "Baixa",
+    "severityMedium": "Média",
+    "severityHigh": "Alta",
+    "severityCritical": "Crítica",
+    "locale": "Idioma",
+    "typicalKm": "Quilometragem típica (km)",
+    "sources": "Fontes",
+    "sourcesHint": "Um URL por linha."
+  },
+  "issueDetail": {
+    "backToVehicle": "Voltar ao veículo",
+    "fixesTitle": "Soluções",
+    "noFixes": "Ainda não há soluções.",
+    "addFix": "Nova solução",
+    "deleteIssue": "Eliminar problema conhecido",
+    "deleteConfirmTitle": "Eliminar este problema conhecido?",
+    "deleteConfirmDescription": "Isto remove \"{issue}\" e as suas soluções. Esta ação não pode ser desfeita aqui."
+  },
+  "fixForm": {
+    "summary": "Resumo",
+    "steps": "Passos",
+    "estimatedCostEur": "Custo estimado (EUR)",
+    "addFix": "Adicionar solução",
+    "editFix": "Editar solução"
+  }
+}
