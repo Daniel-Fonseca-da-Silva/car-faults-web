@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { LoginHeroPanel } from "./login-hero-panel";
 
 const heroDict: Record<string, string> = {
-  "auth.hero.eyebrow": "CarFaults",
+  "auth.hero.eyebrow": "Auto Crónica",
   "auth.hero.titleBeforeHighlight": "Know the faults",
   "auth.hero.titleHighlight": "before",
   "auth.hero.titleAfterHighlight": "you get caught off guard.",
@@ -25,7 +25,7 @@ describe("LoginHeroPanel", () => {
     expect(
       screen.getByAltText("Classic Mini parked in a shadowy garage.")
     ).toBeInTheDocument();
-    expect(screen.getByText("CarFaults")).toBeInTheDocument();
+    expect(screen.getByText("Auto Crónica")).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(
       "Know the faults before you get caught off guard."
     );
