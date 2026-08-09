@@ -5,16 +5,18 @@ import { redirect } from "next/navigation";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import type { Locale } from "@/i18n/locales";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { requireAdminUser } from "@/lib/admin/require-admin-user";
+import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
 interface AdminPageProps {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
 }
 
 export async function generateMetadata({
@@ -23,11 +25,13 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "seo.admin" });
 
-  return {
+  return buildPageMetadata({
     title: t("title"),
     description: t("description"),
-    robots: { index: false, follow: false },
-  };
+    path: "/admin",
+    locale,
+    noIndex: true,
+  });
 }
 
 export default async function AdminPage({ params }: AdminPageProps) {

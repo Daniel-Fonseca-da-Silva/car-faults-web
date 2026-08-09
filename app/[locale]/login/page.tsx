@@ -3,14 +3,16 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { LoginFormCard } from "@/components/auth/login-form-card";
 import { LoginHeroPanel } from "@/components/auth/login-hero-panel";
+import type { Locale } from "@/i18n/locales";
 import { routing } from "@/i18n/routing";
+import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
 interface LoginPageProps {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
 }
 
 export async function generateMetadata({
@@ -19,18 +21,13 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "seo.login" });
 
-  return {
+  return buildPageMetadata({
     title: t("title"),
     description: t("description"),
-    alternates: {
-      languages: Object.fromEntries(
-        routing.locales.map((availableLocale) => [
-          availableLocale,
-          `/${availableLocale}/login`,
-        ])
-      ),
-    },
-  };
+    path: "/login",
+    locale,
+    noIndex: true,
+  });
 }
 
 export default async function LoginPage({ params }: LoginPageProps) {

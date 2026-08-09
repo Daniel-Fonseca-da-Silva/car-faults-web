@@ -5,15 +5,17 @@ import { HeroSection } from "@/components/home/hero-section";
 import { StatsBar } from "@/components/home/stats-bar";
 import { VehicleSearchForm } from "@/components/home/vehicle-search-form";
 import { SiteShell } from "@/components/layout/site-shell";
+import type { Locale } from "@/i18n/locales";
 import { routing } from "@/i18n/routing";
 import { getDatabaseStatus } from "@/lib/api/platform";
+import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
 interface HomePageProps {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
 }
 
 export async function generateMetadata({
@@ -22,18 +24,13 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "seo.home" });
 
-  return {
+  return buildPageMetadata({
     title: t("title"),
     description: t("description"),
-    alternates: {
-      languages: Object.fromEntries(
-        routing.locales.map((availableLocale) => [
-          availableLocale,
-          `/${availableLocale}`,
-        ])
-      ),
-    },
-  };
+    path: "",
+    locale,
+    titleIsAbsolute: true,
+  });
 }
 
 export default async function HomePage({ params }: HomePageProps) {

@@ -4,10 +4,13 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { FaultCardGrid } from "@/components/faults/fault-card-grid";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
+import type { Locale } from "@/i18n/locales";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { getPlatformFaults } from "@/lib/api/platform";
+import { getCatalogBrands } from "@/lib/api/platform-catalog";
 import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
+import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
 
 const PAGE_SIZE = 9;
 
@@ -19,7 +22,7 @@ type SearchParamValue = string | string[] | undefined;
 type ResolvedSearchParams = Record<string, SearchParamValue>;
 
 interface DefectsHubPageProps {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
   searchParams: Promise<ResolvedSearchParams>;
 }
 
@@ -29,7 +32,12 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "seo.defectsHub" });
 
-  return { title: t("title"), description: t("description") };
+  return buildPageMetadata({
+    title: t("title"),
+    description: t("description"),
+    path: "/defects",
+    locale,
+  });
 }
 
 function toQueryValue(value: SearchParamValue): string | undefined {
@@ -58,6 +66,7 @@ export default async function DefectsHubPage({
 
   const hasQuery = Boolean(make || model || year || fuel || doors);
   const t = await getTranslations("faults.hub");
+  const brands = await getCatalogBrands();
 
   const { items: entries, total } = await getPlatformFaults({
     locale: mapLookupLanguage(locale),
@@ -139,6 +148,27 @@ export default async function DefectsHubPage({
           )}
         </div>
       )}
+
+      <h2 className="mt-14 text-xl font-semibold text-foreground">
+        {t("browseBrandsTitle")}
+      </h2>
+      <div className="mt-4">
+        {brands.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
+            {brands.map((brand) => (
+              <Link
+                key={brand.slug}
+                href={`/defects/${brand.slug}`}
+                className="rounded-full border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+              >
+                {brand.name}
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <p className="text-muted-foreground">{t("noBrands")}</p>
+        )}
+      </div>
     </SiteShell>
   );
 }

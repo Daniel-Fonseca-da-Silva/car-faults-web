@@ -1,38 +1,46 @@
 {
   "home": {
-    "title": "CarFaults — Defeitos crónicos por marca e modelo",
+    "title": "Auto Crónica: Defeitos crónicos por marca e modelo",
     "description": "Pesquise avarias crónicas por marca, modelo, ano e motor antes de comprar um carro usado."
   },
   "defectsHub": {
-    "title": "Defeitos por veículo | CarFaults",
+    "title": "Defeitos por veículo",
     "description": "Explore os defeitos crónicos mais reportados por marca e modelo."
   },
+  "brandPage": {
+    "titleTemplate": "Defeitos {make}: modelos e avarias comuns",
+    "descriptionTemplate": "Veja os modelos {make} disponíveis e os defeitos crónicos mais reportados por ano, combustível e motor."
+  },
+  "modelPage": {
+    "titleTemplate": "Defeitos {make} {model}: anos e motorizações",
+    "descriptionTemplate": "Explore as versões do {make} {model} por ano, combustível e motor, e conheça os defeitos crónicos mais reportados."
+  },
   "vehiclePage": {
-    "titleTemplate": "Defeitos do {make} {model} {year} | CarFaults",
+    "titleTemplate": "Defeitos do {make} {model} {year}",
     "descriptionTemplate": "Conheça os defeitos crónicos mais reportados do {make} {model} {year}: gravidade, custo típico e relatos de proprietários."
   },
   "about": {
-    "title": "Sobre | CarFaults",
-    "description": "Engenheiro de software e aficionado por automóveis: porque criei a CarFaults e como o catálogo de defeitos crónicos ajuda a comprar com mais informação."
+    "title": "Sobre",
+    "description": "Engenheiro de software e aficionado por automóveis: porque criei a Auto Crónica e como o catálogo de defeitos crónicos ajuda a comprar com mais informação."
   },
   "login": {
-    "title": "Entrar | CarFaults",
-    "description": "Acesse a sua conta CarFaults para consultar defeitos."
+    "title": "Entrar",
+    "description": "Acesse a sua conta Auto Crónica para consultar defeitos."
   },
   "profile": {
-    "title": "A minha conta | CarFaults",
-    "description": "Consulte o seu perfil, estatísticas de utilização e veículos salvos na CarFaults."
+    "title": "A minha conta",
+    "description": "Consulte o seu perfil, estatísticas de utilização e veículos salvos na Auto Crónica."
   },
   "garage": {
-    "title": "A minha garagem | CarFaults",
-    "description": "Consulte os teus veículos favoritos e os problemas conhecidos na tua garagem CarFaults."
+    "title": "A minha garagem",
+    "description": "Consulte os teus veículos favoritos e os problemas conhecidos na tua garagem Auto Crónica."
   },
   "admin": {
-    "title": "Admin | CarFaults",
+    "title": "Admin",
     "description": "Gerir o catálogo de veículos, problemas conhecidos e soluções."
   },
   "privacy": {
-    "title": "Privacidade e Termos | CarFaults",
-    "description": "Leia a Política de Privacidade e os Termos de Serviço da CarFaults."
+    "title": "Privacidade e Termos",
+    "description": "Leia a Política de Privacidade e os Termos de Serviço da Auto Crónica."
   }
 }

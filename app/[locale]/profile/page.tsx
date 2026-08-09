@@ -6,15 +6,17 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { ProfileDashboard } from "@/components/profile/profile-dashboard";
 import { ProfilePageHeader } from "@/components/profile/profile-page-header";
 import { ProfileSidebar } from "@/components/profile/profile-sidebar";
+import type { Locale } from "@/i18n/locales";
 import { routing } from "@/i18n/routing";
 import { getProfilePageData } from "@/lib/profile/get-profile-page-data";
+import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
 interface ProfilePageProps {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
 }
 
 export async function generateMetadata({
@@ -23,11 +25,13 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "seo.profile" });
 
-  return {
+  return buildPageMetadata({
     title: t("title"),
     description: t("description"),
-    robots: { index: false, follow: false },
-  };
+    path: "/profile",
+    locale,
+    noIndex: true,
+  });
 }
 
 export default async function ProfilePage({ params }: ProfilePageProps) {

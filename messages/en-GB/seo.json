@@ -1,38 +1,46 @@
 {
   "home": {
-    "title": "CarFaults — Chronic faults by make and model",
+    "title": "Auto Crónica — Chronic faults by make and model",
     "description": "Search chronic issues by make, model, year and engine before buying a used car."
   },
   "defectsHub": {
-    "title": "Faults by vehicle | CarFaults",
+    "title": "Faults by vehicle",
     "description": "Explore the most reported chronic issues by make and model."
   },
+  "brandPage": {
+    "titleTemplate": "{make} faults — models and common issues",
+    "descriptionTemplate": "Browse available {make} models and the most reported chronic faults by year, fuel type and engine."
+  },
+  "modelPage": {
+    "titleTemplate": "{make} {model} faults — years and engine variants",
+    "descriptionTemplate": "Explore {make} {model} variants by year, fuel type and engine, and see the most reported chronic faults."
+  },
   "vehiclePage": {
-    "titleTemplate": "{make} {model} {year} faults | CarFaults",
+    "titleTemplate": "{make} {model} {year} faults",
     "descriptionTemplate": "Discover the most reported chronic faults of the {make} {model} {year}: severity, typical cost and owner reports."
   },
   "about": {
-    "title": "About | CarFaults",
-    "description": "Software engineer and car enthusiast: why I built CarFaults and how the chronic faults catalogue helps you buy with more information."
+    "title": "About",
+    "description": "Software engineer and car enthusiast: why I built Auto Crónica and how the chronic faults catalogue helps you buy with more information."
   },
   "login": {
-    "title": "Sign in | CarFaults",
-    "description": "Sign in to your CarFaults account to browse faults."
+    "title": "Sign in",
+    "description": "Sign in to your Auto Crónica account to browse faults."
   },
   "profile": {
-    "title": "My account | CarFaults",
-    "description": "View your profile, usage stats and saved vehicles on CarFaults."
+    "title": "My account",
+    "description": "View your profile, usage stats and saved vehicles on Auto Crónica."
   },
   "garage": {
-    "title": "My garage | CarFaults",
-    "description": "View your favourite vehicles and their known issues in your CarFaults garage."
+    "title": "My garage",
+    "description": "View your favourite vehicles and their known issues in your Auto Crónica garage."
   },
   "admin": {
-    "title": "Admin | CarFaults",
+    "title": "Admin",
     "description": "Manage the vehicle catalog, known issues and fixes."
   },
   "privacy": {
-    "title": "Privacy & Terms | CarFaults",
-    "description": "Read the CarFaults Privacy Policy and Terms of Service."
+    "title": "Privacy & Terms",
+    "description": "Read the Auto Crónica Privacy Policy and Terms of Service."
   }
 }

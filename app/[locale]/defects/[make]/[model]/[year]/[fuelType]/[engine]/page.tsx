@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 import { SiteShell } from "@/components/layout/site-shell";
+import { PageBreadcrumbs } from "@/components/seo/page-breadcrumbs";
 import { KnownIssuesAccordion } from "@/components/vehicle/known-issues-accordion";
 import { KnownIssuesSummary } from "@/components/vehicle/known-issues-summary";
 import { VehicleBackLink } from "@/components/vehicle/vehicle-back-link";
@@ -14,6 +15,8 @@ import { getVehicleLookupByPath } from "@/lib/api/lookups";
 import { getCurrentUser, getCurrentUserVehicles } from "@/lib/api/users";
 import { countSeverities } from "@/lib/lookup/count-severities";
 import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
+import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
+import { serializeJsonLd } from "@/lib/seo/json-ld";
 import { formatYearRange } from "@/lib/utils";
 import type { LookupResponse } from "@/types/lookup";
 
@@ -70,15 +73,14 @@ export async function generateMetadata({
     year: formatYearRange(lookup.vehicle.yearFrom, lookup.vehicle.yearTo),
   };
 
-  const canonicalPath = `/${resolvedParams.locale}/defects/${resolvedParams.make}/${resolvedParams.model}/${resolvedParams.year}/${resolvedParams.fuelType}/${resolvedParams.engine}`;
+  const path = `/defects/${resolvedParams.make}/${resolvedParams.model}/${resolvedParams.year}/${resolvedParams.fuelType}/${resolvedParams.engine}`;
 
-  return {
+  return buildPageMetadata({
     title: t("titleTemplate", templateValues),
     description: t("descriptionTemplate", templateValues),
-    alternates: {
-      canonical: canonicalPath,
-    },
-  };
+    path,
+    locale: resolvedParams.locale,
+  });
 }
 
 export default async function VehiclePage({
@@ -94,7 +96,11 @@ export default async function VehiclePage({
   }
 
   const { vehicle, knownIssues } = lookup;
-  const t = await getTranslations("faults");
+  const [t, tNav, tCommon] = await Promise.all([
+    getTranslations("faults"),
+    getTranslations("nav"),
+    getTranslations("common"),
+  ]);
   const severityCounts = countSeverities(knownIssues);
   const currentUser = await getCurrentUser();
   const year = Number(resolvedParams.year);
@@ -145,16 +151,35 @@ export default async function VehiclePage({
     <SiteShell className="py-12 sm:py-16">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(vehicleJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(vehicleJsonLd) }}
       />
       {faqJsonLd && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqJsonLd) }}
         />
       )}
 
-      <VehicleBackLink />
+      <PageBreadcrumbs
+        locale={resolvedParams.locale}
+        items={[
+          { label: tCommon("breadcrumbs.home"), path: "" },
+          { label: tNav("defects"), path: "/defects" },
+          {
+            label: vehicle.brand,
+            path: `/defects/${resolvedParams.make}`,
+          },
+          {
+            label: vehicle.model,
+            path: `/defects/${resolvedParams.make}/${resolvedParams.model}`,
+          },
+          { label: `${vehicle.model} ${formatYearRange(vehicle.yearFrom, vehicle.yearTo)}` },
+        ]}
+      />
+
+      <div className="mt-4">
+        <VehicleBackLink />
+      </div>
 
       <div className="mt-4">
         <VehicleHero

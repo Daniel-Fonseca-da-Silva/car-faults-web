@@ -1,5 +1,8 @@
 {
-  "brand": "CarFaults",
+  "brand": "Auto Crónica",
+  "breadcrumbs": {
+    "home": "Inicio"
+  },
   "locales": {
     "pt-PT": "Português (PT)",
     "en-GB": "English (UK)",
@@ -10,10 +13,10 @@
     "disclaimer": "Datos obtenidos de informes públicos, foros o mediante el uso de agentes e IA.",
     "copyright": "© {year}",
     "social": {
-      "instagram": "CarFaults en Instagram",
-      "facebook": "CarFaults en Facebook",
-      "youtube": "CarFaults en YouTube",
-      "tiktok": "CarFaults en TikTok"
+      "instagram": "Auto Crónica en Instagram",
+      "facebook": "Auto Crónica en Facebook",
+      "youtube": "Auto Crónica en YouTube",
+      "tiktok": "Auto Crónica en TikTok"
     },
     "legal": {
       "privacy": "Privacidad",
