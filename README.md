@@ -6,7 +6,7 @@ Initial market: **Portugal** (later ES/FR). Product languages: `pt-PT` (default)
 
 ## What we are
 
-The Next.js frontend that consumes [`car-faults-api`](../car-faults-api) (Nest backend) and renders known-issue lookups, reviews, and fixes for buyers and owners.
+The Next.js frontend that consumes [`car-faults-api`](../car-faults-api) (Nest backend) through `lib/api/*` and renders known-issue lookups, reviews, and fixes for buyers and owners. There is no mock backend — every page that needs data calls the Nest API server-side or via the browser client in `lib/api/client.ts`.
 
 ## What we are not
 
@@ -32,29 +32,39 @@ No Supabase, Prisma, or Mapbox — those were leftovers from the original templa
 
 ```
 app/
-  layout.tsx                 # <html>/<body>, fonts, locale read via next-intl
+  layout.tsx                 # <html>/<body>, fonts
   [locale]/
     layout.tsx                # NextIntlClientProvider, SiteHeader, SiteFooter
     page.tsx                  # Landing: hero, search, stats, top faults
-    recalls/ | compare/ | about/  # Stub pages ("coming soon")
     defects/page.tsx          # pSEO hub (filterable via searchParams)
-    defects/[make]/[model]/[year]/page.tsx  # pSEO vehicle profile
+    defects/[make]/[model]/[year]/[fuelType]/[engine]/page.tsx  # pSEO vehicle profile
+    about/                     # Real "about" page
+    login/, auth/callback/     # Google OAuth login flow
+    profile/                   # Account settings, saved vehicles, danger zone
+    garage/                    # Signed-in user's saved vehicles + known issues
+    privacy/                   # Privacy policy
+    admin/**                   # Admin panel: vehicles, known issues, fixes (role=admin only)
     not-found.tsx
   sitemap.ts
   robots.ts
 components/
   ui/          # shadcn primitives (unmodified API)
-  layout/      # site-header, site-footer, site-shell, locale-switcher, mobile-nav
-  home/        # hero-section, vehicle-search-form, stats-bar, top-faults-section
+  header/      # site-header, mobile-nav, locale-switcher, user-menu
+  footer/      # site-footer, social-links, cookie-settings-button
+  home/        # hero-section, vehicle-search-form, stats-bar
   faults/      # fault-card, fault-card-grid
+  vehicle/     # vehicle-hero, known-issues-accordion, reviews, comments, fixes
+  garage/      # garage-hero, garage-vehicle-list, garage-known-issues
+  admin/       # vehicle-model-form, known-issue-form, fix-list
+  ads/         # adsense-unit, adsense-script
+  cookies/     # cookie consent banner + provider
   brand/       # logo
 i18n/          # next-intl routing, navigation and request config
 messages/      # pt-PT/, en-GB/, es-ES/ — one JSON file per namespace
-lib/mocks/     # fixture vehicles + top faults (no backend integration yet)
-types/vehicle.ts
+lib/api/       # car-faults-api client (fetch wrappers per resource)
+lib/mocks/     # make/model autocomplete data for the home search form only
+types/
 ```
-
-Vehicle/fault data currently comes from local fixtures in `lib/mocks/` — wiring this page to `car-faults-api` is a follow-up.
 
 ## MVP / What this app does
 
@@ -62,8 +72,8 @@ Vehicle/fault data currently comes from local fixtures in `lib/mocks/` — wirin
 2. Display `known_issues` + `tech_specs` for a vehicle
 3. Google login (via the API)
 4. Reviews and comments on issues
-5. Fixes (AI-generated and/or user-submitted)
-6. Vehicle photo uploads
+5. Fixes: a curated catalog per known issue that users can upvote/downvote — not user-submitted
+6. Vehicle photos: uploaded by admins only (`components/admin/vehicle-model-form.tsx`), not by garage owners
 
 AI content is marked as generated, and product copy should treat results as indicative — not a substitute for a mechanic.
 
@@ -82,21 +92,30 @@ This app never talks to `car-faults-ai-api` directly — all AI-derived content 
 
 ```bash
 npm install
-npx skills check
-npx skills update
-```
-
-Agent skills are defined in `skills-lock.json` and installed into `.agents/` (gitignored). Run `npx skills update` after pulling changes that modify the lock file.
-
-```bash
+cp .env.example .env.local
 npm run dev
 ```
+
+Agent skills are optional: they're defined in `skills-lock.json` and installed into `.agents/` (gitignored) via `npx skills update`, not required to run or build the app.
+
+### Environment variables
+
+See [.env.example](.env.example) for the full list. Summary:
+
+| Variable | Purpose |
+|----------|---------|
+| `NEXT_PUBLIC_API_URL` | `car-faults-api` base URL (no trailing slash) |
+| `NEXT_PUBLIC_SITE_URL` | Public site URL, used for sitemap/robots |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile widget sitekey (siteverify happens only in the API) |
+| `NEXT_PUBLIC_ADSENSE_CLIENT_ID` | Google AdSense publisher id; leave unset to disable ads (dev/local) |
+| `NEXT_PUBLIC_R2_PUBLIC_BASE_URL` | Must match `car-faults-api`'s `R2_PUBLIC_BASE_URL` |
 
 ### Useful URLs
 
 | Resource | URL |
 |----------|-----|
 | App | `http://localhost:3000` |
+| API (default local port, see `car-faults-api/.env.example`) | `http://localhost:3001` |
 
 ### Development workflow
 
