@@ -10,10 +10,5 @@
     "reports": { "label": "Owner reports" },
     "vehicles": { "label": "Vehicles catalogued" },
     "faults": { "label": "Documented faults" }
-  },
-  "topFaults": {
-    "title": "Most reported faults",
-    "subtitle": "The most commonly reported chronic issues this week.",
-    "empty": "No reported faults yet."
   }
 }

@@ -1,6 +1,7 @@
 {
   "title": "Encontre os defeitos do seu veículo",
   "statusActive": "Banco ativo",
+  "statusInactive": "Banco indisponível",
   "fields": {
     "make": "Marca",
     "makePlaceholder": "ex.: Volkswagen",

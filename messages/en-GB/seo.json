@@ -11,21 +11,13 @@
     "titleTemplate": "{make} {model} {year} faults | CarFaults",
     "descriptionTemplate": "Discover the most reported chronic faults of the {make} {model} {year}: severity, typical cost and owner reports."
   },
-  "recalls": {
-    "title": "Recalls | CarFaults",
-    "description": "Check official recalls by make and model."
-  },
-  "compare": {
-    "title": "Compare vehicles | CarFaults",
-    "description": "Compare reliability across different vehicles."
-  },
   "about": {
     "title": "About | CarFaults",
-    "description": "Learn about CarFaults' mission."
+    "description": "Software engineer and car enthusiast: why I built CarFaults and how the chronic faults catalogue helps you buy with more information."
   },
   "login": {
     "title": "Sign in | CarFaults",
-    "description": "Sign in to your CarFaults account to browse faults, recalls and vehicle comparisons."
+    "description": "Sign in to your CarFaults account to browse faults."
   },
   "profile": {
     "title": "My account | CarFaults",
@@ -38,5 +30,9 @@
   "admin": {
     "title": "Admin | CarFaults",
     "description": "Manage the vehicle catalog, known issues and fixes."
+  },
+  "privacy": {
+    "title": "Privacy & Terms | CarFaults",
+    "description": "Read the CarFaults Privacy Policy and Terms of Service."
   }
 }

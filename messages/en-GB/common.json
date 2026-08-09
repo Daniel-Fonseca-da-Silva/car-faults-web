@@ -7,20 +7,38 @@
   },
   "language": "Language",
   "footer": {
-    "disclaimer": "Data sourced from public reports and regulatory bodies. Not a substitute for a technical inspection.",
-    "copyright": "© {year}"
-  },
-  "comingSoon": {
-    "title": "Coming soon",
-    "description": "This feature is being prepared. Check back soon."
+    "disclaimer": "Data sourced from public reports, forums or through agents and AI.",
+    "copyright": "© {year}",
+    "social": {
+      "instagram": "CarFaults on Instagram",
+      "facebook": "CarFaults on Facebook",
+      "youtube": "CarFaults on YouTube",
+      "tiktok": "CarFaults on TikTok"
+    },
+    "legal": {
+      "privacy": "Privacy",
+      "terms": "Terms"
+    }
   },
   "notFound": {
     "title": "Page not found",
     "description": "The page you are looking for does not exist or has been moved.",
     "backHome": "Back to homepage"
   },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again.",
+    "tryAgain": "Try again",
+    "backHome": "Back to homepage"
+  },
   "ads": {
     "label": "Advertisement",
     "placeholder": "Ad slot (AdSense — production only)"
+  },
+  "cookies": {
+    "description": "We use essential cookies to run this site and, with your consent, advertising cookies. By continuing to browse, you consent to our use of cookies.",
+    "privacyLink": "Privacy Policy and cookies",
+    "close": "Close",
+    "manage": "Cookies"
   }
 }

@@ -12,8 +12,11 @@
     "title": "Faults by vehicle",
     "subtitle": "Explore the most reported chronic issues by make and model.",
     "resultsFor": "Results for \"{query}\"",
-    "noResults": "No vehicles found matching these filters.",
-    "allVehicles": "All vehicles"
+    "empty": "No reported faults yet.",
+    "allVehicles": "All vehicles",
+    "previous": "Previous",
+    "next": "Next",
+    "pageInfo": "Page {page} of {totalPages}"
   },
   "vehicle": {
     "eyebrow": "Vehicle found",

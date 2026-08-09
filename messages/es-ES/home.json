@@ -10,10 +10,5 @@
     "reports": { "label": "Reportes de propietarios" },
     "vehicles": { "label": "Vehículos catalogados" },
     "faults": { "label": "Defectos documentados" }
-  },
-  "topFaults": {
-    "title": "Defectos más reportados",
-    "subtitle": "Los problemas crónicos más reportados esta semana.",
-    "empty": "Aún no hay defectos reportados."
   }
 }

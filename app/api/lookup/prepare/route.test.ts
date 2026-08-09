@@ -45,7 +45,7 @@ describe("POST /api/lookup/prepare", () => {
     );
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({
-      href: "/defects/volkswagen/golf/2018?brand=Volkswagen&model=Golf&engine=2.0+TDI&fuelType=diesel",
+      href: "/defects/volkswagen/golf/2018/diesel/2-0-tdi",
     });
   });
 
@@ -66,7 +66,7 @@ describe("POST /api/lookup/prepare", () => {
     const response = await POST(buildRequest({ ...validBody, doors: 5 }));
 
     expect(await response.json()).toEqual({
-      href: "/defects/volkswagen/golf/2018?brand=Volkswagen&model=Golf&engine=2.0+TDI&fuelType=diesel&doors=5",
+      href: "/defects/volkswagen/golf/2018/diesel/2-0-tdi?doors=5",
     });
   });
 

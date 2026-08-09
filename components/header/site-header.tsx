@@ -3,12 +3,11 @@ import { getTranslations } from "next-intl/server";
 import { Logo } from "@/components/brand/logo";
 import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/api/users";
+import { NAV_ITEMS } from "@/lib/nav-items";
 
 import { LocaleSwitcher } from "./locale-switcher";
 import { MobileNav } from "./mobile-nav";
 import { UserMenu } from "./user-menu";
-
-const NAV_ITEMS = ["recalls", "defects", "compare", "about"] as const;
 
 export async function SiteHeader() {
   const t = await getTranslations("nav");

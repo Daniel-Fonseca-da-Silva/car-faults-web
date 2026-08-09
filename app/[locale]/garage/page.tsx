@@ -2,16 +2,12 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 
-import { AdSenseUnit } from "@/components/ads/adsense-unit";
 import { GarageHero } from "@/components/garage/garage-hero";
 import { GarageKnownIssues } from "@/components/garage/garage-known-issues";
 import { GarageVehicleList } from "@/components/garage/garage-vehicle-list";
 import { SiteShell } from "@/components/layout/site-shell";
 import { routing } from "@/i18n/routing";
 import { getGaragePageData } from "@/lib/garage/get-garage-page-data";
-
-// Placeholder — replace with the real AdSense ad unit slot ID once created.
-const GARAGE_PAGE_AD_SLOT = "0000000000";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -72,8 +68,6 @@ export default async function GaragePage({
           {selectedVehicle && <GarageKnownIssues vehicle={selectedVehicle} />}
         </div>
       )}
-
-      {vehicles.length > 0 && <AdSenseUnit slot={GARAGE_PAGE_AD_SLOT} />}
     </SiteShell>
   );
 }

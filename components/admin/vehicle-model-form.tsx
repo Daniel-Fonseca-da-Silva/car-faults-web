@@ -119,6 +119,7 @@ export function VehicleModelForm({ vehicle }: VehicleModelFormProps) {
       router.refresh();
     } catch {
       setError(t("common.error"));
+    } finally {
       setSubmitting(false);
     }
   }

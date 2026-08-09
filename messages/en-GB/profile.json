@@ -29,10 +29,11 @@
   "dangerZone": {
     "title": "Danger zone",
     "deleteAccount": "Delete account",
-    "deleteAccountDescription": "Permanently deletes all your data. This action cannot be undone.",
+    "deleteAccountDescription": "Deactivates your account (logical deletion). Logging in again with the same Google account may restore access.",
     "confirmTitle": "Are you sure?",
-    "confirmDescription": "Your account and all associated data will be permanently deleted. This action cannot be reverted.",
+    "confirmDescription": "Your account will be deactivated immediately. Logging in again with the same Google account may restore access.",
     "confirmCancel": "Cancel",
-    "confirmDelete": "Yes, delete account"
+    "confirmDelete": "Yes, delete account",
+    "deleteError": "Couldn't delete the account. Please try again."
   }
 }

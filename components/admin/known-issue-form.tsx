@@ -98,6 +98,7 @@ export function KnownIssueForm({
       router.refresh();
     } catch {
       setError(t("common.error"));
+    } finally {
       setSubmitting(false);
     }
   }

@@ -3,7 +3,10 @@
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 
+import { useCookieConsent } from "@/components/cookies/cookie-consent-provider";
+import { isConfiguredAdSlot } from "@/lib/ads/is-configured-ad-slot";
 import { getAdsenseClientId } from "@/lib/api/config";
+import { hasAcceptedMarketingCookies } from "@/lib/cookies/consent";
 import { cn } from "@/lib/utils";
 
 declare global {
@@ -27,18 +30,25 @@ export function AdSenseUnit({
 }: AdSenseUnitProps) {
   const t = useTranslations("common.ads");
   const clientId = getAdsenseClientId();
+  const { consent } = useCookieConsent();
+  const isConfigured = Boolean(clientId) && isConfiguredAdSlot(slot);
+  const adsEnabled = isConfigured && hasAcceptedMarketingCookies(consent);
 
   useEffect(() => {
-    if (!clientId) return;
+    if (!adsEnabled) return;
 
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch {
       // AdSense script may not be ready yet; safe to ignore.
     }
-  }, [clientId, slot]);
+  }, [adsEnabled, slot]);
 
-  if (!clientId) {
+  if (!isConfigured) {
+    return null;
+  }
+
+  if (!adsEnabled) {
     return (
       <aside
         className={cn("mt-10", className)}

@@ -6,7 +6,7 @@ import { KnownIssueForm } from "@/components/admin/known-issue-form";
 import { SiteShell } from "@/components/layout/site-shell";
 import { routing } from "@/i18n/routing";
 import { requireAdminUser } from "@/lib/admin/require-admin-user";
-import { getAdminVehicleModel } from "@/lib/api/admin-vehicles";
+import { getAdminVehicleModel } from "@/lib/api/admin-vehicles.server";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

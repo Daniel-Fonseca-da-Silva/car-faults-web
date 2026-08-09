@@ -1,6 +1,5 @@
 import { serverApiFetch } from "@/lib/api/server-client";
 import type { LookupLanguage } from "@/lib/lookup/map-lookup-language";
-import { slugify } from "@/lib/utils";
 import type { TopFaultEntry } from "@/types/vehicle";
 
 export interface PlatformStats {
@@ -24,8 +23,51 @@ interface TopFaultDto {
   };
 }
 
-interface TopFaultsResponseDto {
+interface PlatformFaultsResponseDto {
   items: TopFaultDto[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+interface PlatformVehicleItemDto {
+  brand: string;
+  model: string;
+  yearFrom: number;
+  engine: string;
+  fuelType: string;
+  doors?: number;
+}
+
+export interface PlatformVehiclesQuery {
+  page?: number;
+  limit?: number;
+}
+
+export interface PlatformVehiclesPage {
+  items: PlatformVehicleItemDto[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export interface PlatformFaultsQuery {
+  locale: LookupLanguage;
+  page?: number;
+  limit?: number;
+  brand?: string;
+  model?: string;
+  year?: number;
+  fuelType?: string;
+  doors?: number;
+  engine?: string;
+}
+
+export interface PlatformFaultsPage {
+  items: TopFaultEntry[];
+  total: number;
+  page: number;
+  limit: number;
 }
 
 export async function getPlatformStats(): Promise<PlatformStats> {
@@ -38,32 +80,64 @@ export async function getPlatformStats(): Promise<PlatformStats> {
   return (await response.json()) as PlatformStats;
 }
 
-export async function getTopFaults(
-  locale: LookupLanguage,
-  limit?: number
-): Promise<TopFaultEntry[]> {
-  const query = new URLSearchParams({ locale });
-  if (limit != null) query.set("limit", String(limit));
+export async function getPlatformFaults(
+  query: PlatformFaultsQuery
+): Promise<PlatformFaultsPage> {
+  const params = new URLSearchParams({ locale: query.locale });
+  if (query.page != null) params.set("page", String(query.page));
+  if (query.limit != null) params.set("limit", String(query.limit));
+  if (query.brand) params.set("brand", query.brand);
+  if (query.model) params.set("model", query.model);
+  if (query.year != null) params.set("year", String(query.year));
+  if (query.fuelType) params.set("fuelType", query.fuelType);
+  if (query.doors != null) params.set("doors", String(query.doors));
+  if (query.engine) params.set("engine", query.engine);
 
   const response = await serverApiFetch(
-    `/v1/platform/top-faults?${query.toString()}`
+    `/v1/platform/faults?${params.toString()}`
   );
 
   if (!response.ok) {
-    throw new Error(`Failed to load top faults: ${response.status}`);
+    throw new Error(`Failed to load faults: ${response.status}`);
   }
 
-  const { items } = (await response.json()) as TopFaultsResponseDto;
-  return items.map(mapTopFault);
+  const { items, total, page, limit } =
+    (await response.json()) as PlatformFaultsResponseDto;
+  return { items: items.map(mapTopFault), total, page, limit };
+}
+
+export async function getPlatformVehicles(
+  query: PlatformVehiclesQuery = {}
+): Promise<PlatformVehiclesPage> {
+  const params = new URLSearchParams();
+  if (query.page != null) params.set("page", String(query.page));
+  if (query.limit != null) params.set("limit", String(query.limit));
+
+  const response = await serverApiFetch(
+    `/v1/platform/vehicles?${params.toString()}`
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to load platform vehicles: ${response.status}`);
+  }
+
+  return (await response.json()) as PlatformVehiclesPage;
+}
+
+export async function getDatabaseStatus(): Promise<boolean> {
+  try {
+    const response = await serverApiFetch("/v1/platform/stats");
+    return response.ok;
+  } catch {
+    return false;
+  }
 }
 
 function mapTopFault(dto: TopFaultDto): TopFaultEntry {
   return {
     id: dto.id,
     vehicle: {
-      makeSlug: slugify(dto.vehicle.brand),
       make: dto.vehicle.brand,
-      modelSlug: slugify(dto.vehicle.model),
       model: dto.vehicle.model,
       year: dto.vehicle.yearFrom,
       engine: dto.vehicle.engine,

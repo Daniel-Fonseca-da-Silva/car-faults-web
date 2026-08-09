@@ -7,15 +7,15 @@ interface FaultCardGridProps {
 }
 
 export function FaultCardGrid({ entries }: FaultCardGridProps) {
+  const linkableEntries = entries.filter((entry) => entry.vehicle.fuelType);
+
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {entries.map((entry) => (
+      {linkableEntries.map((entry) => (
         <FaultCard
           key={entry.id}
           make={entry.vehicle.make}
-          makeSlug={entry.vehicle.makeSlug}
           model={entry.vehicle.model}
-          modelSlug={entry.vehicle.modelSlug}
           year={entry.vehicle.year}
           engine={entry.vehicle.engine}
           fuelType={entry.vehicle.fuelType}
