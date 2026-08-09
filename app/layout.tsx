@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { getLocale } from "next-intl/server";
 import "./globals.css";
 
+import { getSiteUrl } from "@/lib/seo/get-site-url";
+import { SITE_NAME } from "@/lib/seo/site-brand";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -14,7 +17,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Car Faults",
+  metadataBase: new URL(getSiteUrl()),
+  title: {
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
+  },
   description:
     "Chronic reliability by vehicle model — known issues by make, model, year and engine.",
 };

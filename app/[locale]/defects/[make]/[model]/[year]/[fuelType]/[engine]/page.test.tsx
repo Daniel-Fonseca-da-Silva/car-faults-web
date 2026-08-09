@@ -90,6 +90,14 @@ jest.mock("@/components/vehicle/vehicle-back-link", () => ({
   VehicleBackLink: () => <Link href="/">Nova busca</Link>,
 }));
 
+jest.mock("@/components/seo/page-breadcrumbs", () => ({
+  PageBreadcrumbs: ({ items }: { items: { label: string }[] }) => (
+    <nav data-testid="page-breadcrumbs">
+      {items.map((item) => item.label).join(" > ")}
+    </nav>
+  ),
+}));
+
 const poloLookup: LookupResponse = {
   vehicle: {
     id: "veh-polo-6n1",
@@ -378,7 +386,7 @@ describe("generateMetadata", () => {
       "seo.vehiclePage.descriptionTemplate"
     );
     expect(metadata.alternates?.canonical).toBe(
-      "/pt-PT/defects/volkswagen/polo/1996/gasoline/1-0"
+      "http://localhost:3000/pt-PT/defects/volkswagen/polo/1996/gasoline/1-0"
     );
   });
 

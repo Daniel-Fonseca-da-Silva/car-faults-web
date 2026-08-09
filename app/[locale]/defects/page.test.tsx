@@ -10,9 +10,14 @@ import DefectsHubPage, {
 } from "./page";
 
 const getPlatformFaultsMock = jest.fn();
+const getCatalogBrandsMock = jest.fn();
 
 jest.mock("@/lib/api/platform", () => ({
   getPlatformFaults: (...args: unknown[]) => getPlatformFaultsMock(...args),
+}));
+
+jest.mock("@/lib/api/platform-catalog", () => ({
+  getCatalogBrands: (...args: unknown[]) => getCatalogBrandsMock(...args),
 }));
 
 jest.mock("next-intl/server", () => ({
@@ -70,8 +75,13 @@ const entries: TopFaultEntry[] = [
 ];
 
 describe("DefectsHubPage", () => {
+  beforeEach(() => {
+    getCatalogBrandsMock.mockResolvedValue([]);
+  });
+
   afterEach(() => {
     getPlatformFaultsMock.mockReset();
+    getCatalogBrandsMock.mockReset();
   });
 
   it("renders the hub title and subtitle when there is no query", async () => {
@@ -251,6 +261,36 @@ describe("DefectsHubPage", () => {
     expect(
       screen.getByRole("button", { name: "faults.hub.next" })
     ).toHaveAttribute("href", "/defects?page=2");
+  });
+
+  it("renders brand links when brands are available", async () => {
+    getPlatformFaultsMock.mockResolvedValue({
+      items: entries,
+      total: 1,
+      page: 1,
+      limit: 9,
+    });
+    getCatalogBrandsMock.mockResolvedValue([
+      { slug: "volkswagen", name: "Volkswagen" },
+      { slug: "mercedes-benz", name: "Mercedes-Benz" },
+    ]);
+
+    const jsx = await DefectsHubPage({
+      params: Promise.resolve({ locale: "pt-PT" }),
+      searchParams: Promise.resolve({}),
+    });
+    render(jsx);
+
+    expect(
+      screen.getByRole("heading", { name: "faults.hub.browseBrandsTitle" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Volkswagen" })).toHaveAttribute(
+      "href",
+      "/defects/volkswagen"
+    );
+    expect(
+      screen.getByRole("link", { name: "Mercedes-Benz" })
+    ).toHaveAttribute("href", "/defects/mercedes-benz");
   });
 
   it("disables next on the last page", async () => {

@@ -13,10 +13,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import type { Locale } from "@/i18n/locales";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { requireAdminUser } from "@/lib/admin/require-admin-user";
 import { getAdminVehicleModels } from "@/lib/api/admin-vehicles.server";
+import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
 
 const PAGE_SIZE = 20;
 
@@ -25,7 +27,7 @@ export function generateStaticParams() {
 }
 
 interface AdminVehiclesPageProps {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
   searchParams: Promise<{ page?: string; brand?: string; model?: string }>;
 }
 
@@ -35,11 +37,13 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "seo.admin" });
 
-  return {
+  return buildPageMetadata({
     title: t("title"),
     description: t("description"),
-    robots: { index: false, follow: false },
-  };
+    path: "/admin/vehicles",
+    locale,
+    noIndex: true,
+  });
 }
 
 export default async function AdminVehiclesPage({

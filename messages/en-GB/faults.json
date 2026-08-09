@@ -16,7 +16,21 @@
     "allVehicles": "All vehicles",
     "previous": "Previous",
     "next": "Next",
-    "pageInfo": "Page {page} of {totalPages}"
+    "pageInfo": "Page {page} of {totalPages}",
+    "browseBrandsTitle": "Browse by make",
+    "noBrands": "No makes catalogued yet."
+  },
+  "brandHub": {
+    "modelsTitle": "{make} models",
+    "noModels": "No models catalogued for this make yet.",
+    "topFaultsTitle": "Most reported faults",
+    "noFaults": "No reported faults for this make yet."
+  },
+  "modelHub": {
+    "variantsTitle": "Available variants",
+    "noVariants": "No variants catalogued for this model yet.",
+    "topFaultsTitle": "Most reported faults",
+    "noFaults": "No reported faults for this model yet."
   },
   "vehicle": {
     "eyebrow": "Vehicle found",

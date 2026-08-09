@@ -5,7 +5,9 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { LegalDocument } from "@/components/privacy/legal-document";
 import { LegalSectionNav } from "@/components/privacy/legal-section-nav";
 import { PrivacyHero } from "@/components/privacy/privacy-hero";
+import type { Locale } from "@/i18n/locales";
 import { routing } from "@/i18n/routing";
+import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
 
 const POLICY_SECTION_IDS = [
   "scope",
@@ -49,7 +51,7 @@ export function generateStaticParams() {
 }
 
 interface PrivacyPageProps {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
 }
 
 export async function generateMetadata({
@@ -58,7 +60,12 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "seo.privacy" });
 
-  return { title: t("title"), description: t("description") };
+  return buildPageMetadata({
+    title: t("title"),
+    description: t("description"),
+    path: "/privacy",
+    locale,
+  });
 }
 
 export default async function PrivacyPage({ params }: PrivacyPageProps) {

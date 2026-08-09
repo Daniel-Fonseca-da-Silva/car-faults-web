@@ -67,12 +67,12 @@ describe("generateMetadata", () => {
       params: Promise.resolve({ locale: "pt-PT" }),
     });
 
-    expect(metadata.title).toBe("seo.home.title");
+    expect(metadata.title).toEqual({ absolute: "seo.home.title" });
     expect(metadata.description).toBe("seo.home.description");
     expect(metadata.alternates?.languages).toEqual({
-      "pt-PT": "/pt-PT",
-      "en-GB": "/en-GB",
-      "es-ES": "/es-ES",
+      "pt-PT": "http://localhost:3000/pt-PT",
+      "en-GB": "http://localhost:3000/en-GB",
+      "es-ES": "http://localhost:3000/es-ES",
     });
   });
 });

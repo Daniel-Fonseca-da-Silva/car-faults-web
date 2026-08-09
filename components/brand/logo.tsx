@@ -11,7 +11,7 @@ export function Logo({ className }: LogoProps) {
     <span className={cn("inline-flex items-center gap-2.5", className)}>
       <LogoMark className="size-11" />
       <span className="font-heading text-lg font-bold tracking-tight text-foreground">
-        CAR<span className="text-primary">FAULTS</span>
+        AUTO<span className="text-primary">CRÓNICA</span>
       </span>
     </span>
   );

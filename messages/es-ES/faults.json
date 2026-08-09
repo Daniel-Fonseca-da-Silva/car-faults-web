@@ -16,7 +16,21 @@
     "allVehicles": "Todos los vehículos",
     "previous": "Anterior",
     "next": "Siguiente",
-    "pageInfo": "Página {page} de {totalPages}"
+    "pageInfo": "Página {page} de {totalPages}",
+    "browseBrandsTitle": "Explorar por marca",
+    "noBrands": "Aún no hay marcas catalogadas."
+  },
+  "brandHub": {
+    "modelsTitle": "Modelos {make}",
+    "noModels": "Aún no hay modelos catalogados para esta marca.",
+    "topFaultsTitle": "Averías más reportadas",
+    "noFaults": "Aún no hay defectos reportados para esta marca."
+  },
+  "modelHub": {
+    "variantsTitle": "Versiones disponibles",
+    "noVariants": "Aún no hay versiones catalogadas para este modelo.",
+    "topFaultsTitle": "Averías más reportadas",
+    "noFaults": "Aún no hay defectos reportados para este modelo."
   },
   "vehicle": {
     "eyebrow": "Vehículo encontrado",

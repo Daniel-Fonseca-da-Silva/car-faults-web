@@ -1,6 +1,6 @@
 # Car Faults Web
 
-Frontend for **Car Faults** — a SaaS focused on **chronic reliability by vehicle model**: what typically fails on a given make / model / year / engine, how severe it is, typical cost and how it gets fixed.
+Frontend for **Auto Crónica** — a SaaS focused on **chronic reliability by vehicle model**: what typically fails on a given make / model / year / engine, how severe it is, typical cost and how it gets fixed.
 
 Initial market: **Portugal** (later ES/FR). Product languages: `pt-PT` (default), `en-GB` and `es-ES`.
 

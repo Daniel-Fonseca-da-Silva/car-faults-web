@@ -99,7 +99,7 @@ describe("SiteHeader", () => {
       .getAllByRole("link")
       .filter((link) => link.getAttribute("href") === "/");
     expect(homeLinks.length).toBeGreaterThan(0);
-    expect(homeLinks[0]).toHaveTextContent("CARFAULTS");
+    expect(homeLinks[0]).toHaveTextContent("AUTOCRÓNICA");
   });
 
   it("opens the account menu with a profile link when signed in", async () => {

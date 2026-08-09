@@ -4,8 +4,10 @@ import Image from "next/image";
 
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
+import type { Locale } from "@/i18n/locales";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
+import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
 
 const LINKEDIN_PROFILE_URL =
   "https://www.linkedin.com/in/daniel-fonseca-da-silva/";
@@ -16,7 +18,7 @@ export function generateStaticParams() {
 }
 
 interface AboutPageProps {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
 }
 
 export async function generateMetadata({
@@ -25,7 +27,12 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "seo.about" });
 
-  return { title: t("title"), description: t("description") };
+  return buildPageMetadata({
+    title: t("title"),
+    description: t("description"),
+    path: "/about",
+    locale,
+  });
 }
 
 export default async function AboutPage({ params }: AboutPageProps) {

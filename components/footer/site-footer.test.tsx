@@ -9,10 +9,10 @@ const openPreferences = jest.fn();
 const footerDict: Record<string, string> = {
   disclaimer:
     "Dados obtidos de relatos públicos, fóruns ou pelo uso de agentes e IA.",
-  "social.instagram": "CarFaults no Instagram",
-  "social.facebook": "CarFaults no Facebook",
-  "social.youtube": "CarFaults no YouTube",
-  "social.tiktok": "CarFaults no TikTok",
+  "social.instagram": "Auto Crónica no Instagram",
+  "social.facebook": "Auto Crónica no Facebook",
+  "social.youtube": "Auto Crónica no YouTube",
+  "social.tiktok": "Auto Crónica no TikTok",
   "legal.privacy": "Privacidade",
   "legal.terms": "Termos",
 };
@@ -76,7 +76,7 @@ describe("SiteFooter", () => {
     const jsx = await SiteFooter();
     render(jsx);
 
-    expect(screen.getByText(textContentMatcher("CARFAULTS"))).toBeInTheDocument();
+    expect(screen.getByText(textContentMatcher("AUTOCRÓNICA"))).toBeInTheDocument();
   });
 
   it("renders the disclaimer", async () => {

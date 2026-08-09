@@ -6,15 +6,17 @@ import { GarageHero } from "@/components/garage/garage-hero";
 import { GarageKnownIssues } from "@/components/garage/garage-known-issues";
 import { GarageVehicleList } from "@/components/garage/garage-vehicle-list";
 import { SiteShell } from "@/components/layout/site-shell";
+import type { Locale } from "@/i18n/locales";
 import { routing } from "@/i18n/routing";
 import { getGaragePageData } from "@/lib/garage/get-garage-page-data";
+import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
 interface GaragePageProps {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
   searchParams: Promise<{ vehicleId?: string }>;
 }
 
@@ -24,11 +26,13 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "seo.garage" });
 
-  return {
+  return buildPageMetadata({
     title: t("title"),
     description: t("description"),
-    robots: { index: false, follow: false },
-  };
+    path: "/garage",
+    locale,
+    noIndex: true,
+  });
 }
 
 export default async function GaragePage({

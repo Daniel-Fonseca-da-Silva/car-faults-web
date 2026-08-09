@@ -118,8 +118,53 @@ describe("sitemap", () => {
 
     const entries = await sitemap();
     const staticCount = locales.length * 4;
+    const brandCount = locales.length * 2;
+    const modelCount = locales.length * 2;
     const vehicleCount = locales.length * vehicles.length;
 
-    expect(entries).toHaveLength(staticCount + vehicleCount);
+    expect(entries).toHaveLength(
+      staticCount + brandCount + modelCount + vehicleCount
+    );
+  });
+
+  it("includes a brand and model hub URL for every locale", async () => {
+    getPlatformVehiclesMock.mockResolvedValue({
+      items: vehicles,
+      total: vehicles.length,
+      page: 1,
+      limit: 200,
+    });
+
+    const entries = await sitemap();
+
+    for (const locale of locales) {
+      expect(
+        entries.some(
+          (entry) =>
+            entry.url === `http://localhost:3000/${locale}/defects/volkswagen`
+        )
+      ).toBe(true);
+      expect(
+        entries.some(
+          (entry) =>
+            entry.url ===
+            `http://localhost:3000/${locale}/defects/volkswagen/golf`
+        )
+      ).toBe(true);
+      expect(
+        entries.some(
+          (entry) =>
+            entry.url ===
+            `http://localhost:3000/${locale}/defects/mercedes-benz`
+        )
+      ).toBe(true);
+      expect(
+        entries.some(
+          (entry) =>
+            entry.url ===
+            `http://localhost:3000/${locale}/defects/mercedes-benz/classe-c`
+        )
+      ).toBe(true);
+    }
   });
 });
