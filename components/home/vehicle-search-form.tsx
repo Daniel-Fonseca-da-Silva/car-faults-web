@@ -282,7 +282,7 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
                     {t("fields.doorsPlaceholder")}
                   </NativeSelectOption>
                   {DOOR_OPTIONS.map((option) => (
-                    <NativeSelectOption key={option} value={option}>
+                    <NativeSelectOption key={option} value={String(option)}>
                       {option}
                     </NativeSelectOption>
                   ))}

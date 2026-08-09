@@ -39,7 +39,3 @@ export function writeCookieConsentAccepted(): void {
 export function hasAcceptedMarketingCookies(value: CookieConsentValue): boolean {
   return value === "accepted"
 }
-
-export function hasAcceptedMarketingCookies(value: CookieConsentValue): boolean {
-  return value === "accepted"
-}
