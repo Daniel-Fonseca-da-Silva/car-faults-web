@@ -9,9 +9,7 @@ import type { FaultSeverity } from "@/types/vehicle";
 
 interface FaultCardProps {
   make: string;
-  makeSlug: string;
   model: string;
-  modelSlug: string;
   year: number;
   engine: string;
   fuelType?: string;
@@ -33,9 +31,7 @@ const SEVERITY_BADGE_VARIANT: Record<
 
 export async function FaultCard({
   make,
-  makeSlug,
   model,
-  modelSlug,
   year,
   engine,
   fuelType,
@@ -47,11 +43,11 @@ export async function FaultCard({
   const t = await getTranslations("faults");
   const SeverityIcon =
     severity === "high" || severity === "critical" ? Flame : AlertTriangle;
-  // The vehicle page resolves its lookup from the query string, not just the
-  // path segments — without fuelType there's no valid lookup to link to.
+  // The vehicle page's canonical URL requires fuelType as a path segment —
+  // without it there's no valid lookup to link to.
   const href = fuelType
     ? buildLookupHref({ brand: make, model, year, engine, fuelType, doors })
-    : `/defects/${makeSlug}/${modelSlug}/${year}`;
+    : null;
 
   return (
     <Card className="flex h-full flex-col justify-between transition-colors hover:border-primary/50">
@@ -78,13 +74,20 @@ export async function FaultCard({
         <span className="text-sm text-muted-foreground">
           {t("reportsCount", { count: reportCount })}
         </span>
-        <Link
-          href={href}
-          className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-        >
-          {t("viewReports")}
-          <ArrowRight className="size-3.5" aria-hidden="true" />
-        </Link>
+        {href ? (
+          <Link
+            href={href}
+            className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+          >
+            {t("viewReports")}
+            <ArrowRight className="size-3.5" aria-hidden="true" />
+          </Link>
+        ) : (
+          <span className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground/60">
+            {t("viewReports")}
+            <ArrowRight className="size-3.5" aria-hidden="true" />
+          </span>
+        )}
       </CardContent>
     </Card>
   );

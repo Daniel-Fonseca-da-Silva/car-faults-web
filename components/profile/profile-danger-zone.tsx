@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
@@ -17,14 +17,31 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useRouter } from "@/i18n/navigation";
+import { logout } from "@/lib/auth/logout";
+import { deleteCurrentUserAccount } from "@/lib/api/account";
 
 export function ProfileDangerZone() {
   const t = useTranslations("profile.dangerZone");
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleConfirmDelete() {
-    // Stub only: no DELETE /v1/users/me call in this entrega.
-    setOpen(false);
+  async function handleConfirmDelete() {
+    if (isDeleting) return;
+
+    setIsDeleting(true);
+    setError(null);
+
+    try {
+      await deleteCurrentUserAccount();
+      await logout();
+      router.push("/login");
+    } catch {
+      setError(t("deleteError"));
+      setIsDeleting(false);
+    }
   }
 
   return (
@@ -42,6 +59,7 @@ export function ProfileDangerZone() {
           <p className="mt-1 text-sm text-muted-foreground">
             {t("deleteAccountDescription")}
           </p>
+          {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
         </div>
 
         <AlertDialog open={open} onOpenChange={setOpen}>
@@ -56,12 +74,19 @@ export function ProfileDangerZone() {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>{t("confirmCancel")}</AlertDialogCancel>
+              <AlertDialogCancel disabled={isDeleting}>
+                {t("confirmCancel")}
+              </AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleConfirmDelete}
+                disabled={isDeleting}
                 className="bg-destructive text-white hover:bg-destructive/90"
               >
-                {t("confirmDelete")}
+                {isDeleting ? (
+                  <Loader2 aria-hidden="true" className="size-4 animate-spin" />
+                ) : (
+                  t("confirmDelete")
+                )}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

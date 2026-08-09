@@ -3,10 +3,10 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { HeroSection } from "@/components/home/hero-section";
 import { StatsBar } from "@/components/home/stats-bar";
-import { TopFaultsSection } from "@/components/home/top-faults-section";
 import { VehicleSearchForm } from "@/components/home/vehicle-search-form";
 import { SiteShell } from "@/components/layout/site-shell";
 import { routing } from "@/i18n/routing";
+import { getDatabaseStatus } from "@/lib/api/platform";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -39,15 +39,15 @@ export async function generateMetadata({
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const isDatabaseUp = await getDatabaseStatus();
 
   return (
     <SiteShell>
       <HeroSection />
       <div className="mx-auto max-w-3xl pb-8">
-        <VehicleSearchForm />
+        <VehicleSearchForm isDatabaseUp={isDatabaseUp} />
       </div>
       <StatsBar />
-      <TopFaultsSection />
     </SiteShell>
   );
 }

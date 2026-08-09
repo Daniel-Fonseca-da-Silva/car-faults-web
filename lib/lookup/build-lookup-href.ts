@@ -10,17 +10,11 @@ export interface BuildLookupHrefParams {
 }
 
 export function buildLookupHref(params: BuildLookupHrefParams): string {
-  const path = `/defects/${slugify(params.brand)}/${slugify(params.model)}/${params.year}`;
+  const path = `/defects/${slugify(params.brand)}/${slugify(params.model)}/${params.year}/${params.fuelType}/${slugify(params.engine)}`;
 
-  const query = new URLSearchParams({
-    brand: params.brand,
-    model: params.model,
-    engine: params.engine,
-    fuelType: params.fuelType,
-  });
-  if (params.doors != null) {
-    query.set("doors", String(params.doors));
+  if (params.doors == null) {
+    return path;
   }
 
-  return `${path}?${query.toString()}`;
+  return `${path}?doors=${params.doors}`;
 }

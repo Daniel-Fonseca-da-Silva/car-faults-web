@@ -18,7 +18,7 @@ import {
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { requireAdminUser } from "@/lib/admin/require-admin-user";
-import { getAdminVehicleModel } from "@/lib/api/admin-vehicles";
+import { getAdminVehicleModel } from "@/lib/api/admin-vehicles.server";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

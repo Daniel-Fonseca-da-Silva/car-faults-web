@@ -15,10 +15,9 @@ import {
 } from "@/components/ui/sheet";
 import { Link, useRouter } from "@/i18n/navigation";
 import { logout } from "@/lib/auth/logout";
+import { NAV_ITEMS } from "@/lib/nav-items";
 import { getInitials } from "@/lib/utils";
 import type { UserProfile } from "@/types/user";
-
-const NAV_ITEMS = ["recalls", "defects", "compare", "about"] as const;
 
 type MobileNavProps = {
   user: UserProfile | null;

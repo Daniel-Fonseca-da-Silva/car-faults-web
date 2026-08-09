@@ -7,20 +7,38 @@
   },
   "language": "Idioma",
   "footer": {
-    "disclaimer": "Dados obtidos de relatos públicos e órgãos reguladores. Não substitui avaliação técnica.",
-    "copyright": "© {year}"
-  },
-  "comingSoon": {
-    "title": "Em breve",
-    "description": "Esta funcionalidade está a ser preparada. Volte em breve."
+    "disclaimer": "Dados obtidos de relatos públicos, fóruns ou pelo uso de agentes e IA.",
+    "copyright": "© {year}",
+    "social": {
+      "instagram": "CarFaults no Instagram",
+      "facebook": "CarFaults no Facebook",
+      "youtube": "CarFaults no YouTube",
+      "tiktok": "CarFaults no TikTok"
+    },
+    "legal": {
+      "privacy": "Privacidade",
+      "terms": "Termos"
+    }
   },
   "notFound": {
     "title": "Página não encontrada",
     "description": "A página que procura não existe ou foi movida.",
     "backHome": "Voltar à página inicial"
   },
+  "error": {
+    "title": "Algo correu mal",
+    "description": "Ocorreu um erro inesperado. Por favor, tente novamente.",
+    "tryAgain": "Tentar novamente",
+    "backHome": "Voltar à página inicial"
+  },
   "ads": {
     "label": "Publicidade",
     "placeholder": "Espaço de anúncio (AdSense — só em produção)"
+  },
+  "cookies": {
+    "description": "Utilizamos cookies essenciais para o funcionamento do site e, com o seu consentimento, cookies de publicidade. Ao continuar a navegar, está a consentir a nossa utilização de cookies.",
+    "privacyLink": "Política de Privacidade e cookies",
+    "close": "Fechar",
+    "manage": "Cookies"
   }
 }

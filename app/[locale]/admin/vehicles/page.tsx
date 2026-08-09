@@ -16,7 +16,7 @@ import {
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { requireAdminUser } from "@/lib/admin/require-admin-user";
-import { getAdminVehicleModels } from "@/lib/api/admin-vehicles";
+import { getAdminVehicleModels } from "@/lib/api/admin-vehicles.server";
 
 const PAGE_SIZE = 20;
 

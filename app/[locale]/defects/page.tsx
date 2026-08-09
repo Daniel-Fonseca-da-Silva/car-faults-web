@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import { AdSenseUnit } from "@/components/ads/adsense-unit";
 import { FaultCardGrid } from "@/components/faults/fault-card-grid";
 import { SiteShell } from "@/components/layout/site-shell";
+import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
-import { vehicles } from "@/lib/mocks/vehicles";
-import type { TopFaultEntry } from "@/types/vehicle";
+import { getPlatformFaults } from "@/lib/api/platform";
+import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
 
-// Placeholder — replace with the real AdSense ad unit slot ID once created.
-const DEFECTS_HUB_AD_SLOT = "0000000001";
+const PAGE_SIZE = 9;
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -45,45 +45,43 @@ export default async function DefectsHubPage({
   setRequestLocale(locale);
 
   const resolvedSearchParams = await searchParams;
-  const make = toQueryValue(resolvedSearchParams.make)?.toLowerCase();
-  const model = toQueryValue(resolvedSearchParams.model)?.toLowerCase();
-  const year = toQueryValue(resolvedSearchParams.year);
+  const make = toQueryValue(resolvedSearchParams.make);
+  const model = toQueryValue(resolvedSearchParams.model);
+  const yearParam = toQueryValue(resolvedSearchParams.year);
   const fuel = toQueryValue(resolvedSearchParams.fuel);
-  const doors = toQueryValue(resolvedSearchParams.doors);
+  const doorsParam = toQueryValue(resolvedSearchParams.doors);
+  const pageParam = toQueryValue(resolvedSearchParams.page);
 
-  const filtered = vehicles.filter((vehicle) => {
-    if (make && !vehicle.make.toLowerCase().includes(make)) return false;
-    if (model && !vehicle.model.toLowerCase().includes(model)) return false;
-    if (year && String(vehicle.year) !== year) return false;
-    if (fuel && !vehicle.engines.some((engine) => engine.fuel === fuel))
-      return false;
-    if (doors && !vehicle.doors.includes(Number(doors))) return false;
-    return true;
-  });
+  const year = yearParam ? Number(yearParam) : undefined;
+  const doors = doorsParam ? Number(doorsParam) : undefined;
+  const page = pageParam ? Math.max(1, Number(pageParam) || 1) : 1;
 
   const hasQuery = Boolean(make || model || year || fuel || doors);
   const t = await getTranslations("faults.hub");
 
-  const entries: TopFaultEntry[] = filtered.map((vehicle) => {
-    const topFault = vehicle.faults[0];
-    const primaryEngine = vehicle.engines[0];
-    return {
-      id: `${vehicle.makeSlug}-${vehicle.modelSlug}-${vehicle.year}`,
-      vehicle: {
-        makeSlug: vehicle.makeSlug,
-        make: vehicle.make,
-        modelSlug: vehicle.modelSlug,
-        model: vehicle.model,
-        year: vehicle.year,
-        engine: primaryEngine?.label ?? "",
-        fuelType: primaryEngine?.fuel,
-        doors: vehicle.doors[0],
-      },
-      faultTitle: topFault?.title ?? "",
-      severity: topFault?.severity ?? "low",
-      reportCount: topFault?.reportCount ?? 0,
-    };
+  const { items: entries, total } = await getPlatformFaults({
+    locale: mapLookupLanguage(locale),
+    page,
+    limit: PAGE_SIZE,
+    brand: make,
+    model,
+    year,
+    fuelType: fuel,
+    doors,
   });
+
+  function buildQuery(nextPage: number): string {
+    const query = new URLSearchParams();
+    query.set("page", String(nextPage));
+    if (make) query.set("make", make);
+    if (model) query.set("model", model);
+    if (yearParam) query.set("year", yearParam);
+    if (fuel) query.set("fuel", fuel);
+    if (doorsParam) query.set("doors", doorsParam);
+    return `?${query.toString()}`;
+  }
+
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   return (
     <SiteShell className="py-12 sm:py-16">
@@ -102,11 +100,45 @@ export default async function DefectsHubPage({
         {entries.length > 0 ? (
           <FaultCardGrid entries={entries} />
         ) : (
-          <p className="text-muted-foreground">{t("noResults")}</p>
+          <p className="text-muted-foreground">{t("empty")}</p>
         )}
       </div>
 
-      <AdSenseUnit slot={DEFECTS_HUB_AD_SLOT} />
+      {total > PAGE_SIZE && (
+        <div className="mt-6 flex items-center justify-between gap-3">
+          {page <= 1 ? (
+            <Button variant="outline" size="sm" disabled>
+              {t("previous")}
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              size="sm"
+              render={<Link href={`/defects${buildQuery(page - 1)}`} />}
+              nativeButton={false}
+            >
+              {t("previous")}
+            </Button>
+          )}
+          <span className="text-sm text-muted-foreground">
+            {t("pageInfo", { page, totalPages })}
+          </span>
+          {page >= totalPages ? (
+            <Button variant="outline" size="sm" disabled>
+              {t("next")}
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              size="sm"
+              render={<Link href={`/defects${buildQuery(page + 1)}`} />}
+              nativeButton={false}
+            >
+              {t("next")}
+            </Button>
+          )}
+        </div>
+      )}
     </SiteShell>
   );
 }

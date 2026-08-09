@@ -45,7 +45,11 @@ const ELECTRIC_ENGINE_SENTINEL = "electric";
 // Keep free-text makes so unmatched brands can still be searched.
 const COMBOBOX_INPUT_CLEAR_REASON = "input-clear";
 
-export function VehicleSearchForm() {
+interface VehicleSearchFormProps {
+  isDatabaseUp: boolean;
+}
+
+export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
   const t = useTranslations("search");
   const router = useRouter();
   const locale = useLocale();
@@ -140,10 +144,14 @@ export function VehicleSearchForm() {
         <h2 className="text-lg font-semibold text-foreground">{t("title")}</h2>
         <Badge variant="secondary" className="gap-1.5">
           <span
-            className="size-1.5 rounded-full bg-emerald-500"
+            className={
+              isDatabaseUp
+                ? "size-1.5 rounded-full bg-emerald-500"
+                : "size-1.5 rounded-full bg-destructive"
+            }
             aria-hidden="true"
           />
-          {t("statusActive")}
+          {isDatabaseUp ? t("statusActive") : t("statusInactive")}
         </Badge>
       </CardHeader>
       <CardContent>
@@ -274,7 +282,7 @@ export function VehicleSearchForm() {
                     {t("fields.doorsPlaceholder")}
                   </NativeSelectOption>
                   {DOOR_OPTIONS.map((option) => (
-                    <NativeSelectOption key={option} value={option}>
+                    <NativeSelectOption key={option} value={String(option)}>
                       {option}
                     </NativeSelectOption>
                   ))}

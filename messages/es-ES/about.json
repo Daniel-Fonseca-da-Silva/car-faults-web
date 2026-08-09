@@ -1,0 +1,14 @@
+{
+  "title": "Acerca de CarFaults",
+  "lead": "Me llamo Daniel Fonseca da Silva y soy ingeniero de software en Portugal, con casi nueve años construyendo sistemas fiables desde la nube hasta los productos que la gente usa cada día y también soy un aficionado a los coches. CarFaults nació del cruce de estas dos cosas.",
+  "photoAlt": "Retrato de Daniel Fonseca da Silva",
+  "problemTitle": "El problema",
+  "problemBody": "En cualquier país de Europa, comprar un coche nuevo o de segunda mano suele significar avanzar a ciegas. Todo vehículo tiene fallos que, tarde o temprano, acaban apareciendo: una pieza que falla siempre en el mismo sitio, un motor con un vicio conocido, una caja de cambios que da problemas a partir de cierto kilometraje. Esa información existe, pero está repartida entre foros, grupos y conversaciones sueltas y es difícil saber en qué confiar.",
+  "solutionTitle": "La solución",
+  "solutionBody": "CarFaults es un catálogo de defectos crónicos organizado por marca y modelo, pensado para crecer con el tiempo. Cuando todavía no hay datos suficientes sobre un vehículo, la inteligencia artificial ayuda a sugerir los problemas más probables; y la comunidad de propietarios comenta, corrige y vota los reportes, para que la información sea cada vez más fiable.",
+  "communityTitle": "Para quien le gustan los coches",
+  "communityBody": "Este proyecto es para quien le gustan los urbanos prácticos, los eléctricos silenciosos, los clásicos con historia o los deportivos con carácter y quiere decidir con más información y menos sorpresas.",
+  "linkedinLabel": "Ver perfil de LinkedIn",
+  "ctaLabel": "Buscar defectos",
+  "ctaHint": "Empieza buscando la marca y el modelo que tienes en mente."
+}

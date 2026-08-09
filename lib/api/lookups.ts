@@ -37,3 +37,39 @@ export async function getVehicleLookup(
 
   return (await response.json()) as LookupResponse;
 }
+
+export interface GetVehicleLookupByPathParams {
+  make: string;
+  model: string;
+  year: number;
+  fuelType: string;
+  engine: string;
+  doors?: number;
+  language?: LookupLanguage;
+}
+
+export async function getVehicleLookupByPath(
+  params: GetVehicleLookupByPathParams
+): Promise<LookupResponse | null> {
+  const query = new URLSearchParams({
+    make: params.make,
+    model: params.model,
+    year: String(params.year),
+    fuelType: params.fuelType,
+    engine: params.engine,
+  });
+  if (params.doors != null) query.set("doors", String(params.doors));
+  if (params.language) query.set("language", params.language);
+
+  const response = await serverApiFetch(`/v1/lookups/by-path?${query.toString()}`);
+
+  if (response.status === 404) {
+    return null;
+  }
+
+  if (!response.ok) {
+    throw new Error(`Failed to load vehicle lookup: ${response.status}`);
+  }
+
+  return (await response.json()) as LookupResponse;
+}

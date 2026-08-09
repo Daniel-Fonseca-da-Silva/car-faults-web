@@ -9,7 +9,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { requireAdminUser } from "@/lib/admin/require-admin-user";
-import { getAdminKnownIssue } from "@/lib/api/admin-known-issues";
+import { getAdminKnownIssue } from "@/lib/api/admin-known-issues.server";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

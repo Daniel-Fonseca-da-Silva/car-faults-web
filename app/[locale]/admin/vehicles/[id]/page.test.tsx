@@ -32,7 +32,7 @@ jest.mock("@/lib/admin/require-admin-user", () => ({
   requireAdminUser: () => requireAdminUserMock(),
 }));
 
-jest.mock("@/lib/api/admin-vehicles", () => ({
+jest.mock("@/lib/api/admin-vehicles.server", () => ({
   getAdminVehicleModel: (...args: unknown[]) =>
     getAdminVehicleModelMock(...args),
 }));

@@ -120,6 +120,9 @@ describe("VehicleModelForm", () => {
       expect.objectContaining({ model: "Golf" })
     );
     expect(pushMock).toHaveBeenCalledWith("/admin/vehicles/vm-1");
+    expect(
+      await screen.findByRole("button", { name: "Save" })
+    ).toBeEnabled();
   });
 
   it("shows an error and stays editable when saving fails", async () => {

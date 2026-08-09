@@ -2,17 +2,26 @@ import { render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 
 import { locales } from "@/i18n/locales";
+import type { TopFaultEntry } from "@/types/vehicle";
 
 import DefectsHubPage, {
   generateMetadata,
   generateStaticParams,
 } from "./page";
 
+const getPlatformFaultsMock = jest.fn();
+
+jest.mock("@/lib/api/platform", () => ({
+  getPlatformFaults: (...args: unknown[]) => getPlatformFaultsMock(...args),
+}));
+
 jest.mock("next-intl/server", () => ({
   getTranslations: async (arg: string | { namespace: string }) => {
     const namespace = typeof arg === "string" ? arg : arg.namespace;
     return (key: string, values?: Record<string, unknown>) => {
       if (key === "resultsFor") return `Results for "${values?.query}"`;
+      if (key === "pageInfo")
+        return `Page ${values?.page} of ${values?.totalPages}`;
       return `${namespace}.${key}`;
     };
   },
@@ -44,14 +53,35 @@ jest.mock("@/components/faults/fault-card-grid", () => ({
   ),
 }));
 
-jest.mock("@/components/ads/adsense-unit", () => ({
-  AdSenseUnit: ({ slot }: { slot: string }) => (
-    <div data-testid="adsense-unit">{slot}</div>
-  ),
-}));
+const entries: TopFaultEntry[] = [
+  {
+    id: "top-1",
+    vehicle: {
+      make: "Volkswagen",
+      model: "Golf",
+      year: 2015,
+      engine: "1.6 TDI",
+      fuelType: "diesel",
+    },
+    faultTitle: "Timing chain tensioner wear",
+    severity: "high",
+    reportCount: 412,
+  },
+];
 
 describe("DefectsHubPage", () => {
+  afterEach(() => {
+    getPlatformFaultsMock.mockReset();
+  });
+
   it("renders the hub title and subtitle when there is no query", async () => {
+    getPlatformFaultsMock.mockResolvedValue({
+      items: entries,
+      total: 1,
+      page: 1,
+      limit: 9,
+    });
+
     const jsx = await DefectsHubPage({
       params: Promise.resolve({ locale: "pt-PT" }),
       searchParams: Promise.resolve({}),
@@ -64,28 +94,39 @@ describe("DefectsHubPage", () => {
     expect(screen.getByText("faults.hub.subtitle")).toBeInTheDocument();
   });
 
-  it("filters vehicles by the make search param and shows the query summary", async () => {
-    const jsx = await DefectsHubPage({
-      params: Promise.resolve({ locale: "pt-PT" }),
-      searchParams: Promise.resolve({ make: "volkswagen" }),
+  it("fetches faults for the current locale, defaulting to page 1 and a limit of 9", async () => {
+    getPlatformFaultsMock.mockResolvedValue({
+      items: entries,
+      total: 1,
+      page: 1,
+      limit: 9,
     });
-    render(jsx);
 
-    expect(screen.getByText('Results for "volkswagen"')).toBeInTheDocument();
-    expect(screen.getByTestId("fault-card-grid")).toHaveTextContent("3");
+    await DefectsHubPage({
+      params: Promise.resolve({ locale: "pt-PT" }),
+      searchParams: Promise.resolve({}),
+    });
+
+    expect(getPlatformFaultsMock).toHaveBeenCalledWith({
+      locale: "pt-PT",
+      page: 1,
+      limit: 9,
+      brand: undefined,
+      model: undefined,
+      year: undefined,
+      fuelType: undefined,
+      doors: undefined,
+    });
   });
 
-  it("shows a no-results message when the filters match no vehicle", async () => {
-    const jsx = await DefectsHubPage({
-      params: Promise.resolve({ locale: "pt-PT" }),
-      searchParams: Promise.resolve({ make: "tesla" }),
+  it("maps the make/fuel search params to brand/fuelType filters and shows the query summary", async () => {
+    getPlatformFaultsMock.mockResolvedValue({
+      items: entries,
+      total: 1,
+      page: 1,
+      limit: 9,
     });
-    render(jsx);
 
-    expect(screen.getByText("faults.hub.noResults")).toBeInTheDocument();
-  });
-
-  it("narrows the results when model, year, fuel and doors are all provided", async () => {
     const jsx = await DefectsHubPage({
       params: Promise.resolve({ locale: "pt-PT" }),
       searchParams: Promise.resolve({
@@ -98,27 +139,140 @@ describe("DefectsHubPage", () => {
     });
     render(jsx);
 
+    expect(getPlatformFaultsMock).toHaveBeenCalledWith({
+      locale: "pt-PT",
+      page: 1,
+      limit: 9,
+      brand: "volkswagen",
+      model: "golf",
+      year: 2018,
+      fuelType: "diesel",
+      doors: 5,
+    });
+    expect(
+      screen.getByText('Results for "volkswagen golf 2018"')
+    ).toBeInTheDocument();
     expect(screen.getByTestId("fault-card-grid")).toHaveTextContent("1");
   });
 
-  it("excludes vehicles whose engines don't match the fuel filter", async () => {
-    const jsx = await DefectsHubPage({
-      params: Promise.resolve({ locale: "pt-PT" }),
-      searchParams: Promise.resolve({ fuel: "hybrid" }),
+  it("passes the requested page through to getPlatformFaults", async () => {
+    getPlatformFaultsMock.mockResolvedValue({
+      items: entries,
+      total: 20,
+      page: 2,
+      limit: 9,
     });
-    render(jsx);
 
-    expect(screen.getByTestId("fault-card-grid")).toHaveTextContent("1");
+    await DefectsHubPage({
+      params: Promise.resolve({ locale: "pt-PT" }),
+      searchParams: Promise.resolve({ page: "2" }),
+    });
+
+    expect(getPlatformFaultsMock).toHaveBeenCalledWith(
+      expect.objectContaining({ page: 2 })
+    );
   });
 
-  it("excludes vehicles whose door counts don't match the doors filter", async () => {
+  it("shows the empty message when there are no defects reported", async () => {
+    getPlatformFaultsMock.mockResolvedValue({
+      items: [],
+      total: 0,
+      page: 1,
+      limit: 9,
+    });
+
     const jsx = await DefectsHubPage({
       params: Promise.resolve({ locale: "pt-PT" }),
-      searchParams: Promise.resolve({ doors: "4" }),
+      searchParams: Promise.resolve({}),
     });
     render(jsx);
 
-    expect(screen.getByTestId("fault-card-grid")).toHaveTextContent("2");
+    expect(screen.getByText("faults.hub.empty")).toBeInTheDocument();
+    expect(screen.queryByTestId("fault-card-grid")).not.toBeInTheDocument();
+  });
+
+  it("shows the empty message when the filters match nothing", async () => {
+    getPlatformFaultsMock.mockResolvedValue({
+      items: [],
+      total: 0,
+      page: 1,
+      limit: 9,
+    });
+
+    const jsx = await DefectsHubPage({
+      params: Promise.resolve({ locale: "pt-PT" }),
+      searchParams: Promise.resolve({ make: "tesla" }),
+    });
+    render(jsx);
+
+    expect(screen.getByText("faults.hub.empty")).toBeInTheDocument();
+  });
+
+  it("hides pagination controls when the total fits on one page", async () => {
+    getPlatformFaultsMock.mockResolvedValue({
+      items: entries,
+      total: 1,
+      page: 1,
+      limit: 9,
+    });
+
+    const jsx = await DefectsHubPage({
+      params: Promise.resolve({ locale: "pt-PT" }),
+      searchParams: Promise.resolve({}),
+    });
+    render(jsx);
+
+    expect(
+      screen.queryByRole("button", { name: "faults.hub.previous" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "faults.hub.next" })
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows pagination controls and disables previous on the first page when there is more than one page", async () => {
+    getPlatformFaultsMock.mockResolvedValue({
+      items: entries,
+      total: 20,
+      page: 1,
+      limit: 9,
+    });
+
+    const jsx = await DefectsHubPage({
+      params: Promise.resolve({ locale: "pt-PT" }),
+      searchParams: Promise.resolve({}),
+    });
+    render(jsx);
+
+    expect(screen.getByText("Page 1 of 3")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "faults.hub.previous" })
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "faults.hub.next" })
+    ).toHaveAttribute("href", "/defects?page=2");
+  });
+
+  it("disables next on the last page", async () => {
+    getPlatformFaultsMock.mockResolvedValue({
+      items: entries,
+      total: 20,
+      page: 3,
+      limit: 9,
+    });
+
+    const jsx = await DefectsHubPage({
+      params: Promise.resolve({ locale: "pt-PT" }),
+      searchParams: Promise.resolve({ page: "3" }),
+    });
+    render(jsx);
+
+    expect(
+      screen.getByRole("button", { name: "faults.hub.next" })
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "faults.hub.previous" })
+    ).toHaveAttribute("href", "/defects?page=2");
   });
 });
 

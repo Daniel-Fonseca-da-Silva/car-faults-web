@@ -29,10 +29,11 @@
   "dangerZone": {
     "title": "Zona de risco",
     "deleteAccount": "Excluir conta",
-    "deleteAccountDescription": "Apaga permanentemente todos os seus dados. Esta ação não pode ser desfeita.",
+    "deleteAccountDescription": "Desativa a sua conta (eliminação lógica). Voltar a iniciar sessão com a mesma conta Google pode restaurar o acesso.",
     "confirmTitle": "Tem a certeza?",
-    "confirmDescription": "A sua conta e todos os dados associados serão eliminados permanentemente. Esta ação não pode ser revertida.",
+    "confirmDescription": "A sua conta será desativada de imediato. Voltar a iniciar sessão com a mesma conta Google pode restaurar o acesso.",
     "confirmCancel": "Cancelar",
-    "confirmDelete": "Sim, excluir conta"
+    "confirmDelete": "Sim, excluir conta",
+    "deleteError": "Não foi possível excluir a conta. Tente novamente."
   }
 }

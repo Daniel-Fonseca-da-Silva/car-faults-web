@@ -1,6 +1,7 @@
 {
   "title": "Encuentra los defectos de tu vehículo",
   "statusActive": "Base de datos activa",
+  "statusInactive": "Base de datos no disponible",
   "fields": {
     "make": "Marca",
     "makePlaceholder": "ej.: Volkswagen",

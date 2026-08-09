@@ -1,0 +1,14 @@
+{
+  "title": "About CarFaults",
+  "lead": "My name's Daniel Fonseca da Silva. I'm a software engineer based in Portugal nearly nine years spent building reliable systems, from the cloud to the products people use every day and I'm also a car enthusiast. CarFaults came out of where those two things meet.",
+  "photoAlt": "Portrait of Daniel Fonseca da Silva",
+  "problemTitle": "The problem",
+  "problemBody": "Anywhere in Europe, buying a car new or used often means going in blind. Every vehicle has faults that surface sooner or later: a part that always fails in the same place, an engine with a known weakness, a gearbox that gives trouble past a certain mileage. That information exists, but it's scattered across forums, groups and loose conversations and it's hard to know what to trust.",
+  "solutionTitle": "The solution",
+  "solutionBody": "CarFaults is a catalogue of chronic faults organised by make and model, built to grow over time. When there isn't enough data yet on a vehicle, AI helps suggest the most likely issues; and a community of owners comments, corrects and votes on reports, so the information keeps getting more reliable.",
+  "communityTitle": "For anyone who loves cars",
+  "communityBody": "This project is for anyone who loves practical city cars, quiet electrics, characterful classics or sporty machines and wants to decide with more information and fewer surprises.",
+  "linkedinLabel": "View LinkedIn profile",
+  "ctaLabel": "Search faults",
+  "ctaHint": "Start by searching for the make and model you have in mind."
+}

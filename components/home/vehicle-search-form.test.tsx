@@ -1,7 +1,9 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { VehicleSearchForm } from "./vehicle-search-form";
+
+const FULL_SEARCH_TEST_TIMEOUT_MS = 15_000;
 
 const pushMock = jest.fn();
 let turnstileOnSuccess: ((token: string) => void) | undefined;
@@ -14,6 +16,7 @@ jest.mock("next-intl", () => ({
     const dict: Record<string, string> = {
       title: "Find your vehicle's faults",
       statusActive: "Database active",
+      statusInactive: "Database unavailable",
       "fields.make": "Make",
       "fields.makePlaceholder": "e.g. Volkswagen",
       "fields.makeNoResults": "No matching make. Your typed name will be used.",
@@ -81,15 +84,16 @@ async function completeCaptcha(user: TestUser) {
 }
 
 /**
- * Set the make in one input event and close the popup so later fields keep focus.
- * Character-by-character typing races the controlled Combobox and leaves partial values.
+ * Set the make via a single change event. Opening the Base UI Combobox popup
+ * (paste/type + option click) is slow and flaky under coverage: the popup can
+ * leave the form inert and push the full-search flows past Jest's 5s timeout.
+ * fireEvent.change has no inputType, so Base UI treats it like autofill and
+ * updates inputValue without opening the listbox.
  */
-async function chooseMake(user: TestUser, make: string) {
+async function chooseMake(_user: TestUser, make: string) {
   const input = screen.getByLabelText("Make");
-  await user.click(input);
-  await user.paste(make);
+  fireEvent.change(input, { target: { value: make } });
   await waitFor(() => expect(input).toHaveValue(make));
-  await user.keyboard("{Escape}");
 }
 
 async function fillFullSearchFields(
@@ -136,9 +140,23 @@ describe("VehicleSearchForm", () => {
     global.fetch = fetchMock as unknown as typeof fetch;
   });
 
+  it("shows the active status badge when the database is up", () => {
+    render(<VehicleSearchForm isDatabaseUp={true} />);
+
+    expect(screen.getByText("Database active")).toBeInTheDocument();
+    expect(screen.queryByText("Database unavailable")).not.toBeInTheDocument();
+  });
+
+  it("shows the inactive status badge when the database is down", () => {
+    render(<VehicleSearchForm isDatabaseUp={false} />);
+
+    expect(screen.getByText("Database unavailable")).toBeInTheDocument();
+    expect(screen.queryByText("Database active")).not.toBeInTheDocument();
+  });
+
   it("shows a validation error when submitting without make or model", async () => {
     const user = createUser();
-    render(<VehicleSearchForm />);
+    render(<VehicleSearchForm isDatabaseUp={true} />);
 
     await user.click(screen.getByRole("button", { name: "Search faults" }));
 
@@ -150,7 +168,7 @@ describe("VehicleSearchForm", () => {
 
   it("does not show the Turnstile widget until all 5 fields are filled in", async () => {
     const user = createUser();
-    render(<VehicleSearchForm />);
+    render(<VehicleSearchForm isDatabaseUp={true} />);
 
     expect(screen.queryByTestId("turnstile-widget")).not.toBeInTheDocument();
 
@@ -161,111 +179,123 @@ describe("VehicleSearchForm", () => {
 
   it("disables submit for a full search until the Turnstile challenge succeeds", async () => {
     const user = createUser();
-    render(<VehicleSearchForm />);
+    render(<VehicleSearchForm isDatabaseUp={true} />);
 
     await fillFullSearchFields(user);
 
     expect(screen.getByRole("button", { name: "Search faults" })).toBeDisabled();
   });
 
-  it("prepares the lookup and navigates to the returned href once the fields and captcha are complete", async () => {
-    fetchMock.mockResolvedValue({
-      ok: true,
-      json: async () => ({
-        href: "/defects/volkswagen/golf/2018?brand=Volkswagen&model=Golf&engine=2.0+TDI&fuelType=diesel",
-      }),
-    });
-    const user = createUser();
-    render(<VehicleSearchForm />);
-
-    await fillFullSearchFields(user);
-
-    await completeCaptcha(user);
-
-    expect(fetchMock).toHaveBeenCalledWith(
-      "/api/lookup/prepare",
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          brand: "Volkswagen",
-          model: "Golf",
-          year: 2018,
-          engine: "2.0 TDI",
-          fuelType: "diesel",
-          doors: null,
-          language: "en-GB",
-          turnstileToken: "test-turnstile-token",
+  it(
+    "prepares the lookup and navigates to the returned href once the fields and captcha are complete",
+    async () => {
+      fetchMock.mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          href: "/defects/volkswagen/golf/2018/diesel/2-0-tdi",
         }),
-      })
-    );
-    await waitFor(() =>
-      expect(pushMock).toHaveBeenCalledWith(
-        "/defects/volkswagen/golf/2018?brand=Volkswagen&model=Golf&engine=2.0+TDI&fuelType=diesel"
-      )
-    );
-  });
+      });
+      const user = createUser();
+      render(<VehicleSearchForm isDatabaseUp={true} />);
 
-  it("includes doors in the prepare request when selected", async () => {
-    fetchMock.mockResolvedValue({
-      ok: true,
-      json: async () => ({
-        href: "/defects/volkswagen/golf/2018?brand=Volkswagen&model=Golf&engine=2.0+TDI&fuelType=diesel&doors=5",
-      }),
-    });
-    const user = createUser();
-    render(<VehicleSearchForm />);
+      await fillFullSearchFields(user);
 
-    await fillFullSearchFields(user, { doors: "5" });
+      await completeCaptcha(user);
 
-    await completeCaptcha(user);
-
-    expect(fetchMock).toHaveBeenCalledWith(
-      "/api/lookup/prepare",
-      expect.objectContaining({
-        body: JSON.stringify({
-          brand: "Volkswagen",
-          model: "Golf",
-          year: 2018,
-          engine: "2.0 TDI",
-          fuelType: "diesel",
-          doors: 5,
-          language: "en-GB",
-          turnstileToken: "test-turnstile-token",
-        }),
-      })
-    );
-    await waitFor(() =>
-      expect(pushMock).toHaveBeenCalledWith(
-        "/defects/volkswagen/golf/2018?brand=Volkswagen&model=Golf&engine=2.0+TDI&fuelType=diesel&doors=5"
-      )
-    );
-  });
-
-  it("shows an error and resets the widget when the prepare request fails", async () => {
-    fetchMock.mockResolvedValue({ ok: false, json: async () => ({}) });
-    const user = createUser();
-    render(<VehicleSearchForm />);
-
-    await fillFullSearchFields(user);
-
-    await completeCaptcha(user);
-
-    await waitFor(() =>
-      expect(
-        screen.getByText(
-          "Verification failed. Please complete the challenge again."
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/lookup/prepare",
+        expect.objectContaining({
+          method: "POST",
+          body: JSON.stringify({
+            brand: "Volkswagen",
+            model: "Golf",
+            year: 2018,
+            engine: "2.0 TDI",
+            fuelType: "diesel",
+            doors: null,
+            language: "en-GB",
+            turnstileToken: "test-turnstile-token",
+          }),
+        })
+      );
+      await waitFor(() =>
+        expect(pushMock).toHaveBeenCalledWith(
+          "/defects/volkswagen/golf/2018/diesel/2-0-tdi"
         )
-      ).toBeInTheDocument()
-    );
-    expect(pushMock).not.toHaveBeenCalled();
-    expect(
-      screen.getByRole("button", { name: "Search faults" })
-    ).toBeDisabled();
-  });
+      );
+    },
+    FULL_SEARCH_TEST_TIMEOUT_MS
+  );
+
+  it(
+    "includes doors in the prepare request when selected",
+    async () => {
+      fetchMock.mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          href: "/defects/volkswagen/golf/2018/diesel/2-0-tdi?doors=5",
+        }),
+      });
+      const user = createUser();
+      render(<VehicleSearchForm isDatabaseUp={true} />);
+
+      await fillFullSearchFields(user, { doors: "5" });
+
+      await completeCaptcha(user);
+
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/lookup/prepare",
+        expect.objectContaining({
+          body: JSON.stringify({
+            brand: "Volkswagen",
+            model: "Golf",
+            year: 2018,
+            engine: "2.0 TDI",
+            fuelType: "diesel",
+            doors: 5,
+            language: "en-GB",
+            turnstileToken: "test-turnstile-token",
+          }),
+        })
+      );
+      await waitFor(() =>
+        expect(pushMock).toHaveBeenCalledWith(
+          "/defects/volkswagen/golf/2018/diesel/2-0-tdi?doors=5"
+        )
+      );
+    },
+    FULL_SEARCH_TEST_TIMEOUT_MS
+  );
+
+  it(
+    "shows an error and resets the widget when the prepare request fails",
+    async () => {
+      fetchMock.mockResolvedValue({ ok: false, json: async () => ({}) });
+      const user = createUser();
+      render(<VehicleSearchForm isDatabaseUp={true} />);
+
+      await fillFullSearchFields(user);
+
+      await completeCaptcha(user);
+
+      await waitFor(() =>
+        expect(
+          screen.getByText(
+            "Verification failed. Please complete the challenge again."
+          )
+        ).toBeInTheDocument()
+      );
+      expect(pushMock).not.toHaveBeenCalled();
+      expect(
+        screen.getByRole("button", { name: "Search faults" })
+      ).toBeDisabled();
+    },
+    FULL_SEARCH_TEST_TIMEOUT_MS
+  );
 
   it("clears the token when the Turnstile challenge expires", async () => {
     const user = createUser();
-    render(<VehicleSearchForm />);
+    render(<VehicleSearchForm isDatabaseUp={true} />);
 
     await fillFullSearchFields(user);
 
@@ -288,7 +318,7 @@ describe("VehicleSearchForm", () => {
 
   it("clears the token when the Turnstile widget errors", async () => {
     const user = createUser();
-    render(<VehicleSearchForm />);
+    render(<VehicleSearchForm isDatabaseUp={true} />);
 
     await fillFullSearchFields(user);
 
@@ -311,7 +341,7 @@ describe("VehicleSearchForm", () => {
 
   it("falls back to the hub with a query when make, model and year are filled in but engine or fuel are missing", async () => {
     const user = createUser();
-    render(<VehicleSearchForm />);
+    render(<VehicleSearchForm isDatabaseUp={true} />);
 
     await chooseMake(user, "Volkswagen");
     await user.type(screen.getByLabelText("Model"), "Golf");
@@ -327,7 +357,7 @@ describe("VehicleSearchForm", () => {
 
   it("allows submitting with only the model filled in", async () => {
     const user = createUser();
-    render(<VehicleSearchForm />);
+    render(<VehicleSearchForm isDatabaseUp={true} />);
 
     await user.type(screen.getByLabelText("Model"), "Golf");
     await user.click(screen.getByRole("button", { name: "Search faults" }));
@@ -340,7 +370,7 @@ describe("VehicleSearchForm", () => {
 
   it("hides the engine field once electric fuel is selected", async () => {
     const user = createUser();
-    render(<VehicleSearchForm />);
+    render(<VehicleSearchForm isDatabaseUp={true} />);
 
     expect(screen.getByLabelText("Engine")).toBeInTheDocument();
 
@@ -349,50 +379,54 @@ describe("VehicleSearchForm", () => {
     expect(screen.queryByLabelText("Engine")).not.toBeInTheDocument();
   });
 
-  it("navigates to the vehicle detail page with the electric sentinel when fuel is electric and engine is left blank", async () => {
-    fetchMock.mockResolvedValue({
-      ok: true,
-      json: async () => ({
-        href: "/defects/tesla/model-3/2022?brand=Tesla&model=Model+3&engine=electric&fuelType=electric",
-      }),
-    });
-    const user = createUser();
-    render(<VehicleSearchForm />);
-
-    await fillFullSearchFields(user, {
-      make: "Tesla",
-      model: "Model 3",
-      year: "2022",
-      fuel: "electric",
-    });
-
-    await completeCaptcha(user);
-
-    expect(fetchMock).toHaveBeenCalledWith(
-      "/api/lookup/prepare",
-      expect.objectContaining({
-        body: JSON.stringify({
-          brand: "Tesla",
-          model: "Model 3",
-          year: 2022,
-          engine: "electric",
-          fuelType: "electric",
-          doors: null,
-          language: "en-GB",
-          turnstileToken: "test-turnstile-token",
+  it(
+    "navigates to the vehicle detail page with the electric sentinel when fuel is electric and engine is left blank",
+    async () => {
+      fetchMock.mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          href: "/defects/tesla/model-3/2022/electric/electric",
         }),
-      })
-    );
-    await waitFor(() =>
-      expect(pushMock).toHaveBeenCalledWith(
-        "/defects/tesla/model-3/2022?brand=Tesla&model=Model+3&engine=electric&fuelType=electric"
-      )
-    );
-  });
+      });
+      const user = createUser();
+      render(<VehicleSearchForm isDatabaseUp={true} />);
+
+      await fillFullSearchFields(user, {
+        make: "Tesla",
+        model: "Model 3",
+        year: "2022",
+        fuel: "electric",
+      });
+
+      await completeCaptcha(user);
+
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/lookup/prepare",
+        expect.objectContaining({
+          body: JSON.stringify({
+            brand: "Tesla",
+            model: "Model 3",
+            year: 2022,
+            engine: "electric",
+            fuelType: "electric",
+            doors: null,
+            language: "en-GB",
+            turnstileToken: "test-turnstile-token",
+          }),
+        })
+      );
+      await waitFor(() =>
+        expect(pushMock).toHaveBeenCalledWith(
+          "/defects/tesla/model-3/2022/electric/electric"
+        )
+      );
+    },
+    FULL_SEARCH_TEST_TIMEOUT_MS
+  );
 
   it("still requires the engine field for a full submit when fuel is not electric", async () => {
     const user = createUser();
-    render(<VehicleSearchForm />);
+    render(<VehicleSearchForm isDatabaseUp={true} />);
 
     await chooseMake(user, "Volkswagen");
     await user.type(screen.getByLabelText("Model"), "Golf");
@@ -414,7 +448,7 @@ describe("VehicleSearchForm", () => {
 
   it("restores the engine field when fuel changes away from electric", async () => {
     const user = createUser();
-    render(<VehicleSearchForm />);
+    render(<VehicleSearchForm isDatabaseUp={true} />);
 
     await user.type(screen.getByLabelText("Engine"), "2.0 TDI");
     await user.selectOptions(screen.getByLabelText("Fuel"), "electric");
@@ -425,7 +459,7 @@ describe("VehicleSearchForm", () => {
 
   it("selects a make from the dropdown list and uses it in the partial search", async () => {
     const user = createUser();
-    render(<VehicleSearchForm />);
+    render(<VehicleSearchForm isDatabaseUp={true} />);
 
     const makeInput = screen.getByLabelText("Make");
     await user.click(makeInput);
@@ -441,7 +475,7 @@ describe("VehicleSearchForm", () => {
 
   it("keeps a typed make that does not match any known brand for the partial search", async () => {
     const user = createUser();
-    render(<VehicleSearchForm />);
+    render(<VehicleSearchForm isDatabaseUp={true} />);
 
     const makeInput = screen.getByLabelText("Make");
     await user.click(makeInput);
@@ -465,7 +499,7 @@ describe("VehicleSearchForm", () => {
 
   it("includes the engine, fuel and doors fields in the query when filled in", async () => {
     const user = createUser();
-    render(<VehicleSearchForm />);
+    render(<VehicleSearchForm isDatabaseUp={true} />);
 
     await chooseMake(user, "Volkswagen");
     await user.type(screen.getByLabelText("Engine"), "2.0 TDI");

@@ -1,6 +1,7 @@
 {
   "title": "Find your vehicle's faults",
   "statusActive": "Database active",
+  "statusInactive": "Database unavailable",
   "fields": {
     "make": "Make",
     "makePlaceholder": "e.g. Volkswagen",

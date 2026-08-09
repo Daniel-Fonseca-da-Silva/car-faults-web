@@ -12,8 +12,11 @@
     "title": "Defectos por vehículo",
     "subtitle": "Explora los defectos crónicos más reportados por marca y modelo.",
     "resultsFor": "Resultados para \"{query}\"",
-    "noResults": "No se encontraron vehículos con estos filtros.",
-    "allVehicles": "Todos los vehículos"
+    "empty": "Aún no hay defectos reportados.",
+    "allVehicles": "Todos los vehículos",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "pageInfo": "Página {page} de {totalPages}"
   },
   "vehicle": {
     "eyebrow": "Vehículo encontrado",

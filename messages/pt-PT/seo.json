@@ -11,21 +11,13 @@
     "titleTemplate": "Defeitos do {make} {model} {year} | CarFaults",
     "descriptionTemplate": "Conheça os defeitos crónicos mais reportados do {make} {model} {year}: gravidade, custo típico e relatos de proprietários."
   },
-  "recalls": {
-    "title": "Recalls | CarFaults",
-    "description": "Consulte recalls oficiais por marca e modelo."
-  },
-  "compare": {
-    "title": "Comparar veículos | CarFaults",
-    "description": "Compare a fiabilidade entre diferentes veículos."
-  },
   "about": {
     "title": "Sobre | CarFaults",
-    "description": "Conheça a missão da CarFaults."
+    "description": "Engenheiro de software e aficionado por automóveis: porque criei a CarFaults e como o catálogo de defeitos crónicos ajuda a comprar com mais informação."
   },
   "login": {
     "title": "Entrar | CarFaults",
-    "description": "Acesse a sua conta CarFaults para consultar defeitos, recalls e comparações de veículos."
+    "description": "Acesse a sua conta CarFaults para consultar defeitos."
   },
   "profile": {
     "title": "A minha conta | CarFaults",
@@ -38,5 +30,9 @@
   "admin": {
     "title": "Admin | CarFaults",
     "description": "Gerir o catálogo de veículos, problemas conhecidos e soluções."
+  },
+  "privacy": {
+    "title": "Privacidade e Termos | CarFaults",
+    "description": "Leia a Política de Privacidade e os Termos de Serviço da CarFaults."
   }
 }
