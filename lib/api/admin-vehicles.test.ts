@@ -4,10 +4,12 @@
 import {
   createAdminVehicleModel,
   deleteAdminVehicleModel,
-  getAdminVehicleModel,
-  getAdminVehicleModels,
   updateAdminVehicleModel,
 } from "./admin-vehicles";
+import {
+  getAdminVehicleModel,
+  getAdminVehicleModels,
+} from "./admin-vehicles.server";
 
 const apiFetchMock = jest.fn();
 const serverApiFetchMock = jest.fn();

@@ -40,9 +40,7 @@ describe("FaultCard", () => {
   it("renders vehicle info, fault title, severity and report count", async () => {
     const jsx = await FaultCard({
       make: "Volkswagen",
-      makeSlug: "volkswagen",
       model: "Golf",
-      modelSlug: "golf",
       year: 2018,
       engine: "2.0 TDI",
       fuelType: "diesel",
@@ -61,12 +59,10 @@ describe("FaultCard", () => {
     expect(screen.getByText("412 reports")).toBeInTheDocument();
   });
 
-  it("links to the vehicle's pSEO page with the lookup identity in the query", async () => {
+  it("links to the vehicle's pSEO page with fuel type and engine in the path", async () => {
     const jsx = await FaultCard({
       make: "Volkswagen",
-      makeSlug: "volkswagen",
       model: "Golf",
-      modelSlug: "golf",
       year: 2018,
       engine: "2.0 TDI",
       fuelType: "diesel",
@@ -81,16 +77,14 @@ describe("FaultCard", () => {
     const link = screen.getByRole("link", { name: /View reports/i });
     expect(link).toHaveAttribute(
       "href",
-      "/defects/volkswagen/golf/2018?brand=Volkswagen&model=Golf&engine=2.0+TDI&fuelType=diesel&doors=5"
+      "/defects/volkswagen/golf/2018/diesel/2-0-tdi?doors=5"
     );
   });
 
-  it("falls back to a plain path when the vehicle has no fuel type on record", async () => {
+  it("renders a non-interactive CTA instead of a link when the vehicle has no fuel type on record", async () => {
     const jsx = await FaultCard({
       make: "Volkswagen",
-      makeSlug: "volkswagen",
       model: "Golf",
-      modelSlug: "golf",
       year: 2018,
       engine: "2.0 TDI",
       faultTitle: "Timing chain tensioner wear",
@@ -100,16 +94,16 @@ describe("FaultCard", () => {
 
     render(jsx);
 
-    const link = screen.getByRole("link", { name: /View reports/i });
-    expect(link).toHaveAttribute("href", "/defects/volkswagen/golf/2018");
+    expect(
+      screen.queryByRole("link", { name: /View reports/i })
+    ).not.toBeInTheDocument();
+    expect(screen.getByText("View reports")).toBeInTheDocument();
   });
 
   it("uses the warning icon for non-critical severities", async () => {
     const jsx = await FaultCard({
       make: "Renault",
-      makeSlug: "renault",
       model: "Clio",
-      modelSlug: "clio",
       year: 2019,
       engine: "0.9 TCe",
       fuelType: "gasoline",

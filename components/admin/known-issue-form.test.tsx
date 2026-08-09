@@ -103,5 +103,8 @@ describe("KnownIssueForm", () => {
       expect.objectContaining({ title: "Problematic gearbox" })
     );
     expect(pushMock).toHaveBeenCalledWith("/admin/issues/ki-1");
+    expect(
+      await screen.findByRole("button", { name: "Save" })
+    ).toBeEnabled();
   });
 });

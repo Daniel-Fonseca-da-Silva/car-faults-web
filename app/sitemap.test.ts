@@ -1,12 +1,47 @@
 import { locales } from "@/i18n/locales";
-import { vehicles } from "@/lib/mocks/vehicles";
 
 import sitemap from "./sitemap";
 
+const getPlatformVehiclesMock = jest.fn();
+
+jest.mock("@/lib/api/platform", () => ({
+  getPlatformVehicles: (...args: unknown[]) =>
+    getPlatformVehiclesMock(...args),
+}));
+
+const vehicles = [
+  {
+    brand: "Volkswagen",
+    model: "Golf",
+    yearFrom: 2018,
+    engine: "2.0 TDI",
+    fuelType: "diesel",
+    doors: 5,
+  },
+  {
+    brand: "Mercedes-Benz",
+    model: "Classe C",
+    yearFrom: 2017,
+    engine: "C220 d 2.1",
+    fuelType: "diesel",
+  },
+];
+
 describe("sitemap", () => {
-  it("includes every static path for every locale", () => {
-    const entries = sitemap();
-    const staticPaths = ["", "/recalls", "/defects", "/compare", "/about"];
+  afterEach(() => {
+    getPlatformVehiclesMock.mockReset();
+  });
+
+  it("includes every static path for every locale", async () => {
+    getPlatformVehiclesMock.mockResolvedValue({
+      items: [],
+      total: 0,
+      page: 1,
+      limit: 200,
+    });
+
+    const entries = await sitemap();
+    const staticPaths = ["", "/defects", "/about", "/privacy"];
 
     for (const locale of locales) {
       for (const path of staticPaths) {
@@ -17,20 +52,72 @@ describe("sitemap", () => {
     }
   });
 
-  it("includes a URL for every vehicle in every locale", () => {
-    const entries = sitemap();
+  it("includes a slugified vehicle URL with fuel type and engine for every vehicle in every locale", async () => {
+    getPlatformVehiclesMock.mockResolvedValue({
+      items: vehicles,
+      total: vehicles.length,
+      page: 1,
+      limit: 200,
+    });
+
+    const entries = await sitemap();
 
     for (const locale of locales) {
-      for (const vehicle of vehicles) {
-        const expectedUrl = `http://localhost:3000/${locale}/defects/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}`;
-        expect(entries.some((entry) => entry.url === expectedUrl)).toBe(true);
-      }
+      expect(
+        entries.some(
+          (entry) =>
+            entry.url ===
+            `http://localhost:3000/${locale}/defects/volkswagen/golf/2018/diesel/2-0-tdi`
+        )
+      ).toBe(true);
+      expect(
+        entries.some(
+          (entry) =>
+            entry.url ===
+            `http://localhost:3000/${locale}/defects/mercedes-benz/classe-c/2017/diesel/c220-d-2-1`
+        )
+      ).toBe(true);
     }
   });
 
-  it("returns the expected total number of entries", () => {
-    const entries = sitemap();
-    const staticCount = locales.length * 5;
+  it("pages through the platform vehicles catalog until every item is fetched", async () => {
+    getPlatformVehiclesMock
+      .mockResolvedValueOnce({
+        items: [vehicles[0]],
+        total: 2,
+        page: 1,
+        limit: 1,
+      })
+      .mockResolvedValueOnce({
+        items: [vehicles[1]],
+        total: 2,
+        page: 2,
+        limit: 1,
+      });
+
+    await sitemap();
+
+    expect(getPlatformVehiclesMock).toHaveBeenCalledTimes(2);
+    expect(getPlatformVehiclesMock).toHaveBeenNthCalledWith(1, {
+      page: 1,
+      limit: 200,
+    });
+    expect(getPlatformVehiclesMock).toHaveBeenNthCalledWith(2, {
+      page: 2,
+      limit: 200,
+    });
+  });
+
+  it("returns the expected total number of entries", async () => {
+    getPlatformVehiclesMock.mockResolvedValue({
+      items: vehicles,
+      total: vehicles.length,
+      page: 1,
+      limit: 200,
+    });
+
+    const entries = await sitemap();
+    const staticCount = locales.length * 4;
     const vehicleCount = locales.length * vehicles.length;
 
     expect(entries).toHaveLength(staticCount + vehicleCount);

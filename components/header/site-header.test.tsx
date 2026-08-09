@@ -8,9 +8,7 @@ const pushMock = jest.fn();
 const getCurrentUserMock = jest.fn();
 
 const navDict: Record<string, string> = {
-  recalls: "Recalls",
   defects: "Defects",
-  compare: "Compare",
   about: "About",
   menu: "Menu",
   profile: "Profile",
@@ -88,7 +86,7 @@ describe("SiteHeader", () => {
     const jsx = await SiteHeader();
     render(jsx);
 
-    for (const label of ["Recalls", "Defects", "Compare", "About"]) {
+    for (const label of ["Defects", "About"]) {
       expect(screen.getAllByText(label).length).toBeGreaterThan(0);
     }
   });
@@ -133,10 +131,10 @@ describe("SiteHeader", () => {
     const jsx = await SiteHeader();
     render(jsx);
 
-    expect(screen.getAllByText("Recalls")).toHaveLength(1);
+    expect(screen.getAllByText("Defects")).toHaveLength(1);
 
     await user.click(screen.getByRole("button", { name: "Menu" }));
 
-    expect(screen.getAllByText("Recalls")).toHaveLength(2);
+    expect(screen.getAllByText("Defects")).toHaveLength(2);
   });
 });

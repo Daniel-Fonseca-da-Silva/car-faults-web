@@ -78,7 +78,7 @@ describe("proxy", () => {
   });
 
   it("delegates to the intl middleware for non-protected routes", () => {
-    const request = new NextRequest("https://web.example.com/en-GB/recalls");
+    const request = new NextRequest("https://web.example.com/en-GB/defects");
 
     proxy(request);
 

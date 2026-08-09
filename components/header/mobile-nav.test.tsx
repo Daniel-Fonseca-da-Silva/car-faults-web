@@ -11,9 +11,7 @@ const refreshMock = jest.fn();
 const logoutMock = jest.fn();
 
 const navDict: Record<string, string> = {
-  recalls: "Recalls",
   defects: "Defeitos",
-  compare: "Comparar",
   about: "Sobre",
   menu: "Menu",
   garage: "Garagem",
@@ -117,7 +115,7 @@ describe("MobileNav", () => {
 
     await testUser.click(screen.getByRole("button", { name: "Menu" }));
 
-    for (const label of ["Recalls", "Defeitos", "Comparar", "Sobre"]) {
+    for (const label of ["Defeitos", "Sobre"]) {
       expect(screen.getByText(label)).toBeInTheDocument();
     }
   });

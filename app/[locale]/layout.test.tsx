@@ -23,26 +23,22 @@ jest.mock("@/components/header/site-header", () => ({
   SiteHeader: () => <div data-testid="site-header" />,
 }));
 
-const getAdsenseClientId = jest.fn();
-
-jest.mock("@/lib/api/config", () => ({
-  getAdsenseClientId: () => getAdsenseClientId(),
+jest.mock("@/components/ads/adsense-script", () => ({
+  AdSenseScript: () => <div data-testid="adsense-script" />,
 }));
 
-jest.mock("next/script", () => ({
-  __esModule: true,
-  default: (props: { src?: string }) => (
-    <div data-testid="adsense-script" data-src={props.src} />
+jest.mock("@/components/cookies/cookie-consent-provider", () => ({
+  CookieConsentProvider: ({ children }: { children: ReactNode }) => (
+    <div data-testid="cookie-consent-provider">{children}</div>
   ),
 }));
 
-describe("LocaleLayout", () => {
-  afterEach(() => {
-    getAdsenseClientId.mockReset();
-  });
+jest.mock("@/components/cookies/cookie-consent-modal", () => ({
+  CookieConsentModal: () => <div data-testid="cookie-consent-modal" />,
+}));
 
+describe("LocaleLayout", () => {
   it("renders the header, children and footer for a supported locale", async () => {
-    getAdsenseClientId.mockReturnValue(undefined);
     const jsx = await LocaleLayout({
       children: <p>page content</p>,
       params: Promise.resolve({ locale: "pt-PT" }),
@@ -54,29 +50,16 @@ describe("LocaleLayout", () => {
     expect(screen.getByTestId("site-footer")).toBeInTheDocument();
   });
 
-  it("does not render the AdSense script when no client id is configured", async () => {
-    getAdsenseClientId.mockReturnValue(undefined);
+  it("wraps the page in the cookie consent provider and renders the AdSense script and modal", async () => {
     const jsx = await LocaleLayout({
       children: <p>page content</p>,
       params: Promise.resolve({ locale: "pt-PT" }),
     });
     render(jsx);
 
-    expect(screen.queryByTestId("adsense-script")).not.toBeInTheDocument();
-  });
-
-  it("renders the AdSense script with the client id when configured", async () => {
-    getAdsenseClientId.mockReturnValue("ca-pub-1234567890123456");
-    const jsx = await LocaleLayout({
-      children: <p>page content</p>,
-      params: Promise.resolve({ locale: "pt-PT" }),
-    });
-    render(jsx);
-
-    expect(screen.getByTestId("adsense-script")).toHaveAttribute(
-      "data-src",
-      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456"
-    );
+    expect(screen.getByTestId("cookie-consent-provider")).toBeInTheDocument();
+    expect(screen.getByTestId("adsense-script")).toBeInTheDocument();
+    expect(screen.getByTestId("cookie-consent-modal")).toBeInTheDocument();
   });
 
   it("triggers a not-found response for an unsupported locale", async () => {

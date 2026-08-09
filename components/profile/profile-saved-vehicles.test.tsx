@@ -80,7 +80,7 @@ describe("ProfileSavedVehicles", () => {
     });
     expect(link).toHaveAttribute(
       "href",
-      "/defects/volkswagen/polo/1996?brand=Volkswagen&model=Polo&engine=1.0&fuelType=gasoline&doors=3"
+      "/defects/volkswagen/polo/1996/gasoline/1-0?doors=3"
     );
     expect(screen.getByText("Volkswagen Polo")).toBeInTheDocument();
     expect(screen.getByText("1996")).toBeInTheDocument();

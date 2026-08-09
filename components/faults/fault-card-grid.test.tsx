@@ -14,9 +14,7 @@ const entries: TopFaultEntry[] = [
   {
     id: "a",
     vehicle: {
-      makeSlug: "volkswagen",
       make: "Volkswagen",
-      modelSlug: "golf",
       model: "Golf",
       year: 2018,
       engine: "2.0 TDI",
@@ -29,9 +27,7 @@ const entries: TopFaultEntry[] = [
   {
     id: "b",
     vehicle: {
-      makeSlug: "bmw",
       make: "BMW",
-      modelSlug: "serie-3",
       model: "Série 3",
       year: 2016,
       engine: "320d",
@@ -57,5 +53,31 @@ describe("FaultCardGrid", () => {
     render(<FaultCardGrid entries={[]} />);
 
     expect(screen.queryByTestId("fault-card")).not.toBeInTheDocument();
+  });
+
+  it("omits entries with no fuel type on record", () => {
+    render(
+      <FaultCardGrid
+        entries={[
+          ...entries,
+          {
+            id: "c",
+            vehicle: {
+              make: "Fiat",
+              model: "Uno",
+              year: 2005,
+              engine: "1.0",
+            },
+            faultTitle: "Rust on wheel arches",
+            severity: "low",
+            reportCount: 12,
+          },
+        ]}
+      />
+    );
+
+    const cards = screen.getAllByTestId("fault-card");
+    expect(cards).toHaveLength(2);
+    expect(screen.queryByText("Rust on wheel arches")).not.toBeInTheDocument();
   });
 });

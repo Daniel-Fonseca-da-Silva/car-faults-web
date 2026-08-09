@@ -54,10 +54,6 @@ jest.mock("@/components/garage/garage-known-issues", () => ({
   ),
 }));
 
-jest.mock("@/components/ads/adsense-unit", () => ({
-  AdSenseUnit: ({ slot }: { slot: string }) => <div>AdSenseUnit:{slot}</div>,
-}));
-
 const user: UserProfile = {
   id: "u1",
   email: "ana@example.com",
@@ -91,7 +87,7 @@ describe("GaragePage", () => {
     jest.clearAllMocks();
   });
 
-  it("renders the hero, list and issues panel with an ad when there are vehicles", async () => {
+  it("renders the hero, list and issues panel when there are vehicles", async () => {
     getGaragePageDataMock.mockResolvedValue({
       user,
       vehicles: [vehicle],
@@ -107,7 +103,6 @@ describe("GaragePage", () => {
     expect(screen.getByText("GarageHero:uv-1")).toBeInTheDocument();
     expect(screen.getByText("GarageVehicleList:1:uv-1")).toBeInTheDocument();
     expect(screen.getByText("GarageKnownIssues:uv-1")).toBeInTheDocument();
-    expect(screen.getByText("AdSenseUnit:0000000000")).toBeInTheDocument();
   });
 
   it("passes the vehicleId search param through to the loader", async () => {
@@ -125,7 +120,7 @@ describe("GaragePage", () => {
     expect(getGaragePageDataMock).toHaveBeenCalledWith("pt-PT", "uv-1");
   });
 
-  it("omits the issues panel and the ad when the garage is empty", async () => {
+  it("omits the issues panel when the garage is empty", async () => {
     getGaragePageDataMock.mockResolvedValue({
       user,
       vehicles: [],
@@ -141,7 +136,6 @@ describe("GaragePage", () => {
     expect(screen.getByText("GarageHero:none")).toBeInTheDocument();
     expect(screen.getByText("GarageVehicleList:0:none")).toBeInTheDocument();
     expect(screen.queryByText(/GarageKnownIssues/)).not.toBeInTheDocument();
-    expect(screen.queryByText(/AdSenseUnit/)).not.toBeInTheDocument();
   });
 
   it("redirects to login when there is no authenticated user", async () => {

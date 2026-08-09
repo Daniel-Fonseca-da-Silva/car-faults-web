@@ -72,7 +72,7 @@ describe("GarageKnownIssues", () => {
     const link = screen.getByRole("link", { name: /Ver detalhes/ });
     expect(link).toHaveAttribute(
       "href",
-      "/defects/volkswagen/polo/2001?brand=Volkswagen&model=Polo&engine=1.0&fuelType=gasoline&doors=3"
+      "/defects/volkswagen/polo/2001/gasoline/1-0?doors=3"
     );
   });
 

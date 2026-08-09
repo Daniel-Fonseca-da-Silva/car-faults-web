@@ -4,9 +4,9 @@
 import {
   createAdminKnownIssue,
   deleteAdminKnownIssue,
-  getAdminKnownIssue,
   updateAdminKnownIssue,
 } from "./admin-known-issues";
+import { getAdminKnownIssue } from "./admin-known-issues.server";
 
 const apiFetchMock = jest.fn();
 const serverApiFetchMock = jest.fn();
