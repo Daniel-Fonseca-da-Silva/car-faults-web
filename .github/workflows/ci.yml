@@ -22,6 +22,11 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SITE_NAME: Auto Crónica
+      NEXT_PUBLIC_SITE_CONTACT_EMAIL: contact@autocronica.autos
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      NEXT_PUBLIC_API_URL: http://localhost:3001
     steps:
       - uses: actions/checkout@v4
 
