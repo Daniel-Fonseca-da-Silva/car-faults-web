@@ -74,7 +74,7 @@ describe("getVehicleLookup", () => {
     ).resolves.toBeNull();
   });
 
-  it("throws on other error responses", async () => {
+  it("returns null on other error responses", async () => {
     serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
 
     await expect(
@@ -85,7 +85,21 @@ describe("getVehicleLookup", () => {
         engine: "1.0",
         fuelType: "gasoline",
       })
-    ).rejects.toThrow("Failed to load vehicle lookup: 500");
+    ).resolves.toBeNull();
+  });
+
+  it("returns null when the request throws", async () => {
+    serverApiFetchMock.mockRejectedValue(new Error("network error"));
+
+    await expect(
+      getVehicleLookup({
+        brand: "Fiat",
+        model: "Uno",
+        year: 2007,
+        engine: "1.0",
+        fuelType: "gasoline",
+      })
+    ).resolves.toBeNull();
   });
 });
 
@@ -150,7 +164,7 @@ describe("getVehicleLookupByPath", () => {
     ).resolves.toBeNull();
   });
 
-  it("throws on other error responses", async () => {
+  it("returns null on other error responses", async () => {
     serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
 
     await expect(
@@ -161,6 +175,20 @@ describe("getVehicleLookupByPath", () => {
         fuelType: "gasoline",
         engine: "1-0",
       })
-    ).rejects.toThrow("Failed to load vehicle lookup: 500");
+    ).resolves.toBeNull();
+  });
+
+  it("returns null when the request throws", async () => {
+    serverApiFetchMock.mockRejectedValue(new Error("network error"));
+
+    await expect(
+      getVehicleLookupByPath({
+        make: "fiat",
+        model: "uno",
+        year: 2007,
+        fuelType: "gasoline",
+        engine: "1-0",
+      })
+    ).resolves.toBeNull();
   });
 });
