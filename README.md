@@ -106,6 +106,8 @@ See [.env.example](.env.example) for the full list. Summary:
 |----------|---------|
 | `NEXT_PUBLIC_API_URL` | `car-faults-api` base URL (no trailing slash) |
 | `NEXT_PUBLIC_SITE_URL` | Public site URL, used for sitemap/robots |
+| `NEXT_PUBLIC_SITE_NAME` | Public brand name (SEO, Open Graph, JSON-LD) |
+| `NEXT_PUBLIC_SITE_CONTACT_EMAIL` | Public contact email for the brand |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile widget sitekey (siteverify happens only in the API) |
 | `NEXT_PUBLIC_ADSENSE_CLIENT_ID` | Google AdSense publisher id; leave unset to disable ads (dev/local) |
 | `NEXT_PUBLIC_R2_PUBLIC_BASE_URL` | Must match `car-faults-api`'s `R2_PUBLIC_BASE_URL` |
