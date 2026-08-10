@@ -1,7 +1,18 @@
 import { buildPageMetadata } from "./build-page-metadata";
-import { SITE_NAME } from "./site-brand";
+
+const TEST_SITE_NAME = "Auto Crónica";
 
 describe("buildPageMetadata", () => {
+  const originalSiteName = process.env.NEXT_PUBLIC_SITE_NAME;
+
+  beforeEach(() => {
+    process.env.NEXT_PUBLIC_SITE_NAME = TEST_SITE_NAME;
+  });
+
+  afterEach(() => {
+    process.env.NEXT_PUBLIC_SITE_NAME = originalSiteName;
+  });
+
   it("builds metadata with a plain string title by default", () => {
     const metadata = buildPageMetadata({
       title: "Defects hub",
@@ -24,7 +35,7 @@ describe("buildPageMetadata", () => {
       title: "Defects hub",
       description: "Browse known defects.",
       url: "http://localhost:3000/pt-PT/defects",
-      siteName: SITE_NAME,
+      siteName: TEST_SITE_NAME,
       locale: "pt-PT",
       type: "website",
     });
