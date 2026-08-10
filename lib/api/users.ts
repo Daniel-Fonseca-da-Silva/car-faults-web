@@ -5,17 +5,17 @@ import type { UserStats } from "@/types/user-stats";
 import type { UserVehicle, UserVehicleDetail } from "@/types/user-vehicle";
 
 export async function getCurrentUser(): Promise<UserProfile | null> {
-  const response = await serverApiFetch("/v1/users/me");
+  try {
+    const response = await serverApiFetch("/v1/users/me");
 
-  if (response.status === 401) {
+    if (!response.ok) {
+      return null;
+    }
+
+    return (await response.json()) as UserProfile;
+  } catch {
     return null;
   }
-
-  if (!response.ok) {
-    throw new Error(`Failed to load current user: ${response.status}`);
-  }
-
-  return (await response.json()) as UserProfile;
 }
 
 export async function getCurrentUserStats(): Promise<UserStats> {

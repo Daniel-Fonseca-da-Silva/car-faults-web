@@ -10,6 +10,10 @@ jest.mock('next-intl/server', () => ({
   getLocale: jest.fn(async () => 'en-GB'),
 }))
 
+jest.mock('@vercel/analytics/next', () => ({
+  Analytics: () => null,
+}))
+
 // React 19 treats <html> as a singleton and renders it to document.documentElement,
 // not inside the RTL container div. Suppress the expected nesting warning.
 beforeAll(() => {

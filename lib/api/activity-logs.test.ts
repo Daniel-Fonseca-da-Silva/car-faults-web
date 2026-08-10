@@ -81,11 +81,21 @@ describe("getVehicleFavoriteStatus", () => {
     );
   });
 
-  it("throws on an error response", async () => {
+  it("returns not favorited on an error response", async () => {
     serverApiFetchMock.mockResolvedValue(new Response(null, { status: 401 }));
 
-    await expect(getVehicleFavoriteStatus("vm-1")).rejects.toThrow(
-      "Failed to load favorite status: 401"
-    );
+    await expect(getVehicleFavoriteStatus("vm-1")).resolves.toEqual({
+      vehicleModelId: "vm-1",
+      favorited: false,
+    });
+  });
+
+  it("returns not favorited when the request throws", async () => {
+    serverApiFetchMock.mockRejectedValue(new Error("network error"));
+
+    await expect(getVehicleFavoriteStatus("vm-1")).resolves.toEqual({
+      vehicleModelId: "vm-1",
+      favorited: false,
+    });
   });
 });

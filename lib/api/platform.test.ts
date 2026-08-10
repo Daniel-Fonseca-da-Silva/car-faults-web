@@ -31,12 +31,24 @@ describe("getPlatformStats", () => {
     expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/platform/stats");
   });
 
-  it("throws on an error response", async () => {
+  it("returns zeroed stats on an error response", async () => {
     serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
 
-    await expect(getPlatformStats()).rejects.toThrow(
-      "Failed to load platform stats: 500"
-    );
+    await expect(getPlatformStats()).resolves.toEqual({
+      reportsCount: 0,
+      vehiclesCount: 0,
+      faultsCount: 0,
+    });
+  });
+
+  it("returns zeroed stats when the request throws", async () => {
+    serverApiFetchMock.mockRejectedValue(new Error("network error"));
+
+    await expect(getPlatformStats()).resolves.toEqual({
+      reportsCount: 0,
+      vehiclesCount: 0,
+      faultsCount: 0,
+    });
   });
 });
 
@@ -174,12 +186,23 @@ describe("getPlatformFaults", () => {
     });
   });
 
-  it("throws on an error response", async () => {
+  it("returns an empty page on an error response", async () => {
     serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
 
-    await expect(getPlatformFaults({ locale: "en-GB" })).rejects.toThrow(
-      "Failed to load faults: 500"
-    );
+    await expect(
+      getPlatformFaults({ locale: "en-GB", page: 2, limit: 9 })
+    ).resolves.toEqual({ items: [], total: 0, page: 2, limit: 9 });
+  });
+
+  it("returns an empty page with defaults when the request throws", async () => {
+    serverApiFetchMock.mockRejectedValue(new Error("network error"));
+
+    await expect(getPlatformFaults({ locale: "en-GB" })).resolves.toEqual({
+      items: [],
+      total: 0,
+      page: 1,
+      limit: 9,
+    });
   });
 });
 
@@ -225,12 +248,23 @@ describe("getPlatformVehicles", () => {
     expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/platform/vehicles?");
   });
 
-  it("throws on an error response", async () => {
+  it("returns an empty page on an error response", async () => {
     serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
 
-    await expect(getPlatformVehicles()).rejects.toThrow(
-      "Failed to load platform vehicles: 500"
-    );
+    await expect(
+      getPlatformVehicles({ page: 3, limit: 50 })
+    ).resolves.toEqual({ items: [], total: 0, page: 3, limit: 50 });
+  });
+
+  it("returns an empty page with defaults when the request throws", async () => {
+    serverApiFetchMock.mockRejectedValue(new Error("network error"));
+
+    await expect(getPlatformVehicles()).resolves.toEqual({
+      items: [],
+      total: 0,
+      page: 1,
+      limit: 200,
+    });
   });
 });
 

@@ -40,12 +40,16 @@ describe("getCurrentUser", () => {
     await expect(getCurrentUser()).resolves.toBeNull();
   });
 
-  it("throws on other error responses", async () => {
+  it("returns null on other error responses", async () => {
     serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
 
-    await expect(getCurrentUser()).rejects.toThrow(
-      "Failed to load current user: 500"
-    );
+    await expect(getCurrentUser()).resolves.toBeNull();
+  });
+
+  it("returns null when the request throws", async () => {
+    serverApiFetchMock.mockRejectedValue(new Error("network error"));
+
+    await expect(getCurrentUser()).resolves.toBeNull();
   });
 });
 

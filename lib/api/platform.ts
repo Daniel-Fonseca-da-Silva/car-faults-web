@@ -70,14 +70,24 @@ export interface PlatformFaultsPage {
   limit: number;
 }
 
+const EMPTY_PLATFORM_STATS: PlatformStats = {
+  reportsCount: 0,
+  vehiclesCount: 0,
+  faultsCount: 0,
+};
+
 export async function getPlatformStats(): Promise<PlatformStats> {
-  const response = await serverApiFetch("/v1/platform/stats");
+  try {
+    const response = await serverApiFetch("/v1/platform/stats");
 
-  if (!response.ok) {
-    throw new Error(`Failed to load platform stats: ${response.status}`);
+    if (!response.ok) {
+      return EMPTY_PLATFORM_STATS;
+    }
+
+    return (await response.json()) as PlatformStats;
+  } catch {
+    return EMPTY_PLATFORM_STATS;
   }
-
-  return (await response.json()) as PlatformStats;
 }
 
 export async function getPlatformFaults(
@@ -93,17 +103,31 @@ export async function getPlatformFaults(
   if (query.doors != null) params.set("doors", String(query.doors));
   if (query.engine) params.set("engine", query.engine);
 
-  const response = await serverApiFetch(
-    `/v1/platform/faults?${params.toString()}`
-  );
+  try {
+    const response = await serverApiFetch(
+      `/v1/platform/faults?${params.toString()}`
+    );
 
-  if (!response.ok) {
-    throw new Error(`Failed to load faults: ${response.status}`);
+    if (!response.ok) {
+      return {
+        items: [],
+        total: 0,
+        page: query.page ?? 1,
+        limit: query.limit ?? 9,
+      };
+    }
+
+    const { items, total, page, limit } =
+      (await response.json()) as PlatformFaultsResponseDto;
+    return { items: items.map(mapTopFault), total, page, limit };
+  } catch {
+    return {
+      items: [],
+      total: 0,
+      page: query.page ?? 1,
+      limit: query.limit ?? 9,
+    };
   }
-
-  const { items, total, page, limit } =
-    (await response.json()) as PlatformFaultsResponseDto;
-  return { items: items.map(mapTopFault), total, page, limit };
 }
 
 export async function getPlatformVehicles(
@@ -113,15 +137,29 @@ export async function getPlatformVehicles(
   if (query.page != null) params.set("page", String(query.page));
   if (query.limit != null) params.set("limit", String(query.limit));
 
-  const response = await serverApiFetch(
-    `/v1/platform/vehicles?${params.toString()}`
-  );
+  try {
+    const response = await serverApiFetch(
+      `/v1/platform/vehicles?${params.toString()}`
+    );
 
-  if (!response.ok) {
-    throw new Error(`Failed to load platform vehicles: ${response.status}`);
+    if (!response.ok) {
+      return {
+        items: [],
+        total: 0,
+        page: query.page ?? 1,
+        limit: query.limit ?? 200,
+      };
+    }
+
+    return (await response.json()) as PlatformVehiclesPage;
+  } catch {
+    return {
+      items: [],
+      total: 0,
+      page: query.page ?? 1,
+      limit: query.limit ?? 200,
+    };
   }
-
-  return (await response.json()) as PlatformVehiclesPage;
 }
 
 export async function getDatabaseStatus(): Promise<boolean> {
