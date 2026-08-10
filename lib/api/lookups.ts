@@ -25,17 +25,17 @@ export async function getVehicleLookup(
   if (params.doors != null) query.set("doors", String(params.doors));
   if (params.language) query.set("language", params.language);
 
-  const response = await serverApiFetch(`/v1/lookups?${query.toString()}`);
+  try {
+    const response = await serverApiFetch(`/v1/lookups?${query.toString()}`);
 
-  if (response.status === 404) {
+    if (!response.ok) {
+      return null;
+    }
+
+    return (await response.json()) as LookupResponse;
+  } catch {
     return null;
   }
-
-  if (!response.ok) {
-    throw new Error(`Failed to load vehicle lookup: ${response.status}`);
-  }
-
-  return (await response.json()) as LookupResponse;
 }
 
 export interface GetVehicleLookupByPathParams {
@@ -61,15 +61,17 @@ export async function getVehicleLookupByPath(
   if (params.doors != null) query.set("doors", String(params.doors));
   if (params.language) query.set("language", params.language);
 
-  const response = await serverApiFetch(`/v1/lookups/by-path?${query.toString()}`);
+  try {
+    const response = await serverApiFetch(
+      `/v1/lookups/by-path?${query.toString()}`
+    );
 
-  if (response.status === 404) {
+    if (!response.ok) {
+      return null;
+    }
+
+    return (await response.json()) as LookupResponse;
+  } catch {
     return null;
   }
-
-  if (!response.ok) {
-    throw new Error(`Failed to load vehicle lookup: ${response.status}`);
-  }
-
-  return (await response.json()) as LookupResponse;
 }

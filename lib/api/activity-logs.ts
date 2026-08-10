@@ -38,13 +38,17 @@ export async function unfavoriteVehicle(
 export async function getVehicleFavoriteStatus(
   vehicleModelId: string
 ): Promise<FavoriteStatus> {
-  const response = await serverApiFetch(
-    `/v1/activity-logs/favorites/${vehicleModelId}`
-  );
+  try {
+    const response = await serverApiFetch(
+      `/v1/activity-logs/favorites/${vehicleModelId}`
+    );
 
-  if (!response.ok) {
-    throw new Error(`Failed to load favorite status: ${response.status}`);
+    if (!response.ok) {
+      return { vehicleModelId, favorited: false };
+    }
+
+    return (await response.json()) as FavoriteStatus;
+  } catch {
+    return { vehicleModelId, favorited: false };
   }
-
-  return (await response.json()) as FavoriteStatus;
 }

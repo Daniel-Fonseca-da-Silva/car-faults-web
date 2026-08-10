@@ -35,7 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }))
   );
 
-  const vehicles = await fetchAllPlatformVehicles();
+  const vehicles = await fetchAllPlatformVehicles().catch(() => []);
 
   const brandSlugs = new Set<string>();
   const modelSlugs = new Set<string>();
