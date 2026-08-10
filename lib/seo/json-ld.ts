@@ -1,5 +1,5 @@
 import { getSiteUrl } from "./get-site-url";
-import { SITE_NAME } from "./site-brand";
+import { getSiteName } from "./site-brand";
 
 /** JSON-LD is inlined via dangerouslySetInnerHTML — escape `<` so a value
  * containing "</script>" can't break out of the script tag. */
@@ -34,7 +34,7 @@ export function buildWebsiteJsonLd(locale: string) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: SITE_NAME,
+    name: getSiteName(),
     url: `${siteUrl}/${locale}`,
   };
 }
@@ -43,7 +43,7 @@ export function buildOrganizationJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: SITE_NAME,
+    name: getSiteName(),
     url: getSiteUrl(),
   };
 }

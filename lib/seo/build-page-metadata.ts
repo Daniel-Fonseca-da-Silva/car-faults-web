@@ -4,7 +4,7 @@ import type { Locale } from "@/i18n/locales";
 
 import { buildHreflangLanguages } from "./build-hreflang";
 import { getSiteUrl } from "./get-site-url";
-import { SITE_NAME } from "./site-brand";
+import { getSiteName } from "./site-brand";
 
 export interface BuildPageMetadataParams {
   title: string;
@@ -14,7 +14,7 @@ export interface BuildPageMetadataParams {
   locale: Locale;
   /** Marks the page as private: excluded from indexing (login, garage, admin, ...). */
   noIndex?: boolean;
-  /** Set when `title` already contains the site name, to skip the root layout's "%s | Auto Crónica" template. */
+  /** Set when `title` already contains the site name, to skip the root layout's "%s | {siteName}" template. */
   titleIsAbsolute?: boolean;
 }
 
@@ -40,7 +40,7 @@ export function buildPageMetadata({
       title,
       description,
       url: canonical,
-      siteName: SITE_NAME,
+      siteName: getSiteName(),
       locale,
       type: "website",
     },
