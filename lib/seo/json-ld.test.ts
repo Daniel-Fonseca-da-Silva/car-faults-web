@@ -4,7 +4,8 @@ import {
   buildWebsiteJsonLd,
   serializeJsonLd,
 } from "./json-ld";
-import { SITE_NAME } from "./site-brand";
+
+const TEST_SITE_NAME = "Auto Crónica";
 
 describe("serializeJsonLd", () => {
   it("escapes < so a value can't break out of the surrounding script tag", () => {
@@ -44,22 +45,42 @@ describe("buildBreadcrumbJsonLd", () => {
 });
 
 describe("buildWebsiteJsonLd", () => {
+  const originalSiteName = process.env.NEXT_PUBLIC_SITE_NAME;
+
+  beforeEach(() => {
+    process.env.NEXT_PUBLIC_SITE_NAME = TEST_SITE_NAME;
+  });
+
+  afterEach(() => {
+    process.env.NEXT_PUBLIC_SITE_NAME = originalSiteName;
+  });
+
   it("builds a WebSite entry for the given locale", () => {
     expect(buildWebsiteJsonLd("en-GB")).toEqual({
       "@context": "https://schema.org",
       "@type": "WebSite",
-      name: SITE_NAME,
+      name: TEST_SITE_NAME,
       url: "http://localhost:3000/en-GB",
     });
   });
 });
 
 describe("buildOrganizationJsonLd", () => {
+  const originalSiteName = process.env.NEXT_PUBLIC_SITE_NAME;
+
+  beforeEach(() => {
+    process.env.NEXT_PUBLIC_SITE_NAME = TEST_SITE_NAME;
+  });
+
+  afterEach(() => {
+    process.env.NEXT_PUBLIC_SITE_NAME = originalSiteName;
+  });
+
   it("builds an Organization entry pointing at the site root", () => {
     expect(buildOrganizationJsonLd()).toEqual({
       "@context": "https://schema.org",
       "@type": "Organization",
-      name: SITE_NAME,
+      name: TEST_SITE_NAME,
       url: "http://localhost:3000",
     });
   });

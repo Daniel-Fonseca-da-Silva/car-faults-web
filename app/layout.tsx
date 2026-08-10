@@ -4,7 +4,7 @@ import { getLocale } from "next-intl/server";
 import "./globals.css";
 
 import { getSiteUrl } from "@/lib/seo/get-site-url";
-import { SITE_NAME } from "@/lib/seo/site-brand";
+import { getSiteName } from "@/lib/seo/site-brand";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: {
-    default: SITE_NAME,
-    template: `%s | ${SITE_NAME}`,
+    default: getSiteName(),
+    template: `%s | ${getSiteName()}`,
   },
   description:
     "Chronic reliability by vehicle model — known issues by make, model, year and engine.",
