@@ -3,10 +3,10 @@
  */
 import { createAdminFix, deleteAdminFix, updateAdminFix } from "./admin-fixes";
 
-const apiFetchMock = jest.fn();
+const serverApiFetchMock = jest.fn();
 
-jest.mock("./client", () => ({
-  apiFetch: (...args: unknown[]) => apiFetchMock(...args),
+jest.mock("./server-client", () => ({
+  serverApiFetch: (...args: unknown[]) => serverApiFetchMock(...args),
 }));
 
 function jsonResponse(body: unknown, status = 200): Response {
@@ -15,7 +15,7 @@ function jsonResponse(body: unknown, status = 200): Response {
 
 describe("createAdminFix", () => {
   afterEach(() => {
-    apiFetchMock.mockReset();
+    serverApiFetchMock.mockReset();
   });
 
   it("posts the input and returns the created fix", async () => {
@@ -25,10 +25,10 @@ describe("createAdminFix", () => {
       steps: "Remove gearbox.",
     };
     const created = { id: "fix-1", ...input, userId: null, source: "ai" };
-    apiFetchMock.mockResolvedValue(jsonResponse(created));
+    serverApiFetchMock.mockResolvedValue(jsonResponse(created));
 
     await expect(createAdminFix(input)).resolves.toEqual(created);
-    expect(apiFetchMock).toHaveBeenCalledWith("/v1/admin/fixes", {
+    expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/admin/fixes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(input),
@@ -36,7 +36,7 @@ describe("createAdminFix", () => {
   });
 
   it("throws on an error response", async () => {
-    apiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
 
     await expect(
       createAdminFix({
@@ -50,17 +50,17 @@ describe("createAdminFix", () => {
 
 describe("updateAdminFix", () => {
   afterEach(() => {
-    apiFetchMock.mockReset();
+    serverApiFetchMock.mockReset();
   });
 
   it("patches the fix and returns it", async () => {
     const updated = { id: "fix-1", summary: "Updated summary" };
-    apiFetchMock.mockResolvedValue(jsonResponse(updated));
+    serverApiFetchMock.mockResolvedValue(jsonResponse(updated));
 
     await expect(
       updateAdminFix("fix-1", { summary: "Updated summary" })
     ).resolves.toEqual(updated);
-    expect(apiFetchMock).toHaveBeenCalledWith("/v1/admin/fixes/fix-1", {
+    expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/admin/fixes/fix-1", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ summary: "Updated summary" }),
@@ -68,7 +68,7 @@ describe("updateAdminFix", () => {
   });
 
   it("throws on an error response", async () => {
-    apiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
 
     await expect(
       updateAdminFix("missing", { summary: "x" })
@@ -78,21 +78,21 @@ describe("updateAdminFix", () => {
 
 describe("deleteAdminFix", () => {
   afterEach(() => {
-    apiFetchMock.mockReset();
+    serverApiFetchMock.mockReset();
   });
 
   it("deletes the fix", async () => {
-    apiFetchMock.mockResolvedValue(new Response(null, { status: 204 }));
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 204 }));
 
     await deleteAdminFix("fix-1");
 
-    expect(apiFetchMock).toHaveBeenCalledWith("/v1/admin/fixes/fix-1", {
+    expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/admin/fixes/fix-1", {
       method: "DELETE",
     });
   });
 
   it("throws on an error response", async () => {
-    apiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
 
     await expect(deleteAdminFix("missing")).rejects.toThrow(
       "Failed to delete fix: 404"

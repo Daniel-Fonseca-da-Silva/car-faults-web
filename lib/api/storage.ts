@@ -1,4 +1,6 @@
-import { apiFetch } from "@/lib/api/client";
+"use server";
+
+import { serverApiFetch } from "@/lib/api/server-client";
 
 export interface UploadCommentImageResult {
   url: string;
@@ -10,7 +12,7 @@ export async function uploadCommentImage(
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await apiFetch("/v1/storage/comment-images", {
+  const response = await serverApiFetch("/v1/storage/comment-images", {
     method: "POST",
     body: formData,
   });
@@ -32,7 +34,7 @@ export async function uploadVehicleImage(
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await apiFetch("/v1/storage/vehicle-images", {
+  const response = await serverApiFetch("/v1/storage/vehicle-images", {
     method: "POST",
     body: formData,
   });

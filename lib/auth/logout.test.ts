@@ -1,52 +1,46 @@
 /**
  * @jest-environment node
  */
-const apiFetchMock = jest.fn();
+import { SESSION_COOKIE_NAME } from "@/lib/api/constants";
 
-jest.mock("@/lib/api/client", () => ({
-  apiFetch: (...args: unknown[]) => apiFetchMock(...args),
+const serverApiFetchMock = jest.fn();
+const deleteCookieMock = jest.fn();
+
+jest.mock("@/lib/api/server-client", () => ({
+  serverApiFetch: (...args: unknown[]) => serverApiFetchMock(...args),
+}));
+
+jest.mock("next/headers", () => ({
+  cookies: async () => ({
+    delete: deleteCookieMock,
+  }),
 }));
 
 describe("logout", () => {
-  let fetchMock: jest.Mock;
-
   beforeEach(() => {
-    fetchMock = jest.fn().mockResolvedValue(new Response(null, { status: 204 }));
-    global.fetch = fetchMock;
-    apiFetchMock.mockResolvedValue(new Response(null, { status: 204 }));
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 204 }));
   });
 
   afterEach(() => {
     jest.resetAllMocks();
   });
 
-  it("logs out from the API and clears the web session cookie", async () => {
+  it("revokes the API token and clears the web session cookie", async () => {
     const { logout } = await import("./logout");
 
     await logout();
 
-    expect(apiFetchMock).toHaveBeenCalledWith("/v1/auth/logout", {
+    expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/auth/logout", {
       method: "POST",
     });
-    expect(fetchMock).toHaveBeenCalledWith("/api/auth/session", {
-      method: "DELETE",
-    });
+    expect(deleteCookieMock).toHaveBeenCalledWith(SESSION_COOKIE_NAME);
   });
 
-  it("does not throw when one of the requests fails", async () => {
-    apiFetchMock.mockRejectedValue(new Error("network error"));
+  it("still clears the web session cookie when revoking the API token fails", async () => {
+    serverApiFetchMock.mockRejectedValue(new Error("network error"));
     const { logout } = await import("./logout");
 
     await expect(logout()).resolves.toBeUndefined();
-  });
-
-  it("resolves even when clearing the web session cookie is rejected", async () => {
-    fetchMock.mockRejectedValue(new Error("network error"));
-    const { logout } = await import("./logout");
-
-    await expect(logout()).resolves.toBeUndefined();
-    expect(apiFetchMock).toHaveBeenCalledWith("/v1/auth/logout", {
-      method: "POST",
-    });
+    expect(deleteCookieMock).toHaveBeenCalledWith(SESSION_COOKIE_NAME);
   });
 });

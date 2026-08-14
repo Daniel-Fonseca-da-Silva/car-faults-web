@@ -3,10 +3,10 @@
  */
 import { uploadCommentImage, uploadVehicleImage } from "./storage";
 
-const apiFetchMock = jest.fn();
+const serverApiFetchMock = jest.fn();
 
-jest.mock("./client", () => ({
-  apiFetch: (...args: unknown[]) => apiFetchMock(...args),
+jest.mock("./server-client", () => ({
+  serverApiFetch: (...args: unknown[]) => serverApiFetchMock(...args),
 }));
 
 function jsonResponse(body: unknown, status = 200): Response {
@@ -15,11 +15,11 @@ function jsonResponse(body: unknown, status = 200): Response {
 
 describe("uploadCommentImage", () => {
   afterEach(() => {
-    apiFetchMock.mockReset();
+    serverApiFetchMock.mockReset();
   });
 
   it("uploads the file as multipart form data and returns the url", async () => {
-    apiFetchMock.mockResolvedValue(
+    serverApiFetchMock.mockResolvedValue(
       jsonResponse({ url: "https://cdn.example.com/comments/user-1/uuid.jpg" })
     );
     const file = new File(["data"], "photo.jpg", { type: "image/jpeg" });
@@ -29,17 +29,17 @@ describe("uploadCommentImage", () => {
     expect(result).toEqual({
       url: "https://cdn.example.com/comments/user-1/uuid.jpg",
     });
-    expect(apiFetchMock).toHaveBeenCalledWith(
+    expect(serverApiFetchMock).toHaveBeenCalledWith(
       "/v1/storage/comment-images",
       expect.objectContaining({ method: "POST" })
     );
-    const [, init] = apiFetchMock.mock.calls[0] as [string, RequestInit];
+    const [, init] = serverApiFetchMock.mock.calls[0] as [string, RequestInit];
     expect(init.body).toBeInstanceOf(FormData);
     expect((init.body as FormData).get("file")).toBe(file);
   });
 
   it("throws on an error response", async () => {
-    apiFetchMock.mockResolvedValue(new Response(null, { status: 413 }));
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 413 }));
     const file = new File(["data"], "photo.jpg", { type: "image/jpeg" });
 
     await expect(uploadCommentImage(file)).rejects.toThrow(
@@ -50,11 +50,11 @@ describe("uploadCommentImage", () => {
 
 describe("uploadVehicleImage", () => {
   afterEach(() => {
-    apiFetchMock.mockReset();
+    serverApiFetchMock.mockReset();
   });
 
   it("uploads the file as multipart form data and returns the url", async () => {
-    apiFetchMock.mockResolvedValue(
+    serverApiFetchMock.mockResolvedValue(
       jsonResponse({ url: "https://cdn.example.com/vehicles/uuid.jpg" })
     );
     const file = new File(["data"], "photo.jpg", { type: "image/jpeg" });
@@ -64,17 +64,17 @@ describe("uploadVehicleImage", () => {
     expect(result).toEqual({
       url: "https://cdn.example.com/vehicles/uuid.jpg",
     });
-    expect(apiFetchMock).toHaveBeenCalledWith(
+    expect(serverApiFetchMock).toHaveBeenCalledWith(
       "/v1/storage/vehicle-images",
       expect.objectContaining({ method: "POST" })
     );
-    const [, init] = apiFetchMock.mock.calls[0] as [string, RequestInit];
+    const [, init] = serverApiFetchMock.mock.calls[0] as [string, RequestInit];
     expect(init.body).toBeInstanceOf(FormData);
     expect((init.body as FormData).get("file")).toBe(file);
   });
 
   it("throws on an error response", async () => {
-    apiFetchMock.mockResolvedValue(new Response(null, { status: 403 }));
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 403 }));
     const file = new File(["data"], "photo.jpg", { type: "image/jpeg" });
 
     await expect(uploadVehicleImage(file)).rejects.toThrow(

@@ -8,12 +8,7 @@ import {
 } from "./admin-known-issues";
 import { getAdminKnownIssue } from "./admin-known-issues.server";
 
-const apiFetchMock = jest.fn();
 const serverApiFetchMock = jest.fn();
-
-jest.mock("./client", () => ({
-  apiFetch: (...args: unknown[]) => apiFetchMock(...args),
-}));
 
 jest.mock("./server-client", () => ({
   serverApiFetch: (...args: unknown[]) => serverApiFetchMock(...args),
@@ -55,7 +50,7 @@ describe("getAdminKnownIssue", () => {
 
 describe("createAdminKnownIssue", () => {
   afterEach(() => {
-    apiFetchMock.mockReset();
+    serverApiFetchMock.mockReset();
   });
 
   it("posts the input and returns the created known issue", async () => {
@@ -66,10 +61,10 @@ describe("createAdminKnownIssue", () => {
       severity: "high" as const,
     };
     const created = { id: "ki-1", ...input };
-    apiFetchMock.mockResolvedValue(jsonResponse(created));
+    serverApiFetchMock.mockResolvedValue(jsonResponse(created));
 
     await expect(createAdminKnownIssue(input)).resolves.toEqual(created);
-    expect(apiFetchMock).toHaveBeenCalledWith("/v1/admin/known-issues", {
+    expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/admin/known-issues", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(input),
@@ -77,7 +72,7 @@ describe("createAdminKnownIssue", () => {
   });
 
   it("throws on an error response", async () => {
-    apiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
 
     await expect(
       createAdminKnownIssue({
@@ -92,17 +87,17 @@ describe("createAdminKnownIssue", () => {
 
 describe("updateAdminKnownIssue", () => {
   afterEach(() => {
-    apiFetchMock.mockReset();
+    serverApiFetchMock.mockReset();
   });
 
   it("patches the known issue and returns it", async () => {
     const updated = { id: "ki-1", title: "New title" };
-    apiFetchMock.mockResolvedValue(jsonResponse(updated));
+    serverApiFetchMock.mockResolvedValue(jsonResponse(updated));
 
     await expect(
       updateAdminKnownIssue("ki-1", { title: "New title" })
     ).resolves.toEqual(updated);
-    expect(apiFetchMock).toHaveBeenCalledWith("/v1/admin/known-issues/ki-1", {
+    expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/admin/known-issues/ki-1", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title: "New title" }),
@@ -110,7 +105,7 @@ describe("updateAdminKnownIssue", () => {
   });
 
   it("throws on an error response", async () => {
-    apiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
 
     await expect(
       updateAdminKnownIssue("missing", { title: "x" })
@@ -120,21 +115,21 @@ describe("updateAdminKnownIssue", () => {
 
 describe("deleteAdminKnownIssue", () => {
   afterEach(() => {
-    apiFetchMock.mockReset();
+    serverApiFetchMock.mockReset();
   });
 
   it("deletes the known issue", async () => {
-    apiFetchMock.mockResolvedValue(new Response(null, { status: 204 }));
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 204 }));
 
     await deleteAdminKnownIssue("ki-1");
 
-    expect(apiFetchMock).toHaveBeenCalledWith("/v1/admin/known-issues/ki-1", {
+    expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/admin/known-issues/ki-1", {
       method: "DELETE",
     });
   });
 
   it("throws on an error response", async () => {
-    apiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
 
     await expect(deleteAdminKnownIssue("missing")).rejects.toThrow(
       "Failed to delete known issue: 404"
