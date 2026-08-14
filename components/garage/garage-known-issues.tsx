@@ -2,6 +2,7 @@ import { ChevronRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { Card } from "@/components/ui/card";
+import { IssueSources } from "@/components/vehicle/issue-sources";
 import { SeverityBadge } from "@/components/vehicle/severity-badge";
 import { Link } from "@/i18n/navigation";
 import { buildLookupHref } from "@/lib/lookup/build-lookup-href";
@@ -59,6 +60,10 @@ export async function GarageKnownIssues({ vehicle }: GarageKnownIssuesProps) {
                 <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
                   {issue.description}
                 </p>
+                <IssueSources
+                  sources={issue.sources}
+                  label={tFaults("vehicle.sources")}
+                />
               </div>
               <SeverityBadge
                 severity={issue.severity}

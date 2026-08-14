@@ -2,19 +2,21 @@
 
 import { createContext, useCallback, useContext, useState, useSyncExternalStore } from "react"
 
+import { applyGoogleConsent } from "@/lib/ads/google-consent-mode"
 import {
   type CookieConsentValue,
   getCookieConsentServerSnapshot,
   readCookieConsentFromDocument,
   subscribeToCookieConsent,
-  writeCookieConsentAccepted,
+  writeCookieConsent,
 } from "@/lib/cookies/consent"
 
 interface CookieConsentContextValue {
   consent: CookieConsentValue
   mounted: boolean
   isOpen: boolean
-  dismiss: () => void
+  accept: () => void
+  reject: () => void
   openPreferences: () => void
 }
 
@@ -39,10 +41,21 @@ export function CookieConsentProvider({ children }: { children: React.ReactNode 
 
   const isOpen = isManuallyOpen || (mounted && consent === null)
 
-  const dismiss = useCallback(() => {
-    writeCookieConsentAccepted()
+  const accept = useCallback(() => {
+    applyGoogleConsent("granted")
+    writeCookieConsent("accepted")
     setIsManuallyOpen(false)
   }, [])
+
+  const reject = useCallback(() => {
+    const hadAccepted = consent === "accepted"
+    applyGoogleConsent("denied")
+    writeCookieConsent("rejected")
+    setIsManuallyOpen(false)
+    if (hadAccepted) {
+      window.location.reload()
+    }
+  }, [consent])
 
   const openPreferences = useCallback(() => {
     setIsManuallyOpen(true)
@@ -50,7 +63,7 @@ export function CookieConsentProvider({ children }: { children: React.ReactNode 
 
   return (
     <CookieConsentContext.Provider
-      value={{ consent, mounted, isOpen, dismiss, openPreferences }}
+      value={{ consent, mounted, isOpen, accept, reject, openPreferences }}
     >
       {children}
     </CookieConsentContext.Provider>

@@ -10,25 +10,25 @@ export type SocialLink = {
 export const SOCIAL_LINKS: SocialLink[] = [
   {
     id: "instagram",
-    href: "#",
+    href: "https://www.instagram.com/auto_cronica",
     labelKey: "footer.social.instagram",
     icon: siInstagram,
   },
   {
     id: "facebook",
-    href: "#",
+    href: "https://www.facebook.com/autocronica",
     labelKey: "footer.social.facebook",
     icon: siFacebook,
   },
   {
     id: "youtube",
-    href: "#",
+    href: "https://www.youtube.com/@auto_cronica",
     labelKey: "footer.social.youtube",
     icon: siYoutube,
   },
   {
     id: "tiktok",
-    href: "#",
+    href: "https://www.tiktok.com/@auto_cronica",
     labelKey: "footer.social.tiktok",
     icon: siTiktok,
   },

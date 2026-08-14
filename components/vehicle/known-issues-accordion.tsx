@@ -11,6 +11,7 @@ import {
 import { IssueComments } from "@/components/vehicle/issue-comments";
 import { IssueFixCard } from "@/components/vehicle/issue-fix-card";
 import { IssueReviews } from "@/components/vehicle/issue-reviews";
+import { IssueSources } from "@/components/vehicle/issue-sources";
 import { SeverityBadge } from "@/components/vehicle/severity-badge";
 import type { KnownIssue } from "@/types/lookup";
 import type { UserProfile } from "@/types/user";
@@ -49,11 +50,7 @@ export function KnownIssuesAccordion({
           <AccordionContent>
             <p className="text-muted-foreground">{issue.description}</p>
 
-            {issue.sources && issue.sources.length > 0 && (
-              <p className="mt-2 text-xs text-muted-foreground">
-                {t("vehicle.sources")}: {issue.sources.join(", ")}
-              </p>
-            )}
+            <IssueSources sources={issue.sources} label={t("vehicle.sources")} />
 
             <IssueReviews
               knownIssueId={issue.id}

@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "Auto Crónica — Chronic faults by make and model",
+    "title": "Auto Crónica - Chronic faults by make and model",
     "description": "Search chronic issues by make, model, year and engine before buying a used car."
   },
   "defectsHub": {
@@ -8,11 +8,11 @@
     "description": "Explore the most reported chronic issues by make and model."
   },
   "brandPage": {
-    "titleTemplate": "{make} faults — models and common issues",
+    "titleTemplate": "{make} faults - models and common issues",
     "descriptionTemplate": "Browse available {make} models and the most reported chronic faults by year, fuel type and engine."
   },
   "modelPage": {
-    "titleTemplate": "{make} {model} faults — years and engine variants",
+    "titleTemplate": "{make} {model} faults - years and engine variants",
     "descriptionTemplate": "Explore {make} {model} variants by year, fuel type and engine, and see the most reported chronic faults."
   },
   "vehiclePage": {

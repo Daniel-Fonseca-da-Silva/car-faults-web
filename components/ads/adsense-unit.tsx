@@ -15,8 +15,6 @@ declare global {
   }
 }
 
-const PLACEHOLDER_MIN_HEIGHT_CLASS = "min-h-[90px]";
-
 export interface AdSenseUnitProps {
   slot: string;
   format?: string;
@@ -44,28 +42,8 @@ export function AdSenseUnit({
     }
   }, [adsEnabled, slot]);
 
-  if (!isConfigured) {
+  if (!isConfigured || !adsEnabled) {
     return null;
-  }
-
-  if (!adsEnabled) {
-    return (
-      <aside
-        className={cn("mt-10", className)}
-        aria-label={t("label")}
-        data-testid="adsense-placeholder"
-      >
-        <p className="mb-2 text-xs text-muted-foreground/70">{t("label")}</p>
-        <div
-          className={cn(
-            "flex items-center justify-center rounded-md border border-dashed border-border bg-muted/30 px-4 py-6 text-center",
-            PLACEHOLDER_MIN_HEIGHT_CLASS
-          )}
-        >
-          <p className="text-sm text-muted-foreground">{t("placeholder")}</p>
-        </div>
-      </aside>
-    );
   }
 
   return (

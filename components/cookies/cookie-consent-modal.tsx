@@ -1,14 +1,14 @@
 "use client"
 
-import { XIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 
 import { useCookieConsent } from "@/components/cookies/cookie-consent-provider"
+import { Button } from "@/components/ui/button"
 import { Link } from "@/i18n/navigation"
 
 export function CookieConsentModal() {
   const t = useTranslations("common.cookies")
-  const { mounted, isOpen, dismiss } = useCookieConsent()
+  const { mounted, isOpen, accept, reject } = useCookieConsent()
 
   if (!mounted || !isOpen) {
     return null
@@ -18,17 +18,8 @@ export function CookieConsentModal() {
     <div
       role="dialog"
       aria-describedby="cookie-consent-description"
-      className="fixed bottom-4 left-4 z-50 max-w-sm rounded-lg border border-border bg-background p-4 pr-8 shadow-lg sm:max-w-md"
+      className="fixed bottom-4 left-4 z-50 max-w-sm rounded-lg border border-border bg-background p-4 shadow-lg sm:max-w-md"
     >
-      <button
-        type="button"
-        onClick={dismiss}
-        aria-label={t("close")}
-        className="absolute right-2 top-2 rounded-sm p-1 text-muted-foreground hover:text-foreground"
-      >
-        <XIcon className="h-4 w-4" aria-hidden="true" />
-      </button>
-
       <p id="cookie-consent-description" className="text-sm text-muted-foreground">
         {t("description")}{" "}
         <Link
@@ -38,6 +29,20 @@ export function CookieConsentModal() {
           {t("privacyLink")}
         </Link>
       </p>
+
+      <div className="mt-4 flex gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={reject}
+          className="flex-1"
+        >
+          {t("reject")}
+        </Button>
+        <Button type="button" onClick={accept} className="flex-1">
+          {t("accept")}
+        </Button>
+      </div>
     </div>
   )
 }

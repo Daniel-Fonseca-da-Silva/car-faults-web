@@ -4,7 +4,7 @@ import { getSiteUrl } from "./get-site-url";
 
 /**
  * Maps a locale-agnostic path (e.g. "/defects/vw/golf") to an absolute
- * URL per locale, keyed by locale code — ready for `alternates.languages`.
+ * URL per locale, keyed by locale code - ready for `alternates.languages`.
  */
 export function buildHreflangLanguages(path: string): Record<string, string> {
   const siteUrl = getSiteUrl();

@@ -28,7 +28,9 @@ export const lookupResults: LookupResponse[] = [
           "Synchros wear out prematurely under normal use, causing grinding noises and difficulty engaging second and third gear.",
         severity: "high",
         typicalKm: 120000,
-        sources: ["https://example.com/polo-gearbox-forum"],
+        sources: [
+          "https://www.auto-doc.pt/info/volkswagen-polo-problemas-associados",
+        ],
         fixes: [
           {
             id: "fix-polo-gearbox-1",

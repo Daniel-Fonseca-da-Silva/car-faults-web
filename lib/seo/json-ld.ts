@@ -1,7 +1,7 @@
 import { getSiteUrl } from "./get-site-url";
 import { getSiteName } from "./site-brand";
 
-/** JSON-LD is inlined via dangerouslySetInnerHTML — escape `<` so a value
+/** JSON-LD is inlined via dangerouslySetInnerHTML - escape `<` so a value
  * containing "</script>" can't break out of the script tag. */
 export function serializeJsonLd(data: unknown): string {
   return JSON.stringify(data).replace(/</g, "\\u003c");

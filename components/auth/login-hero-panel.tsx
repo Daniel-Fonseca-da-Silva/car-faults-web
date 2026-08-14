@@ -1,10 +1,17 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
+
+import { getPlatformStats } from "@/lib/api/platform";
+import { formatCompactCount } from "@/lib/utils";
 
 const HERO_IMAGE_SRC = "/login/classic-mini-shadowy-garage.webp";
 
 export async function LoginHeroPanel() {
-  const t = await getTranslations("auth.hero");
+  const [t, locale, stats] = await Promise.all([
+    getTranslations("auth.hero"),
+    getLocale(),
+    getPlatformStats(),
+  ]);
 
   return (
     <section className="relative h-[45vh] w-full overflow-hidden sm:h-[50vh] lg:h-auto lg:min-h-[calc(100dvh-4rem)]">
@@ -32,7 +39,11 @@ export async function LoginHeroPanel() {
           </span>{" "}
           {t("titleAfterHighlight")}
         </h2>
-        <p className="mt-3 text-sm text-muted-foreground">{t("stat")}</p>
+        <p className="mt-3 text-sm text-muted-foreground">
+          {t("stat", {
+            count: formatCompactCount(stats.faultsCount, locale),
+          })}
+        </p>
       </div>
     </section>
   );

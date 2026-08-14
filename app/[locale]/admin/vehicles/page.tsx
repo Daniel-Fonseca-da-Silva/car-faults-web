@@ -144,7 +144,7 @@ export default async function AdminVehiclesPage({
                       : ""}
                   </TableCell>
                   <TableCell>{vehicle.engine}</TableCell>
-                  <TableCell>{vehicle.fuelType ?? "—"}</TableCell>
+                  <TableCell>{vehicle.fuelType ?? "-"}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -10,8 +10,8 @@
   },
   "policy": {
     "title": "Privacy and Data Protection Policy",
-    "effectiveDate": "Effective date: 7 August 2026",
-    "lastUpdated": "Last updated: 7 August 2026",
+    "effectiveDate": "Effective date: 14 August 2026",
+    "lastUpdated": "Last updated: 14 August 2026",
     "sections": {
       "scope": {
         "heading": "1. Introduction and Scope",
@@ -23,7 +23,7 @@
       },
       "dataCollected": {
         "heading": "3. Categories of Personal Information We Collect",
-        "body": "Information you provide directly (or via Google): account information when signing in with Google OAuth — Google identifier, email address, display name, avatar URL and account role; user-generated content — vehicles saved to your garage, favourites, text comments, comment images, ratings and votes on fixes; search criteria — make, model, year, engine, fuel type, number of doors and search language (we do not ask for a VIN, licence plate, address or phone number); communication data from support or privacy requests.\n\nInformation collected automatically: technical information (IP address, browser type, device and access timestamps, to the extent they appear in hosting or API technical logs); session information (JWT authentication token in an httpOnly cookie, typically valid for around 7 days); activity logs and profile statistics derived from your usage.\n\nAdvertising data (when enabled): if advertising is enabled, Google AdSense may collect data through its own cookies and technologies, in accordance with Google's own privacy policy. Advertising may be disabled in development environments.\n\nWe do not intentionally collect special category data (Article 9 GDPR) or payment data — the Service does not process cards or subscriptions."
+        "body": "Information you provide directly (or via Google): account information when signing in with Google OAuth - Google identifier, email address, display name, avatar URL and account role; user-generated content - vehicles saved to your garage, favourites, text comments, comment images, ratings and votes on fixes; search criteria - make, model, year, engine, fuel type, number of doors and search language (we do not ask for a VIN, licence plate, address or phone number); communication data from support or privacy requests.\n\nInformation collected automatically: technical information (IP address, browser type, device and access timestamps, to the extent they appear in hosting or API technical logs); session information (JWT authentication token in an httpOnly cookie, typically valid for around 7 days); activity logs and profile statistics derived from your usage.\n\nAdvertising data (when enabled): if advertising is enabled, Google AdSense may collect data through its own cookies and technologies, in accordance with Google's own privacy policy. Advertising may be disabled in development environments.\n\nWe do not intentionally collect special category data (Article 9 GDPR) or payment data - the Service does not process cards or subscriptions."
       },
       "legalBasis": {
         "heading": "4. Legal Basis for Processing and Purposes of Use",
@@ -31,7 +31,7 @@
       },
       "aiProcessing": {
         "heading": "5. AI Processing and Automated Decision-Making",
-        "body": "Searches that don't yet have enough data in the catalogue may be routed by our API to an internal (stateless) AI service, which may in turn call on language model providers (for example, Google Gemini, Groq, OpenRouter or equivalents). The data sent to these providers is typically vehicle attributes (make, model, year, engine, fuel, doors, language) and, in translation/enrichment flows, issue titles and descriptions — we do not send your email or account identifier to this AI service. Results may be stored in the shared catalogue and/or cached for reuse by other users.\n\nThe Service does not make automated decisions that produce legal or similarly significant effects on you (Article 22 GDPR). AI suggestions are informational and do not replace a professional inspection, mechanical diagnosis or legal advice. You may request further information about AI processing that affects your experience through the privacy contact listed in this policy."
+        "body": "Searches that don't yet have enough data in the catalogue may be routed by our API to an internal (stateless) AI service, which may in turn call on language model providers (for example, Google Gemini, Groq, OpenRouter or equivalents). The data sent to these providers is typically vehicle attributes (make, model, year, engine, fuel, doors, language) and, in translation/enrichment flows, issue titles and descriptions - we do not send your email or account identifier to this AI service. Results may be stored in the shared catalogue and/or cached for reuse by other users.\n\nThe Service does not make automated decisions that produce legal or similarly significant effects on you (Article 22 GDPR). AI suggestions are informational and do not replace a professional inspection, mechanical diagnosis or legal advice. You may request further information about AI processing that affects your experience through the privacy contact listed in this policy."
       },
       "dataSharing": {
         "heading": "6. Data Sharing and Third-Party Processors",
@@ -55,11 +55,11 @@
       },
       "cookies": {
         "heading": "11. Cookies and Similar Technologies",
-        "body": "Types used: essential cookies (the access_token authentication session cookie, httpOnly, needed to keep you signed in and protect authenticated areas); security technologies (Cloudflare Turnstile on protected search flows); advertising (Google AdSense cookies and technologies when advertising is active); interface preferences (interface components may use technical preference cookies, not for marketing purposes).\n\nConsent and control: on your first visit, the Service shows a small cookie notice in the bottom-left corner of the screen, with a link to this Privacy Policy. Closing the notice means you consent to the use of cookies, including Google AdSense advertising cookies; that choice is stored in the cookie_consent cookie (valid for about one year) and determines whether those non-essential cookies are loaded. You can reopen the notice at any time through the \"Cookies\" link in the Service's footer, or manage cookies through your browser settings and, where applicable, the opt-out tools Google provides for advertising."
+        "body": "Types used: essential cookies (the access_token authentication session cookie, httpOnly, needed to keep you signed in and protect authenticated areas); security technologies (Cloudflare Turnstile on protected search flows); advertising and statistics (Google AdSense and Vercel Analytics cookies and technologies, only after you accept); interface preferences (interface components may use technical preference cookies, not for marketing purposes).\n\nConsent and control: on your first visit, the Service shows a cookie notice in the bottom-left corner of the screen, with \"Accept\" and \"Reject\" buttons and a link to this Privacy Policy. Your choice is stored in the cookie_consent cookie (value accepted or rejected, valid for about one year). Rejecting does not stop you from using the site - it only keeps advertising and statistics switched off. Google's advertising signals (Consent Mode) start switched off by default and only become granted after you accept. You can change your choice at any time through the \"Cookies\" link in the Service's footer, or manage cookies through your browser settings and, where applicable, the opt-out tools Google provides for advertising."
       },
       "security": {
         "heading": "12. Data Security",
-        "body": "Measures adopted: TLS-protected communication in production environments; JWT token in an httpOnly cookie, with an appropriate SameSite setting and the Secure flag in production; mandatory authentication for profile, garage and admin areas, with role-based authorisation for administrative functions; redaction of sensitive headers (for example, Authorization and Cookie) in the API's HTTP logs, to the extent configured; and minimisation — we do not ask for a VIN, licence plate or payment data.\n\nLimitations: no system is entirely free of risk. If we become aware of an incident affecting your personal data, we will assess the impact and, where required by law, notify the competent authority and affected data subjects."
+        "body": "Measures adopted: TLS-protected communication in production environments; JWT token in an httpOnly cookie, with an appropriate SameSite setting and the Secure flag in production; mandatory authentication for profile, garage and admin areas, with role-based authorisation for administrative functions; redaction of sensitive headers (for example, Authorization and Cookie) in the API's HTTP logs, to the extent configured; and minimisation - we do not ask for a VIN, licence plate or payment data.\n\nLimitations: no system is entirely free of risk. If we become aware of an incident affecting your personal data, we will assess the impact and, where required by law, notify the competent authority and affected data subjects."
       },
       "minors": {
         "heading": "13. Children's Privacy",
@@ -75,14 +75,14 @@
       },
       "contact": {
         "heading": "16. Contact Information and Complaints",
-        "body": "Privacy enquiries: see the \"Data Controller Information\" section.\n\nRegulatory complaints: in Portugal (GDPR), the Comissão Nacional de Proteção de Dados (CNPD) — www.cnpd.pt; in the United Kingdom (UK GDPR), the Information Commissioner's Office (ICO) — www.ico.org.uk; in other EU member states, the supervisory authority of your habitual residence, place of work or the place of the alleged infringement.\n\nWe encourage you to contact us directly before filing a formal complaint, so we can try to resolve the matter promptly."
+        "body": "Privacy enquiries: see the \"Data Controller Information\" section.\n\nRegulatory complaints: in Portugal (GDPR), the Comissão Nacional de Proteção de Dados (CNPD) - www.cnpd.pt; in the United Kingdom (UK GDPR), the Information Commissioner's Office (ICO) - www.ico.org.uk; in other EU member states, the supervisory authority of your habitual residence, place of work or the place of the alleged infringement.\n\nWe encourage you to contact us directly before filing a formal complaint, so we can try to resolve the matter promptly."
       }
     }
   },
   "terms": {
     "title": "Terms of Service",
-    "effectiveDate": "Effective date: 7 August 2026",
-    "lastUpdated": "Last updated: 7 August 2026",
+    "effectiveDate": "Effective date: 14 August 2026",
+    "lastUpdated": "Last updated: 14 August 2026",
     "sections": {
       "provider": {
         "heading": "1. Service Provider Information and Service Overview",
@@ -98,7 +98,7 @@
       },
       "acceptableUse": {
         "heading": "4. Acceptable Use of the Service",
-        "body": "Users agree to use the Service only for lawful purposes and in accordance with these Terms. Using the Service for any illegal or fraudulent activity, or one that violates the rights of others — including posting offensive, defamatory comments or images, or content that infringes third-party intellectual property rights — is prohibited.\n\nUsers may not attempt to access unauthorised areas of the Service, interfere with its operation, fraudulently manipulate votes or ratings, or use any automated method to access the Service without prior authorisation."
+        "body": "Users agree to use the Service only for lawful purposes and in accordance with these Terms. Using the Service for any illegal or fraudulent activity, or one that violates the rights of others - including posting offensive, defamatory comments or images, or content that infringes third-party intellectual property rights - is prohibited.\n\nUsers may not attempt to access unauthorised areas of the Service, interfere with its operation, fraudulently manipulate votes or ratings, or use any automated method to access the Service without prior authorisation."
       },
       "advertisingPayments": {
         "heading": "5. Advertising and Absence of Payment Processing",
