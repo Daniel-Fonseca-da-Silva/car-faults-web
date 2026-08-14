@@ -1,7 +1,7 @@
 "use client";
 
 import { Loader2, Trash2 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 
 import {
@@ -32,18 +32,26 @@ export function KnownIssueDeleteButton({
 }: KnownIssueDeleteButtonProps) {
   const t = useTranslations("admin");
   const router = useRouter();
+  const locale = useLocale();
   const [open, setOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleConfirmDelete() {
     setDeleting(true);
+    setError(null);
     try {
-      await deleteAdminKnownIssue(knownIssueId);
+      await deleteAdminKnownIssue(knownIssueId, {
+        appLocale: locale,
+        vehicleModelId,
+      });
+      setOpen(false);
       router.push(`/admin/vehicles/${vehicleModelId}`);
       router.refresh();
+    } catch {
+      setError(t("common.error"));
     } finally {
       setDeleting(false);
-      setOpen(false);
     }
   }
 
@@ -62,6 +70,7 @@ export function KnownIssueDeleteButton({
             {t("issueDetail.deleteConfirmDescription", { issue: issueTitle })}
           </AlertDialogDescription>
         </AlertDialogHeader>
+        {error && <p className="text-sm text-destructive">{error}</p>}
         <AlertDialogFooter>
           <AlertDialogCancel disabled={deleting}>
             {t("common.cancel")}
