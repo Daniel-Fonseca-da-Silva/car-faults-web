@@ -145,4 +145,30 @@ describe("MobileNav", () => {
       screen.queryByRole("button", { name: "Sair" })
     ).not.toBeInTheDocument();
   });
+
+  it("shows the sign-in link before the nav links when signed out", async () => {
+    const testUser = userEvent.setup();
+    render(<MobileNav user={null} />);
+
+    await testUser.click(screen.getByRole("button", { name: "Menu" }));
+
+    const signInLink = screen.getByRole("button", { name: "Entrar" });
+    const firstNavLink = screen.getByRole("button", { name: "Defeitos" });
+
+    expect(
+      signInLink.compareDocumentPosition(firstNavLink) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+  });
+
+  it("does not show a sign-in link when signed in", async () => {
+    const testUser = userEvent.setup();
+    render(<MobileNav user={user} />);
+
+    await testUser.click(screen.getByRole("button", { name: "Menu" }));
+
+    expect(
+      screen.queryByRole("button", { name: "Entrar" })
+    ).not.toBeInTheDocument();
+  });
 });

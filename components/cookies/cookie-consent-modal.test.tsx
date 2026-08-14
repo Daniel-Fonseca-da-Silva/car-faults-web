@@ -9,9 +9,10 @@ import { CookieConsentProvider } from "./cookie-consent-provider";
 
 const cookiesDict: Record<string, string> = {
   description:
-    "Utilizamos cookies essenciais para o funcionamento do site. Ao continuar a navegar, está a consentir a nossa utilização de cookies.",
+    "Usamos cookies essenciais para o funcionamento do site. Publicidade e estatísticas só com o seu sim. Recusar não impede usar o site.",
   privacyLink: "Política de Privacidade e cookies",
-  close: "Fechar",
+  accept: "Aceitar",
+  reject: "Recusar",
 };
 
 jest.mock("next-intl", () => ({
@@ -53,7 +54,7 @@ describe("CookieConsentModal", () => {
     ).toHaveAttribute("href", "/privacy#privacy");
   });
 
-  it("does not appear when a consent cookie already exists", async () => {
+  it("does not appear when the consent cookie is already accepted", async () => {
     document.cookie = `${COOKIE_CONSENT_NAME}=accepted; path=/;`;
     renderModal();
 
@@ -62,17 +63,40 @@ describe("CookieConsentModal", () => {
     );
   });
 
-  it("hides and stores an accepted cookie when the close button is clicked", async () => {
+  it("does not appear when the consent cookie is already rejected", async () => {
+    document.cookie = `${COOKIE_CONSENT_NAME}=rejected; path=/;`;
+    renderModal();
+
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
+    );
+  });
+
+  it("hides and stores an accepted cookie when Accept is clicked", async () => {
     const user = userEvent.setup();
     renderModal();
 
     await user.click(
-      await screen.findByRole("button", { name: cookiesDict.close })
+      await screen.findByRole("button", { name: cookiesDict.accept })
     );
 
     await waitFor(() =>
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
     );
     expect(document.cookie).toContain(`${COOKIE_CONSENT_NAME}=accepted`);
+  });
+
+  it("hides and stores a rejected cookie when Reject is clicked", async () => {
+    const user = userEvent.setup();
+    renderModal();
+
+    await user.click(
+      await screen.findByRole("button", { name: cookiesDict.reject })
+    );
+
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
+    );
+    expect(document.cookie).toContain(`${COOKIE_CONSENT_NAME}=rejected`);
   });
 });

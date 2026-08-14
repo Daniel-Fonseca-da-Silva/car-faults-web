@@ -61,6 +61,16 @@ describe("EUROPEAN_VEHICLE_MAKES", () => {
     "Changan",
     "Dongfeng",
     "MG",
+    "Cadillac",
+    "CFMOTO",
+    "Harley-Davidson",
+    "John Deere",
+    "Keeway",
+    "Land Rover",
+    "Smart",
+    "Suzuki",
+    "Triumph",
+    "Yamaha",
   ])("contains %s", (make) => {
     expect(EUROPEAN_VEHICLE_MAKES).toContain(make);
   });

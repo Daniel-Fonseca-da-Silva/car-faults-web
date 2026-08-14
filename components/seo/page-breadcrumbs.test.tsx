@@ -23,7 +23,7 @@ describe("PageBreadcrumbs", () => {
     );
 
     // The home item's path is "", which is falsy, so it renders as static
-    // text rather than a link — same as the actual last item.
+    // text rather than a link - same as the actual last item.
     expect(
       screen.getByText("Home", { selector: '[aria-current="page"]' })
     ).toBeInTheDocument();

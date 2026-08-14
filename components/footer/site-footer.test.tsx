@@ -54,7 +54,7 @@ jest.mock("@/components/cookies/cookie-consent-provider", () => ({
 }));
 
 jest.mock("@/components/footer/social-links", () => ({
-  SocialLinks: () => null,
+  SocialLinks: () => <div data-testid="social-links" />,
 }));
 
 function textContentMatcher(text: string) {
@@ -94,20 +94,11 @@ describe("SiteFooter", () => {
     expect(screen.getByText(`© ${year}`)).toBeInTheDocument();
   });
 
-  it("does not render social links while no real URLs are configured", async () => {
+  it("mounts the social links section", async () => {
     const jsx = await SiteFooter();
     render(jsx);
 
-    const socialLabels = [
-      footerDict["social.instagram"],
-      footerDict["social.facebook"],
-      footerDict["social.youtube"],
-      footerDict["social.tiktok"],
-    ];
-
-    for (const label of socialLabels) {
-      expect(screen.queryByRole("link", { name: label })).not.toBeInTheDocument();
-    }
+    expect(screen.getByTestId("social-links")).toBeInTheDocument();
   });
 
   it("links to the privacy policy and terms of service sections", async () => {

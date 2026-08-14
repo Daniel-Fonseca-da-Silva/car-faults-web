@@ -81,6 +81,6 @@ describe("VehicleTechSpecs", () => {
     });
     render(jsx);
 
-    expect(screen.getAllByText("—")).toHaveLength(3);
+    expect(screen.getAllByText("-")).toHaveLength(3);
   });
 });
