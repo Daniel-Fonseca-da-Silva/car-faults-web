@@ -1,4 +1,6 @@
-import { apiFetch } from "@/lib/api/client";
+"use server";
+
+import { serverApiFetch } from "@/lib/api/server-client";
 import type { Review } from "@/types/review";
 
 export interface CreateReviewInput {
@@ -14,7 +16,7 @@ export interface UpdateReviewInput {
 
 export async function listReviews(knownIssueId: string): Promise<Review[]> {
   const query = new URLSearchParams({ knownIssueId });
-  const response = await apiFetch(`/v1/reviews?${query.toString()}`);
+  const response = await serverApiFetch(`/v1/reviews?${query.toString()}`);
 
   if (!response.ok) {
     throw new Error(`Failed to load reviews: ${response.status}`);
@@ -24,7 +26,7 @@ export async function listReviews(knownIssueId: string): Promise<Review[]> {
 }
 
 export async function createReview(input: CreateReviewInput): Promise<Review> {
-  const response = await apiFetch("/v1/reviews", {
+  const response = await serverApiFetch("/v1/reviews", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -41,7 +43,7 @@ export async function updateReview(
   id: string,
   input: UpdateReviewInput
 ): Promise<Review> {
-  const response = await apiFetch(`/v1/reviews/${id}`, {
+  const response = await serverApiFetch(`/v1/reviews/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -55,7 +57,9 @@ export async function updateReview(
 }
 
 export async function deleteReview(id: string): Promise<void> {
-  const response = await apiFetch(`/v1/reviews/${id}`, { method: "DELETE" });
+  const response = await serverApiFetch(`/v1/reviews/${id}`, {
+    method: "DELETE",
+  });
 
   if (!response.ok) {
     throw new Error(`Failed to delete review: ${response.status}`);

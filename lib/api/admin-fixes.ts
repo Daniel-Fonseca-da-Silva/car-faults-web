@@ -1,4 +1,6 @@
-import { apiFetch } from "@/lib/api/client";
+"use server";
+
+import { serverApiFetch } from "@/lib/api/server-client";
 import type { AdminFix } from "@/types/admin";
 
 export interface AdminFixInput {
@@ -11,7 +13,7 @@ export interface AdminFixInput {
 export async function createAdminFix(
   input: AdminFixInput
 ): Promise<AdminFix> {
-  const response = await apiFetch("/v1/admin/fixes", {
+  const response = await serverApiFetch("/v1/admin/fixes", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -28,7 +30,7 @@ export async function updateAdminFix(
   id: string,
   input: Partial<Omit<AdminFixInput, "knownIssueId">>
 ): Promise<AdminFix> {
-  const response = await apiFetch(`/v1/admin/fixes/${id}`, {
+  const response = await serverApiFetch(`/v1/admin/fixes/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -42,7 +44,7 @@ export async function updateAdminFix(
 }
 
 export async function deleteAdminFix(id: string): Promise<void> {
-  const response = await apiFetch(`/v1/admin/fixes/${id}`, {
+  const response = await serverApiFetch(`/v1/admin/fixes/${id}`, {
     method: "DELETE",
   });
 

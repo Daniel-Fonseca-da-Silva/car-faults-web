@@ -1,4 +1,6 @@
-import { apiFetch } from "@/lib/api/client";
+"use server";
+
+import { serverApiFetch } from "@/lib/api/server-client";
 import type { AdminVehicleModel } from "@/types/admin";
 import type { LookupFuelType, VehicleTechSpecs } from "@/types/lookup";
 
@@ -18,7 +20,7 @@ export interface AdminVehicleModelInput {
 export async function createAdminVehicleModel(
   input: AdminVehicleModelInput
 ): Promise<AdminVehicleModel> {
-  const response = await apiFetch("/v1/admin/vehicle-models", {
+  const response = await serverApiFetch("/v1/admin/vehicle-models", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -35,7 +37,7 @@ export async function updateAdminVehicleModel(
   id: string,
   input: Partial<AdminVehicleModelInput>
 ): Promise<AdminVehicleModel> {
-  const response = await apiFetch(`/v1/admin/vehicle-models/${id}`, {
+  const response = await serverApiFetch(`/v1/admin/vehicle-models/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -49,7 +51,7 @@ export async function updateAdminVehicleModel(
 }
 
 export async function deleteAdminVehicleModel(id: string): Promise<void> {
-  const response = await apiFetch(`/v1/admin/vehicle-models/${id}`, {
+  const response = await serverApiFetch(`/v1/admin/vehicle-models/${id}`, {
     method: "DELETE",
   });
 

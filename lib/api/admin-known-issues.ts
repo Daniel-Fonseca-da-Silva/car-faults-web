@@ -1,4 +1,6 @@
-import { apiFetch } from "@/lib/api/client";
+"use server";
+
+import { serverApiFetch } from "@/lib/api/server-client";
 import type { AdminKnownIssue } from "@/types/admin";
 import type { IssueSeverity } from "@/types/lookup";
 
@@ -15,7 +17,7 @@ export interface AdminKnownIssueInput {
 export async function createAdminKnownIssue(
   input: AdminKnownIssueInput
 ): Promise<AdminKnownIssue> {
-  const response = await apiFetch("/v1/admin/known-issues", {
+  const response = await serverApiFetch("/v1/admin/known-issues", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -32,7 +34,7 @@ export async function updateAdminKnownIssue(
   id: string,
   input: Partial<Omit<AdminKnownIssueInput, "vehicleModelId">>
 ): Promise<AdminKnownIssue> {
-  const response = await apiFetch(`/v1/admin/known-issues/${id}`, {
+  const response = await serverApiFetch(`/v1/admin/known-issues/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -46,7 +48,7 @@ export async function updateAdminKnownIssue(
 }
 
 export async function deleteAdminKnownIssue(id: string): Promise<void> {
-  const response = await apiFetch(`/v1/admin/known-issues/${id}`, {
+  const response = await serverApiFetch(`/v1/admin/known-issues/${id}`, {
     method: "DELETE",
   });
 

@@ -1,8 +1,10 @@
-import { apiFetch } from "@/lib/api/client";
+"use server";
+
+import { serverApiFetch } from "@/lib/api/server-client";
 import type { FixVote, IssueFix } from "@/types/lookup";
 
 export async function voteFix(id: string, value: FixVote): Promise<IssueFix> {
-  const response = await apiFetch(`/v1/fixes/${id}/vote`, {
+  const response = await serverApiFetch(`/v1/fixes/${id}/vote`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ value }),
@@ -16,7 +18,7 @@ export async function voteFix(id: string, value: FixVote): Promise<IssueFix> {
 }
 
 export async function removeFixVote(id: string): Promise<void> {
-  const response = await apiFetch(`/v1/fixes/${id}/vote`, {
+  const response = await serverApiFetch(`/v1/fixes/${id}/vote`, {
     method: "DELETE",
   });
 
