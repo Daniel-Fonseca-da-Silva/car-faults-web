@@ -25,6 +25,7 @@ const dict: Record<string, string> = {
 
 jest.mock("next-intl", () => ({
   useTranslations: () => (key: string) => dict[key] ?? key,
+  useLocale: () => "en-GB",
 }));
 
 const pushMock = jest.fn();
@@ -66,7 +67,7 @@ describe("KnownIssueForm", () => {
     updateAdminKnownIssueMock.mockReset();
   });
 
-  it("creates a known issue for the given vehicle model and navigates to it", async () => {
+  it("creates a known issue for the given vehicle model and navigates back to the vehicle", async () => {
     const user = userEvent.setup();
     createAdminKnownIssueMock.mockResolvedValue({ id: "ki-new" });
     render(<KnownIssueForm vehicleModelId="vm-1" />);
@@ -83,9 +84,10 @@ describe("KnownIssueForm", () => {
         vehicleModelId: "vm-1",
         title: "Problematic gearbox",
         description: "Synchros wear out.",
-      })
+      }),
+      { appLocale: "en-GB" }
     );
-    expect(pushMock).toHaveBeenCalledWith("/admin/issues/ki-new");
+    expect(pushMock).toHaveBeenCalledWith("/admin/vehicles/vm-1");
   });
 
   it("pre-fills the form with an existing known issue and updates it", async () => {

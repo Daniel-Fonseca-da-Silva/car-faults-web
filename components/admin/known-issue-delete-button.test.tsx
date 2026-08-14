@@ -6,6 +6,7 @@ import { KnownIssueDeleteButton } from "./known-issue-delete-button";
 const dict: Record<string, string> = {
   "common.cancel": "Cancel",
   "common.delete": "Delete",
+  "common.error": "Something went wrong. Please try again.",
   "issueDetail.deleteIssue": "Delete known issue",
   "issueDetail.deleteConfirmTitle": "Delete this known issue?",
   "issueDetail.deleteConfirmDescription":
@@ -19,6 +20,7 @@ jest.mock("next-intl", () => ({
       ? template.replace(/\{(\w+)\}/g, (_, token) => String(values[token]))
       : template;
   },
+  useLocale: () => "en-GB",
 }));
 
 const pushMock = jest.fn();
@@ -80,8 +82,36 @@ describe("KnownIssueDeleteButton", () => {
     );
     await user.click(screen.getByRole("button", { name: "Delete" }));
 
-    expect(deleteAdminKnownIssueMock).toHaveBeenCalledWith("ki-1");
+    expect(deleteAdminKnownIssueMock).toHaveBeenCalledWith("ki-1", {
+      appLocale: "en-GB",
+      vehicleModelId: "vm-1",
+    });
     expect(pushMock).toHaveBeenCalledWith("/admin/vehicles/vm-1");
     expect(refreshMock).toHaveBeenCalled();
+  });
+
+  it("shows an error and keeps the dialog open when deletion fails", async () => {
+    const user = userEvent.setup();
+    deleteAdminKnownIssueMock.mockReset();
+    deleteAdminKnownIssueMock.mockRejectedValue(new Error("failed"));
+    render(
+      <KnownIssueDeleteButton
+        knownIssueId="ki-1"
+        vehicleModelId="vm-1"
+        issueTitle="Problematic gearbox"
+      />
+    );
+
+    await user.click(
+      screen.getByRole("button", { name: "Delete known issue" })
+    );
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+
+    expect(
+      await screen.findByText("Something went wrong. Please try again.")
+    ).toBeInTheDocument();
+    expect(pushMock).not.toHaveBeenCalled();
+    expect(refreshMock).not.toHaveBeenCalled();
+    expect(screen.getByText("Delete this known issue?")).toBeInTheDocument();
   });
 });
