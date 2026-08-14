@@ -1,12 +1,12 @@
 # Car Faults Web
 
-Frontend for **Auto Crónica** — a SaaS focused on **chronic reliability by vehicle model**: what typically fails on a given make / model / year / engine, how severe it is, typical cost and how it gets fixed.
+Frontend for **Auto Crónica** - a SaaS focused on **chronic reliability by vehicle model**: what typically fails on a given make / model / year / engine, how severe it is, typical cost and how it gets fixed.
 
 Initial market: **Portugal** (later ES/FR). Product languages: `pt-PT` (default), `en-GB` and `es-ES`.
 
 ## What we are
 
-The Next.js frontend that consumes [`car-faults-api`](../car-faults-api) (Nest backend) through `lib/api/*` and renders known-issue lookups, reviews, and fixes for buyers and owners. There is no mock backend — every page that needs data calls the Nest API server-side or via the browser client in `lib/api/client.ts`.
+The Next.js frontend that consumes [`car-faults-api`](../car-faults-api) (Nest backend) through `lib/api/*` and renders known-issue lookups, reviews, and fixes for buyers and owners. There is no mock backend - every page that needs data calls the Nest API server-side or via the browser client in `lib/api/client.ts`.
 
 ## What we are not
 
@@ -24,9 +24,9 @@ Known-issue information is fragmented across forums, YouTube, ADAC/TÜV reports,
 | Styling | Tailwind CSS + shadcn/ui |
 | i18n | [next-intl](https://next-intl.dev) (`pt-PT` / `en-GB` / `es-ES`, locale-prefixed routes) |
 | Tests | Jest + React Testing Library |
-| Backend | [car-faults-api](../car-faults-api) (Nest) — never calls AI directly |
+| Backend | [car-faults-api](../car-faults-api) (Nest) - never calls AI directly |
 
-No Supabase, Prisma, or Mapbox — those were leftovers from the original template and have been removed.
+No Supabase, Prisma, or Mapbox - those were leftovers from the original template and have been removed.
 
 ## Project structure
 
@@ -57,10 +57,11 @@ components/
   garage/      # garage-hero, garage-vehicle-list, garage-known-issues
   admin/       # vehicle-model-form, known-issue-form, fix-list
   ads/         # adsense-unit, adsense-script
-  cookies/     # cookie consent banner + provider
+  analytics/   # consent-gated Vercel Analytics
+  cookies/     # cookie consent banner (Accept/Reject) + provider
   brand/       # logo
 i18n/          # next-intl routing, navigation and request config
-messages/      # pt-PT/, en-GB/, es-ES/ — one JSON file per namespace
+messages/      # pt-PT/, en-GB/, es-ES/ - one JSON file per namespace
 lib/api/       # car-faults-api client (fetch wrappers per resource)
 lib/mocks/     # make/model autocomplete data for the home search form only
 types/
@@ -72,10 +73,10 @@ types/
 2. Display `known_issues` + `tech_specs` for a vehicle
 3. Google login (via the API)
 4. Reviews and comments on issues
-5. Fixes: a curated catalog per known issue that users can upvote/downvote — not user-submitted
+5. Fixes: a curated catalog per known issue that users can upvote/downvote - not user-submitted
 6. Vehicle photos: uploaded by admins only (`components/admin/vehicle-model-form.tsx`), not by garage owners
 
-AI content is marked as generated, and product copy should treat results as indicative — not a substitute for a mechanic.
+AI content is marked as generated, and product copy should treat results as indicative - not a substitute for a mechanic.
 
 ## How it fits
 
@@ -86,7 +87,7 @@ flowchart LR
   Nest --> Py[car-faults-ai-api]
 ```
 
-This app never talks to `car-faults-ai-api` directly — all AI-derived content flows through the Nest API.
+This app never talks to `car-faults-ai-api` directly - all AI-derived content flows through the Nest API.
 
 ## Getting started
 
@@ -109,7 +110,7 @@ See [.env.example](.env.example) for the full list. Summary:
 | `NEXT_PUBLIC_SITE_NAME` | Public brand name (SEO, Open Graph, JSON-LD) |
 | `NEXT_PUBLIC_SITE_CONTACT_EMAIL` | Public contact email for the brand |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile widget sitekey (siteverify happens only in the API) |
-| `NEXT_PUBLIC_ADSENSE_CLIENT_ID` | Google AdSense publisher id; leave unset to disable ads (dev/local) |
+| `NEXT_PUBLIC_ADSENSE_CLIENT_ID` | Google AdSense publisher id; leave unset to disable ads (dev/local). Ads only load after the user clicks Accept on the cookie banner - Google Consent Mode starts denied by default |
 | `NEXT_PUBLIC_R2_PUBLIC_BASE_URL` | Must match `car-faults-api`'s `R2_PUBLIC_BASE_URL` |
 
 ### Useful URLs
@@ -140,7 +141,7 @@ Global coverage (statements, branches, functions, lines) must stay at **90%+**. 
 
 ## License
 
-Proprietary — All Rights Reserved (Daniel Fonseca da Silva). See [LICENSE](LICENSE).
+Proprietary - All Rights Reserved (Daniel Fonseca da Silva). See [LICENSE](LICENSE).
 Use and run allowed; modification and derivative works require written permission.
 
 You may use and run this software. You may **not** modify it or create derivative works without prior written permission from the copyright holder.
