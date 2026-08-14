@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { serverApiFetch } from "@/lib/api/server-client";
 import type { AdminKnownIssue } from "@/types/admin";
 import type { IssueSeverity } from "@/types/lookup";
@@ -15,7 +17,8 @@ export interface AdminKnownIssueInput {
 }
 
 export async function createAdminKnownIssue(
-  input: AdminKnownIssueInput
+  input: AdminKnownIssueInput,
+  { appLocale }: { appLocale: string }
 ): Promise<AdminKnownIssue> {
   const response = await serverApiFetch("/v1/admin/known-issues", {
     method: "POST",
@@ -26,6 +29,8 @@ export async function createAdminKnownIssue(
   if (!response.ok) {
     throw new Error(`Failed to create known issue: ${response.status}`);
   }
+
+  revalidatePath(`/${appLocale}/admin/vehicles/${input.vehicleModelId}`);
 
   return (await response.json()) as AdminKnownIssue;
 }
@@ -47,7 +52,10 @@ export async function updateAdminKnownIssue(
   return (await response.json()) as AdminKnownIssue;
 }
 
-export async function deleteAdminKnownIssue(id: string): Promise<void> {
+export async function deleteAdminKnownIssue(
+  id: string,
+  { appLocale, vehicleModelId }: { appLocale: string; vehicleModelId: string }
+): Promise<void> {
   const response = await serverApiFetch(`/v1/admin/known-issues/${id}`, {
     method: "DELETE",
   });
@@ -55,4 +63,6 @@ export async function deleteAdminKnownIssue(id: string): Promise<void> {
   if (!response.ok) {
     throw new Error(`Failed to delete known issue: ${response.status}`);
   }
+
+  revalidatePath(`/${appLocale}/admin/vehicles/${vehicleModelId}`);
 }

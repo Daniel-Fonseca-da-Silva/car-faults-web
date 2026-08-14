@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -40,6 +40,7 @@ export function KnownIssueForm({
 }: KnownIssueFormProps) {
   const t = useTranslations("admin");
   const router = useRouter();
+  const locale = useLocale();
 
   const [title, setTitle] = useState(knownIssue?.title ?? "");
   const [description, setDescription] = useState(
@@ -48,7 +49,7 @@ export function KnownIssueForm({
   const [severity, setSeverity] = useState<IssueSeverity>(
     knownIssue?.severity ?? "medium"
   );
-  const [locale, setLocale] = useState<AdminIssueLocale>(
+  const [issueLocale, setIssueLocale] = useState<AdminIssueLocale>(
     knownIssue?.locale ?? "en-GB"
   );
   const [typicalKm, setTypicalKm] = useState(
@@ -78,22 +79,25 @@ export function KnownIssueForm({
           title: title.trim(),
           description: description.trim(),
           severity,
-          locale,
+          locale: issueLocale,
           typicalKm: typicalKm.trim() ? Number(typicalKm) : null,
           sources: sourcesList.length > 0 ? sourcesList : null,
         });
         router.push(`/admin/issues/${knownIssue.id}`);
       } else {
-        const created = await createAdminKnownIssue({
-          vehicleModelId,
-          title: title.trim(),
-          description: description.trim(),
-          severity,
-          locale,
-          typicalKm: typicalKm.trim() ? Number(typicalKm) : null,
-          sources: sourcesList.length > 0 ? sourcesList : null,
-        });
-        router.push(`/admin/issues/${created.id}`);
+        await createAdminKnownIssue(
+          {
+            vehicleModelId,
+            title: title.trim(),
+            description: description.trim(),
+            severity,
+            locale: issueLocale,
+            typicalKm: typicalKm.trim() ? Number(typicalKm) : null,
+            sources: sourcesList.length > 0 ? sourcesList : null,
+          },
+          { appLocale: locale }
+        );
+        router.push(`/admin/vehicles/${vehicleModelId}`);
       }
       router.refresh();
     } catch {
@@ -150,9 +154,9 @@ export function KnownIssueForm({
           <Label htmlFor="issue-locale">{t("issueForm.locale")}</Label>
           <NativeSelect
             id="issue-locale"
-            value={locale}
+            value={issueLocale}
             onChange={(event) =>
-              setLocale(event.target.value as AdminIssueLocale)
+              setIssueLocale(event.target.value as AdminIssueLocale)
             }
             disabled={submitting}
           >
