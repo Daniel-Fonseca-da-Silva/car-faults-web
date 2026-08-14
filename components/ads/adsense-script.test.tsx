@@ -42,6 +42,14 @@ describe("AdSenseScript", () => {
     expect(screen.queryByTestId("adsense-script")).not.toBeInTheDocument();
   });
 
+  it("does not render when consent has been rejected", () => {
+    getAdsenseClientId.mockReturnValue("ca-pub-1234567890123456");
+    useCookieConsent.mockReturnValue({ consent: "rejected" });
+    render(<AdSenseScript />);
+
+    expect(screen.queryByTestId("adsense-script")).not.toBeInTheDocument();
+  });
+
   it("renders the AdSense script once a client id is configured and consent is accepted", () => {
     getAdsenseClientId.mockReturnValue("ca-pub-1234567890123456");
     useCookieConsent.mockReturnValue({ consent: "accepted" });

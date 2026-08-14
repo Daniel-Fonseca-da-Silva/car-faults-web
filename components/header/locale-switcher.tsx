@@ -2,10 +2,14 @@
 
 import { useLocale, useTranslations } from "next-intl";
 
+import { LocaleFlag } from "@/components/header/locale-flag";
 import {
-  NativeSelect,
-  NativeSelectOption,
-} from "@/components/ui/native-select";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { routing, type Locale } from "@/i18n/routing";
 import { usePathname, useRouter } from "@/i18n/navigation";
 
@@ -15,23 +19,25 @@ export function LocaleSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
 
-  function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    const nextLocale = event.target.value as Locale;
+  function handleValueChange(nextLocale: Locale | null) {
+    if (!nextLocale) return;
     router.replace(pathname, { locale: nextLocale });
   }
 
   return (
-    <NativeSelect
-      aria-label={t("language")}
-      value={locale}
-      onChange={handleChange}
-      size="sm"
-    >
-      {routing.locales.map((availableLocale) => (
-        <NativeSelectOption key={availableLocale} value={availableLocale}>
-          {t(`locales.${availableLocale}`)}
-        </NativeSelectOption>
-      ))}
-    </NativeSelect>
+    <Select value={locale as Locale} onValueChange={handleValueChange}>
+      <SelectTrigger size="sm" aria-label={t("language")}>
+        <LocaleFlag locale={locale as Locale} />
+        <SelectValue>{t(`locales.${locale}`)}</SelectValue>
+      </SelectTrigger>
+      <SelectContent>
+        {routing.locales.map((availableLocale) => (
+          <SelectItem key={availableLocale} value={availableLocale}>
+            <LocaleFlag locale={availableLocale} />
+            {t(`locales.${availableLocale}`)}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }

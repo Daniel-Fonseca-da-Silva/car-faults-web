@@ -36,12 +36,13 @@
   },
   "ads": {
     "label": "Advertisement",
-    "placeholder": "Ad slot (AdSense — production only)"
+    "placeholder": "Ad slot (AdSense - production only)"
   },
   "cookies": {
-    "description": "We use essential cookies to run this site and, with your consent, advertising cookies. By continuing to browse, you consent to our use of cookies.",
+    "description": "We use essential cookies to run this site. Advertising and statistics only run with your yes. Declining does not stop you from using the site.",
     "privacyLink": "Privacy Policy and cookies",
-    "close": "Close",
+    "accept": "Accept",
+    "reject": "Reject",
     "manage": "Cookies"
   }
 }

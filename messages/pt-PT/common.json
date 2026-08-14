@@ -36,12 +36,13 @@
   },
   "ads": {
     "label": "Publicidade",
-    "placeholder": "Espaço de anúncio (AdSense — só em produção)"
+    "placeholder": "Espaço de anúncio (AdSense - só em produção)"
   },
   "cookies": {
-    "description": "Utilizamos cookies essenciais para o funcionamento do site e, com o seu consentimento, cookies de publicidade. Ao continuar a navegar, está a consentir a nossa utilização de cookies.",
+    "description": "Usamos cookies essenciais para o funcionamento do site. Publicidade e estatísticas só com o seu sim. Recusar não impede usar o site.",
     "privacyLink": "Política de Privacidade e cookies",
-    "close": "Fechar",
+    "accept": "Aceitar",
+    "reject": "Recusar",
     "manage": "Cookies"
   }
 }

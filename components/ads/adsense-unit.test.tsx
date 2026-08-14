@@ -51,12 +51,27 @@ describe("AdSenseUnit", () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-  it("renders a local placeholder when consent has not been accepted", () => {
+  it("renders nothing when consent is still unknown", () => {
     getAdsenseClientId.mockReturnValue("ca-pub-1234567890123456");
     useCookieConsent.mockReturnValue({ consent: null });
-    render(<AdSenseUnit slot="1234567890" />);
+    const { container } = render(<AdSenseUnit slot="1234567890" />);
 
-    expect(screen.getByTestId("adsense-placeholder")).toBeInTheDocument();
+    expect(container).toBeEmptyDOMElement();
+    expect(
+      screen.queryByTestId("adsense-placeholder")
+    ).not.toBeInTheDocument();
+    expect(document.querySelector("ins.adsbygoogle")).not.toBeInTheDocument();
+  });
+
+  it("renders nothing when consent has been rejected", () => {
+    getAdsenseClientId.mockReturnValue("ca-pub-1234567890123456");
+    useCookieConsent.mockReturnValue({ consent: "rejected" });
+    const { container } = render(<AdSenseUnit slot="1234567890" />);
+
+    expect(container).toBeEmptyDOMElement();
+    expect(
+      screen.queryByTestId("adsense-placeholder")
+    ).not.toBeInTheDocument();
     expect(document.querySelector("ins.adsbygoogle")).not.toBeInTheDocument();
   });
 

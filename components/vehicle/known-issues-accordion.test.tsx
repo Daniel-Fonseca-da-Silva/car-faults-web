@@ -131,6 +131,9 @@ describe("KnownIssuesAccordion", () => {
       screen.getByText("Synchros wear out prematurely.")
     ).toBeInTheDocument();
     expect(screen.getByText(/Fontes:/)).toBeInTheDocument();
+    const sourceLink = screen.getByRole("link", { name: "example.com" });
+    expect(sourceLink).toHaveAttribute("href", "https://example.com/source");
+    expect(sourceLink).toHaveAttribute("target", "_blank");
     expect(screen.getByText("Replace gearbox synchros")).toBeInTheDocument();
   });
 

@@ -51,6 +51,20 @@ export function MobileNav({ user }: MobileNavProps) {
         <SheetHeader>
           <SheetTitle>{t("menu")}</SheetTitle>
         </SheetHeader>
+        {!user && (
+          <SheetClose
+            nativeButton={false}
+            render={
+              <Link
+                href="/login"
+                className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-foreground hover:bg-muted"
+              />
+            }
+          >
+            <LogIn aria-hidden="true" className="size-4" />
+            {t("login")}
+          </SheetClose>
+        )}
         <nav aria-label={t("menu")} className="flex flex-col gap-1 px-4">
           {NAV_ITEMS.map((item) => (
             <SheetClose
@@ -67,83 +81,65 @@ export function MobileNav({ user }: MobileNavProps) {
             </SheetClose>
           ))}
         </nav>
-        <div className="mt-auto border-t border-border">
-          {user ? (
-            <>
-              <SheetClose
-                nativeButton={false}
-                render={
-                  <Link
-                    href="/profile"
-                    className="flex items-center gap-2 px-4 py-4 hover:bg-muted"
-                  />
-                }
-              >
-                <Avatar>
-                  <AvatarImage
-                    src={user.avatarUrl ?? undefined}
-                    alt={user.name}
-                  />
-                  <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-                </Avatar>
-                <span className="text-sm text-muted-foreground">
-                  {user.name.split(" ")[0]}
-                </span>
-              </SheetClose>
-              <SheetClose
-                nativeButton={false}
-                render={
-                  <Link
-                    href="/garage"
-                    className="flex items-center gap-2 px-4 py-4 text-sm font-medium text-foreground hover:bg-muted"
-                  />
-                }
-              >
-                <Warehouse aria-hidden="true" className="size-4" />
-                {t("garage")}
-              </SheetClose>
-              {user.role === "admin" && (
-                <SheetClose
-                  nativeButton={false}
-                  render={
-                    <Link
-                      href="/admin"
-                      className="flex items-center gap-2 px-4 py-4 text-sm font-medium text-foreground hover:bg-muted"
-                    />
-                  }
-                >
-                  <ShieldCheck aria-hidden="true" className="size-4" />
-                  {t("admin")}
-                </SheetClose>
-              )}
-              <SheetClose
-                render={
-                  <button
-                    type="button"
-                    onClick={handleLogout}
-                    className="flex w-full items-center gap-2 px-4 py-4 text-sm text-destructive hover:bg-muted"
-                  />
-                }
-              >
-                <LogOut aria-hidden="true" className="size-4" />
-                {t("logout")}
-              </SheetClose>
-            </>
-          ) : (
+        {user && (
+          <div className="mt-auto border-t border-border">
             <SheetClose
               nativeButton={false}
               render={
                 <Link
-                  href="/login"
+                  href="/profile"
+                  className="flex items-center gap-2 px-4 py-4 hover:bg-muted"
+                />
+              }
+            >
+              <Avatar>
+                <AvatarImage src={user.avatarUrl ?? undefined} alt={user.name} />
+                <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+              </Avatar>
+              <span className="text-sm text-muted-foreground">
+                {user.name.split(" ")[0]}
+              </span>
+            </SheetClose>
+            <SheetClose
+              nativeButton={false}
+              render={
+                <Link
+                  href="/garage"
                   className="flex items-center gap-2 px-4 py-4 text-sm font-medium text-foreground hover:bg-muted"
                 />
               }
             >
-              <LogIn aria-hidden="true" className="size-4" />
-              {t("login")}
+              <Warehouse aria-hidden="true" className="size-4" />
+              {t("garage")}
             </SheetClose>
-          )}
-        </div>
+            {user.role === "admin" && (
+              <SheetClose
+                nativeButton={false}
+                render={
+                  <Link
+                    href="/admin"
+                    className="flex items-center gap-2 px-4 py-4 text-sm font-medium text-foreground hover:bg-muted"
+                  />
+                }
+              >
+                <ShieldCheck aria-hidden="true" className="size-4" />
+                {t("admin")}
+              </SheetClose>
+            )}
+            <SheetClose
+              render={
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="flex w-full items-center gap-2 px-4 py-4 text-sm text-destructive hover:bg-muted"
+                />
+              }
+            >
+              <LogOut aria-hidden="true" className="size-4" />
+              {t("logout")}
+            </SheetClose>
+          </div>
+        )}
       </SheetContent>
     </Sheet>
   );

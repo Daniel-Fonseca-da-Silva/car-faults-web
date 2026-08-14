@@ -50,7 +50,7 @@ jest.mock("@/i18n/navigation", () => ({
 
 // FaultCardGrid renders the async FaultCard server component as an
 // un-awaited JSX child. react-dom's client renderer can't resolve that
-// (no Suspense boundary), so it's mocked here — the grid itself is
+// (no Suspense boundary), so it's mocked here - the grid itself is
 // covered separately in fault-card-grid.test.tsx.
 jest.mock("@/components/faults/fault-card-grid", () => ({
   FaultCardGrid: ({ entries }: { entries: unknown[] }) => (

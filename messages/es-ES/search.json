@@ -26,6 +26,8 @@
   },
   "submit": "Buscar defectos",
   "verifying": "Verificando...",
-  "validation": "Indica al menos la marca o el modelo.",
+  "errors": {
+    "required": "Rellena este campo."
+  },
   "captchaError": "Verificación fallida. Completa el desafío de nuevo."
 }

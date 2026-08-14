@@ -26,6 +26,8 @@
   },
   "submit": "Search faults",
   "verifying": "Verifying...",
-  "validation": "Enter at least a make or a model.",
+  "errors": {
+    "required": "Please fill in this field."
+  },
   "captchaError": "Verification failed. Please complete the challenge again."
 }

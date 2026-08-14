@@ -41,19 +41,19 @@ export async function VehicleTechSpecs({ vehicle }: VehicleTechSpecsProps) {
       key: "fuel",
       icon: Fuel,
       label: t("fuel"),
-      value: vehicle.fuelType ? t(`fuelTypes.${vehicle.fuelType}`) : "—",
+      value: vehicle.fuelType ? t(`fuelTypes.${vehicle.fuelType}`) : "-",
     },
     {
       key: "doors",
       icon: DoorOpen,
       label: t("doors"),
-      value: vehicle.doors != null ? String(vehicle.doors) : "—",
+      value: vehicle.doors != null ? String(vehicle.doors) : "-",
     },
     {
       key: "power",
       icon: Gauge,
       label: t("power"),
-      value: typeof powerHp === "number" ? `${powerHp} hp` : "—",
+      value: typeof powerHp === "number" ? `${powerHp} hp` : "-",
     },
   ];
 

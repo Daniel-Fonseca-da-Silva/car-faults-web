@@ -43,7 +43,7 @@ export async function FaultCard({
   const t = await getTranslations("faults");
   const SeverityIcon =
     severity === "high" || severity === "critical" ? Flame : AlertTriangle;
-  // The vehicle page's canonical URL requires fuelType as a path segment —
+  // The vehicle page's canonical URL requires fuelType as a path segment -
   // without it there's no valid lookup to link to.
   const href = fuelType
     ? buildLookupHref({ brand: make, model, year, engine, fuelType, doors })

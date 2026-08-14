@@ -1,9 +1,10 @@
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { VehicleSearchForm } from "./vehicle-search-form";
 
 const FULL_SEARCH_TEST_TIMEOUT_MS = 15_000;
+const REQUIRED_ERROR_TEXT = "Please fill in this field.";
 
 const pushMock = jest.fn();
 let turnstileOnSuccess: ((token: string) => void) | undefined;
@@ -37,7 +38,7 @@ jest.mock("next-intl", () => ({
       "fuelOptions.hybrid": "Hybrid",
       submit: "Search faults",
       verifying: "Verifying...",
-      validation: "Enter at least a make or a model.",
+      "errors.required": REQUIRED_ERROR_TEXT,
       captchaError: "Verification failed. Please complete the challenge again.",
     };
     return (key: string) => dict[key] ?? key;
@@ -72,6 +73,28 @@ function createUser(): TestUser {
   return userEvent.setup({ delay: null });
 }
 
+function labelledControl(labelText: string): HTMLElement {
+  return screen.getByLabelText(labelText, { exact: false });
+}
+
+function queryLabelledControl(labelText: string): HTMLElement | null {
+  return screen.queryByLabelText(labelText, { exact: false });
+}
+
+function fieldGroup(labelText: string): HTMLElement {
+  const control = labelledControl(labelText);
+  const label = document.querySelector(`label[for="${control.id}"]`);
+  const group = label?.parentElement;
+  if (!(group instanceof HTMLElement)) {
+    throw new Error(`No field group found for label "${labelText}"`);
+  }
+  return group;
+}
+
+function hasRequiredError(labelText: string): boolean {
+  return within(fieldGroup(labelText)).queryByRole("alert") !== null;
+}
+
 async function completeCaptcha(user: TestUser) {
   await waitFor(() => expect(turnstileOnSuccess).toBeDefined());
   act(() => turnstileOnSuccess?.("test-turnstile-token"));
@@ -91,7 +114,7 @@ async function completeCaptcha(user: TestUser) {
  * updates inputValue without opening the listbox.
  */
 async function chooseMake(_user: TestUser, make: string) {
-  const input = screen.getByLabelText("Make");
+  const input = labelledControl("Make");
   fireEvent.change(input, { target: { value: make } });
   await waitFor(() => expect(input).toHaveValue(make));
 }
@@ -117,14 +140,14 @@ async function fillFullSearchFields(
   } = options;
 
   await chooseMake(user, make);
-  await user.type(screen.getByLabelText("Model"), model);
-  await user.type(screen.getByLabelText("Year"), year);
+  await user.type(labelledControl("Model"), model);
+  await user.type(labelledControl("Year"), year);
   if (fuel !== "electric") {
-    await user.type(screen.getByLabelText("Engine"), engine);
+    await user.type(labelledControl("Engine"), engine);
   }
-  await user.selectOptions(screen.getByLabelText("Fuel"), fuel);
+  await user.selectOptions(labelledControl("Fuel"), fuel);
   if (doors) {
-    await user.selectOptions(screen.getByLabelText("Doors (optional)"), doors);
+    await user.selectOptions(labelledControl("Doors (optional)"), doors);
   }
 }
 
@@ -154,19 +177,23 @@ describe("VehicleSearchForm", () => {
     expect(screen.queryByText("Database active")).not.toBeInTheDocument();
   });
 
-  it("shows a validation error when submitting without make or model", async () => {
+  it("shows errors on every required field when submitting an empty form", async () => {
     const user = createUser();
     render(<VehicleSearchForm isDatabaseUp={true} />);
 
     await user.click(screen.getByRole("button", { name: "Search faults" }));
 
-    expect(
-      screen.getByText("Enter at least a make or a model.")
-    ).toBeInTheDocument();
+    expect(screen.getAllByText(REQUIRED_ERROR_TEXT)).toHaveLength(5);
+    expect(hasRequiredError("Make")).toBe(true);
+    expect(hasRequiredError("Model")).toBe(true);
+    expect(hasRequiredError("Year")).toBe(true);
+    expect(hasRequiredError("Fuel")).toBe(true);
+    expect(hasRequiredError("Engine")).toBe(true);
     expect(pushMock).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("does not show the Turnstile widget until all 5 fields are filled in", async () => {
+  it("does not show the Turnstile widget until all required fields are filled in", async () => {
     const user = createUser();
     render(<VehicleSearchForm isDatabaseUp={true} />);
 
@@ -339,44 +366,51 @@ describe("VehicleSearchForm", () => {
     );
   });
 
-  it("falls back to the hub with a query when make, model and year are filled in but engine or fuel are missing", async () => {
+  it("shows errors for engine and fuel when make, model and year are filled in but engine and fuel are missing", async () => {
     const user = createUser();
     render(<VehicleSearchForm isDatabaseUp={true} />);
 
     await chooseMake(user, "Volkswagen");
-    await user.type(screen.getByLabelText("Model"), "Golf");
-    await user.type(screen.getByLabelText("Year"), "2018");
+    await user.type(labelledControl("Model"), "Golf");
+    await user.type(labelledControl("Year"), "2018");
     await user.click(screen.getByRole("button", { name: "Search faults" }));
 
-    expect(pushMock).toHaveBeenCalledWith({
-      pathname: "/defects",
-      query: { make: "Volkswagen", model: "Golf", year: "2018" },
-    });
+    expect(screen.getAllByText(REQUIRED_ERROR_TEXT)).toHaveLength(2);
+    expect(hasRequiredError("Engine")).toBe(true);
+    expect(hasRequiredError("Fuel")).toBe(true);
+    expect(hasRequiredError("Make")).toBe(false);
+    expect(hasRequiredError("Model")).toBe(false);
+    expect(hasRequiredError("Year")).toBe(false);
+    expect(pushMock).not.toHaveBeenCalled();
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("allows submitting with only the model filled in", async () => {
+  it("shows errors for the remaining required fields when only the model is filled in", async () => {
     const user = createUser();
     render(<VehicleSearchForm isDatabaseUp={true} />);
 
-    await user.type(screen.getByLabelText("Model"), "Golf");
+    await user.type(labelledControl("Model"), "Golf");
     await user.click(screen.getByRole("button", { name: "Search faults" }));
 
-    expect(pushMock).toHaveBeenCalledWith({
-      pathname: "/defects",
-      query: { model: "Golf" },
-    });
+    expect(screen.getAllByText(REQUIRED_ERROR_TEXT)).toHaveLength(4);
+    expect(hasRequiredError("Make")).toBe(true);
+    expect(hasRequiredError("Year")).toBe(true);
+    expect(hasRequiredError("Fuel")).toBe(true);
+    expect(hasRequiredError("Engine")).toBe(true);
+    expect(hasRequiredError("Model")).toBe(false);
+    expect(pushMock).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it("hides the engine field once electric fuel is selected", async () => {
     const user = createUser();
     render(<VehicleSearchForm isDatabaseUp={true} />);
 
-    expect(screen.getByLabelText("Engine")).toBeInTheDocument();
+    expect(labelledControl("Engine")).toBeInTheDocument();
 
-    await user.selectOptions(screen.getByLabelText("Fuel"), "electric");
+    await user.selectOptions(labelledControl("Fuel"), "electric");
 
-    expect(screen.queryByLabelText("Engine")).not.toBeInTheDocument();
+    expect(queryLabelledControl("Engine")).not.toBeInTheDocument();
   });
 
   it(
@@ -429,20 +463,14 @@ describe("VehicleSearchForm", () => {
     render(<VehicleSearchForm isDatabaseUp={true} />);
 
     await chooseMake(user, "Volkswagen");
-    await user.type(screen.getByLabelText("Model"), "Golf");
-    await user.type(screen.getByLabelText("Year"), "2018");
-    await user.selectOptions(screen.getByLabelText("Fuel"), "diesel");
+    await user.type(labelledControl("Model"), "Golf");
+    await user.type(labelledControl("Year"), "2018");
+    await user.selectOptions(labelledControl("Fuel"), "diesel");
     await user.click(screen.getByRole("button", { name: "Search faults" }));
 
-    expect(pushMock).toHaveBeenCalledWith({
-      pathname: "/defects",
-      query: {
-        make: "Volkswagen",
-        model: "Golf",
-        year: "2018",
-        fuel: "diesel",
-      },
-    });
+    expect(screen.getAllByText(REQUIRED_ERROR_TEXT)).toHaveLength(1);
+    expect(hasRequiredError("Engine")).toBe(true);
+    expect(pushMock).not.toHaveBeenCalled();
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
@@ -450,34 +478,37 @@ describe("VehicleSearchForm", () => {
     const user = createUser();
     render(<VehicleSearchForm isDatabaseUp={true} />);
 
-    await user.type(screen.getByLabelText("Engine"), "2.0 TDI");
-    await user.selectOptions(screen.getByLabelText("Fuel"), "electric");
-    await user.selectOptions(screen.getByLabelText("Fuel"), "diesel");
+    await user.type(labelledControl("Engine"), "2.0 TDI");
+    await user.selectOptions(labelledControl("Fuel"), "electric");
+    await user.selectOptions(labelledControl("Fuel"), "diesel");
 
-    expect(screen.getByLabelText("Engine")).toHaveValue("2.0 TDI");
+    expect(labelledControl("Engine")).toHaveValue("2.0 TDI");
   });
 
-  it("selects a make from the dropdown list and uses it in the partial search", async () => {
+  it("shows errors for the remaining required fields when only a make is selected from the dropdown", async () => {
     const user = createUser();
     render(<VehicleSearchForm isDatabaseUp={true} />);
 
-    const makeInput = screen.getByLabelText("Make");
+    const makeInput = labelledControl("Make");
     await user.click(makeInput);
     await user.paste("Volks");
     await user.click(await screen.findByRole("option", { name: "Volkswagen" }));
     await user.click(screen.getByRole("button", { name: "Search faults" }));
 
-    expect(pushMock).toHaveBeenCalledWith({
-      pathname: "/defects",
-      query: { make: "Volkswagen" },
-    });
+    expect(screen.getAllByText(REQUIRED_ERROR_TEXT)).toHaveLength(4);
+    expect(hasRequiredError("Model")).toBe(true);
+    expect(hasRequiredError("Year")).toBe(true);
+    expect(hasRequiredError("Fuel")).toBe(true);
+    expect(hasRequiredError("Engine")).toBe(true);
+    expect(hasRequiredError("Make")).toBe(false);
+    expect(pushMock).not.toHaveBeenCalled();
   });
 
-  it("keeps a typed make that does not match any known brand for the partial search", async () => {
+  it("shows errors for the remaining required fields when a typed make with no known match is submitted", async () => {
     const user = createUser();
     render(<VehicleSearchForm isDatabaseUp={true} />);
 
-    const makeInput = screen.getByLabelText("Make");
+    const makeInput = labelledControl("Make");
     await user.click(makeInput);
     await user.paste("Skodaa");
 
@@ -491,30 +522,26 @@ describe("VehicleSearchForm", () => {
     await user.keyboard("{Escape}");
     await user.click(screen.getByRole("button", { name: "Search faults" }));
 
-    expect(pushMock).toHaveBeenCalledWith({
-      pathname: "/defects",
-      query: { make: "Skodaa" },
-    });
+    expect(labelledControl("Make")).toHaveValue("Skodaa");
+    expect(screen.getAllByText(REQUIRED_ERROR_TEXT)).toHaveLength(4);
+    expect(hasRequiredError("Make")).toBe(false);
+    expect(pushMock).not.toHaveBeenCalled();
   });
 
-  it("includes the engine, fuel and doors fields in the query when filled in", async () => {
+  it("shows errors for the missing model and year fields when make, engine, fuel and doors are filled in", async () => {
     const user = createUser();
     render(<VehicleSearchForm isDatabaseUp={true} />);
 
     await chooseMake(user, "Volkswagen");
-    await user.type(screen.getByLabelText("Engine"), "2.0 TDI");
-    await user.selectOptions(screen.getByLabelText("Fuel"), "diesel");
-    await user.selectOptions(screen.getByLabelText("Doors (optional)"), "5");
+    await user.type(labelledControl("Engine"), "2.0 TDI");
+    await user.selectOptions(labelledControl("Fuel"), "diesel");
+    await user.selectOptions(labelledControl("Doors (optional)"), "5");
     await user.click(screen.getByRole("button", { name: "Search faults" }));
 
-    expect(pushMock).toHaveBeenCalledWith({
-      pathname: "/defects",
-      query: {
-        make: "Volkswagen",
-        engine: "2.0 TDI",
-        fuel: "diesel",
-        doors: "5",
-      },
-    });
+    expect(screen.getAllByText(REQUIRED_ERROR_TEXT)).toHaveLength(2);
+    expect(hasRequiredError("Model")).toBe(true);
+    expect(hasRequiredError("Year")).toBe(true);
+    expect(pushMock).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });

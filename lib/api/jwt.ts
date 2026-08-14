@@ -1,5 +1,5 @@
 /**
- * Reads the `exp` claim without verifying the signature — only used to size
+ * Reads the `exp` claim without verifying the signature - only used to size
  * the web session cookie's maxAge. The API re-validates the token on every request.
  */
 export function resolveTokenExpirySeconds(token: string): number | undefined {

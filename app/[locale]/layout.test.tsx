@@ -37,6 +37,10 @@ jest.mock("@/components/cookies/cookie-consent-modal", () => ({
   CookieConsentModal: () => <div data-testid="cookie-consent-modal" />,
 }));
 
+jest.mock("@/components/analytics/consent-gated-analytics", () => ({
+  ConsentGatedAnalytics: () => <div data-testid="consent-gated-analytics" />,
+}));
+
 describe("LocaleLayout", () => {
   it("renders the header, children and footer for a supported locale", async () => {
     const jsx = await LocaleLayout({
@@ -50,7 +54,7 @@ describe("LocaleLayout", () => {
     expect(screen.getByTestId("site-footer")).toBeInTheDocument();
   });
 
-  it("wraps the page in the cookie consent provider and renders the AdSense script and modal", async () => {
+  it("wraps the page in the cookie consent provider and renders analytics, AdSense and the modal", async () => {
     const jsx = await LocaleLayout({
       children: <p>page content</p>,
       params: Promise.resolve({ locale: "pt-PT" }),
@@ -58,6 +62,7 @@ describe("LocaleLayout", () => {
     render(jsx);
 
     expect(screen.getByTestId("cookie-consent-provider")).toBeInTheDocument();
+    expect(screen.getByTestId("consent-gated-analytics")).toBeInTheDocument();
     expect(screen.getByTestId("adsense-script")).toBeInTheDocument();
     expect(screen.getByTestId("cookie-consent-modal")).toBeInTheDocument();
   });

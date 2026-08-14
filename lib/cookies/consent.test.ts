@@ -3,7 +3,7 @@ import {
   hasAcceptedMarketingCookies,
   parseCookieConsent,
   readCookieConsentFromDocument,
-  writeCookieConsentAccepted,
+  writeCookieConsent,
 } from "./consent"
 
 function clearCookies() {
@@ -15,7 +15,11 @@ describe("parseCookieConsent", () => {
     expect(parseCookieConsent("accepted")).toBe("accepted")
   })
 
-  it.each([undefined, null, "", "maybe", "Accepted", "rejected"])(
+  it("returns rejected for the rejected value", () => {
+    expect(parseCookieConsent("rejected")).toBe("rejected")
+  })
+
+  it.each([undefined, null, "", "maybe", "Accepted", "Rejected"])(
     "returns null for invalid value %p",
     (value) => {
       expect(parseCookieConsent(value as string | undefined | null)).toBeNull()
@@ -23,7 +27,7 @@ describe("parseCookieConsent", () => {
   )
 })
 
-describe("readCookieConsentFromDocument / writeCookieConsentAccepted", () => {
+describe("readCookieConsentFromDocument / writeCookieConsent", () => {
   afterEach(() => {
     clearCookies()
   })
@@ -33,15 +37,25 @@ describe("readCookieConsentFromDocument / writeCookieConsentAccepted", () => {
   })
 
   it("writes and reads back an accepted consent", () => {
-    writeCookieConsentAccepted()
+    writeCookieConsent("accepted")
 
     expect(readCookieConsentFromDocument()).toBe("accepted")
+  })
+
+  it("writes and reads back a rejected consent", () => {
+    writeCookieConsent("rejected")
+
+    expect(readCookieConsentFromDocument()).toBe("rejected")
   })
 })
 
 describe("hasAcceptedMarketingCookies", () => {
   it("returns true only for accepted", () => {
     expect(hasAcceptedMarketingCookies("accepted")).toBe(true)
+  })
+
+  it("returns false for rejected", () => {
+    expect(hasAcceptedMarketingCookies("rejected")).toBe(false)
   })
 
   it("returns false for null", () => {

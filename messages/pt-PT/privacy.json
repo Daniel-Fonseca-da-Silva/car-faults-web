@@ -10,8 +10,8 @@
   },
   "policy": {
     "title": "Política de Privacidade e Proteção de Dados",
-    "effectiveDate": "Data de vigência: 7 de agosto de 2026",
-    "lastUpdated": "Última atualização: 7 de agosto de 2026",
+    "effectiveDate": "Data de vigência: 14 de agosto de 2026",
+    "lastUpdated": "Última atualização: 14 de agosto de 2026",
     "sections": {
       "scope": {
         "heading": "1. Introdução e Âmbito",
@@ -23,7 +23,7 @@
       },
       "dataCollected": {
         "heading": "3. Categorias de Informações Pessoais que Recolhemos",
-        "body": "Informações que o utilizador fornece diretamente (ou via Google): informações da conta ao iniciar sessão com Google OAuth — identificador Google, endereço de e-mail, nome de apresentação, URL do avatar e o papel da conta; conteúdo gerado pelo utilizador — veículos guardados na garage, favoritos, comentários em texto, imagens de comentários, avaliações e votos em correções; critérios de pesquisa — marca, modelo, ano, motor, tipo de combustível, número de portas e idioma (não pedimos VIN, matrícula, morada nem número de telefone); dados de comunicação em pedidos de suporte ou privacidade.\n\nInformações recolhidas automaticamente: informações técnicas (endereço IP, tipo de navegador, dispositivo e carimbos de data/hora de acesso, na medida em que constem dos registos técnicos do alojamento ou da API); informações de sessão (token de autenticação JWT em cookie httpOnly, com validade habitual de cerca de 7 dias); registos de atividade e estatísticas de perfil derivadas da sua utilização.\n\nDados de publicidade (quando ativada): se a publicidade estiver ativada, o Google AdSense pode recolher dados através dos seus próprios cookies e tecnologias, segundo a política de privacidade do Google. Em ambientes de desenvolvimento a publicidade pode estar desativada.\n\nNão recolhemos intencionalmente dados sensíveis especiais (artigo 9.º do RGPD) nem dados de pagamento — o Serviço não processa cartões nem subscrições."
+        "body": "Informações que o utilizador fornece diretamente (ou via Google): informações da conta ao iniciar sessão com Google OAuth - identificador Google, endereço de e-mail, nome de apresentação, URL do avatar e o papel da conta; conteúdo gerado pelo utilizador - veículos guardados na garage, favoritos, comentários em texto, imagens de comentários, avaliações e votos em correções; critérios de pesquisa - marca, modelo, ano, motor, tipo de combustível, número de portas e idioma (não pedimos VIN, matrícula, morada nem número de telefone); dados de comunicação em pedidos de suporte ou privacidade.\n\nInformações recolhidas automaticamente: informações técnicas (endereço IP, tipo de navegador, dispositivo e carimbos de data/hora de acesso, na medida em que constem dos registos técnicos do alojamento ou da API); informações de sessão (token de autenticação JWT em cookie httpOnly, com validade habitual de cerca de 7 dias); registos de atividade e estatísticas de perfil derivadas da sua utilização.\n\nDados de publicidade (quando ativada): se a publicidade estiver ativada, o Google AdSense pode recolher dados através dos seus próprios cookies e tecnologias, segundo a política de privacidade do Google. Em ambientes de desenvolvimento a publicidade pode estar desativada.\n\nNão recolhemos intencionalmente dados sensíveis especiais (artigo 9.º do RGPD) nem dados de pagamento - o Serviço não processa cartões nem subscrições."
       },
       "legalBasis": {
         "heading": "4. Base Legal para Processamento e Finalidades de Uso",
@@ -31,7 +31,7 @@
       },
       "aiProcessing": {
         "heading": "5. Processamento por IA e Tomada de Decisão Automatizada",
-        "body": "As pesquisas que ainda não têm dados suficientes no catálogo podem ser encaminhadas pela nossa API para um serviço de IA interno (stateless), que por sua vez pode recorrer a fornecedores de modelos de linguagem (por exemplo, Google Gemini, Groq, OpenRouter ou equivalentes). Os dados enviados a esses fornecedores são tipicamente atributos do veículo (marca, modelo, ano, motor, combustível, portas, idioma) e, em fluxos de tradução/enriquecimento, títulos e descrições de issues — não enviamos o seu e-mail ou identificador de conta a esse serviço de IA. Os resultados podem ser guardados no catálogo partilhado e/ou em cache, para reutilização por outros utilizadores.\n\nO Serviço não toma decisões automatizadas com efeitos jurídicos ou igualmente significativos sobre si (artigo 22.º do RGPD). As sugestões de IA são informativas e não substituem inspeção profissional, diagnóstico mecânico ou aconselhamento jurídico. Pode solicitar informações adicionais sobre o processamento por IA que afete a sua experiência através do contacto de privacidade indicado nesta política."
+        "body": "As pesquisas que ainda não têm dados suficientes no catálogo podem ser encaminhadas pela nossa API para um serviço de IA interno (stateless), que por sua vez pode recorrer a fornecedores de modelos de linguagem (por exemplo, Google Gemini, Groq, OpenRouter ou equivalentes). Os dados enviados a esses fornecedores são tipicamente atributos do veículo (marca, modelo, ano, motor, combustível, portas, idioma) e, em fluxos de tradução/enriquecimento, títulos e descrições de issues - não enviamos o seu e-mail ou identificador de conta a esse serviço de IA. Os resultados podem ser guardados no catálogo partilhado e/ou em cache, para reutilização por outros utilizadores.\n\nO Serviço não toma decisões automatizadas com efeitos jurídicos ou igualmente significativos sobre si (artigo 22.º do RGPD). As sugestões de IA são informativas e não substituem inspeção profissional, diagnóstico mecânico ou aconselhamento jurídico. Pode solicitar informações adicionais sobre o processamento por IA que afete a sua experiência através do contacto de privacidade indicado nesta política."
       },
       "dataSharing": {
         "heading": "6. Partilha de Dados e Processadores de Terceiros",
@@ -55,11 +55,11 @@
       },
       "cookies": {
         "heading": "11. Cookies e Tecnologias Semelhantes",
-        "body": "Tipos utilizados: cookies essenciais (cookie de sessão de autenticação access_token, httpOnly, necessário para manter o login e proteger áreas autenticadas); tecnologias de segurança (Cloudflare Turnstile em fluxos de pesquisa protegidos); publicidade (cookies e tecnologias do Google AdSense quando a publicidade estiver ativa); preferências da interface (componentes podem utilizar cookies técnicos de preferência, sem fins de marketing).\n\nConsentimento e controlo: na primeira visita, o Serviço apresenta um pequeno aviso de cookies no canto inferior esquerdo do ecrã, com um link para esta Política de Privacidade. Ao fechar o aviso, está a consentir a utilização de cookies, incluindo os de publicidade do Google AdSense; essa escolha é guardada no cookie cookie_consent (com validade de cerca de um ano) e determina se esses cookies não essenciais são carregados. Pode reabrir o aviso a qualquer momento através do link \"Cookies\" no rodapé do Serviço, ou gerir cookies através das definições do seu navegador e, quando aplicável, das ferramentas de opt-out disponibilizadas pelo Google para publicidade."
+        "body": "Tipos utilizados: cookies essenciais (cookie de sessão de autenticação access_token, httpOnly, necessário para manter o login e proteger áreas autenticadas); tecnologias de segurança (Cloudflare Turnstile em fluxos de pesquisa protegidos); publicidade e estatísticas (cookies e tecnologias do Google AdSense e do Vercel Analytics, apenas depois de aceitar); preferências da interface (componentes podem utilizar cookies técnicos de preferência, sem fins de marketing).\n\nConsentimento e controlo: na primeira visita, o Serviço apresenta um aviso de cookies no canto inferior esquerdo do ecrã, com os botões \"Aceitar\" e \"Recusar\" e um link para esta Política de Privacidade. A sua escolha é guardada no cookie cookie_consent (valor accepted ou rejected, com validade de cerca de um ano). Recusar não impede a utilização do site - apenas mantém a publicidade e as estatísticas desligadas. Os sinais de publicidade do Google (Consent Mode) começam desligados por predefinição e só passam a concedidos depois de aceitar. Pode mudar a sua escolha a qualquer momento através do link \"Cookies\" no rodapé do Serviço, ou gerir cookies através das definições do seu navegador e, quando aplicável, das ferramentas de opt-out disponibilizadas pelo Google para publicidade."
       },
       "security": {
         "heading": "12. Segurança de Dados",
-        "body": "Medidas adotadas: comunicação protegida por TLS em ambientes de produção; token JWT em cookie httpOnly, com SameSite adequado e flag Secure em produção; autenticação obrigatória para áreas de perfil, garage e administração, com autorização por papel (role) para funções administrativas; redação de cabeçalhos sensíveis (por exemplo, Authorization e Cookie) nos registos HTTP da API, na medida do configurado; e minimização — não pedimos VIN, matrícula nem dados de pagamento.\n\nLimitações: nenhum sistema é totalmente isento de risco. Se tomarmos conhecimento de um incidente que afete os seus dados pessoais, avaliaremos o impacto e, quando exigido por lei, notificaremos a autoridade competente e os titulares afetados."
+        "body": "Medidas adotadas: comunicação protegida por TLS em ambientes de produção; token JWT em cookie httpOnly, com SameSite adequado e flag Secure em produção; autenticação obrigatória para áreas de perfil, garage e administração, com autorização por papel (role) para funções administrativas; redação de cabeçalhos sensíveis (por exemplo, Authorization e Cookie) nos registos HTTP da API, na medida do configurado; e minimização - não pedimos VIN, matrícula nem dados de pagamento.\n\nLimitações: nenhum sistema é totalmente isento de risco. Se tomarmos conhecimento de um incidente que afete os seus dados pessoais, avaliaremos o impacto e, quando exigido por lei, notificaremos a autoridade competente e os titulares afetados."
       },
       "minors": {
         "heading": "13. Privacidade de Menores",
@@ -75,14 +75,14 @@
       },
       "contact": {
         "heading": "16. Informações de Contacto e Reclamações",
-        "body": "Consultas de privacidade: ver secção \"Informações do Controlador de Dados\".\n\nReclamações regulatórias: em Portugal (RGPD), a Comissão Nacional de Proteção de Dados (CNPD) — www.cnpd.pt; no Reino Unido (UK GDPR), o Information Commissioner's Office (ICO) — www.ico.org.uk; nos restantes Estados-Membros da UE, a autoridade de controlo do seu país de residência habitual, local de trabalho ou do local da alegada infração.\n\nEncorajamos o contacto direto connosco antes de apresentar uma reclamação formal, para tentarmos resolver a questão com brevidade."
+        "body": "Consultas de privacidade: ver secção \"Informações do Controlador de Dados\".\n\nReclamações regulatórias: em Portugal (RGPD), a Comissão Nacional de Proteção de Dados (CNPD) - www.cnpd.pt; no Reino Unido (UK GDPR), o Information Commissioner's Office (ICO) - www.ico.org.uk; nos restantes Estados-Membros da UE, a autoridade de controlo do seu país de residência habitual, local de trabalho ou do local da alegada infração.\n\nEncorajamos o contacto direto connosco antes de apresentar uma reclamação formal, para tentarmos resolver a questão com brevidade."
       }
     }
   },
   "terms": {
     "title": "Termos de Serviço",
-    "effectiveDate": "Data de vigência: 7 de agosto de 2026",
-    "lastUpdated": "Última atualização: 7 de agosto de 2026",
+    "effectiveDate": "Data de vigência: 14 de agosto de 2026",
+    "lastUpdated": "Última atualização: 14 de agosto de 2026",
     "sections": {
       "provider": {
         "heading": "1. Informações do Prestador de Serviço e Visão Geral do Serviço",

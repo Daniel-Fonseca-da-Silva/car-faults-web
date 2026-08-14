@@ -15,6 +15,7 @@ jest.mock("next-intl/server", () => ({
       "garage.issues.viewDetails": "Ver detalhes",
       "faults.severity.high": "Alta",
       "faults.severity.critical": "Crítica",
+      "faults.vehicle.sources": "Fontes",
     };
     return (key: string) => dict[`${namespace}.${key}`] ?? key;
   },
@@ -94,5 +95,35 @@ describe("GarageKnownIssues", () => {
     expect(
       screen.getByText("Ainda não há problemas conhecidos para este veículo.")
     ).toBeInTheDocument();
+  });
+
+  it("shows a clickable source link when the issue has a known source", async () => {
+    const jsx = await GarageKnownIssues({
+      vehicle: {
+        ...baseVehicle,
+        knownIssues: [
+          {
+            ...knownIssue,
+            sources: [
+              "https://www.auto-doc.pt/info/volkswagen-polo-problemas-associados",
+            ],
+          },
+        ],
+      },
+    });
+    render(jsx);
+
+    const link = screen.getByRole("link", { name: "auto-doc.pt" });
+    expect(link).toHaveAttribute(
+      "href",
+      "https://www.auto-doc.pt/info/volkswagen-polo-problemas-associados"
+    );
+  });
+
+  it("omits the sources section when the issue has no sources", async () => {
+    const jsx = await GarageKnownIssues({ vehicle: baseVehicle });
+    render(jsx);
+
+    expect(screen.queryByText(/Fontes:/)).not.toBeInTheDocument();
   });
 });

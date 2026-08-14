@@ -60,7 +60,7 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
   const [engine, setEngine] = useState("");
   const [fuel, setFuel] = useState("");
   const [doors, setDoors] = useState("");
-  const [showValidationError, setShowValidationError] = useState(false);
+  const [invalidFields, setInvalidFields] = useState<Set<string>>(new Set());
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [widgetResetSignal, setWidgetResetSignal] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -75,6 +75,16 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
   function resetWidget() {
     setTurnstileToken(null);
     setWidgetResetSignal((signal) => signal + 1);
+  }
+
+  function clearFieldError(field: string, value: string) {
+    if (!value.trim()) return;
+    setInvalidFields((current) => {
+      if (!current.has(field)) return current;
+      const next = new Set(current);
+      next.delete(field);
+      return next;
+    });
   }
 
   async function submitFullSearch() {
@@ -115,27 +125,19 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!make.trim() && !model.trim()) {
-      setShowValidationError(true);
+    if (!isFullSearch) {
+      const missing = new Set<string>();
+      if (!make.trim()) missing.add("make");
+      if (!model.trim()) missing.add("model");
+      if (!year.trim()) missing.add("year");
+      if (!fuel) missing.add("fuel");
+      if (!isElectric && !engine.trim()) missing.add("engine");
+      setInvalidFields(missing);
       return;
     }
 
-    setShowValidationError(false);
-
-    if (isFullSearch) {
-      void submitFullSearch();
-      return;
-    }
-
-    const query: Record<string, string> = {};
-    if (make.trim()) query.make = make.trim();
-    if (model.trim()) query.model = model.trim();
-    if (year.trim()) query.year = year.trim();
-    if (effectiveEngine) query.engine = effectiveEngine;
-    if (fuel) query.fuel = fuel;
-    if (doors) query.doors = doors;
-
-    router.push({ pathname: "/defects", query });
+    setInvalidFields(new Set());
+    void submitFullSearch();
   }
 
   return (
@@ -158,8 +160,8 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
         <form onSubmit={handleSubmit} noValidate>
           <FieldGroup>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field>
-                <FieldLabel htmlFor="vehicle-make">
+              <Field data-invalid={invalidFields.has("make")}>
+                <FieldLabel htmlFor="vehicle-make" required>
                   {t("fields.make")}
                 </FieldLabel>
                 <Combobox
@@ -168,6 +170,7 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
                   onValueChange={(value) => {
                     if (value != null) {
                       setMake(value);
+                      clearFieldError("make", value);
                     }
                   }}
                   inputValue={make}
@@ -176,6 +179,7 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
                       return;
                     }
                     setMake(value);
+                    clearFieldError("make", value);
                   }}
                 >
                   <ComboboxInput
@@ -197,24 +201,33 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
                     </ComboboxList>
                   </ComboboxContent>
                 </Combobox>
+                {invalidFields.has("make") && (
+                  <FieldError>{t("errors.required")}</FieldError>
+                )}
               </Field>
 
-              <Field>
-                <FieldLabel htmlFor="vehicle-model">
+              <Field data-invalid={invalidFields.has("model")}>
+                <FieldLabel htmlFor="vehicle-model" required>
                   {t("fields.model")}
                 </FieldLabel>
                 <Input
                   id="vehicle-model"
                   name="model"
                   value={model}
-                  onChange={(event) => setModel(event.target.value)}
+                  onChange={(event) => {
+                    setModel(event.target.value);
+                    clearFieldError("model", event.target.value);
+                  }}
                   placeholder={t("fields.modelPlaceholder")}
                   className="h-11"
                 />
+                {invalidFields.has("model") && (
+                  <FieldError>{t("errors.required")}</FieldError>
+                )}
               </Field>
 
-              <Field>
-                <FieldLabel htmlFor="vehicle-year">
+              <Field data-invalid={invalidFields.has("year")}>
+                <FieldLabel htmlFor="vehicle-year" required>
                   {t("fields.year")}
                 </FieldLabel>
                 <Input
@@ -223,37 +236,52 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
                   type="number"
                   inputMode="numeric"
                   value={year}
-                  onChange={(event) => setYear(event.target.value)}
+                  onChange={(event) => {
+                    setYear(event.target.value);
+                    clearFieldError("year", event.target.value);
+                  }}
                   placeholder={t("fields.yearPlaceholder")}
                   className="h-11"
                 />
+                {invalidFields.has("year") && (
+                  <FieldError>{t("errors.required")}</FieldError>
+                )}
               </Field>
 
               {!isElectric && (
-                <Field>
-                  <FieldLabel htmlFor="vehicle-engine">
+                <Field data-invalid={invalidFields.has("engine")}>
+                  <FieldLabel htmlFor="vehicle-engine" required>
                     {t("fields.engine")}
                   </FieldLabel>
                   <Input
                     id="vehicle-engine"
                     name="engine"
                     value={engine}
-                    onChange={(event) => setEngine(event.target.value)}
+                    onChange={(event) => {
+                      setEngine(event.target.value);
+                      clearFieldError("engine", event.target.value);
+                    }}
                     placeholder={t("fields.enginePlaceholder")}
                     className="h-11"
                   />
+                  {invalidFields.has("engine") && (
+                    <FieldError>{t("errors.required")}</FieldError>
+                  )}
                 </Field>
               )}
 
-              <Field>
-                <FieldLabel htmlFor="vehicle-fuel">
+              <Field data-invalid={invalidFields.has("fuel")}>
+                <FieldLabel htmlFor="vehicle-fuel" required>
                   {t("fields.fuel")}
                 </FieldLabel>
                 <NativeSelect
                   id="vehicle-fuel"
                   name="fuel"
                   value={fuel}
-                  onChange={(event) => setFuel(event.target.value)}
+                  onChange={(event) => {
+                    setFuel(event.target.value);
+                    clearFieldError("fuel", event.target.value);
+                  }}
                   className="h-11 [&_select]:h-11"
                 >
                   <NativeSelectOption value="">
@@ -265,6 +293,9 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
                     </NativeSelectOption>
                   ))}
                 </NativeSelect>
+                {invalidFields.has("fuel") && (
+                  <FieldError>{t("errors.required")}</FieldError>
+                )}
               </Field>
 
               <Field>
@@ -289,10 +320,6 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
                 </NativeSelect>
               </Field>
             </div>
-
-            {showValidationError && (
-              <FieldError>{t("validation")}</FieldError>
-            )}
 
             {isFullSearch && (
               <TurnstileWidget
