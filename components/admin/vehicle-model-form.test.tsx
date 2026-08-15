@@ -194,10 +194,8 @@ describe("VehicleModelForm", () => {
     fireEvent.change(getFileInput(), { target: { files: [bigFile] } });
 
     expect(
-      screen.getByRole("alert", {
-        name: "The image must be smaller than 5 MB.",
-      })
-    ).toBeInTheDocument();
+      screen.getByRole("alert")
+    ).toHaveTextContent("The image must be smaller than 5 MB.");
     expect(uploadVehicleImageMock).not.toHaveBeenCalled();
   });
 
@@ -208,10 +206,8 @@ describe("VehicleModelForm", () => {
     fireEvent.change(getFileInput(), { target: { files: [file] } });
 
     expect(
-      screen.getByRole("alert", {
-        name: "Please choose a JPEG, PNG or WEBP image.",
-      })
-    ).toBeInTheDocument();
+      screen.getByRole("alert")
+    ).toHaveTextContent("Please choose a JPEG, PNG or WEBP image.");
     expect(uploadVehicleImageMock).not.toHaveBeenCalled();
   });
 
@@ -264,10 +260,8 @@ describe("VehicleModelForm", () => {
     fireEvent.change(getFileInput(), { target: { files: [file] } });
 
     expect(
-      await screen.findByRole("alert", {
-        name: "Something went wrong. Please try again.",
-      })
-    ).toBeInTheDocument();
+      await screen.findByRole("alert")
+    ).toHaveTextContent("Something went wrong. Please try again.");
     expect(
       screen.queryByRole("status", { name: "Photo uploaded successfully." })
     ).not.toBeInTheDocument();
@@ -292,10 +286,8 @@ describe("VehicleModelForm", () => {
       screen.queryByRole("status", { name: "Photo uploaded successfully." })
     ).not.toBeInTheDocument();
     expect(
-      screen.getByRole("alert", {
-        name: "Please choose a JPEG, PNG or WEBP image.",
-      })
-    ).toBeInTheDocument();
+      screen.getByRole("alert")
+    ).toHaveTextContent("Please choose a JPEG, PNG or WEBP image.");
   });
 
   it("clears the image error and success state when removing the photo", async () => {
