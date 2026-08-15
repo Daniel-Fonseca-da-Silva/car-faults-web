@@ -41,6 +41,8 @@
   },
   "vehicleForm": {
     "brand": "Marca",
+    "brandPlaceholder": "ej.: Volkswagen",
+    "brandNoResults": "No hay marcas coincidentes. Se usará el texto escrito.",
     "model": "Modelo",
     "name": "Nombre a mostrar",
     "yearFrom": "Año inicial",
@@ -56,6 +58,8 @@
     "fuelTypeHybrid": "Híbrido",
     "image": "Foto del catálogo",
     "uploadImage": "Subir foto",
+    "uploading": "Subiendo…",
+    "uploadSucceeded": "Foto subida correctamente.",
     "removeImage": "Quitar foto",
     "invalidImageType": "Elige una imagen JPEG, PNG o WEBP.",
     "imageTooLarge": "La imagen debe pesar menos de 5 MB."

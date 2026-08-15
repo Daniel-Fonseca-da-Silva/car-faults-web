@@ -41,6 +41,8 @@
   },
   "vehicleForm": {
     "brand": "Brand",
+    "brandPlaceholder": "e.g. Volkswagen",
+    "brandNoResults": "No matching brand. Your typed name will be used.",
     "model": "Model",
     "name": "Display name",
     "yearFrom": "Year from",
@@ -56,6 +58,8 @@
     "fuelTypeHybrid": "Hybrid",
     "image": "Catalog photo",
     "uploadImage": "Upload photo",
+    "uploading": "Uploading…",
+    "uploadSucceeded": "Photo uploaded successfully.",
     "removeImage": "Remove photo",
     "invalidImageType": "Please choose a JPEG, PNG or WEBP image.",
     "imageTooLarge": "The image must be smaller than 5 MB."
