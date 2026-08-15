@@ -41,6 +41,8 @@
   },
   "vehicleForm": {
     "brand": "Marca",
+    "brandPlaceholder": "ex.: Volkswagen",
+    "brandNoResults": "Sem marcas correspondentes. Será usado o texto escrito.",
     "model": "Modelo",
     "name": "Nome a apresentar",
     "yearFrom": "Ano inicial",
@@ -56,6 +58,8 @@
     "fuelTypeHybrid": "Híbrido",
     "image": "Foto do catálogo",
     "uploadImage": "Carregar foto",
+    "uploading": "A carregar…",
+    "uploadSucceeded": "Foto carregada com sucesso.",
     "removeImage": "Remover foto",
     "invalidImageType": "Escolha uma imagem JPEG, PNG ou WEBP.",
     "imageTooLarge": "A imagem deve ter menos de 5 MB."

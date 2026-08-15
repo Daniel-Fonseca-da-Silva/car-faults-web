@@ -1,10 +1,19 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import {
+  Combobox,
+  ComboboxCollection,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -18,11 +27,15 @@ import {
 } from "@/lib/api/admin-vehicles";
 import { uploadVehicleImage } from "@/lib/api/storage";
 import { useRouter } from "@/i18n/navigation";
+import { EUROPEAN_VEHICLE_MAKES } from "@/lib/mocks/vehicle-makes";
 import type { AdminVehicleModel } from "@/types/admin";
 import type { LookupFuelType } from "@/types/lookup";
 
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
+// Base UI clears the input when the popup closes without a selected item.
+// Keep free-text brands so makes outside EUROPEAN_VEHICLE_MAKES stay usable.
+const COMBOBOX_INPUT_CLEAR_REASON = "input-clear";
 const FUEL_TYPE_LABEL_KEYS = {
   gasoline: "vehicleForm.fuelTypeGasoline",
   diesel: "vehicleForm.fuelTypeDiesel",
@@ -63,30 +76,41 @@ export function VehicleModelForm({ vehicle }: VehicleModelFormProps) {
     vehicle?.imageUrl ?? null
   );
   const [uploading, setUploading] = useState(false);
+  const [uploadSucceeded, setUploadSucceeded] = useState(false);
+  const [imageError, setImageError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  function handleRemoveImage() {
+    setImageUrl(null);
+    setImageError(null);
+    setUploadSucceeded(false);
+  }
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     event.target.value = "";
     if (!file) return;
 
+    setImageError(null);
+    setUploadSucceeded(false);
+
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-      setError(t("vehicleForm.invalidImageType"));
+      setImageError(t("vehicleForm.invalidImageType"));
       return;
     }
     if (file.size > MAX_IMAGE_SIZE_BYTES) {
-      setError(t("vehicleForm.imageTooLarge"));
+      setImageError(t("vehicleForm.imageTooLarge"));
       return;
     }
 
-    setError(null);
     setUploading(true);
     try {
       const result = await uploadVehicleImage(file);
       setImageUrl(result.url);
+      setUploadSucceeded(true);
     } catch {
-      setError(t("common.error"));
+      setImageError(t("common.error"));
     } finally {
       setUploading(false);
     }
@@ -129,13 +153,40 @@ export function VehicleModelForm({ vehicle }: VehicleModelFormProps) {
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
           <Label htmlFor="vehicle-brand">{t("vehicleForm.brand")}</Label>
-          <Input
-            id="vehicle-brand"
-            value={brand}
-            onChange={(event) => setBrand(event.target.value)}
-            required
-            disabled={submitting}
-          />
+          <Combobox
+            items={EUROPEAN_VEHICLE_MAKES}
+            value={EUROPEAN_VEHICLE_MAKES.includes(brand) ? brand : null}
+            onValueChange={(value) => {
+              if (value != null) setBrand(value);
+            }}
+            inputValue={brand}
+            onInputValueChange={(value, eventDetails) => {
+              if (eventDetails.reason === COMBOBOX_INPUT_CLEAR_REASON) {
+                return;
+              }
+              setBrand(value);
+            }}
+          >
+            <ComboboxInput
+              id="vehicle-brand"
+              name="brand"
+              placeholder={t("vehicleForm.brandPlaceholder")}
+              required
+              disabled={submitting}
+            />
+            <ComboboxContent>
+              <ComboboxEmpty>{t("vehicleForm.brandNoResults")}</ComboboxEmpty>
+              <ComboboxList>
+                <ComboboxCollection>
+                  {(item: string) => (
+                    <ComboboxItem key={item} value={item}>
+                      {item}
+                    </ComboboxItem>
+                  )}
+                </ComboboxCollection>
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="vehicle-model">{t("vehicleForm.model")}</Label>
@@ -231,7 +282,7 @@ export function VehicleModelForm({ vehicle }: VehicleModelFormProps) {
             />
           </div>
         )}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <input
             ref={fileInputRef}
             type="file"
@@ -249,7 +300,10 @@ export function VehicleModelForm({ vehicle }: VehicleModelFormProps) {
             disabled={submitting || uploading}
           >
             {uploading ? (
-              <Loader2 aria-hidden="true" className="size-4 animate-spin" />
+              <>
+                <Loader2 aria-hidden="true" className="size-4 animate-spin" />
+                {t("vehicleForm.uploading")}
+              </>
             ) : (
               t("vehicleForm.uploadImage")
             )}
@@ -259,13 +313,27 @@ export function VehicleModelForm({ vehicle }: VehicleModelFormProps) {
               type="button"
               variant="ghost"
               size="sm"
-              onClick={() => setImageUrl(null)}
+              onClick={handleRemoveImage}
               disabled={submitting || uploading}
             >
               {t("vehicleForm.removeImage")}
             </Button>
           )}
+          {uploadSucceeded && !uploading && (
+            <span
+              role="status"
+              aria-label={t("vehicleForm.uploadSucceeded")}
+              className="text-success"
+            >
+              <CheckCircle2 aria-hidden="true" className="size-5" />
+            </span>
+          )}
         </div>
+        {imageError && (
+          <p role="alert" className="text-sm text-destructive">
+            {imageError}
+          </p>
+        )}
       </div>
 
       {error && <p className="text-sm text-destructive">{error}</p>}
