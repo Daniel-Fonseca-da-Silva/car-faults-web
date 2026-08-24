@@ -27,7 +27,9 @@
   "submit": "Buscar defeitos",
   "verifying": "A verificar...",
   "errors": {
-    "required": "Preencha este campo."
+    "required": "Preencha este campo.",
+    "yearRange": "Indique um ano entre {min} e {max}."
   },
-  "captchaError": "Falha na verificação. Complete o desafio novamente."
+  "captchaError": "Falha na verificação. Complete o desafio novamente.",
+  "searchError": "Ocorreu um erro na pesquisa. Tente novamente."
 }

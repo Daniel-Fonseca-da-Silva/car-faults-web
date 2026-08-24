@@ -27,7 +27,9 @@
   "submit": "Search faults",
   "verifying": "Verifying...",
   "errors": {
-    "required": "Please fill in this field."
+    "required": "Please fill in this field.",
+    "yearRange": "Enter a year between {min} and {max}."
   },
-  "captchaError": "Verification failed. Please complete the challenge again."
+  "captchaError": "Verification failed. Please complete the challenge again.",
+  "searchError": "Something went wrong with your search. Please try again."
 }

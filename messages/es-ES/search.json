@@ -27,7 +27,9 @@
   "submit": "Buscar defectos",
   "verifying": "Verificando...",
   "errors": {
-    "required": "Rellena este campo."
+    "required": "Rellena este campo.",
+    "yearRange": "Introduce un año entre {min} y {max}."
   },
-  "captchaError": "Verificación fallida. Completa el desafío de nuevo."
+  "captchaError": "Verificación fallida. Completa el desafío de nuevo.",
+  "searchError": "Ha ocurrido un error en la búsqueda. Inténtalo de nuevo."
 }
