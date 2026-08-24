@@ -5,6 +5,11 @@ import { VehicleSearchForm } from "./vehicle-search-form";
 
 const FULL_SEARCH_TEST_TIMEOUT_MS = 15_000;
 const REQUIRED_ERROR_TEXT = "Please fill in this field.";
+const YEAR_RANGE_ERROR_TEXT = "Enter a year between 1900 and 2027.";
+const CAPTCHA_ERROR_TEXT =
+  "Verification failed. Please complete the challenge again.";
+const SEARCH_ERROR_TEXT =
+  "Something went wrong with your search. Please try again.";
 
 const pushMock = jest.fn();
 let turnstileOnSuccess: ((token: string) => void) | undefined;
@@ -39,7 +44,9 @@ jest.mock("next-intl", () => ({
       submit: "Search faults",
       verifying: "Verifying...",
       "errors.required": REQUIRED_ERROR_TEXT,
-      captchaError: "Verification failed. Please complete the challenge again.",
+      "errors.yearRange": YEAR_RANGE_ERROR_TEXT,
+      captchaError: CAPTCHA_ERROR_TEXT,
+      searchError: SEARCH_ERROR_TEXT,
     };
     return (key: string) => dict[key] ?? key;
   },
@@ -295,9 +302,12 @@ describe("VehicleSearchForm", () => {
   );
 
   it(
-    "shows an error and resets the widget when the prepare request fails",
+    "shows the captcha error and resets the widget when the API reports TURNSTILE_REQUIRED",
     async () => {
-      fetchMock.mockResolvedValue({ ok: false, json: async () => ({}) });
+      fetchMock.mockResolvedValue({
+        ok: false,
+        json: async () => ({ error: "TURNSTILE_REQUIRED" }),
+      });
       const user = createUser();
       render(<VehicleSearchForm isDatabaseUp={true} />);
 
@@ -306,16 +316,82 @@ describe("VehicleSearchForm", () => {
       await completeCaptcha(user);
 
       await waitFor(() =>
-        expect(
-          screen.getByText(
-            "Verification failed. Please complete the challenge again."
-          )
-        ).toBeInTheDocument()
+        expect(screen.getByText(CAPTCHA_ERROR_TEXT)).toBeInTheDocument()
       );
       expect(pushMock).not.toHaveBeenCalled();
       expect(
         screen.getByRole("button", { name: "Search faults" })
       ).toBeDisabled();
+    },
+    FULL_SEARCH_TEST_TIMEOUT_MS
+  );
+
+  it(
+    "shows a generic search error without blaming the captcha when the lookup fails for another reason",
+    async () => {
+      fetchMock.mockResolvedValue({
+        ok: false,
+        json: async () => ({ error: "LOOKUP_FAILED" }),
+      });
+      const user = createUser();
+      render(<VehicleSearchForm isDatabaseUp={true} />);
+
+      await fillFullSearchFields(user);
+
+      await completeCaptcha(user);
+
+      await waitFor(() =>
+        expect(screen.getByText(SEARCH_ERROR_TEXT)).toBeInTheDocument()
+      );
+      expect(screen.queryByText(CAPTCHA_ERROR_TEXT)).not.toBeInTheDocument();
+      expect(pushMock).not.toHaveBeenCalled();
+      expect(
+        screen.getByRole("button", { name: "Search faults" })
+      ).toBeEnabled();
+    },
+    FULL_SEARCH_TEST_TIMEOUT_MS
+  );
+
+  it(
+    "clears the captcha error once Turnstile succeeds again after a TURNSTILE_REQUIRED failure",
+    async () => {
+      fetchMock.mockResolvedValue({
+        ok: false,
+        json: async () => ({ error: "TURNSTILE_REQUIRED" }),
+      });
+      const user = createUser();
+      render(<VehicleSearchForm isDatabaseUp={true} />);
+
+      await fillFullSearchFields(user);
+      await completeCaptcha(user);
+
+      await waitFor(() =>
+        expect(screen.getByText(CAPTCHA_ERROR_TEXT)).toBeInTheDocument()
+      );
+
+      act(() => turnstileOnSuccess?.("fresh-token"));
+
+      await waitFor(() =>
+        expect(screen.queryByText(CAPTCHA_ERROR_TEXT)).not.toBeInTheDocument()
+      );
+    },
+    FULL_SEARCH_TEST_TIMEOUT_MS
+  );
+
+  it(
+    "shows a year range error instead of a captcha error when the year is out of range",
+    async () => {
+      const user = createUser();
+      render(<VehicleSearchForm isDatabaseUp={true} />);
+
+      await fillFullSearchFields(user, { year: "1500" });
+      await completeCaptcha(user);
+
+      expect(
+        await screen.findByText(YEAR_RANGE_ERROR_TEXT)
+      ).toBeInTheDocument();
+      expect(fetchMock).not.toHaveBeenCalled();
+      expect(pushMock).not.toHaveBeenCalled();
     },
     FULL_SEARCH_TEST_TIMEOUT_MS
   );

@@ -2,12 +2,12 @@ import { act, render } from "@testing-library/react";
 
 import { TurnstileWidget } from "./turnstile-widget";
 
-let scriptOnLoad: (() => void) | undefined;
+let scriptOnReady: (() => void) | undefined;
 
 jest.mock("next/script", () => ({
   __esModule: true,
-  default: ({ onLoad }: { onLoad?: () => void }) => {
-    scriptOnLoad = onLoad;
+  default: ({ onReady }: { onReady?: () => void }) => {
+    scriptOnReady = onReady;
     return null;
   },
 }));
@@ -21,34 +21,52 @@ describe("TurnstileWidget", () => {
   let removeMock: jest.Mock;
   let resetMock: jest.Mock;
 
-  beforeEach(() => {
-    renderMock = jest.fn().mockReturnValue("widget-1");
-    removeMock = jest.fn();
-    resetMock = jest.fn();
+  function installTurnstileGlobal() {
     window.turnstile = {
       render: renderMock,
       remove: removeMock,
       reset: resetMock,
     };
-    scriptOnLoad = undefined;
+  }
+
+  beforeEach(() => {
+    renderMock = jest.fn().mockReturnValue("widget-1");
+    removeMock = jest.fn();
+    resetMock = jest.fn();
+    delete window.turnstile;
+    scriptOnReady = undefined;
   });
 
   afterEach(() => {
     delete window.turnstile;
   });
 
-  it("does not render the Turnstile widget before the script has loaded", () => {
+  it("does not render the Turnstile widget before the script is ready", () => {
     render(<TurnstileWidget onSuccess={jest.fn()} />);
 
     expect(renderMock).not.toHaveBeenCalled();
   });
 
-  it("renders the widget with the configured sitekey once the script loads", () => {
+  it("renders the widget with the configured sitekey once next/script reports ready", () => {
     render(<TurnstileWidget onSuccess={jest.fn()} />);
+    installTurnstileGlobal();
 
     act(() => {
-      scriptOnLoad?.();
+      scriptOnReady?.();
     });
+
+    expect(renderMock).toHaveBeenCalledWith(
+      expect.any(HTMLElement),
+      expect.objectContaining({ sitekey: "test-site-key", retry: "auto" })
+    );
+  });
+
+  it("renders the widget immediately when the Turnstile script is already loaded on mount", () => {
+    // Simulates the script being cached from a previous page, where
+    // next/script's onReady never fires for this mount.
+    installTurnstileGlobal();
+
+    render(<TurnstileWidget onSuccess={jest.fn()} />);
 
     expect(renderMock).toHaveBeenCalledWith(
       expect.any(HTMLElement),
@@ -57,11 +75,9 @@ describe("TurnstileWidget", () => {
   });
 
   it("forwards the token to onSuccess when the callback fires", () => {
+    installTurnstileGlobal();
     const onSuccess = jest.fn();
     render(<TurnstileWidget onSuccess={onSuccess} />);
-    act(() => {
-      scriptOnLoad?.();
-    });
 
     const options = renderMock.mock.calls[0][1];
     options.callback("token-abc");
@@ -69,7 +85,23 @@ describe("TurnstileWidget", () => {
     expect(onSuccess).toHaveBeenCalledWith("token-abc");
   });
 
+  it("uses the latest callbacks even after the parent re-renders with new function props", () => {
+    installTurnstileGlobal();
+    const onSuccess1 = jest.fn();
+    const onSuccess2 = jest.fn();
+    const { rerender } = render(<TurnstileWidget onSuccess={onSuccess1} />);
+
+    rerender(<TurnstileWidget onSuccess={onSuccess2} />);
+
+    const options = renderMock.mock.calls[0][1];
+    options.callback("token-abc");
+
+    expect(onSuccess1).not.toHaveBeenCalled();
+    expect(onSuccess2).toHaveBeenCalledWith("token-abc");
+  });
+
   it("calls onExpire and onError when those callbacks fire", () => {
+    installTurnstileGlobal();
     const onExpire = jest.fn();
     const onError = jest.fn();
     render(
@@ -79,9 +111,6 @@ describe("TurnstileWidget", () => {
         onError={onError}
       />
     );
-    act(() => {
-      scriptOnLoad?.();
-    });
 
     const options = renderMock.mock.calls[0][1];
     options["expired-callback"]();
@@ -92,10 +121,8 @@ describe("TurnstileWidget", () => {
   });
 
   it("removes the widget on unmount", () => {
+    installTurnstileGlobal();
     const { unmount } = render(<TurnstileWidget onSuccess={jest.fn()} />);
-    act(() => {
-      scriptOnLoad?.();
-    });
 
     unmount();
 
@@ -103,12 +130,10 @@ describe("TurnstileWidget", () => {
   });
 
   it("resets the widget when resetSignal changes", () => {
+    installTurnstileGlobal();
     const { rerender } = render(
       <TurnstileWidget onSuccess={jest.fn()} resetSignal={0} />
     );
-    act(() => {
-      scriptOnLoad?.();
-    });
 
     rerender(<TurnstileWidget onSuccess={jest.fn()} resetSignal={1} />);
 
@@ -116,10 +141,8 @@ describe("TurnstileWidget", () => {
   });
 
   it("does not reset when resetSignal is not provided", () => {
+    installTurnstileGlobal();
     const { rerender } = render(<TurnstileWidget onSuccess={jest.fn()} />);
-    act(() => {
-      scriptOnLoad?.();
-    });
 
     rerender(<TurnstileWidget onSuccess={jest.fn()} />);
 
