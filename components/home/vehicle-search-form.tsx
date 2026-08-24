@@ -41,6 +41,13 @@ const FUEL_OPTIONS = [
 ] as const;
 const DOOR_OPTIONS = [2, 3, 4, 5] as const;
 const ELECTRIC_ENGINE_SENTINEL = "electric";
+const MIN_YEAR = 1900;
+const MAX_YEAR = new Date().getFullYear() + 1;
+
+function isYearInRange(value: string): boolean {
+  const year = Number(value);
+  return Number.isInteger(year) && year >= MIN_YEAR && year <= MAX_YEAR;
+}
 // Base UI clears the input when the popup closes without a selected item.
 // Keep free-text makes so unmatched brands can still be searched.
 const COMBOBOX_INPUT_CLEAR_REASON = "input-clear";
@@ -61,10 +68,12 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
   const [fuel, setFuel] = useState("");
   const [doors, setDoors] = useState("");
   const [invalidFields, setInvalidFields] = useState<Set<string>>(new Set());
+  const [yearRangeError, setYearRangeError] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [widgetResetSignal, setWidgetResetSignal] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showCaptchaError, setShowCaptchaError] = useState(false);
+  const [showSearchError, setShowSearchError] = useState(false);
 
   const isElectric = fuel === ELECTRIC_ENGINE_SENTINEL;
   const effectiveEngine = isElectric ? ELECTRIC_ENGINE_SENTINEL : engine.trim();
@@ -92,6 +101,7 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
 
     setIsSubmitting(true);
     setShowCaptchaError(false);
+    setShowSearchError(false);
 
     try {
       const response = await fetch("/api/lookup/prepare", {
@@ -110,8 +120,16 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
       });
 
       if (!response.ok) {
-        setShowCaptchaError(true);
-        resetWidget();
+        const data = (await response.json().catch(() => null)) as {
+          error?: string;
+        } | null;
+
+        if (data?.error === "TURNSTILE_REQUIRED") {
+          setShowCaptchaError(true);
+          resetWidget();
+        } else {
+          setShowSearchError(true);
+        }
         return;
       }
 
@@ -133,10 +151,18 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
       if (!fuel) missing.add("fuel");
       if (!isElectric && !engine.trim()) missing.add("engine");
       setInvalidFields(missing);
+      setYearRangeError(false);
+      return;
+    }
+
+    if (!isYearInRange(year.trim())) {
+      setInvalidFields(new Set());
+      setYearRangeError(true);
       return;
     }
 
     setInvalidFields(new Set());
+    setYearRangeError(false);
     void submitFullSearch();
   }
 
@@ -226,7 +252,9 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
                 )}
               </Field>
 
-              <Field data-invalid={invalidFields.has("year")}>
+              <Field
+                data-invalid={invalidFields.has("year") || yearRangeError}
+              >
                 <FieldLabel htmlFor="vehicle-year" required>
                   {t("fields.year")}
                 </FieldLabel>
@@ -239,12 +267,18 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
                   onChange={(event) => {
                     setYear(event.target.value);
                     clearFieldError("year", event.target.value);
+                    setYearRangeError(false);
                   }}
                   placeholder={t("fields.yearPlaceholder")}
                   className="h-11"
                 />
                 {invalidFields.has("year") && (
                   <FieldError>{t("errors.required")}</FieldError>
+                )}
+                {yearRangeError && (
+                  <FieldError>
+                    {t("errors.yearRange", { min: MIN_YEAR, max: MAX_YEAR })}
+                  </FieldError>
                 )}
               </Field>
 
@@ -323,7 +357,10 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
 
             {isFullSearch && (
               <TurnstileWidget
-                onSuccess={setTurnstileToken}
+                onSuccess={(token) => {
+                  setTurnstileToken(token);
+                  setShowCaptchaError(false);
+                }}
                 onExpire={() => setTurnstileToken(null)}
                 onError={() => setTurnstileToken(null)}
                 resetSignal={widgetResetSignal}
@@ -331,6 +368,7 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
             )}
 
             {showCaptchaError && <FieldError>{t("captchaError")}</FieldError>}
+            {showSearchError && <FieldError>{t("searchError")}</FieldError>}
 
             <Button
               type="submit"

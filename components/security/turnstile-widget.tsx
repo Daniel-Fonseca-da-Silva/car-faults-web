@@ -13,6 +13,7 @@ interface TurnstileRenderOptions {
   callback: (token: string) => void;
   "expired-callback"?: () => void;
   "error-callback"?: () => void;
+  retry?: "auto" | "never";
 }
 
 interface TurnstileGlobal {
@@ -47,7 +48,20 @@ export function TurnstileWidget({
   const containerId = useId();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const widgetIdRef = useRef<string | null>(null);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
+  // The Turnstile script may already be cached from a previous page, in
+  // which case next/script's onReady never fires for this mount.
+  const [scriptLoaded, setScriptLoaded] = useState(
+    () => typeof window !== "undefined" && Boolean(window.turnstile)
+  );
+
+  const onSuccessRef = useRef(onSuccess);
+  const onExpireRef = useRef(onExpire);
+  const onErrorRef = useRef(onError);
+  useEffect(() => {
+    onSuccessRef.current = onSuccess;
+    onExpireRef.current = onExpire;
+    onErrorRef.current = onError;
+  });
 
   useEffect(() => {
     if (!scriptLoaded || !containerRef.current || !window.turnstile) {
@@ -56,9 +70,10 @@ export function TurnstileWidget({
 
     const widgetId = window.turnstile.render(containerRef.current, {
       sitekey: getTurnstileSiteKey(),
-      callback: onSuccess,
-      "expired-callback": onExpire,
-      "error-callback": onError,
+      callback: (token) => onSuccessRef.current(token),
+      "expired-callback": () => onExpireRef.current?.(),
+      "error-callback": () => onErrorRef.current?.(),
+      retry: "auto",
     });
     widgetIdRef.current = widgetId;
 
@@ -66,7 +81,6 @@ export function TurnstileWidget({
       window.turnstile?.remove(widgetId);
       widgetIdRef.current = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scriptLoaded]);
 
   useEffect(() => {
@@ -81,7 +95,7 @@ export function TurnstileWidget({
       <Script
         src={SCRIPT_SRC}
         strategy="afterInteractive"
-        onLoad={() => setScriptLoaded(true)}
+        onReady={() => setScriptLoaded(true)}
       />
       <div id={containerId} ref={containerRef} />
     </>
