@@ -79,6 +79,15 @@ describe("POST /api/lookup/prepare", () => {
     expect(await response.json()).toEqual({ error: "TURNSTILE_REQUIRED" });
   });
 
+  it("returns 400 with INVALID_CRITERIA when the API rejects the lookup criteria", async () => {
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 400 }));
+
+    const response = await POST(buildRequest(validBody));
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ error: "INVALID_CRITERIA" });
+  });
+
   it("returns 502 when the API fails for another reason", async () => {
     serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
 

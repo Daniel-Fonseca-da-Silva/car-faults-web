@@ -49,6 +49,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "TURNSTILE_REQUIRED" }, { status: 403 });
   }
 
+  if (response.status === 400) {
+    return NextResponse.json({ error: "INVALID_CRITERIA" }, { status: 400 });
+  }
+
   if (!response.ok) {
     return NextResponse.json({ error: "LOOKUP_FAILED" }, { status: 502 });
   }
