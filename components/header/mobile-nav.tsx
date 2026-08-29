@@ -1,6 +1,6 @@
 "use client";
 
-import { LogIn, LogOut, Menu, ShieldCheck, Warehouse } from "lucide-react";
+import { LogIn, LogOut, Menu, ShieldCheck, Star, Warehouse } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -111,6 +111,18 @@ export function MobileNav({ user }: MobileNavProps) {
             >
               <Warehouse aria-hidden="true" className="size-4" />
               {t("garage")}
+            </SheetClose>
+            <SheetClose
+              nativeButton={false}
+              render={
+                <Link
+                  href="/favorites"
+                  className="flex items-center gap-2 px-4 py-4 text-sm font-medium text-foreground hover:bg-muted"
+                />
+              }
+            >
+              <Star aria-hidden="true" className="size-4" />
+              {t("favorites")}
             </SheetClose>
             {user.role === "admin" && (
               <SheetClose

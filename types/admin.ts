@@ -25,9 +25,7 @@ export interface AdminVehicleModel {
 
 export interface AdminVehicleModelList {
   items: AdminVehicleModel[];
-  total: number;
-  page: number;
-  limit: number;
+  nextCursor: string | null;
 }
 
 export interface AdminKnownIssue {

@@ -1,4 +1,4 @@
-import { BookOpen, type LucideIcon, Search, Star, ThumbsUp } from "lucide-react";
+import { BookOpen, Heart, type LucideIcon, Search, Star, ThumbsUp } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { Card } from "@/components/ui/card";
@@ -25,11 +25,16 @@ export async function ProfileStatsGrid({ stats }: ProfileStatsGridProps) {
       labelKey: "defectsConsulted",
     },
     { icon: Star, value: stats.savedVehiclesCount, labelKey: "savedVehicles" },
+    {
+      icon: Heart,
+      value: stats.favoritedVehiclesCount,
+      labelKey: "favoritedVehicles",
+    },
     { icon: ThumbsUp, value: stats.votesCount, labelKey: "votes" },
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
       {entries.map(({ icon: Icon, value, labelKey }) => (
         <Card key={labelKey} className="p-5">
           <Icon aria-hidden="true" className="size-5 text-primary" />

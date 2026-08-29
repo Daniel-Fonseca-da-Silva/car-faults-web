@@ -8,6 +8,7 @@ export const messageNamespaces = [
   "profile",
   "seo",
   "garage",
+  "favorites",
   "admin",
   "about",
   "privacy",

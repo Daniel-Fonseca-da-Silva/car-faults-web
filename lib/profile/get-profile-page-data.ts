@@ -3,6 +3,7 @@ import {
   getCurrentUserStats,
   getCurrentUserVehicles,
 } from "@/lib/api/users";
+import { PROFILE_VEHICLES_LIMIT } from "@/lib/lists/page-sizes";
 import type { UserProfile } from "@/types/user";
 import type { UserStats } from "@/types/user-stats";
 import type { UserVehicle } from "@/types/user-vehicle";
@@ -19,10 +20,10 @@ export async function getProfilePageData(): Promise<ProfilePageData | null> {
     return null;
   }
 
-  const [stats, vehicles] = await Promise.all([
+  const [stats, vehiclesPage] = await Promise.all([
     getCurrentUserStats(),
-    getCurrentUserVehicles(),
+    getCurrentUserVehicles({ limit: PROFILE_VEHICLES_LIMIT }),
   ]);
 
-  return { user, stats, vehicles };
+  return { user, stats, vehicles: vehiclesPage.items };
 }

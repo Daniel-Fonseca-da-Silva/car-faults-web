@@ -6,7 +6,7 @@ import { SESSION_COOKIE_NAME } from "./lib/api/constants";
 
 const intlMiddleware = createMiddleware(routing);
 
-const PROTECTED_PATH_PATTERN = /^\/([^/]+)\/(profile|garage|admin)(\/|$)/;
+const PROTECTED_PATH_PATTERN = /^\/([^/]+)\/(profile|garage|admin|favorites)(\/|$)/;
 const LOCALE_PREFIX_PATTERN = new RegExp(
   `^/(${routing.locales.join("|")})(/|$)`,
 );

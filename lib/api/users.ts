@@ -1,8 +1,21 @@
+import { appendCursorParams, toSearchString } from "@/lib/api/cursor";
 import { serverApiFetch } from "@/lib/api/server-client";
 import type { LookupLanguage } from "@/lib/lookup/map-lookup-language";
+import type { CursorPage, CursorQuery } from "@/types/cursor";
 import type { UserProfile } from "@/types/user";
 import type { UserStats } from "@/types/user-stats";
 import type { UserVehicle, UserVehicleDetail } from "@/types/user-vehicle";
+
+export interface UserVehiclesQuery extends CursorQuery {
+  language?: LookupLanguage;
+}
+
+export interface GarageVehicleStatus {
+  vehicleModelId: string;
+  year: number;
+  inGarage: boolean;
+  userVehicleId: string | null;
+}
 
 export async function getCurrentUser(): Promise<UserProfile | null> {
   try {
@@ -29,16 +42,46 @@ export async function getCurrentUserStats(): Promise<UserStats> {
 }
 
 export async function getCurrentUserVehicles(
-  language?: LookupLanguage
-): Promise<UserVehicle[]> {
-  const query = language ? `?language=${language}` : "";
-  const response = await serverApiFetch(`/v1/user-vehicles${query}`);
+  query: UserVehiclesQuery = {}
+): Promise<CursorPage<UserVehicle>> {
+  const params = new URLSearchParams();
+  if (query.language) {
+    params.set("language", query.language);
+  }
+  appendCursorParams(params, query);
+
+  const response = await serverApiFetch(
+    `/v1/user-vehicles${toSearchString(params)}`
+  );
 
   if (!response.ok) {
     throw new Error(`Failed to load current user vehicles: ${response.status}`);
   }
 
-  return (await response.json()) as UserVehicle[];
+  return (await response.json()) as CursorPage<UserVehicle>;
+}
+
+export async function getGarageVehicleStatus(
+  vehicleModelId: string,
+  year: number
+): Promise<GarageVehicleStatus> {
+  try {
+    const params = new URLSearchParams({
+      vehicleModelId,
+      year: String(year),
+    });
+    const response = await serverApiFetch(
+      `/v1/user-vehicles/status?${params.toString()}`
+    );
+
+    if (!response.ok) {
+      return { vehicleModelId, year, inGarage: false, userVehicleId: null };
+    }
+
+    return (await response.json()) as GarageVehicleStatus;
+  } catch {
+    return { vehicleModelId, year, inGarage: false, userVehicleId: null };
+  }
 }
 
 export async function getCurrentUserVehicle(

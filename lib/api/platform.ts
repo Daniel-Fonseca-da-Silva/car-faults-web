@@ -1,33 +1,26 @@
+import { mapPlatformFaultsPage } from "@/lib/api/platform-query";
 import { serverApiFetch } from "@/lib/api/server-client";
-import type { LookupLanguage } from "@/lib/lookup/map-lookup-language";
-import type { TopFaultEntry } from "@/types/vehicle";
+import type { TopFaultDto } from "@/lib/api/platform-map";
+import type { CursorPage } from "@/types/cursor";
+
+import {
+  buildPlatformFaultsSearch,
+  buildPlatformVehiclesSearch,
+  type PlatformFaultsPage,
+  type PlatformFaultsQuery,
+  type PlatformVehiclesQuery,
+} from "./platform-query";
+
+export type {
+  PlatformFaultsPage,
+  PlatformFaultsQuery,
+  PlatformVehiclesQuery,
+} from "./platform-query";
 
 export interface PlatformStats {
   reportsCount: number;
   vehiclesCount: number;
   faultsCount: number;
-}
-
-interface TopFaultDto {
-  id: string;
-  faultTitle: string;
-  severity: TopFaultEntry["severity"];
-  reportCount: number;
-  vehicle: {
-    brand: string;
-    model: string;
-    yearFrom: number;
-    engine: string;
-    fuelType?: string;
-    doors?: number;
-  };
-}
-
-interface PlatformFaultsResponseDto {
-  items: TopFaultDto[];
-  total: number;
-  page: number;
-  limit: number;
 }
 
 interface PlatformVehicleItemDto {
@@ -39,42 +32,15 @@ interface PlatformVehicleItemDto {
   doors?: number;
 }
 
-export interface PlatformVehiclesQuery {
-  page?: number;
-  limit?: number;
-}
-
-export interface PlatformVehiclesPage {
-  items: PlatformVehicleItemDto[];
-  total: number;
-  page: number;
-  limit: number;
-}
-
-export interface PlatformFaultsQuery {
-  locale: LookupLanguage;
-  page?: number;
-  limit?: number;
-  brand?: string;
-  model?: string;
-  year?: number;
-  fuelType?: string;
-  doors?: number;
-  engine?: string;
-}
-
-export interface PlatformFaultsPage {
-  items: TopFaultEntry[];
-  total: number;
-  page: number;
-  limit: number;
-}
+export type PlatformVehiclesPage = CursorPage<PlatformVehicleItemDto>;
 
 const EMPTY_PLATFORM_STATS: PlatformStats = {
   reportsCount: 0,
   vehiclesCount: 0,
   faultsCount: 0,
 };
+
+const EMPTY_CURSOR_PAGE = { items: [], nextCursor: null };
 
 export async function getPlatformStats(): Promise<PlatformStats> {
   try {
@@ -93,72 +59,41 @@ export async function getPlatformStats(): Promise<PlatformStats> {
 export async function getPlatformFaults(
   query: PlatformFaultsQuery
 ): Promise<PlatformFaultsPage> {
-  const params = new URLSearchParams({ locale: query.locale });
-  if (query.page != null) params.set("page", String(query.page));
-  if (query.limit != null) params.set("limit", String(query.limit));
-  if (query.brand) params.set("brand", query.brand);
-  if (query.model) params.set("model", query.model);
-  if (query.year != null) params.set("year", String(query.year));
-  if (query.fuelType) params.set("fuelType", query.fuelType);
-  if (query.doors != null) params.set("doors", String(query.doors));
-  if (query.engine) params.set("engine", query.engine);
-
   try {
     const response = await serverApiFetch(
-      `/v1/platform/faults?${params.toString()}`
+      `/v1/platform/faults${buildPlatformFaultsSearch(query)}`
     );
 
     if (!response.ok) {
-      return {
-        items: [],
-        total: 0,
-        page: query.page ?? 1,
-        limit: query.limit ?? 9,
-      };
+      return EMPTY_CURSOR_PAGE;
     }
 
-    const { items, total, page, limit } =
-      (await response.json()) as PlatformFaultsResponseDto;
-    return { items: items.map(mapTopFault), total, page, limit };
+    return mapPlatformFaultsPage(
+      (await response.json()) as {
+        items: TopFaultDto[];
+        nextCursor: string | null;
+      }
+    );
   } catch {
-    return {
-      items: [],
-      total: 0,
-      page: query.page ?? 1,
-      limit: query.limit ?? 9,
-    };
+    return EMPTY_CURSOR_PAGE;
   }
 }
 
 export async function getPlatformVehicles(
   query: PlatformVehiclesQuery = {}
 ): Promise<PlatformVehiclesPage> {
-  const params = new URLSearchParams();
-  if (query.page != null) params.set("page", String(query.page));
-  if (query.limit != null) params.set("limit", String(query.limit));
-
   try {
     const response = await serverApiFetch(
-      `/v1/platform/vehicles?${params.toString()}`
+      `/v1/platform/vehicles${buildPlatformVehiclesSearch(query)}`
     );
 
     if (!response.ok) {
-      return {
-        items: [],
-        total: 0,
-        page: query.page ?? 1,
-        limit: query.limit ?? 200,
-      };
+      return EMPTY_CURSOR_PAGE;
     }
 
     return (await response.json()) as PlatformVehiclesPage;
   } catch {
-    return {
-      items: [],
-      total: 0,
-      page: query.page ?? 1,
-      limit: query.limit ?? 200,
-    };
+    return EMPTY_CURSOR_PAGE;
   }
 }
 
@@ -169,21 +104,4 @@ export async function getDatabaseStatus(): Promise<boolean> {
   } catch {
     return false;
   }
-}
-
-function mapTopFault(dto: TopFaultDto): TopFaultEntry {
-  return {
-    id: dto.id,
-    vehicle: {
-      make: dto.vehicle.brand,
-      model: dto.vehicle.model,
-      year: dto.vehicle.yearFrom,
-      engine: dto.vehicle.engine,
-      fuelType: dto.vehicle.fuelType,
-      doors: dto.vehicle.doors,
-    },
-    faultTitle: dto.faultTitle,
-    severity: dto.severity,
-    reportCount: dto.reportCount,
-  };
 }

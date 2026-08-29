@@ -1,25 +1,15 @@
+import {
+  buildVehicleModelsQuery,
+  type AdminVehicleModelsQuery,
+} from "@/lib/api/admin-vehicles-query";
 import { serverApiFetch } from "@/lib/api/server-client";
 import type {
   AdminVehicleModelDetail,
   AdminVehicleModelList,
 } from "@/types/admin";
 
-export interface AdminVehicleModelsQuery {
-  page?: number;
-  limit?: number;
-  brand?: string;
-  model?: string;
-}
-
-function buildVehicleModelsQuery(query: AdminVehicleModelsQuery): string {
-  const params = new URLSearchParams();
-  if (query.page) params.set("page", String(query.page));
-  if (query.limit) params.set("limit", String(query.limit));
-  if (query.brand) params.set("brand", query.brand);
-  if (query.model) params.set("model", query.model);
-  const search = params.toString();
-  return search ? `?${search}` : "";
-}
+export type { AdminVehicleModelsQuery } from "@/lib/api/admin-vehicles-query";
+export { buildVehicleModelsQuery } from "@/lib/api/admin-vehicles-query";
 
 export async function getAdminVehicleModels(
   query: AdminVehicleModelsQuery = {}

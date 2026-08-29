@@ -1,8 +1,9 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
+import { InfiniteScrollSentinel } from "@/components/lists/infinite-scroll-sentinel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LoginToReviewCta } from "@/components/vehicle/login-to-review-cta";
 import {
@@ -12,6 +13,7 @@ import {
 import { ReviewItem } from "@/components/vehicle/review-item";
 import { StarRating } from "@/components/vehicle/star-rating";
 import { createReview, listReviews } from "@/lib/api/reviews";
+import { DISCUSSION_PAGE_SIZE } from "@/lib/lists/page-sizes";
 import { averageRating } from "@/lib/reviews/average-rating";
 import type { Review } from "@/types/review";
 import type { UserProfile } from "@/types/user";
@@ -26,25 +28,33 @@ export function IssueReviews({
   currentUser,
 }: IssueReviewsProps) {
   const t = useTranslations("faults");
+  const tCommon = useTranslations("common");
 
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState(false);
   const [activeIssueId, setActiveIssueId] = useState(knownIssueId);
 
   if (activeIssueId !== knownIssueId) {
     setActiveIssueId(knownIssueId);
     setReviews([]);
+    setNextCursor(null);
     setLoading(true);
+    setIsLoadingMore(false);
     setError(false);
   }
 
   useEffect(() => {
     let cancelled = false;
 
-    listReviews(knownIssueId)
+    listReviews(knownIssueId, { limit: DISCUSSION_PAGE_SIZE })
       .then((result) => {
-        if (!cancelled) setReviews(result);
+        if (!cancelled) {
+          setReviews(result.items);
+          setNextCursor(result.nextCursor);
+        }
       })
       .catch(() => {
         if (!cancelled) setError(true);
@@ -57,6 +67,26 @@ export function IssueReviews({
       cancelled = true;
     };
   }, [knownIssueId]);
+
+  const loadMore = useCallback(async () => {
+    if (!nextCursor || isLoadingMore) {
+      return;
+    }
+
+    setIsLoadingMore(true);
+    try {
+      const page = await listReviews(knownIssueId, {
+        limit: DISCUSSION_PAGE_SIZE,
+        cursor: nextCursor,
+      });
+      setReviews((current) => [...current, ...page.items]);
+      setNextCursor(page.nextCursor);
+    } catch {
+      setError(true);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [isLoadingMore, knownIssueId, nextCursor]);
 
   async function handleCreate(data: ReviewFormSubmitData) {
     const created = await createReview({
@@ -95,7 +125,7 @@ export function IssueReviews({
         </div>
       )}
 
-      {!loading && error && (
+      {!loading && error && reviews.length === 0 && (
         <p className="text-sm text-destructive">
           {t("vehicle.reviews.loadError")}
         </p>
@@ -107,7 +137,7 @@ export function IssueReviews({
         </p>
       )}
 
-      {!loading && !error && reviews.length > 0 && (
+      {!loading && reviews.length > 0 && (
         <>
           <div className="flex items-center gap-3">
             <p className="text-3xl font-bold text-foreground">{average}</p>
@@ -129,6 +159,12 @@ export function IssueReviews({
                 onDeleted={handleDeleted}
               />
             ))}
+            <InfiniteScrollSentinel
+              hasMore={nextCursor !== null}
+              isLoading={isLoadingMore}
+              onIntersect={loadMore}
+              loadingLabel={tCommon("loadingMore")}
+            />
           </div>
         </>
       )}
