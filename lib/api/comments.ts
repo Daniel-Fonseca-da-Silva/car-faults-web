@@ -1,7 +1,9 @@
 "use server";
 
+import { appendCursorParams, toSearchString } from "@/lib/api/cursor";
 import { serverApiFetch } from "@/lib/api/server-client";
 import type { Comment } from "@/types/comment";
+import type { CursorPage, CursorQuery } from "@/types/cursor";
 
 export interface CreateCommentInput {
   knownIssueId: string;
@@ -14,15 +16,21 @@ export interface UpdateCommentInput {
   imageUrl?: string | null;
 }
 
-export async function listComments(knownIssueId: string): Promise<Comment[]> {
-  const query = new URLSearchParams({ knownIssueId });
-  const response = await serverApiFetch(`/v1/comments?${query.toString()}`);
+export async function listComments(
+  knownIssueId: string,
+  query: CursorQuery = {}
+): Promise<CursorPage<Comment>> {
+  const params = new URLSearchParams({ knownIssueId });
+  appendCursorParams(params, query);
+  const response = await serverApiFetch(
+    `/v1/comments${toSearchString(params)}`
+  );
 
   if (!response.ok) {
     throw new Error(`Failed to load comments: ${response.status}`);
   }
 
-  return (await response.json()) as Comment[];
+  return (await response.json()) as CursorPage<Comment>;
 }
 
 export async function createComment(

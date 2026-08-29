@@ -19,19 +19,16 @@ export interface CatalogSlugName {
 
 export async function fetchAllPlatformVehicles(): Promise<CatalogVehicle[]> {
   const items: CatalogVehicle[] = [];
-  let page = 1;
-  let hasMore = true;
+  let cursor: string | null = null;
 
-  while (hasMore) {
+  do {
     const result = await getPlatformVehicles({
-      page,
+      cursor,
       limit: CATALOG_PAGE_LIMIT,
     });
     items.push(...result.items);
-
-    hasMore = items.length < result.total && result.items.length > 0;
-    page += 1;
-  }
+    cursor = result.nextCursor;
+  } while (cursor);
 
   return items;
 }

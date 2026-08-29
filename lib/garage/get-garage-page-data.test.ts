@@ -9,8 +9,8 @@ const getCurrentUserVehicleMock = jest.fn();
 
 jest.mock("@/lib/api/users", () => ({
   getCurrentUser: () => getCurrentUserMock(),
-  getCurrentUserVehicles: (language?: string) =>
-    getCurrentUserVehiclesMock(language),
+  getCurrentUserVehicles: (query?: unknown) =>
+    getCurrentUserVehiclesMock(query),
   getCurrentUserVehicle: (id: string, language?: string) =>
     getCurrentUserVehicleMock(id, language),
 }));
@@ -58,25 +58,36 @@ describe("getGaragePageData", () => {
 
   it("selects the first vehicle's detail when no vehicleId is given", async () => {
     getCurrentUserMock.mockResolvedValue(user);
-    getCurrentUserVehiclesMock.mockResolvedValue([vehicle]);
+    getCurrentUserVehiclesMock.mockResolvedValue({
+      items: [vehicle],
+      nextCursor: "c2",
+    });
     getCurrentUserVehicleMock.mockResolvedValue(vehicleDetail);
 
     await expect(getGaragePageData("pt-PT")).resolves.toEqual({
       user,
       vehicles: [vehicle],
+      nextCursor: "c2",
       selectedVehicle: vehicleDetail,
     });
-    expect(getCurrentUserVehiclesMock).toHaveBeenCalledWith("pt-PT");
+    expect(getCurrentUserVehiclesMock).toHaveBeenCalledWith({
+      language: "pt-PT",
+      limit: 20,
+    });
     expect(getCurrentUserVehicleMock).toHaveBeenCalledWith("uv-1", "pt-PT");
   });
 
   it("does not fetch a vehicle detail when the garage is empty", async () => {
     getCurrentUserMock.mockResolvedValue(user);
-    getCurrentUserVehiclesMock.mockResolvedValue([]);
+    getCurrentUserVehiclesMock.mockResolvedValue({
+      items: [],
+      nextCursor: null,
+    });
 
     await expect(getGaragePageData("pt-PT")).resolves.toEqual({
       user,
       vehicles: [],
+      nextCursor: null,
       selectedVehicle: null,
     });
     expect(getCurrentUserVehicleMock).not.toHaveBeenCalled();
@@ -84,37 +95,54 @@ describe("getGaragePageData", () => {
 
   it("fetches the vehicle list and the requested vehicle's detail in parallel when vehicleId is given", async () => {
     getCurrentUserMock.mockResolvedValue(user);
-    getCurrentUserVehiclesMock.mockResolvedValue([vehicle]);
+    getCurrentUserVehiclesMock.mockResolvedValue({
+      items: [vehicle],
+      nextCursor: null,
+    });
     getCurrentUserVehicleMock.mockResolvedValue(vehicleDetail);
 
     await expect(getGaragePageData("pt-PT", "uv-1")).resolves.toEqual({
       user,
       vehicles: [vehicle],
+      nextCursor: null,
       selectedVehicle: vehicleDetail,
     });
-    expect(getCurrentUserVehiclesMock).toHaveBeenCalledWith("pt-PT");
+    expect(getCurrentUserVehiclesMock).toHaveBeenCalledWith({
+      language: "pt-PT",
+      limit: 20,
+    });
     expect(getCurrentUserVehicleMock).toHaveBeenCalledWith("uv-1", "pt-PT");
   });
 
   it("returns a null selectedVehicle when the requested vehicleId does not exist", async () => {
     getCurrentUserMock.mockResolvedValue(user);
-    getCurrentUserVehiclesMock.mockResolvedValue([vehicle]);
+    getCurrentUserVehiclesMock.mockResolvedValue({
+      items: [vehicle],
+      nextCursor: null,
+    });
     getCurrentUserVehicleMock.mockResolvedValue(null);
 
     await expect(getGaragePageData("pt-PT", "missing")).resolves.toEqual({
       user,
       vehicles: [vehicle],
+      nextCursor: null,
       selectedVehicle: null,
     });
   });
 
   it("falls back to the default locale for an unsupported locale", async () => {
     getCurrentUserMock.mockResolvedValue(user);
-    getCurrentUserVehiclesMock.mockResolvedValue([]);
+    getCurrentUserVehiclesMock.mockResolvedValue({
+      items: [],
+      nextCursor: null,
+    });
 
     await getGaragePageData("fr-FR");
 
-    expect(getCurrentUserVehiclesMock).toHaveBeenCalledWith("pt-PT");
+    expect(getCurrentUserVehiclesMock).toHaveBeenCalledWith({
+      language: "pt-PT",
+      limit: 20,
+    });
   });
 
   it("propagates a rejection from the vehicles list", async () => {

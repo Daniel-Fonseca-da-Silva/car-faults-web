@@ -24,11 +24,23 @@ describe("listReviews", () => {
   });
 
   it("returns the reviews for a known issue", async () => {
-    const reviews = [{ id: "r1" }];
-    serverApiFetchMock.mockResolvedValue(jsonResponse(reviews));
+    const page = { items: [{ id: "r1" }], nextCursor: null };
+    serverApiFetchMock.mockResolvedValue(jsonResponse(page));
 
-    await expect(listReviews("ki-1")).resolves.toEqual(reviews);
+    await expect(listReviews("ki-1")).resolves.toEqual(page);
     expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/reviews?knownIssueId=ki-1");
+  });
+
+  it("appends limit and cursor when given", async () => {
+    serverApiFetchMock.mockResolvedValue(
+      jsonResponse({ items: [], nextCursor: null })
+    );
+
+    await listReviews("ki-1", { limit: 20, cursor: "c1" });
+
+    expect(serverApiFetchMock).toHaveBeenCalledWith(
+      "/v1/reviews?knownIssueId=ki-1&limit=20&cursor=c1"
+    );
   });
 
   it("throws on an error response", async () => {

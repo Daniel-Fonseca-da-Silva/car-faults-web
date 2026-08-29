@@ -7,7 +7,7 @@ import VehiclePage, { generateMetadata } from "./page";
 
 const getVehicleLookupByPathMock = jest.fn();
 const getCurrentUserMock = jest.fn();
-const getCurrentUserVehiclesMock = jest.fn();
+const getGarageVehicleStatusMock = jest.fn();
 const getVehicleFavoriteStatusMock = jest.fn();
 
 jest.mock("@/lib/api/lookups", () => ({
@@ -17,8 +17,8 @@ jest.mock("@/lib/api/lookups", () => ({
 
 jest.mock("@/lib/api/users", () => ({
   getCurrentUser: (...args: unknown[]) => getCurrentUserMock(...args),
-  getCurrentUserVehicles: (...args: unknown[]) =>
-    getCurrentUserVehiclesMock(...args),
+  getGarageVehicleStatus: (...args: unknown[]) =>
+    getGarageVehicleStatusMock(...args),
 }));
 
 jest.mock("@/lib/api/activity-logs", () => ({
@@ -146,7 +146,12 @@ const pathParams = {
 describe("VehiclePage", () => {
   beforeEach(() => {
     getCurrentUserMock.mockResolvedValue(null);
-    getCurrentUserVehiclesMock.mockResolvedValue([]);
+    getGarageVehicleStatusMock.mockResolvedValue({
+      vehicleModelId: "veh-polo-6n1",
+      year: 1996,
+      inGarage: false,
+      userVehicleId: null,
+    });
     getVehicleFavoriteStatusMock.mockResolvedValue({
       vehicleModelId: "veh-polo-6n1",
       favorited: false,
@@ -156,7 +161,7 @@ describe("VehiclePage", () => {
   afterEach(() => {
     getVehicleLookupByPathMock.mockReset();
     getCurrentUserMock.mockReset();
-    getCurrentUserVehiclesMock.mockReset();
+    getGarageVehicleStatusMock.mockReset();
     getVehicleFavoriteStatusMock.mockReset();
   });
 
@@ -226,11 +231,11 @@ describe("VehiclePage", () => {
       searchParams: Promise.resolve({}),
     });
 
-    expect(getCurrentUserVehiclesMock).not.toHaveBeenCalled();
+    expect(getGarageVehicleStatusMock).not.toHaveBeenCalled();
     expect(getVehicleFavoriteStatusMock).not.toHaveBeenCalled();
   });
 
-  it("matches the garage vehicle by vehicle model id and year, and passes the favorite status for a logged-in user", async () => {
+  it("uses the point garage status and favorite status with year for a logged-in user", async () => {
     getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
     getCurrentUserMock.mockResolvedValue({
       id: "u1",
@@ -241,10 +246,12 @@ describe("VehiclePage", () => {
       createdAt: "2026-01-01T00:00:00.000Z",
       updatedAt: "2026-01-01T00:00:00.000Z",
     });
-    getCurrentUserVehiclesMock.mockResolvedValue([
-      { id: "uv-other", vehicleModelId: "veh-polo-6n1", year: 1994 },
-      { id: "uv-match", vehicleModelId: "veh-polo-6n1", year: 1996 },
-    ]);
+    getGarageVehicleStatusMock.mockResolvedValue({
+      vehicleModelId: "veh-polo-6n1",
+      year: 1996,
+      inGarage: true,
+      userVehicleId: "uv-match",
+    });
     getVehicleFavoriteStatusMock.mockResolvedValue({
       vehicleModelId: "veh-polo-6n1",
       favorited: true,
@@ -256,8 +263,13 @@ describe("VehiclePage", () => {
     });
     render(jsx);
 
+    expect(getGarageVehicleStatusMock).toHaveBeenCalledWith(
+      "veh-polo-6n1",
+      1996
+    );
     expect(getVehicleFavoriteStatusMock).toHaveBeenCalledWith(
-      "veh-polo-6n1"
+      "veh-polo-6n1",
+      1996
     );
     const hero = screen.getByTestId("vehicle-hero");
     expect(hero).toHaveAttribute("data-garage-vehicle-id", "uv-match");
@@ -275,9 +287,12 @@ describe("VehiclePage", () => {
       createdAt: "2026-01-01T00:00:00.000Z",
       updatedAt: "2026-01-01T00:00:00.000Z",
     });
-    getCurrentUserVehiclesMock.mockResolvedValue([
-      { id: "uv-other", vehicleModelId: "veh-polo-6n1", year: 1994 },
-    ]);
+    getGarageVehicleStatusMock.mockResolvedValue({
+      vehicleModelId: "veh-polo-6n1",
+      year: 1996,
+      inGarage: false,
+      userVehicleId: null,
+    });
 
     const jsx = await VehiclePage({
       params: Promise.resolve(pathParams),

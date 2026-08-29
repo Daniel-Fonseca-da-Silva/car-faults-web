@@ -33,7 +33,11 @@
   },
   "garage": {
     "title": "My garage",
-    "description": "View your favourite vehicles and their known issues in your Auto Crónica garage."
+    "description": "View the vehicles you own and their known issues in your Auto Crónica garage."
+  },
+  "favorites": {
+    "title": "Favourites",
+    "description": "Follow the vehicles whose issues you want to keep an eye on on Auto Crónica."
   },
   "admin": {
     "title": "Admin",

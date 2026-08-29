@@ -5,7 +5,7 @@
     "fallbackAlt": "Classic garage scene"
   },
   "list": {
-    "title": "Your favourite vehicles",
+    "title": "Your vehicles",
     "empty": "You don't have any vehicles in your garage yet.",
     "knownIssuesCount": "{count} defects",
     "remove": "Remove from garage",

@@ -1,25 +1,54 @@
+"use client";
+
 import { Flame } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
+import { useCallback } from "react";
 
 import { GarageRemoveVehicleButton } from "@/components/garage/garage-remove-vehicle-button";
+import { InfiniteScrollSentinel } from "@/components/lists/infinite-scroll-sentinel";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
+import { fetchGarageVehiclesPage } from "@/lib/garage/fetch-garage-vehicles-page";
+import { useCursorList } from "@/lib/lists/use-cursor-list";
+import { GARAGE_PAGE_SIZE } from "@/lib/lists/page-sizes";
+import type { LookupLanguage } from "@/lib/lookup/map-lookup-language";
 import { cn } from "@/lib/utils";
 import type { UserVehicle } from "@/types/user-vehicle";
 
 interface GarageVehicleListProps {
   vehicles: UserVehicle[];
+  nextCursor: string | null;
   selectedVehicleId: string | null;
   locale: string;
+  language: LookupLanguage;
 }
 
-export async function GarageVehicleList({
-  vehicles,
+export function GarageVehicleList({
+  vehicles: initialVehicles,
+  nextCursor: initialCursor,
   selectedVehicleId,
   locale,
+  language,
 }: GarageVehicleListProps) {
-  const t = await getTranslations("garage.list");
+  const t = useTranslations("garage.list");
+  const tCommon = useTranslations("common");
+
+  const fetchMore = useCallback(
+    (cursor: string) =>
+      fetchGarageVehiclesPage({
+        language,
+        cursor,
+        limit: GARAGE_PAGE_SIZE,
+      }),
+    [language]
+  );
+
+  const { items, nextCursor, isLoading, loadMore } = useCursorList({
+    initialItems: initialVehicles,
+    initialCursor,
+    fetchMore,
+  });
 
   return (
     <Card className="p-5">
@@ -27,11 +56,11 @@ export async function GarageVehicleList({
         {t("title")}
       </p>
 
-      {vehicles.length === 0 ? (
+      {items.length === 0 ? (
         <p className="mt-4 text-sm text-muted-foreground">{t("empty")}</p>
       ) : (
         <ul className="mt-4 space-y-2">
-          {vehicles.map((vehicle) => {
+          {items.map((vehicle) => {
             const isSelected = vehicle.id === selectedVehicleId;
             const label = `${vehicle.brand} ${vehicle.model}`;
 
@@ -81,6 +110,13 @@ export async function GarageVehicleList({
           })}
         </ul>
       )}
+
+      <InfiniteScrollSentinel
+        hasMore={nextCursor !== null}
+        isLoading={isLoading}
+        onIntersect={loadMore}
+        loadingLabel={tCommon("loadingMore")}
+      />
     </Card>
   );
 }

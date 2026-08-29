@@ -13,6 +13,7 @@ const logoutMock = jest.fn();
 const navDict: Record<string, string> = {
   profile: "Profile",
   garage: "Garage",
+  favorites: "Favourites",
   admin: "Admin",
   logout: "Log out",
   login: "Sign in",
@@ -82,6 +83,9 @@ describe("UserMenu", () => {
     expect(
       screen.getByRole("menuitem", { name: "Garage" })
     ).toHaveAttribute("href", "/garage");
+    expect(
+      screen.getByRole("menuitem", { name: "Favourites" })
+    ).toHaveAttribute("href", "/favorites");
     expect(
       screen.getByRole("menuitem", { name: "Log out" })
     ).toBeInTheDocument();

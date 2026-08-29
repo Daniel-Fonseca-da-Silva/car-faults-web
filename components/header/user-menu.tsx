@@ -1,6 +1,6 @@
 "use client";
 
-import { LogIn, LogOut, ShieldCheck, User, Warehouse } from "lucide-react";
+import { LogIn, LogOut, ShieldCheck, Star, User, Warehouse } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -76,6 +76,14 @@ export function UserMenu({ user }: UserMenuProps) {
         >
           <Warehouse aria-hidden="true" />
           {t("garage")}
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          nativeButton={false}
+          render={<Link href="/favorites" />}
+          className="cursor-pointer"
+        >
+          <Star aria-hidden="true" />
+          {t("favorites")}
         </DropdownMenuItem>
         {user.role === "admin" && (
           <DropdownMenuItem

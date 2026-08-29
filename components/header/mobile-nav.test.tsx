@@ -15,6 +15,7 @@ const navDict: Record<string, string> = {
   about: "Sobre",
   menu: "Menu",
   garage: "Garagem",
+  favorites: "Favoritos",
   admin: "Admin",
   logout: "Sair",
   login: "Entrar",
@@ -85,6 +86,17 @@ describe("MobileNav", () => {
     expect(
       screen.getByRole("button", { name: "Garagem" })
     ).toHaveAttribute("href", "/garage");
+  });
+
+  it("links to the favorites page when signed in", async () => {
+    const testUser = userEvent.setup();
+    render(<MobileNav user={user} />);
+
+    await testUser.click(screen.getByRole("button", { name: "Menu" }));
+
+    expect(
+      screen.getByRole("button", { name: "Favoritos" })
+    ).toHaveAttribute("href", "/favorites");
   });
 
   it("does not show an admin link for a regular user", async () => {

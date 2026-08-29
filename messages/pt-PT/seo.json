@@ -33,7 +33,11 @@
   },
   "garage": {
     "title": "A minha garagem",
-    "description": "Consulte os teus veículos favoritos e os problemas conhecidos na tua garagem Auto Crónica."
+    "description": "Consulta os veículos que possuis e os problemas conhecidos na tua garagem Auto Crónica."
+  },
+  "favorites": {
+    "title": "Favoritos",
+    "description": "Acompanha os veículos cujos problemas queres seguir na Auto Crónica."
   },
   "admin": {
     "title": "Admin",

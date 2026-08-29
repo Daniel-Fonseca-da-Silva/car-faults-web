@@ -25,8 +25,6 @@ jest.mock("next-intl/server", () => ({
     const namespace = typeof arg === "string" ? arg : arg.namespace;
     return (key: string, values?: Record<string, unknown>) => {
       if (key === "resultsFor") return `Results for "${values?.query}"`;
-      if (key === "pageInfo")
-        return `Page ${values?.page} of ${values?.totalPages}`;
       return `${namespace}.${key}`;
     };
   },
@@ -48,13 +46,17 @@ jest.mock("@/i18n/navigation", () => ({
   ),
 }));
 
-// FaultCardGrid renders the async FaultCard server component as an
-// un-awaited JSX child. react-dom's client renderer can't resolve that
-// (no Suspense boundary), so it's mocked here - the grid itself is
-// covered separately in fault-card-grid.test.tsx.
-jest.mock("@/components/faults/fault-card-grid", () => ({
-  FaultCardGrid: ({ entries }: { entries: unknown[] }) => (
-    <div data-testid="fault-card-grid">{entries.length}</div>
+jest.mock("@/components/faults/faults-infinite-list", () => ({
+  FaultsInfiniteList: ({
+    initialItems,
+    initialCursor,
+  }: {
+    initialItems: unknown[];
+    initialCursor: string | null;
+  }) => (
+    <div data-testid="faults-infinite-list">
+      {initialItems.length}:{initialCursor ?? "end"}
+    </div>
   ),
 }));
 
@@ -87,9 +89,7 @@ describe("DefectsHubPage", () => {
   it("renders the hub title and subtitle when there is no query", async () => {
     getPlatformFaultsMock.mockResolvedValue({
       items: entries,
-      total: 1,
-      page: 1,
-      limit: 9,
+      nextCursor: null,
     });
 
     const jsx = await DefectsHubPage({
@@ -104,12 +104,10 @@ describe("DefectsHubPage", () => {
     expect(screen.getByText("faults.hub.subtitle")).toBeInTheDocument();
   });
 
-  it("fetches faults for the current locale, defaulting to page 1 and a limit of 9", async () => {
+  it("fetches the first faults page for the current locale with a limit of 9", async () => {
     getPlatformFaultsMock.mockResolvedValue({
       items: entries,
-      total: 1,
-      page: 1,
-      limit: 9,
+      nextCursor: null,
     });
 
     await DefectsHubPage({
@@ -119,7 +117,6 @@ describe("DefectsHubPage", () => {
 
     expect(getPlatformFaultsMock).toHaveBeenCalledWith({
       locale: "pt-PT",
-      page: 1,
       limit: 9,
       brand: undefined,
       model: undefined,
@@ -132,9 +129,7 @@ describe("DefectsHubPage", () => {
   it("maps the make/fuel search params to brand/fuelType filters and shows the query summary", async () => {
     getPlatformFaultsMock.mockResolvedValue({
       items: entries,
-      total: 1,
-      page: 1,
-      limit: 9,
+      nextCursor: "c2",
     });
 
     const jsx = await DefectsHubPage({
@@ -151,7 +146,6 @@ describe("DefectsHubPage", () => {
 
     expect(getPlatformFaultsMock).toHaveBeenCalledWith({
       locale: "pt-PT",
-      page: 1,
       limit: 9,
       brand: "volkswagen",
       model: "golf",
@@ -162,15 +156,15 @@ describe("DefectsHubPage", () => {
     expect(
       screen.getByText('Results for "volkswagen golf 2018"')
     ).toBeInTheDocument();
-    expect(screen.getByTestId("fault-card-grid")).toHaveTextContent("1");
+    expect(screen.getByTestId("faults-infinite-list")).toHaveTextContent(
+      "1:c2"
+    );
   });
 
-  it("passes the requested page through to getPlatformFaults", async () => {
+  it("does not pass a page query to getPlatformFaults", async () => {
     getPlatformFaultsMock.mockResolvedValue({
       items: entries,
-      total: 20,
-      page: 2,
-      limit: 9,
+      nextCursor: null,
     });
 
     await DefectsHubPage({
@@ -179,16 +173,14 @@ describe("DefectsHubPage", () => {
     });
 
     expect(getPlatformFaultsMock).toHaveBeenCalledWith(
-      expect.objectContaining({ page: 2 })
+      expect.not.objectContaining({ page: expect.anything() })
     );
   });
 
-  it("shows the empty message when there are no defects reported", async () => {
+  it("passes an empty first page to the infinite list when there are no defects", async () => {
     getPlatformFaultsMock.mockResolvedValue({
       items: [],
-      total: 0,
-      page: 1,
-      limit: 9,
+      nextCursor: null,
     });
 
     const jsx = await DefectsHubPage({
@@ -197,33 +189,15 @@ describe("DefectsHubPage", () => {
     });
     render(jsx);
 
-    expect(screen.getByText("faults.hub.empty")).toBeInTheDocument();
-    expect(screen.queryByTestId("fault-card-grid")).not.toBeInTheDocument();
+    expect(screen.getByTestId("faults-infinite-list")).toHaveTextContent(
+      "0:end"
+    );
   });
 
-  it("shows the empty message when the filters match nothing", async () => {
-    getPlatformFaultsMock.mockResolvedValue({
-      items: [],
-      total: 0,
-      page: 1,
-      limit: 9,
-    });
-
-    const jsx = await DefectsHubPage({
-      params: Promise.resolve({ locale: "pt-PT" }),
-      searchParams: Promise.resolve({ make: "tesla" }),
-    });
-    render(jsx);
-
-    expect(screen.getByText("faults.hub.empty")).toBeInTheDocument();
-  });
-
-  it("hides pagination controls when the total fits on one page", async () => {
+  it("does not render prev/next pagination controls", async () => {
     getPlatformFaultsMock.mockResolvedValue({
       items: entries,
-      total: 1,
-      page: 1,
-      limit: 9,
+      nextCursor: "c2",
     });
 
     const jsx = await DefectsHubPage({
@@ -240,35 +214,10 @@ describe("DefectsHubPage", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("shows pagination controls and disables previous on the first page when there is more than one page", async () => {
-    getPlatformFaultsMock.mockResolvedValue({
-      items: entries,
-      total: 20,
-      page: 1,
-      limit: 9,
-    });
-
-    const jsx = await DefectsHubPage({
-      params: Promise.resolve({ locale: "pt-PT" }),
-      searchParams: Promise.resolve({}),
-    });
-    render(jsx);
-
-    expect(screen.getByText("Page 1 of 3")).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "faults.hub.previous" })
-    ).toBeDisabled();
-    expect(
-      screen.getByRole("button", { name: "faults.hub.next" })
-    ).toHaveAttribute("href", "/defects?page=2");
-  });
-
   it("renders brand links when brands are available", async () => {
     getPlatformFaultsMock.mockResolvedValue({
       items: entries,
-      total: 1,
-      page: 1,
-      limit: 9,
+      nextCursor: null,
     });
     getCatalogBrandsMock.mockResolvedValue([
       { slug: "volkswagen", name: "Volkswagen" },
@@ -291,28 +240,6 @@ describe("DefectsHubPage", () => {
     expect(
       screen.getByRole("link", { name: "Mercedes-Benz" })
     ).toHaveAttribute("href", "/defects/mercedes-benz");
-  });
-
-  it("disables next on the last page", async () => {
-    getPlatformFaultsMock.mockResolvedValue({
-      items: entries,
-      total: 20,
-      page: 3,
-      limit: 9,
-    });
-
-    const jsx = await DefectsHubPage({
-      params: Promise.resolve({ locale: "pt-PT" }),
-      searchParams: Promise.resolve({ page: "3" }),
-    });
-    render(jsx);
-
-    expect(
-      screen.getByRole("button", { name: "faults.hub.next" })
-    ).toBeDisabled();
-    expect(
-      screen.getByRole("button", { name: "faults.hub.previous" })
-    ).toHaveAttribute("href", "/defects?page=2");
   });
 });
 

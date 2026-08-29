@@ -211,7 +211,8 @@ describe("VehicleGarageActions", () => {
       expect(favoriteVehicleActionMock).toHaveBeenCalledWith(
         "pt-PT",
         "/pt-PT/defects/vw/polo/1996",
-        "vm-1"
+        "vm-1",
+        1996
       );
     });
   });
@@ -237,7 +238,8 @@ describe("VehicleGarageActions", () => {
       expect(unfavoriteVehicleActionMock).toHaveBeenCalledWith(
         "pt-PT",
         "/pt-PT/defects/vw/polo/1996",
-        "vm-1"
+        "vm-1",
+        1996
       );
     });
   });

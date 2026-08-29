@@ -1,6 +1,8 @@
 "use server";
 
+import { appendCursorParams, toSearchString } from "@/lib/api/cursor";
 import { serverApiFetch } from "@/lib/api/server-client";
+import type { CursorPage, CursorQuery } from "@/types/cursor";
 import type { Review } from "@/types/review";
 
 export interface CreateReviewInput {
@@ -14,15 +16,19 @@ export interface UpdateReviewInput {
   comment?: string | null;
 }
 
-export async function listReviews(knownIssueId: string): Promise<Review[]> {
-  const query = new URLSearchParams({ knownIssueId });
-  const response = await serverApiFetch(`/v1/reviews?${query.toString()}`);
+export async function listReviews(
+  knownIssueId: string,
+  query: CursorQuery = {}
+): Promise<CursorPage<Review>> {
+  const params = new URLSearchParams({ knownIssueId });
+  appendCursorParams(params, query);
+  const response = await serverApiFetch(`/v1/reviews${toSearchString(params)}`);
 
   if (!response.ok) {
     throw new Error(`Failed to load reviews: ${response.status}`);
   }
 
-  return (await response.json()) as Review[];
+  return (await response.json()) as CursorPage<Review>;
 }
 
 export async function createReview(input: CreateReviewInput): Promise<Review> {

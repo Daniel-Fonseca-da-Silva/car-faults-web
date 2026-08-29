@@ -35,9 +35,7 @@ describe("sitemap", () => {
   it("includes every static path for every locale", async () => {
     getPlatformVehiclesMock.mockResolvedValue({
       items: [],
-      total: 0,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
 
     const entries = await sitemap();
@@ -55,9 +53,7 @@ describe("sitemap", () => {
   it("includes a slugified vehicle URL with fuel type and engine for every vehicle in every locale", async () => {
     getPlatformVehiclesMock.mockResolvedValue({
       items: vehicles,
-      total: vehicles.length,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
 
     const entries = await sitemap();
@@ -84,26 +80,22 @@ describe("sitemap", () => {
     getPlatformVehiclesMock
       .mockResolvedValueOnce({
         items: [vehicles[0]],
-        total: 2,
-        page: 1,
-        limit: 1,
+        nextCursor: "c2",
       })
       .mockResolvedValueOnce({
         items: [vehicles[1]],
-        total: 2,
-        page: 2,
-        limit: 1,
+        nextCursor: null,
       });
 
     await sitemap();
 
     expect(getPlatformVehiclesMock).toHaveBeenCalledTimes(2);
     expect(getPlatformVehiclesMock).toHaveBeenNthCalledWith(1, {
-      page: 1,
+      cursor: null,
       limit: 200,
     });
     expect(getPlatformVehiclesMock).toHaveBeenNthCalledWith(2, {
-      page: 2,
+      cursor: "c2",
       limit: 200,
     });
   });
@@ -111,9 +103,7 @@ describe("sitemap", () => {
   it("returns the expected total number of entries", async () => {
     getPlatformVehiclesMock.mockResolvedValue({
       items: vehicles,
-      total: vehicles.length,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
 
     const entries = await sitemap();
@@ -130,9 +120,7 @@ describe("sitemap", () => {
   it("includes a brand and model hub URL for every locale", async () => {
     getPlatformVehiclesMock.mockResolvedValue({
       items: vehicles,
-      total: vehicles.length,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
 
     const entries = await sitemap();

@@ -54,6 +54,7 @@ jest.mock("next-intl", () => ({
       "vehicle.reviews.submitting": "Publishing...",
       "vehicle.reviews.cancel": "Cancel",
       "vehicle.reviews.submitError": "Couldn't submit the review.",
+      loadingMore: "Loading more…",
     };
     const template = dict[key] ?? key;
     if (!values) return template;
@@ -100,7 +101,7 @@ describe("IssueReviews", () => {
   });
 
   it("shows the empty state and the login CTA for a guest", async () => {
-    listReviewsMock.mockResolvedValue([]);
+    listReviewsMock.mockResolvedValue({ items: [], nextCursor: null });
 
     render(<IssueReviews knownIssueId="ki-1" currentUser={null} />);
 
@@ -119,10 +120,11 @@ describe("IssueReviews", () => {
   });
 
   it("lists reviews with the average rating and count", async () => {
-    listReviewsMock.mockResolvedValue([otherUserReview]);
+    listReviewsMock.mockResolvedValue({ items: [otherUserReview], nextCursor: null });
 
     render(<IssueReviews knownIssueId="ki-1" currentUser={null} />);
 
+    expect(listReviewsMock).toHaveBeenCalledWith("ki-1", { limit: 20 });
     expect(await screen.findByTestId("review-review-1")).toHaveTextContent(
       "4 · guest-review"
     );
@@ -131,7 +133,10 @@ describe("IssueReviews", () => {
   });
 
   it("marks the current user's review as the owner", async () => {
-    listReviewsMock.mockResolvedValue([otherUserReview, ownReview]);
+    listReviewsMock.mockResolvedValue({
+      items: [otherUserReview, ownReview],
+      nextCursor: null,
+    });
 
     render(<IssueReviews knownIssueId="ki-1" currentUser={currentUser} />);
 
@@ -144,7 +149,7 @@ describe("IssueReviews", () => {
   });
 
   it("shows the review form for a logged-in user without a review, and hides it once they own one", async () => {
-    listReviewsMock.mockResolvedValue([otherUserReview]);
+    listReviewsMock.mockResolvedValue({ items: [otherUserReview], nextCursor: null });
 
     render(<IssueReviews knownIssueId="ki-1" currentUser={currentUser} />);
 
@@ -155,7 +160,7 @@ describe("IssueReviews", () => {
   });
 
   it("does not show the review form when the user already has a review", async () => {
-    listReviewsMock.mockResolvedValue([ownReview]);
+    listReviewsMock.mockResolvedValue({ items: [ownReview], nextCursor: null });
 
     render(<IssueReviews knownIssueId="ki-1" currentUser={currentUser} />);
 
@@ -167,7 +172,7 @@ describe("IssueReviews", () => {
 
   it("creates a review by picking a star rating and submitting", async () => {
     const user = userEvent.setup();
-    listReviewsMock.mockResolvedValue([]);
+    listReviewsMock.mockResolvedValue({ items: [], nextCursor: null });
     createReviewMock.mockResolvedValue({
       ...ownReview,
       id: "review-3",
@@ -194,7 +199,7 @@ describe("IssueReviews", () => {
 
   it("updates a review in place via the child callback", async () => {
     const user = userEvent.setup();
-    listReviewsMock.mockResolvedValue([otherUserReview]);
+    listReviewsMock.mockResolvedValue({ items: [otherUserReview], nextCursor: null });
 
     render(<IssueReviews knownIssueId="ki-1" currentUser={currentUser} />);
 
@@ -205,7 +210,7 @@ describe("IssueReviews", () => {
 
   it("removes a review via the child callback", async () => {
     const user = userEvent.setup();
-    listReviewsMock.mockResolvedValue([otherUserReview]);
+    listReviewsMock.mockResolvedValue({ items: [otherUserReview], nextCursor: null });
 
     render(<IssueReviews knownIssueId="ki-1" currentUser={currentUser} />);
 
@@ -216,7 +221,10 @@ describe("IssueReviews", () => {
   });
 
   it("resets and reloads reviews when knownIssueId changes", async () => {
-    listReviewsMock.mockResolvedValueOnce([otherUserReview]);
+    listReviewsMock.mockResolvedValueOnce({
+      items: [otherUserReview],
+      nextCursor: null,
+    });
 
     const { rerender } = render(
       <IssueReviews knownIssueId="ki-1" currentUser={null} />
@@ -224,9 +232,10 @@ describe("IssueReviews", () => {
 
     await screen.findByTestId("review-review-1");
 
-    let resolveSecond: (reviews: Review[]) => void = () => {};
+    let resolveSecond: (page: { items: Review[]; nextCursor: string | null }) => void =
+      () => {};
     listReviewsMock.mockReturnValueOnce(
-      new Promise<Review[]>((resolve) => {
+      new Promise<{ items: Review[]; nextCursor: string | null }>((resolve) => {
         resolveSecond = resolve;
       })
     );
@@ -236,9 +245,9 @@ describe("IssueReviews", () => {
     expect(screen.queryByTestId("review-review-1")).not.toBeInTheDocument();
     expect(screen.queryByText("No reviews yet.")).not.toBeInTheDocument();
 
-    resolveSecond([]);
+    resolveSecond({ items: [], nextCursor: null });
 
     expect(await screen.findByText("No reviews yet.")).toBeInTheDocument();
-    expect(listReviewsMock).toHaveBeenLastCalledWith("ki-2");
+    expect(listReviewsMock).toHaveBeenLastCalledWith("ki-2", { limit: 20 });
   });
 });

@@ -5,7 +5,7 @@
     "fallbackAlt": "Cena de garagem clássica"
   },
   "list": {
-    "title": "Os teus veículos favoritos",
+    "title": "Os teus veículos",
     "empty": "Ainda não tens veículos na garagem…",
     "knownIssuesCount": "{count} defeitos",
     "remove": "Remover da garagem",

@@ -1,5 +1,7 @@
+"use client";
+
 import { AlertTriangle, ArrowRight, Flame } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -29,7 +31,7 @@ const SEVERITY_BADGE_VARIANT: Record<
   critical: "destructive",
 };
 
-export async function FaultCard({
+export function FaultCard({
   make,
   model,
   year,
@@ -40,11 +42,9 @@ export async function FaultCard({
   severity,
   reportCount,
 }: FaultCardProps) {
-  const t = await getTranslations("faults");
+  const t = useTranslations("faults");
   const SeverityIcon =
     severity === "high" || severity === "critical" ? Flame : AlertTriangle;
-  // The vehicle page's canonical URL requires fuelType as a path segment -
-  // without it there's no valid lookup to link to.
   const href = fuelType
     ? buildLookupHref({ brand: make, model, year, engine, fuelType, doors })
     : null;

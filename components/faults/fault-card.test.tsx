@@ -3,21 +3,19 @@ import type { ReactNode } from "react";
 
 import { FaultCard } from "./fault-card";
 
-jest.mock("next-intl/server", () => ({
-  getTranslations: async (namespace: string) => {
+jest.mock("next-intl", () => ({
+  useTranslations: () => (key: string, values?: Record<string, unknown>) => {
     const dict: Record<string, string> = {
-      "faults.severity.low": "Low",
-      "faults.severity.medium": "Medium",
-      "faults.severity.high": "High",
-      "faults.severity.critical": "Critical",
-      "faults.viewReports": "View reports",
+      "severity.low": "Low",
+      "severity.medium": "Medium",
+      "severity.high": "High",
+      "severity.critical": "Critical",
+      viewReports: "View reports",
     };
-    return (key: string, values?: Record<string, unknown>) => {
-      if (key === "reportsCount") {
-        return `${values?.count} reports`;
-      }
-      return dict[`${namespace}.${key}`] ?? key;
-    };
+    if (key === "reportsCount") {
+      return `${values?.count} reports`;
+    }
+    return dict[key] ?? key;
   },
 }));
 
@@ -36,20 +34,19 @@ jest.mock("@/i18n/navigation", () => ({
   ),
 }));
 
-describe("FaultCard", () => {
-  it("renders vehicle info, fault title, severity and report count", async () => {
-    const jsx = await FaultCard({
-      make: "Volkswagen",
-      model: "Golf",
-      year: 2018,
-      engine: "2.0 TDI",
-      fuelType: "diesel",
-      faultTitle: "Timing chain tensioner wear",
-      severity: "high",
-      reportCount: 412,
-    });
+const baseProps = {
+  make: "Volkswagen",
+  model: "Golf",
+  year: 2018,
+  engine: "2.0 TDI",
+  faultTitle: "Timing chain tensioner wear",
+  severity: "high" as const,
+  reportCount: 412,
+};
 
-    render(jsx);
+describe("FaultCard", () => {
+  it("renders vehicle info, fault title, severity and report count", () => {
+    render(<FaultCard {...baseProps} fuelType="diesel" />);
 
     expect(screen.getByText("Volkswagen Golf · 2018")).toBeInTheDocument();
     expect(
@@ -59,20 +56,8 @@ describe("FaultCard", () => {
     expect(screen.getByText("412 reports")).toBeInTheDocument();
   });
 
-  it("links to the vehicle's pSEO page with fuel type and engine in the path", async () => {
-    const jsx = await FaultCard({
-      make: "Volkswagen",
-      model: "Golf",
-      year: 2018,
-      engine: "2.0 TDI",
-      fuelType: "diesel",
-      doors: 5,
-      faultTitle: "Timing chain tensioner wear",
-      severity: "high",
-      reportCount: 412,
-    });
-
-    render(jsx);
+  it("links to the vehicle's pSEO page with fuel type and engine in the path", () => {
+    render(<FaultCard {...baseProps} fuelType="diesel" doors={5} />);
 
     const link = screen.getByRole("link", { name: /View reports/i });
     expect(link).toHaveAttribute(
@@ -81,18 +66,8 @@ describe("FaultCard", () => {
     );
   });
 
-  it("renders a non-interactive CTA instead of a link when the vehicle has no fuel type on record", async () => {
-    const jsx = await FaultCard({
-      make: "Volkswagen",
-      model: "Golf",
-      year: 2018,
-      engine: "2.0 TDI",
-      faultTitle: "Timing chain tensioner wear",
-      severity: "high",
-      reportCount: 412,
-    });
-
-    render(jsx);
+  it("renders a non-interactive CTA instead of a link when the vehicle has no fuel type on record", () => {
+    render(<FaultCard {...baseProps} />);
 
     expect(
       screen.queryByRole("link", { name: /View reports/i })
@@ -100,19 +75,19 @@ describe("FaultCard", () => {
     expect(screen.getByText("View reports")).toBeInTheDocument();
   });
 
-  it("uses the warning icon for non-critical severities", async () => {
-    const jsx = await FaultCard({
-      make: "Renault",
-      model: "Clio",
-      year: 2019,
-      engine: "0.9 TCe",
-      fuelType: "gasoline",
-      faultTitle: "EDC dual-clutch jerking",
-      severity: "medium",
-      reportCount: 231,
-    });
-
-    render(jsx);
+  it("uses the warning icon for non-critical severities", () => {
+    render(
+      <FaultCard
+        make="Renault"
+        model="Clio"
+        year={2019}
+        engine="0.9 TCe"
+        fuelType="gasoline"
+        faultTitle="EDC dual-clutch jerking"
+        severity="medium"
+        reportCount={231}
+      />
+    );
 
     expect(screen.getByText("Medium")).toBeInTheDocument();
   });

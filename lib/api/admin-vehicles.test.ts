@@ -27,20 +27,20 @@ describe("getAdminVehicleModels", () => {
   });
 
   it("builds the query string from the given filters", async () => {
-    const list = { items: [], total: 0, page: 1, limit: 20 };
+    const list = { items: [], nextCursor: null };
     serverApiFetchMock.mockResolvedValue(jsonResponse(list));
 
     await expect(
-      getAdminVehicleModels({ page: 2, limit: 10, brand: "VW", model: "Polo" })
+      getAdminVehicleModels({ cursor: "c2", limit: 10, brand: "VW", model: "Polo" })
     ).resolves.toEqual(list);
     expect(serverApiFetchMock).toHaveBeenCalledWith(
-      "/v1/admin/vehicle-models?page=2&limit=10&brand=VW&model=Polo"
+      "/v1/admin/vehicle-models?limit=10&cursor=c2&brand=VW&model=Polo"
     );
   });
 
   it("omits query params when no filters are given", async () => {
     serverApiFetchMock.mockResolvedValue(
-      jsonResponse({ items: [], total: 0, page: 1, limit: 20 })
+      jsonResponse({ items: [], nextCursor: null })
     );
 
     await getAdminVehicleModels();

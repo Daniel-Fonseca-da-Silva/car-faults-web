@@ -16,11 +16,12 @@
   "stats": {
     "searches": "Búsquedas realizadas",
     "defectsConsulted": "Defectos consultados",
-    "savedVehicles": "Vehículos guardados",
+    "savedVehicles": "Mis vehículos",
+    "favoritedVehicles": "Favoritos",
     "votes": "Votos emitidos"
   },
   "vehicles": {
-    "title": "Vehículos guardados",
+    "title": "Mis vehículos",
     "count": "{count} vehículos",
     "empty": "Todavía no has guardado ningún vehículo.",
     "knownIssuesCount": "{count} defectos",

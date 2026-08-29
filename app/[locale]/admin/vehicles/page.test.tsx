@@ -56,6 +56,21 @@ jest.mock("@/i18n/navigation", () => ({
   ),
 }));
 
+jest.mock("@/components/admin/admin-vehicles-table", () => ({
+  AdminVehiclesTable: ({
+    initialItems,
+    initialCursor,
+  }: {
+    initialItems: AdminVehicleModel[];
+    initialCursor: string | null;
+  }) => (
+    <div data-testid="admin-vehicles-table">
+      {initialItems.map((vehicle) => vehicle.brand).join(",")}:
+      {initialCursor ?? "end"}
+    </div>
+  ),
+}));
+
 const vehicle: AdminVehicleModel = {
   id: "veh-1",
   brand: "Volkswagen",
@@ -89,13 +104,11 @@ describe("AdminVehiclesPage", () => {
     expect(getAdminVehicleModelsMock).not.toHaveBeenCalled();
   });
 
-  it("renders the vehicle table and forwards the query params to the loader", async () => {
+  it("renders the vehicle table and forwards the filters to the loader", async () => {
     requireAdminUserMock.mockResolvedValue({ id: "u1", role: "admin" });
     getAdminVehicleModelsMock.mockResolvedValue({
       items: [vehicle],
-      total: 1,
-      page: 1,
-      limit: 20,
+      nextCursor: "c2",
     });
 
     const jsx = await AdminVehiclesPage({
@@ -105,24 +118,20 @@ describe("AdminVehiclesPage", () => {
     render(jsx);
 
     expect(getAdminVehicleModelsMock).toHaveBeenCalledWith({
-      page: 1,
       limit: 20,
       brand: "Volkswagen",
       model: "Polo",
     });
-    expect(
-      screen.getByRole("link", { name: "Volkswagen" })
-    ).toHaveAttribute("href", "/admin/vehicles/veh-1");
-    expect(screen.getByText("1994–1999")).toBeInTheDocument();
+    expect(screen.getByTestId("admin-vehicles-table")).toHaveTextContent(
+      "Volkswagen:c2"
+    );
   });
 
-  it("shows the empty state when there are no vehicles", async () => {
+  it("shows the empty table state when there are no vehicles", async () => {
     requireAdminUserMock.mockResolvedValue({ id: "u1", role: "admin" });
     getAdminVehicleModelsMock.mockResolvedValue({
       items: [],
-      total: 0,
-      page: 1,
-      limit: 20,
+      nextCursor: null,
     });
 
     const jsx = await AdminVehiclesPage({
@@ -131,72 +140,30 @@ describe("AdminVehiclesPage", () => {
     });
     render(jsx);
 
-    expect(screen.getByText("admin.vehicles.empty")).toBeInTheDocument();
-  });
-
-  it("disables previous on the first page and links next with the current filters", async () => {
-    requireAdminUserMock.mockResolvedValue({ id: "u1", role: "admin" });
-    getAdminVehicleModelsMock.mockResolvedValue({
-      items: [vehicle],
-      total: 45,
-      page: 1,
-      limit: 20,
-    });
-
-    const jsx = await AdminVehiclesPage({
-      params: Promise.resolve({ locale: "pt-PT" }),
-      searchParams: Promise.resolve({ brand: "Volkswagen" }),
-    });
-    render(jsx);
-
-    expect(
-      screen.getByRole("button", { name: "admin.vehicles.previous" })
-    ).toBeDisabled();
-    expect(
-      screen.getByRole("button", { name: "admin.vehicles.next" })
-    ).toHaveAttribute("href", "/admin/vehicles?page=2&brand=Volkswagen");
-  });
-
-  it("disables next on the last page and links previous", async () => {
-    requireAdminUserMock.mockResolvedValue({ id: "u1", role: "admin" });
-    getAdminVehicleModelsMock.mockResolvedValue({
-      items: [vehicle],
-      total: 45,
-      page: 3,
-      limit: 20,
-    });
-
-    const jsx = await AdminVehiclesPage({
-      params: Promise.resolve({ locale: "pt-PT" }),
-      searchParams: Promise.resolve({ page: "3" }),
-    });
-    render(jsx);
-
-    expect(
-      screen.getByRole("button", { name: "admin.vehicles.previous" })
-    ).toHaveAttribute("href", "/admin/vehicles?page=2");
-    expect(
-      screen.getByRole("button", { name: "admin.vehicles.next" })
-    ).toBeDisabled();
-  });
-
-  it("falls back to page 1 for a non-numeric page param", async () => {
-    requireAdminUserMock.mockResolvedValue({ id: "u1", role: "admin" });
-    getAdminVehicleModelsMock.mockResolvedValue({
-      items: [vehicle],
-      total: 1,
-      page: 1,
-      limit: 20,
-    });
-
-    await AdminVehiclesPage({
-      params: Promise.resolve({ locale: "pt-PT" }),
-      searchParams: Promise.resolve({ page: "not-a-number" }),
-    });
-
-    expect(getAdminVehicleModelsMock).toHaveBeenCalledWith(
-      expect.objectContaining({ page: 1 })
+    expect(screen.getByTestId("admin-vehicles-table")).toHaveTextContent(
+      ":end"
     );
+  });
+
+  it("does not render prev/next pagination controls", async () => {
+    requireAdminUserMock.mockResolvedValue({ id: "u1", role: "admin" });
+    getAdminVehicleModelsMock.mockResolvedValue({
+      items: [vehicle],
+      nextCursor: "c2",
+    });
+
+    const jsx = await AdminVehiclesPage({
+      params: Promise.resolve({ locale: "pt-PT" }),
+      searchParams: Promise.resolve({}),
+    });
+    render(jsx);
+
+    expect(
+      screen.queryByRole("button", { name: "admin.vehicles.previous" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "admin.vehicles.next" })
+    ).not.toBeInTheDocument();
   });
 });
 

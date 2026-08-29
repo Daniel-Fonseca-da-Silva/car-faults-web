@@ -12,7 +12,7 @@ import { VehicleTechSpecs } from "@/components/vehicle/vehicle-tech-specs";
 import type { Locale } from "@/i18n/locales";
 import { getVehicleFavoriteStatus } from "@/lib/api/activity-logs";
 import { getVehicleLookupByPath } from "@/lib/api/lookups";
-import { getCurrentUser, getCurrentUserVehicles } from "@/lib/api/users";
+import { getCurrentUser, getGarageVehicleStatus } from "@/lib/api/users";
 import { countSeverities } from "@/lib/lookup/count-severities";
 import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
 import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
@@ -108,16 +108,11 @@ export default async function VehiclePage({
   let garageVehicleId: string | null = null;
   let isFavorited = false;
   if (currentUser) {
-    const [vehicles, favoriteStatus] = await Promise.all([
-      getCurrentUserVehicles(),
-      getVehicleFavoriteStatus(vehicle.id),
+    const [garageStatus, favoriteStatus] = await Promise.all([
+      getGarageVehicleStatus(vehicle.id, year),
+      getVehicleFavoriteStatus(vehicle.id, year),
     ]);
-    garageVehicleId =
-      vehicles.find(
-        (userVehicle) =>
-          userVehicle.vehicleModelId === vehicle.id &&
-          userVehicle.year === year
-      )?.id ?? null;
+    garageVehicleId = garageStatus.userVehicleId;
     isFavorited = favoriteStatus.favorited;
   }
 

@@ -38,12 +38,15 @@ jest.mock("@/components/garage/garage-vehicle-list", () => ({
   GarageVehicleList: ({
     vehicles,
     selectedVehicleId,
+    nextCursor,
   }: {
     vehicles: UserVehicle[];
     selectedVehicleId: string | null;
+    nextCursor: string | null;
   }) => (
     <div>
-      GarageVehicleList:{vehicles.length}:{selectedVehicleId ?? "none"}
+      GarageVehicleList:{vehicles.length}:{selectedVehicleId ?? "none"}:
+      {nextCursor ?? "end"}
     </div>
   ),
 }));
@@ -91,6 +94,7 @@ describe("GaragePage", () => {
     getGaragePageDataMock.mockResolvedValue({
       user,
       vehicles: [vehicle],
+      nextCursor: "c2",
       selectedVehicle: vehicleDetail,
     });
 
@@ -101,7 +105,7 @@ describe("GaragePage", () => {
     render(jsx);
 
     expect(screen.getByText("GarageHero:uv-1")).toBeInTheDocument();
-    expect(screen.getByText("GarageVehicleList:1:uv-1")).toBeInTheDocument();
+    expect(screen.getByText("GarageVehicleList:1:uv-1:c2")).toBeInTheDocument();
     expect(screen.getByText("GarageKnownIssues:uv-1")).toBeInTheDocument();
   });
 
@@ -109,6 +113,7 @@ describe("GaragePage", () => {
     getGaragePageDataMock.mockResolvedValue({
       user,
       vehicles: [vehicle],
+      nextCursor: "c2",
       selectedVehicle: vehicleDetail,
     });
 
@@ -124,6 +129,7 @@ describe("GaragePage", () => {
     getGaragePageDataMock.mockResolvedValue({
       user,
       vehicles: [],
+      nextCursor: null,
       selectedVehicle: null,
     });
 
@@ -134,7 +140,7 @@ describe("GaragePage", () => {
     render(jsx);
 
     expect(screen.getByText("GarageHero:none")).toBeInTheDocument();
-    expect(screen.getByText("GarageVehicleList:0:none")).toBeInTheDocument();
+    expect(screen.getByText("GarageVehicleList:0:none:end")).toBeInTheDocument();
     expect(screen.queryByText(/GarageKnownIssues/)).not.toBeInTheDocument();
   });
 

@@ -72,9 +72,19 @@ export function VehicleGarageActions({
     startFavoriteTransition(async () => {
       try {
         if (isFavorited) {
-          await unfavoriteVehicleAction(locale, currentPath, vehicleModelId);
+          await unfavoriteVehicleAction(
+            locale,
+            currentPath,
+            vehicleModelId,
+            year
+          );
         } else {
-          await favoriteVehicleAction(locale, currentPath, vehicleModelId);
+          await favoriteVehicleAction(
+            locale,
+            currentPath,
+            vehicleModelId,
+            year
+          );
         }
       } catch {
         setFavoriteError(true);

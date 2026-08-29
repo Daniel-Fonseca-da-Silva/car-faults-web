@@ -8,7 +8,7 @@ import { ProfileSavedVehicles } from "./profile-saved-vehicles";
 jest.mock("next-intl/server", () => ({
   getTranslations: async (namespace: string) => {
     const dict: Record<string, string> = {
-      "profile.vehicles.title": "Veículos salvos",
+      "profile.vehicles.title": "Os meus veículos",
       "profile.vehicles.count": "{count} veículos",
       "profile.vehicles.empty": "Ainda não guardou nenhum veículo.",
       "profile.vehicles.knownIssuesCount": "{count} defeitos",
@@ -102,6 +102,7 @@ describe("ProfileSavedVehicles", () => {
     });
     render(jsx);
 
+    expect(screen.getByText("Os meus veículos")).toBeInTheDocument();
     expect(screen.getByText("2 veículos")).toBeInTheDocument();
   });
 
