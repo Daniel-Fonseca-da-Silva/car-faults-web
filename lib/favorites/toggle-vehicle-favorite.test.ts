@@ -11,10 +11,10 @@ const unfavoriteVehicleMock = jest.fn();
 const revalidatePathMock = jest.fn();
 
 jest.mock("@/lib/api/activity-logs", () => ({
-  favoriteVehicle: (vehicleModelId: string) =>
-    favoriteVehicleMock(vehicleModelId),
-  unfavoriteVehicle: (vehicleModelId: string) =>
-    unfavoriteVehicleMock(vehicleModelId),
+  favoriteVehicle: (vehicleModelId: string, year: number) =>
+    favoriteVehicleMock(vehicleModelId, year),
+  unfavoriteVehicle: (vehicleModelId: string, year: number) =>
+    unfavoriteVehicleMock(vehicleModelId, year),
 }));
 
 jest.mock("next/cache", () => ({
@@ -26,17 +26,19 @@ describe("favoriteVehicleAction", () => {
     jest.clearAllMocks();
   });
 
-  it("favorites the vehicle and revalidates the profile and current pages", async () => {
+  it("favorites the vehicle with year and revalidates profile, favorites and current pages", async () => {
     favoriteVehicleMock.mockResolvedValue(undefined);
 
     await favoriteVehicleAction(
       "pt-PT",
       "/pt-PT/defects/vw/polo/1996",
-      "vm-1"
+      "vm-1",
+      1996
     );
 
-    expect(favoriteVehicleMock).toHaveBeenCalledWith("vm-1");
+    expect(favoriteVehicleMock).toHaveBeenCalledWith("vm-1", 1996);
     expect(revalidatePathMock).toHaveBeenCalledWith("/pt-PT/profile");
+    expect(revalidatePathMock).toHaveBeenCalledWith("/pt-PT/favorites");
     expect(revalidatePathMock).toHaveBeenCalledWith(
       "/pt-PT/defects/vw/polo/1996"
     );
@@ -46,7 +48,7 @@ describe("favoriteVehicleAction", () => {
     favoriteVehicleMock.mockRejectedValue(new Error("failed"));
 
     await expect(
-      favoriteVehicleAction("pt-PT", "/pt-PT/defects/vw/polo/1996", "vm-1")
+      favoriteVehicleAction("pt-PT", "/pt-PT/defects/vw/polo/1996", "vm-1", 1996)
     ).rejects.toThrow("failed");
 
     expect(revalidatePathMock).not.toHaveBeenCalled();
@@ -58,17 +60,19 @@ describe("unfavoriteVehicleAction", () => {
     jest.clearAllMocks();
   });
 
-  it("unfavorites the vehicle and revalidates the profile and current pages", async () => {
+  it("unfavorites the vehicle with year and revalidates profile, favorites and current pages", async () => {
     unfavoriteVehicleMock.mockResolvedValue(undefined);
 
     await unfavoriteVehicleAction(
       "pt-PT",
       "/pt-PT/defects/vw/polo/1996",
-      "vm-1"
+      "vm-1",
+      1996
     );
 
-    expect(unfavoriteVehicleMock).toHaveBeenCalledWith("vm-1");
+    expect(unfavoriteVehicleMock).toHaveBeenCalledWith("vm-1", 1996);
     expect(revalidatePathMock).toHaveBeenCalledWith("/pt-PT/profile");
+    expect(revalidatePathMock).toHaveBeenCalledWith("/pt-PT/favorites");
     expect(revalidatePathMock).toHaveBeenCalledWith(
       "/pt-PT/defects/vw/polo/1996"
     );
@@ -78,7 +82,12 @@ describe("unfavoriteVehicleAction", () => {
     unfavoriteVehicleMock.mockRejectedValue(new Error("failed"));
 
     await expect(
-      unfavoriteVehicleAction("pt-PT", "/pt-PT/defects/vw/polo/1996", "vm-1")
+      unfavoriteVehicleAction(
+        "pt-PT",
+        "/pt-PT/defects/vw/polo/1996",
+        "vm-1",
+        1996
+      )
     ).rejects.toThrow("failed");
 
     expect(revalidatePathMock).not.toHaveBeenCalled();

@@ -24,12 +24,24 @@ describe("listComments", () => {
   });
 
   it("returns the comments for a known issue", async () => {
-    const comments = [{ id: "c1" }];
-    serverApiFetchMock.mockResolvedValue(jsonResponse(comments));
+    const page = { items: [{ id: "c1" }], nextCursor: null };
+    serverApiFetchMock.mockResolvedValue(jsonResponse(page));
 
-    await expect(listComments("ki-1")).resolves.toEqual(comments);
+    await expect(listComments("ki-1")).resolves.toEqual(page);
     expect(serverApiFetchMock).toHaveBeenCalledWith(
       "/v1/comments?knownIssueId=ki-1"
+    );
+  });
+
+  it("appends limit and cursor when given", async () => {
+    serverApiFetchMock.mockResolvedValue(
+      jsonResponse({ items: [], nextCursor: null })
+    );
+
+    await listComments("ki-1", { limit: 20, cursor: "c1" });
+
+    expect(serverApiFetchMock).toHaveBeenCalledWith(
+      "/v1/comments?knownIssueId=ki-1&limit=20&cursor=c1"
     );
   });
 

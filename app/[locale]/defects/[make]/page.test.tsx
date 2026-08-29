@@ -99,9 +99,7 @@ describe("BrandHubPage", () => {
     getCatalogModelsMock.mockResolvedValue(models);
     getPlatformFaultsMock.mockResolvedValue({
       items: topFaults,
-      total: 1,
-      page: 1,
-      limit: 9,
+      nextCursor: null,
     });
 
     const jsx = await BrandHubPage({
@@ -135,8 +133,7 @@ describe("BrandHubPage", () => {
     getCatalogModelsMock.mockResolvedValue([]);
     getPlatformFaultsMock.mockResolvedValue({
       items: [],
-      total: 0,
-      page: 1,
+      nextCursor: null,
       limit: 9,
     });
 
@@ -155,8 +152,7 @@ describe("BrandHubPage", () => {
     getCatalogModelsMock.mockResolvedValue(models);
     getPlatformFaultsMock.mockResolvedValue({
       items: [],
-      total: 0,
-      page: 1,
+      nextCursor: null,
       limit: 9,
     });
 

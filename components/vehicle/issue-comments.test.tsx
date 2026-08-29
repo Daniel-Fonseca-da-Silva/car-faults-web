@@ -61,6 +61,7 @@ jest.mock("next-intl", () => ({
       "vehicle.comments.invalidImageType": "Unsupported image format.",
       "vehicle.comments.imageTooLarge": "The image exceeds the 5 MB limit.",
       "vehicle.comments.submitError": "Couldn't post the comment.",
+      loadingMore: "Loading more…",
     };
     const template = dict[key] ?? key;
     if (!values) return template;
@@ -100,7 +101,7 @@ describe("IssueComments", () => {
   });
 
   it("shows the empty state and the login CTA for a guest", async () => {
-    listCommentsMock.mockResolvedValue([]);
+    listCommentsMock.mockResolvedValue({ items: [], nextCursor: null });
 
     render(<IssueComments knownIssueId="ki-1" currentUser={null} />);
 
@@ -112,13 +113,14 @@ describe("IssueComments", () => {
   });
 
   it("lists comments and shows the count for a logged-in user", async () => {
-    listCommentsMock.mockResolvedValue([comment]);
+    listCommentsMock.mockResolvedValue({ items: [comment], nextCursor: null });
 
     render(<IssueComments knownIssueId="ki-1" currentUser={currentUser} />);
 
     expect(await screen.findByTestId("comment-comment-1")).toHaveTextContent(
       "Had the same issue at 90k km."
     );
+    expect(listCommentsMock).toHaveBeenCalledWith("ki-1", { limit: 20 });
     expect(screen.getByText("Comments · 1 comments")).toBeInTheDocument();
     expect(
       screen.getByPlaceholderText("Write a comment...")
@@ -137,7 +139,7 @@ describe("IssueComments", () => {
 
   it("prepends a newly created comment", async () => {
     const user = userEvent.setup();
-    listCommentsMock.mockResolvedValue([]);
+    listCommentsMock.mockResolvedValue({ items: [], nextCursor: null });
     createCommentMock.mockResolvedValue({
       ...comment,
       id: "comment-2",
@@ -167,7 +169,7 @@ describe("IssueComments", () => {
 
   it("updates a comment in place via the child callback", async () => {
     const user = userEvent.setup();
-    listCommentsMock.mockResolvedValue([comment]);
+    listCommentsMock.mockResolvedValue({ items: [comment], nextCursor: null });
 
     render(<IssueComments knownIssueId="ki-1" currentUser={currentUser} />);
 
@@ -180,7 +182,7 @@ describe("IssueComments", () => {
 
   it("removes a comment via the child callback", async () => {
     const user = userEvent.setup();
-    listCommentsMock.mockResolvedValue([comment]);
+    listCommentsMock.mockResolvedValue({ items: [comment], nextCursor: null });
 
     render(<IssueComments knownIssueId="ki-1" currentUser={currentUser} />);
 
@@ -188,5 +190,53 @@ describe("IssueComments", () => {
 
     expect(screen.queryByTestId("comment-comment-1")).not.toBeInTheDocument();
     expect(screen.getByText("No comments yet.")).toBeInTheDocument();
+  });
+
+  it("concatenates the next comments page when the sentinel intersects", async () => {
+    const secondComment: Comment = {
+      ...comment,
+      id: "comment-2",
+      body: "Second page comment",
+    };
+    listCommentsMock
+      .mockResolvedValueOnce({ items: [comment], nextCursor: "c2" })
+      .mockResolvedValueOnce({ items: [secondComment], nextCursor: null });
+
+    let observerCallback: IntersectionObserverCallback | null = null;
+    class MockIntersectionObserver {
+      constructor(callback: IntersectionObserverCallback) {
+        observerCallback = callback;
+      }
+      observe = jest.fn();
+      disconnect = jest.fn();
+      unobserve = jest.fn();
+      takeRecords = () => [];
+      root = null;
+      rootMargin = "";
+      thresholds = [];
+    }
+    Object.defineProperty(window, "IntersectionObserver", {
+      writable: true,
+      configurable: true,
+      value: MockIntersectionObserver,
+    });
+
+    render(<IssueComments knownIssueId="ki-1" currentUser={currentUser} />);
+
+    expect(await screen.findByTestId("comment-comment-1")).toBeInTheDocument();
+    expect(listCommentsMock).toHaveBeenCalledWith("ki-1", { limit: 20 });
+
+    observerCallback?.(
+      [{ isIntersecting: true } as IntersectionObserverEntry],
+      {} as IntersectionObserver
+    );
+
+    expect(await screen.findByTestId("comment-comment-2")).toHaveTextContent(
+      "Second page comment"
+    );
+    expect(listCommentsMock).toHaveBeenLastCalledWith("ki-1", {
+      limit: 20,
+      cursor: "c2",
+    });
   });
 });

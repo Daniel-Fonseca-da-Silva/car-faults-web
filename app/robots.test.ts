@@ -6,6 +6,7 @@ const DISALLOW = [
   "/*/auth/",
   "/*/profile",
   "/*/garage",
+  "/*/favorites",
   "/*/admin",
 ];
 

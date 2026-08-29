@@ -5,12 +5,13 @@ import type { UserVehicle } from "@/types/user-vehicle";
 
 import { GarageVehicleList } from "./garage-vehicle-list";
 
-jest.mock("next-intl/server", () => ({
-  getTranslations: async (namespace: string) => {
+jest.mock("next-intl", () => ({
+  useTranslations: (namespace: string) => {
     const dict: Record<string, string> = {
-      "garage.list.title": "Os teus veículos favoritos",
+      "garage.list.title": "Os teus veículos",
       "garage.list.empty": "Ainda não tens veículos na garagem…",
       "garage.list.knownIssuesCount": "{count} defeitos",
+      "common.loadingMore": "A carregar mais…",
     };
     return (key: string, values?: Record<string, unknown>) => {
       const template = dict[`${namespace}.${key}`] ?? key;
@@ -84,27 +85,31 @@ const unlinkedVehicle: UserVehicle = {
   updatedAt: "2026-02-03T14:15:00.000Z",
 };
 
+const listProps = {
+  nextCursor: null,
+  selectedVehicleId: null as string | null,
+  locale: "pt-PT",
+  language: "pt-PT" as const,
+};
+
 describe("GarageVehicleList", () => {
-  it("renders the empty state when there are no vehicles", async () => {
-    const jsx = await GarageVehicleList({
-      vehicles: [],
-      selectedVehicleId: null,
-      locale: "pt-PT",
-    });
-    render(jsx);
+  it("renders the empty state when there are no vehicles", () => {
+    render(<GarageVehicleList {...listProps} vehicles={[]} />);
 
     expect(
       screen.getByText("Ainda não tens veículos na garagem…")
     ).toBeInTheDocument();
+    expect(screen.getByText("Os teus veículos")).toBeInTheDocument();
   });
 
-  it("links each vehicle row to the garage page with the vehicleId query", async () => {
-    const jsx = await GarageVehicleList({
-      vehicles: [linkedVehicle],
-      selectedVehicleId: "uv-polo",
-      locale: "pt-PT",
-    });
-    render(jsx);
+  it("links each vehicle row to the garage page with the vehicleId query", () => {
+    render(
+      <GarageVehicleList
+        {...listProps}
+        vehicles={[linkedVehicle]}
+        selectedVehicleId="uv-polo"
+      />
+    );
 
     expect(screen.getByText("Volkswagen Polo")).toBeInTheDocument();
     expect(screen.getByText("1996")).toBeInTheDocument();
@@ -113,25 +118,25 @@ describe("GarageVehicleList", () => {
     ).toHaveAttribute("href", "/garage?vehicleId=uv-polo");
   });
 
-  it("shows the known issues badge only when the count is greater than zero", async () => {
-    const jsx = await GarageVehicleList({
-      vehicles: [linkedVehicle, unlinkedVehicle],
-      selectedVehicleId: null,
-      locale: "pt-PT",
-    });
-    render(jsx);
+  it("shows the known issues badge only when the count is greater than zero", () => {
+    render(
+      <GarageVehicleList
+        {...listProps}
+        vehicles={[linkedVehicle, unlinkedVehicle]}
+      />
+    );
 
     expect(screen.getByText("2 defeitos")).toBeInTheDocument();
     expect(screen.queryByText("0 defeitos")).not.toBeInTheDocument();
   });
 
-  it("renders a remove control for every vehicle", async () => {
-    const jsx = await GarageVehicleList({
-      vehicles: [linkedVehicle, unlinkedVehicle],
-      selectedVehicleId: null,
-      locale: "pt-PT",
-    });
-    render(jsx);
+  it("renders a remove control for every vehicle", () => {
+    render(
+      <GarageVehicleList
+        {...listProps}
+        vehicles={[linkedVehicle, unlinkedVehicle]}
+      />
+    );
 
     expect(
       screen.getByText("Remove:uv-polo:Volkswagen Polo")

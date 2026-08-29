@@ -47,12 +47,10 @@ afterEach(() => {
 describe("fetchAllPlatformVehicles", () => {
   it("pages through the catalog until every item is fetched", async () => {
     getPlatformVehiclesMock
-      .mockResolvedValueOnce({ items: [golf], total: 2, page: 1, limit: 1 })
+      .mockResolvedValueOnce({ items: [golf], nextCursor: "c2" })
       .mockResolvedValueOnce({
         items: [classeC],
-        total: 2,
-        page: 2,
-        limit: 1,
+        nextCursor: null,
       });
 
     const items = await fetchAllPlatformVehicles();
@@ -60,21 +58,19 @@ describe("fetchAllPlatformVehicles", () => {
     expect(items).toEqual(vehicles);
     expect(getPlatformVehiclesMock).toHaveBeenCalledTimes(2);
     expect(getPlatformVehiclesMock).toHaveBeenNthCalledWith(1, {
-      page: 1,
+      cursor: null,
       limit: 200,
     });
     expect(getPlatformVehiclesMock).toHaveBeenNthCalledWith(2, {
-      page: 2,
+      cursor: "c2",
       limit: 200,
     });
   });
 
-  it("stops when the platform returns an empty page even if total claims more", async () => {
+  it("stops when the platform returns a null nextCursor", async () => {
     getPlatformVehiclesMock.mockResolvedValueOnce({
       items: [],
-      total: 5,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
 
     const items = await fetchAllPlatformVehicles();
@@ -88,9 +84,7 @@ describe("getCatalogBrands", () => {
   it("returns the unique slugified brands from the catalog", async () => {
     getPlatformVehiclesMock.mockResolvedValue({
       items: vehicles,
-      total: vehicles.length,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
 
     expect(await getCatalogBrands()).toEqual([
@@ -102,9 +96,7 @@ describe("getCatalogBrands", () => {
   it("returns an empty list when the catalog has no vehicles", async () => {
     getPlatformVehiclesMock.mockResolvedValue({
       items: [],
-      total: 0,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
 
     expect(await getCatalogBrands()).toEqual([]);
@@ -115,9 +107,7 @@ describe("getCatalogBrand", () => {
   it("finds the brand by slug", async () => {
     getPlatformVehiclesMock.mockResolvedValue({
       items: vehicles,
-      total: vehicles.length,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
 
     expect(await getCatalogBrand("volkswagen")).toEqual({
@@ -129,9 +119,7 @@ describe("getCatalogBrand", () => {
   it("returns null when no brand matches the slug", async () => {
     getPlatformVehiclesMock.mockResolvedValue({
       items: vehicles,
-      total: vehicles.length,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
 
     expect(await getCatalogBrand("tesla")).toBeNull();
@@ -142,9 +130,7 @@ describe("getCatalogModels", () => {
   it("returns the unique slugified models for the given brand", async () => {
     getPlatformVehiclesMock.mockResolvedValue({
       items: vehicles,
-      total: vehicles.length,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
 
     expect(await getCatalogModels("volkswagen")).toEqual([
@@ -155,9 +141,7 @@ describe("getCatalogModels", () => {
   it("returns an empty list when the brand has no models", async () => {
     getPlatformVehiclesMock.mockResolvedValue({
       items: vehicles,
-      total: vehicles.length,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
 
     expect(await getCatalogModels("tesla")).toEqual([]);
@@ -168,9 +152,7 @@ describe("getCatalogModel", () => {
   it("finds the model by brand and model slug", async () => {
     getPlatformVehiclesMock.mockResolvedValue({
       items: vehicles,
-      total: vehicles.length,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
 
     expect(await getCatalogModel("volkswagen", "golf")).toEqual({
@@ -182,9 +164,7 @@ describe("getCatalogModel", () => {
   it("returns null when no model matches", async () => {
     getPlatformVehiclesMock.mockResolvedValue({
       items: vehicles,
-      total: vehicles.length,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
 
     expect(await getCatalogModel("volkswagen", "polo")).toBeNull();
@@ -196,9 +176,7 @@ describe("getCatalogVariants", () => {
     const golfEstate = { ...golf, engine: "1.5 TSI" };
     getPlatformVehiclesMock.mockResolvedValue({
       items: [golf, golfEstate, classeC],
-      total: 3,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
 
     expect(await getCatalogVariants("volkswagen", "golf")).toEqual([
@@ -210,9 +188,7 @@ describe("getCatalogVariants", () => {
   it("returns an empty list when no variant matches", async () => {
     getPlatformVehiclesMock.mockResolvedValue({
       items: vehicles,
-      total: vehicles.length,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
 
     expect(await getCatalogVariants("tesla", "model-3")).toEqual([]);

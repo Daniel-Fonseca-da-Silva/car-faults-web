@@ -76,9 +76,7 @@ describe("getPlatformFaults", () => {
             },
           },
         ],
-        total: 1,
-        page: 1,
-        limit: 9,
+        nextCursor: null,
       })
     );
 
@@ -104,9 +102,7 @@ describe("getPlatformFaults", () => {
           reportCount: 412,
         },
       ],
-      total: 1,
-      page: 1,
-      limit: 9,
+      nextCursor: null,
     });
   });
 
@@ -127,9 +123,7 @@ describe("getPlatformFaults", () => {
             },
           },
         ],
-        total: 1,
-        page: 1,
-        limit: 9,
+        nextCursor: null,
       })
     );
 
@@ -141,12 +135,12 @@ describe("getPlatformFaults", () => {
 
   it("includes the filter query params when given", async () => {
     serverApiFetchMock.mockResolvedValue(
-      jsonResponse({ items: [], total: 0, page: 2, limit: 9 })
+      jsonResponse({ items: [], nextCursor: null })
     );
 
     await getPlatformFaults({
       locale: "pt-PT",
-      page: 2,
+      cursor: "c2",
       limit: 9,
       brand: "Volkswagen",
       model: "Golf",
@@ -157,13 +151,13 @@ describe("getPlatformFaults", () => {
     });
 
     expect(serverApiFetchMock).toHaveBeenCalledWith(
-      "/v1/platform/faults?locale=pt-PT&page=2&limit=9&brand=Volkswagen&model=Golf&year=2018&fuelType=diesel&doors=5&engine=1.6+TDI"
+      "/v1/platform/faults?locale=pt-PT&limit=9&cursor=c2&brand=Volkswagen&model=Golf&year=2018&fuelType=diesel&doors=5&engine=1.6+TDI"
     );
   });
 
   it("omits optional query params when not given", async () => {
     serverApiFetchMock.mockResolvedValue(
-      jsonResponse({ items: [], total: 0, page: 1, limit: 9 })
+      jsonResponse({ items: [], nextCursor: null })
     );
 
     await getPlatformFaults({ locale: "pt-PT" });
@@ -175,14 +169,12 @@ describe("getPlatformFaults", () => {
 
   it("returns an empty items array when there are no items", async () => {
     serverApiFetchMock.mockResolvedValue(
-      jsonResponse({ items: [], total: 0, page: 1, limit: 9 })
+      jsonResponse({ items: [], nextCursor: null })
     );
 
     await expect(getPlatformFaults({ locale: "en-GB" })).resolves.toEqual({
       items: [],
-      total: 0,
-      page: 1,
-      limit: 9,
+      nextCursor: null,
     });
   });
 
@@ -190,8 +182,8 @@ describe("getPlatformFaults", () => {
     serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
 
     await expect(
-      getPlatformFaults({ locale: "en-GB", page: 2, limit: 9 })
-    ).resolves.toEqual({ items: [], total: 0, page: 2, limit: 9 });
+      getPlatformFaults({ locale: "en-GB", cursor: "c2", limit: 9 })
+    ).resolves.toEqual({ items: [], nextCursor: null });
   });
 
   it("returns an empty page with defaults when the request throws", async () => {
@@ -199,9 +191,7 @@ describe("getPlatformFaults", () => {
 
     await expect(getPlatformFaults({ locale: "en-GB" })).resolves.toEqual({
       items: [],
-      total: 0,
-      page: 1,
-      limit: 9,
+      nextCursor: null,
     });
   });
 });
@@ -223,37 +213,35 @@ describe("getPlatformVehicles", () => {
           doors: 5,
         },
       ],
-      total: 1,
-      page: 1,
-      limit: 50,
+      nextCursor: null,
     };
     serverApiFetchMock.mockResolvedValue(jsonResponse(page));
 
     await expect(
-      getPlatformVehicles({ page: 1, limit: 50 })
+      getPlatformVehicles({ limit: 50 })
     ).resolves.toEqual(page);
 
     expect(serverApiFetchMock).toHaveBeenCalledWith(
-      "/v1/platform/vehicles?page=1&limit=50"
+      "/v1/platform/vehicles?limit=50"
     );
   });
 
   it("omits query params when not given", async () => {
     serverApiFetchMock.mockResolvedValue(
-      jsonResponse({ items: [], total: 0, page: 1, limit: 50 })
+      jsonResponse({ items: [], nextCursor: null })
     );
 
     await getPlatformVehicles();
 
-    expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/platform/vehicles?");
+    expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/platform/vehicles");
   });
 
   it("returns an empty page on an error response", async () => {
     serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
 
     await expect(
-      getPlatformVehicles({ page: 3, limit: 50 })
-    ).resolves.toEqual({ items: [], total: 0, page: 3, limit: 50 });
+      getPlatformVehicles({ cursor: "c3", limit: 50 })
+    ).resolves.toEqual({ items: [], nextCursor: null });
   });
 
   it("returns an empty page with defaults when the request throws", async () => {
@@ -261,9 +249,7 @@ describe("getPlatformVehicles", () => {
 
     await expect(getPlatformVehicles()).resolves.toEqual({
       items: [],
-      total: 0,
-      page: 1,
-      limit: 200,
+      nextCursor: null,
     });
   });
 });

@@ -117,9 +117,7 @@ describe("ModelHubPage", () => {
     getCatalogVariantsMock.mockResolvedValue(variants);
     getPlatformFaultsMock.mockResolvedValue({
       items: topFaults,
-      total: 1,
-      page: 1,
-      limit: 9,
+      nextCursor: null,
     });
 
     const jsx = await ModelHubPage({
@@ -158,8 +156,7 @@ describe("ModelHubPage", () => {
     getCatalogVariantsMock.mockResolvedValue([]);
     getPlatformFaultsMock.mockResolvedValue({
       items: [],
-      total: 0,
-      page: 1,
+      nextCursor: null,
       limit: 9,
     });
 
@@ -183,8 +180,7 @@ describe("ModelHubPage", () => {
     getCatalogVariantsMock.mockResolvedValue(variants);
     getPlatformFaultsMock.mockResolvedValue({
       items: [],
-      total: 0,
-      page: 1,
+      nextCursor: null,
       limit: 9,
     });
 

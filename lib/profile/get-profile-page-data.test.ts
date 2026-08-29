@@ -11,7 +11,8 @@ const getCurrentUserVehiclesMock = jest.fn();
 jest.mock("@/lib/api/users", () => ({
   getCurrentUser: () => getCurrentUserMock(),
   getCurrentUserStats: () => getCurrentUserStatsMock(),
-  getCurrentUserVehicles: () => getCurrentUserVehiclesMock(),
+  getCurrentUserVehicles: (query?: unknown) =>
+    getCurrentUserVehiclesMock(query),
 }));
 
 const user: UserProfile = {
@@ -40,16 +41,20 @@ describe("getProfilePageData", () => {
     jest.resetAllMocks();
   });
 
-  it("returns user, stats and vehicles when authenticated", async () => {
+  it("returns user, stats and the first garage page when authenticated", async () => {
     getCurrentUserMock.mockResolvedValue(user);
     getCurrentUserStatsMock.mockResolvedValue(stats);
-    getCurrentUserVehiclesMock.mockResolvedValue(vehicles);
+    getCurrentUserVehiclesMock.mockResolvedValue({
+      items: vehicles,
+      nextCursor: null,
+    });
 
     await expect(getProfilePageData()).resolves.toEqual({
       user,
       stats,
       vehicles,
     });
+    expect(getCurrentUserVehiclesMock).toHaveBeenCalledWith({ limit: 6 });
   });
 
   it("returns null when there is no authenticated user", async () => {
@@ -63,7 +68,10 @@ describe("getProfilePageData", () => {
   it("propagates a rejection from stats", async () => {
     getCurrentUserMock.mockResolvedValue(user);
     getCurrentUserStatsMock.mockRejectedValue(new Error("stats failed"));
-    getCurrentUserVehiclesMock.mockResolvedValue(vehicles);
+    getCurrentUserVehiclesMock.mockResolvedValue({
+      items: vehicles,
+      nextCursor: null,
+    });
 
     await expect(getProfilePageData()).rejects.toThrow("stats failed");
   });

@@ -9,7 +9,8 @@ jest.mock("next-intl/server", () => ({
     const dict: Record<string, string> = {
       "profile.stats.searches": "Buscas realizadas",
       "profile.stats.defectsConsulted": "Defeitos consultados",
-      "profile.stats.savedVehicles": "Veículos salvos",
+      "profile.stats.savedVehicles": "Os meus veículos",
+      "profile.stats.favoritedVehicles": "Favoritos",
       "profile.stats.votes": "Votos dados",
     };
     return (key: string) => dict[`${namespace}.${key}`] ?? key;
@@ -26,7 +27,7 @@ const stats: UserStats = {
 };
 
 describe("ProfileStatsGrid", () => {
-  it("renders the four visible stat cards with their values and labels", async () => {
+  it("renders the visible stat cards including favourited vehicles", async () => {
     const jsx = await ProfileStatsGrid({ stats });
     render(jsx);
 
@@ -35,12 +36,14 @@ describe("ProfileStatsGrid", () => {
     expect(screen.getByText("128")).toBeInTheDocument();
     expect(screen.getByText("Defeitos consultados")).toBeInTheDocument();
     expect(screen.getByText("6")).toBeInTheDocument();
-    expect(screen.getByText("Veículos salvos")).toBeInTheDocument();
+    expect(screen.getByText("Os meus veículos")).toBeInTheDocument();
+    expect(screen.getByText("2")).toBeInTheDocument();
+    expect(screen.getByText("Favoritos")).toBeInTheDocument();
     expect(screen.getByText("23")).toBeInTheDocument();
     expect(screen.getByText("Votos dados")).toBeInTheDocument();
   });
 
-  it("does not render dislikes or favourited vehicles counts", async () => {
+  it("does not render the dislikes count", async () => {
     const jsx = await ProfileStatsGrid({ stats });
     render(jsx);
 
