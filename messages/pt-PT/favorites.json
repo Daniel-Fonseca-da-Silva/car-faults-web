@@ -1,0 +1,6 @@
+{
+  "title": "Favoritos",
+  "subtitle": "Veículos cujos problemas estás a acompanhar.",
+  "empty": "Ainda não estás a acompanhar nenhum veículo.",
+  "viewVehicle": "Ver problemas de {brand} {model}"
+}

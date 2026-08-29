@@ -6,6 +6,7 @@
   "accountMenu": "Account menu for {name}",
   "profile": "Profile",
   "garage": "Garage",
+  "favorites": "Favourites",
   "admin": "Admin",
   "logout": "Log out",
   "login": "Sign in"

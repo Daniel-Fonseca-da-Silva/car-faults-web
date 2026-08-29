@@ -5,7 +5,7 @@
     "fallbackAlt": "Escena de garaje clásico"
   },
   "list": {
-    "title": "Tus vehículos favoritos",
+    "title": "Tus vehículos",
     "empty": "Todavía no tienes vehículos en tu garaje.",
     "knownIssuesCount": "{count} defectos",
     "remove": "Quitar del garaje",

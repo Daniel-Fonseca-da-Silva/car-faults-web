@@ -9,6 +9,7 @@
     "es-ES": "Español (ES)"
   },
   "language": "Language",
+  "loadingMore": "Loading more…",
   "footer": {
     "disclaimer": "Data sourced from public reports, forums or through agents and AI.",
     "copyright": "© {year}",
