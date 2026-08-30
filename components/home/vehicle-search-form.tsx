@@ -28,6 +28,7 @@ import {
   NativeSelect,
   NativeSelectOption,
 } from "@/components/ui/native-select";
+import { Spinner } from "@/components/ui/spinner";
 import { useRouter } from "@/i18n/navigation";
 import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
 import { EUROPEAN_VEHICLE_MAKES } from "@/lib/mocks/vehicle-makes";
@@ -130,12 +131,13 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
         } else {
           setShowSearchError(true);
         }
+        setIsSubmitting(false);
         return;
       }
 
       const { href } = (await response.json()) as { href: string };
       router.push(href);
-    } finally {
+    } catch {
       setIsSubmitting(false);
     }
   }
@@ -375,7 +377,11 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
               className="h-11 w-full gap-2 sm:w-auto"
               disabled={isFullSearch && (!turnstileToken || isSubmitting)}
             >
-              <Search aria-hidden="true" />
+              {isSubmitting ? (
+                <Spinner aria-hidden="true" />
+              ) : (
+                <Search aria-hidden="true" />
+              )}
               {isSubmitting ? t("verifying") : t("submit")}
             </Button>
           </FieldGroup>
