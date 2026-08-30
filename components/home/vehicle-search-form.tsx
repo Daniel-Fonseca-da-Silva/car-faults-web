@@ -74,7 +74,9 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
   const [widgetResetSignal, setWidgetResetSignal] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showCaptchaError, setShowCaptchaError] = useState(false);
-  const [showSearchError, setShowSearchError] = useState(false);
+  const [searchErrorKey, setSearchErrorKey] = useState<
+    "searchError" | "searchUnavailable" | "searchInvalidCriteria" | null
+  >(null);
 
   const isElectric = fuel === ELECTRIC_ENGINE_SENTINEL;
   const effectiveEngine = isElectric ? ELECTRIC_ENGINE_SENTINEL : engine.trim();
@@ -102,7 +104,7 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
 
     setIsSubmitting(true);
     setShowCaptchaError(false);
-    setShowSearchError(false);
+    setSearchErrorKey(null);
 
     try {
       const response = await fetch("/api/lookup/prepare", {
@@ -128,8 +130,12 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
         if (data?.error === "TURNSTILE_REQUIRED") {
           setShowCaptchaError(true);
           resetWidget();
+        } else if (data?.error === "INVALID_CRITERIA") {
+          setSearchErrorKey("searchInvalidCriteria");
+        } else if (data?.error === "LOOKUP_UNAVAILABLE") {
+          setSearchErrorKey("searchUnavailable");
         } else {
-          setShowSearchError(true);
+          setSearchErrorKey("searchError");
         }
         setIsSubmitting(false);
         return;
@@ -138,6 +144,7 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
       const { href } = (await response.json()) as { href: string };
       router.push(href);
     } catch {
+      setSearchErrorKey("searchUnavailable");
       setIsSubmitting(false);
     }
   }
@@ -370,7 +377,7 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
             )}
 
             {showCaptchaError && <FieldError>{t("captchaError")}</FieldError>}
-            {showSearchError && <FieldError>{t("searchError")}</FieldError>}
+            {searchErrorKey && <FieldError>{t(searchErrorKey)}</FieldError>}
 
             <Button
               type="submit"

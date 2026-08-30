@@ -97,6 +97,24 @@ describe("POST /api/lookup/prepare", () => {
     expect(await response.json()).toEqual({ error: "LOOKUP_FAILED" });
   });
 
+  it("returns 503 with LOOKUP_UNAVAILABLE when the API is unavailable", async () => {
+    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 503 }));
+
+    const response = await POST(buildRequest(validBody));
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual({ error: "LOOKUP_UNAVAILABLE" });
+  });
+
+  it("returns 503 with LOOKUP_UNAVAILABLE when the API is unreachable", async () => {
+    serverApiFetchMock.mockRejectedValue(new Error("network down"));
+
+    const response = await POST(buildRequest(validBody));
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual({ error: "LOOKUP_UNAVAILABLE" });
+  });
+
   it("returns 400 without calling the API when required criteria are missing", async () => {
     const response = await POST(
       buildRequest({ turnstileToken: "token-abc" })

@@ -31,5 +31,7 @@
     "yearRange": "Indique um ano entre {min} e {max}."
   },
   "captchaError": "Falha na verificação. Complete o desafio novamente.",
-  "searchError": "Ocorreu um erro na pesquisa. Tente novamente."
+  "searchError": "Ocorreu um erro na pesquisa. Tente novamente.",
+  "searchUnavailable": "O serviço de pesquisa está temporariamente indisponível. Tente novamente dentro de momentos.",
+  "searchInvalidCriteria": "Verifique os dados do veículo e tente novamente."
 }

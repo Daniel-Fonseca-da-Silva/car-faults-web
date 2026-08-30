@@ -10,6 +10,10 @@ const CAPTCHA_ERROR_TEXT =
   "Verification failed. Please complete the challenge again.";
 const SEARCH_ERROR_TEXT =
   "Something went wrong with your search. Please try again.";
+const SEARCH_UNAVAILABLE_TEXT =
+  "The search service is temporarily unavailable. Please try again in a few moments.";
+const SEARCH_INVALID_CRITERIA_TEXT =
+  "Please check the vehicle details and try again.";
 
 const pushMock = jest.fn();
 let turnstileOnSuccess: ((token: string) => void) | undefined;
@@ -47,6 +51,8 @@ jest.mock("next-intl", () => ({
       "errors.yearRange": YEAR_RANGE_ERROR_TEXT,
       captchaError: CAPTCHA_ERROR_TEXT,
       searchError: SEARCH_ERROR_TEXT,
+      searchUnavailable: SEARCH_UNAVAILABLE_TEXT,
+      searchInvalidCriteria: SEARCH_INVALID_CRITERIA_TEXT,
     };
     return (key: string) => dict[key] ?? key;
   },
@@ -350,6 +356,75 @@ describe("VehicleSearchForm", () => {
         screen.getByRole("button", { name: "Search faults" })
       ).toBeEnabled();
       expect(document.querySelector("svg.animate-spin")).not.toBeInTheDocument();
+    },
+    FULL_SEARCH_TEST_TIMEOUT_MS
+  );
+
+  it(
+    "shows the unavailable message when the API reports LOOKUP_UNAVAILABLE",
+    async () => {
+      fetchMock.mockResolvedValue({
+        ok: false,
+        json: async () => ({ error: "LOOKUP_UNAVAILABLE" }),
+      });
+      const user = createUser();
+      render(<VehicleSearchForm isDatabaseUp={true} />);
+
+      await fillFullSearchFields(user);
+
+      await completeCaptcha(user);
+
+      await waitFor(() =>
+        expect(screen.getByText(SEARCH_UNAVAILABLE_TEXT)).toBeInTheDocument()
+      );
+      expect(screen.queryByText(CAPTCHA_ERROR_TEXT)).not.toBeInTheDocument();
+      expect(pushMock).not.toHaveBeenCalled();
+    },
+    FULL_SEARCH_TEST_TIMEOUT_MS
+  );
+
+  it(
+    "shows the invalid-criteria message when the API reports INVALID_CRITERIA",
+    async () => {
+      fetchMock.mockResolvedValue({
+        ok: false,
+        json: async () => ({ error: "INVALID_CRITERIA" }),
+      });
+      const user = createUser();
+      render(<VehicleSearchForm isDatabaseUp={true} />);
+
+      await fillFullSearchFields(user);
+
+      await completeCaptcha(user);
+
+      await waitFor(() =>
+        expect(
+          screen.getByText(SEARCH_INVALID_CRITERIA_TEXT)
+        ).toBeInTheDocument()
+      );
+      expect(pushMock).not.toHaveBeenCalled();
+    },
+    FULL_SEARCH_TEST_TIMEOUT_MS
+  );
+
+  it(
+    "shows the unavailable message instead of failing silently when the request throws",
+    async () => {
+      fetchMock.mockRejectedValue(new Error("network down"));
+      const user = createUser();
+      render(<VehicleSearchForm isDatabaseUp={true} />);
+
+      await fillFullSearchFields(user);
+
+      await completeCaptcha(user);
+
+      await waitFor(() =>
+        expect(screen.getByText(SEARCH_UNAVAILABLE_TEXT)).toBeInTheDocument()
+      );
+      expect(pushMock).not.toHaveBeenCalled();
+      expect(
+        screen.getByRole("button", { name: "Search faults" })
+      ).toBeEnabled();
     },
     FULL_SEARCH_TEST_TIMEOUT_MS
   );
