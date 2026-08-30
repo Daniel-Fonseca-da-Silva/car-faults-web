@@ -31,5 +31,7 @@
     "yearRange": "Introduce un año entre {min} y {max}."
   },
   "captchaError": "Verificación fallida. Completa el desafío de nuevo.",
-  "searchError": "Ha ocurrido un error en la búsqueda. Inténtalo de nuevo."
+  "searchError": "Ha ocurrido un error en la búsqueda. Inténtalo de nuevo.",
+  "searchUnavailable": "El servicio de búsqueda no está disponible temporalmente. Inténtalo de nuevo en unos momentos.",
+  "searchInvalidCriteria": "Comprueba los datos del vehículo e inténtalo de nuevo."
 }

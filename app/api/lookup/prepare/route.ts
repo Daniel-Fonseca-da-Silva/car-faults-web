@@ -41,9 +41,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   if (doors != null) query.set("doors", String(doors));
   if (language) query.set("language", language);
 
-  const response = await serverApiFetch(`/v1/lookups?${query.toString()}`, {
-    headers: { "x-turnstile-token": turnstileToken },
-  });
+  let response: Response;
+  try {
+    response = await serverApiFetch(`/v1/lookups?${query.toString()}`, {
+      headers: { "x-turnstile-token": turnstileToken },
+    });
+  } catch {
+    return NextResponse.json({ error: "LOOKUP_UNAVAILABLE" }, { status: 503 });
+  }
 
   if (response.status === 403) {
     return NextResponse.json({ error: "TURNSTILE_REQUIRED" }, { status: 403 });
@@ -51,6 +56,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   if (response.status === 400) {
     return NextResponse.json({ error: "INVALID_CRITERIA" }, { status: 400 });
+  }
+
+  if (response.status === 503) {
+    return NextResponse.json({ error: "LOOKUP_UNAVAILABLE" }, { status: 503 });
   }
 
   if (!response.ok) {
