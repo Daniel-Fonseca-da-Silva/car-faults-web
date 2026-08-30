@@ -322,6 +322,7 @@ describe("VehicleSearchForm", () => {
       expect(
         screen.getByRole("button", { name: "Search faults" })
       ).toBeDisabled();
+      expect(document.querySelector("svg.animate-spin")).not.toBeInTheDocument();
     },
     FULL_SEARCH_TEST_TIMEOUT_MS
   );
@@ -348,6 +349,62 @@ describe("VehicleSearchForm", () => {
       expect(
         screen.getByRole("button", { name: "Search faults" })
       ).toBeEnabled();
+      expect(document.querySelector("svg.animate-spin")).not.toBeInTheDocument();
+    },
+    FULL_SEARCH_TEST_TIMEOUT_MS
+  );
+
+  it(
+    "shows a spinner while the lookup is pending and keeps it visible after navigating away on success",
+    async () => {
+      let resolveFetch:
+        | ((value: { ok: boolean; json: () => Promise<{ href: string }> }) => void)
+        | undefined;
+      fetchMock.mockImplementation(
+        () =>
+          new Promise((resolve) => {
+            resolveFetch = resolve;
+          })
+      );
+      const user = createUser();
+      render(<VehicleSearchForm isDatabaseUp={true} />);
+
+      await fillFullSearchFields(user);
+      await waitFor(() => expect(turnstileOnSuccess).toBeDefined());
+      act(() => turnstileOnSuccess?.("test-turnstile-token"));
+      await waitFor(() =>
+        expect(
+          screen.getByRole("button", { name: "Search faults" })
+        ).toBeEnabled()
+      );
+
+      await user.click(screen.getByRole("button", { name: "Search faults" }));
+
+      const pendingButton = await screen.findByRole("button", {
+        name: "Verifying...",
+      });
+      expect(pendingButton).toBeDisabled();
+      expect(pendingButton.querySelector("svg.animate-spin")).toBeInTheDocument();
+
+      resolveFetch?.({
+        ok: true,
+        json: async () => ({
+          href: "/defects/volkswagen/golf/2018/diesel/2-0-tdi",
+        }),
+      });
+
+      await waitFor(() =>
+        expect(pushMock).toHaveBeenCalledWith(
+          "/defects/volkswagen/golf/2018/diesel/2-0-tdi"
+        )
+      );
+
+      // The form does not clear isSubmitting on success — it stays visible
+      // until router.push unmounts the form on navigation.
+      expect(
+        screen.getByRole("button", { name: "Verifying..." })
+      ).toBeInTheDocument();
+      expect(document.querySelector("svg.animate-spin")).toBeInTheDocument();
     },
     FULL_SEARCH_TEST_TIMEOUT_MS
   );
