@@ -5,9 +5,14 @@ import { locales } from "@/i18n/locales";
 import HomePage, { generateMetadata, generateStaticParams } from "./page";
 
 const getDatabaseStatusMock = jest.fn();
+const getAdsenseHomeSlotMock = jest.fn();
 
 jest.mock("@/lib/api/platform", () => ({
   getDatabaseStatus: () => getDatabaseStatusMock(),
+}));
+
+jest.mock("@/lib/api/config", () => ({
+  getAdsenseHomeSlot: () => getAdsenseHomeSlotMock(),
 }));
 
 jest.mock("next-intl/server", () => ({
@@ -29,10 +34,16 @@ jest.mock("@/components/home/vehicle-search-form", () => ({
     <div data-testid="vehicle-search-form" data-is-database-up={isDatabaseUp} />
   ),
 }));
+jest.mock("@/components/ads/adsense-unit", () => ({
+  AdSenseUnit: ({ slot }: { slot: string }) => (
+    <div data-testid="adsense-unit" data-slot={slot} />
+  ),
+}));
 
 describe("HomePage", () => {
   beforeEach(() => {
     getDatabaseStatusMock.mockReset().mockResolvedValue(true);
+    getAdsenseHomeSlotMock.mockReset().mockReturnValue("mock-slot");
   });
 
   it("renders all landing sections", async () => {
@@ -43,6 +54,10 @@ describe("HomePage", () => {
 
     expect(screen.getByTestId("hero-section")).toBeInTheDocument();
     expect(screen.getByTestId("vehicle-search-form")).toBeInTheDocument();
+    expect(screen.getByTestId("adsense-unit")).toHaveAttribute(
+      "data-slot",
+      "mock-slot"
+    );
     expect(screen.getByTestId("stats-bar")).toBeInTheDocument();
   });
 
@@ -58,6 +73,17 @@ describe("HomePage", () => {
       "data-is-database-up",
       "false"
     );
+  });
+
+  it("does not render the AdSense unit when no home slot is configured", async () => {
+    getAdsenseHomeSlotMock.mockReturnValue(undefined);
+
+    const jsx = await HomePage({
+      params: Promise.resolve({ locale: "pt-PT" }),
+    });
+    render(jsx);
+
+    expect(screen.queryByTestId("adsense-unit")).not.toBeInTheDocument();
   });
 });
 
