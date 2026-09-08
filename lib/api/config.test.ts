@@ -1,4 +1,9 @@
-import { getAdsenseClientId, getApiBaseUrl, getTurnstileSiteKey } from "./config";
+import {
+  getAdsenseClientId,
+  getAdsenseHomeSlot,
+  getApiBaseUrl,
+  getTurnstileSiteKey,
+} from "./config";
 
 describe("getApiBaseUrl", () => {
   const originalEnv = process.env.NEXT_PUBLIC_API_URL;
@@ -65,5 +70,31 @@ describe("getAdsenseClientId", () => {
     process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID = "";
 
     expect(getAdsenseClientId()).toBeUndefined();
+  });
+});
+
+describe("getAdsenseHomeSlot", () => {
+  const originalEnv = process.env.NEXT_PUBLIC_ADSENSE_HOME_SLOT;
+
+  afterEach(() => {
+    process.env.NEXT_PUBLIC_ADSENSE_HOME_SLOT = originalEnv;
+  });
+
+  it("returns the configured AdSense home slot", () => {
+    process.env.NEXT_PUBLIC_ADSENSE_HOME_SLOT = "1334682799";
+
+    expect(getAdsenseHomeSlot()).toBe("1334682799");
+  });
+
+  it("returns undefined when NEXT_PUBLIC_ADSENSE_HOME_SLOT is not set", () => {
+    delete process.env.NEXT_PUBLIC_ADSENSE_HOME_SLOT;
+
+    expect(getAdsenseHomeSlot()).toBeUndefined();
+  });
+
+  it("returns undefined when NEXT_PUBLIC_ADSENSE_HOME_SLOT is empty", () => {
+    process.env.NEXT_PUBLIC_ADSENSE_HOME_SLOT = "";
+
+    expect(getAdsenseHomeSlot()).toBeUndefined();
   });
 });

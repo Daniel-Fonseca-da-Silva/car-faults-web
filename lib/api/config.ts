@@ -25,3 +25,11 @@ export function getTurnstileSiteKey(): string {
 export function getAdsenseClientId(): string | undefined {
   return process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || undefined;
 }
+
+/**
+ * Returns undefined when unset.
+ * Without a slot the home AdSense unit stays hidden.
+ */
+export function getAdsenseHomeSlot(): string | undefined {
+  return process.env.NEXT_PUBLIC_ADSENSE_HOME_SLOT || undefined;
+}
