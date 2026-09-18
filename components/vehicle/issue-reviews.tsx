@@ -155,6 +155,7 @@ export function IssueReviews({
                 key={review.id}
                 review={review}
                 isOwner={currentUser?.id === review.userId}
+                canReport={currentUser !== null}
                 onUpdated={handleUpdated}
                 onDeleted={handleDeleted}
               />

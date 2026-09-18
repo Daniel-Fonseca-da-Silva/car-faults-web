@@ -16,7 +16,10 @@
     "description": "Gestiona el catálogo de vehículos, problemas conocidos y soluciones.",
     "vehiclesCardTitle": "Catálogo de vehículos",
     "vehiclesCardDescription": "Crea, edita y elimina modelos de vehículos, problemas conocidos y soluciones.",
-    "goToVehicles": "Gestionar vehículos"
+    "goToVehicles": "Gestionar vehículos",
+    "reportsCardTitle": "Denuncias de contenido",
+    "reportsCardDescription": "Revisa comentarios y valoraciones denunciados por usuarios.",
+    "goToReports": "Gestionar denuncias"
   },
   "vehicles": {
     "title": "Vehículos",
@@ -108,5 +111,43 @@
     "estimatedCostEur": "Coste estimado (EUR)",
     "addFix": "Añadir solución",
     "editFix": "Editar solución"
+  },
+  "reports": {
+    "title": "Denuncias",
+    "description": "Revisa comentarios y valoraciones denunciados por la comunidad.",
+    "filterStatus": "Estado",
+    "filterApply": "Filtrar",
+    "statusAll": "Todos",
+    "status": {
+      "pending": "Pendiente",
+      "reviewed": "Revisada",
+      "dismissed": "Descartada"
+    },
+    "contentType": {
+      "comment": "Comentario",
+      "review": "Valoración"
+    },
+    "reason": {
+      "spam": "Spam",
+      "offensive": "Ofensivo o abusivo",
+      "inappropriate_photo": "Foto inapropiada",
+      "harassment": "Acoso",
+      "other": "Otro"
+    },
+    "contentDeleted": "El contenido ya no está disponible",
+    "columnType": "Tipo",
+    "columnContent": "Contenido",
+    "columnReason": "Motivo",
+    "columnDetails": "Detalles",
+    "columnStatus": "Estado",
+    "columnReported": "Denunciado",
+    "columnActions": "Acciones",
+    "empty": "No se encontraron denuncias.",
+    "markReviewed": "Marcar como revisada",
+    "dismiss": "Descartar",
+    "removeContent": "Eliminar contenido",
+    "removeContentConfirmTitle": "¿Eliminar este contenido?",
+    "removeContentConfirmDescription": "Esto elimina el comentario o valoración denunciado y marca la denuncia como revisada. Esta acción no se puede deshacer aquí.",
+    "contentAlreadyRemoved": "Este contenido ya fue eliminado."
   }
 }

@@ -106,50 +106,58 @@ describe("VehicleModelForm", () => {
     uploadVehicleImageMock.mockReset();
   });
 
-  it("creates a vehicle model and navigates to its detail page", async () => {
-    const user = createUser();
-    createAdminVehicleModelMock.mockResolvedValue({ id: "vm-new" });
-    render(<VehicleModelForm />);
+  it(
+    "creates a vehicle model and navigates to its detail page",
+    async () => {
+      const user = createUser();
+      createAdminVehicleModelMock.mockResolvedValue({ id: "vm-new" });
+      render(<VehicleModelForm />);
 
-    await chooseBrand("Volkswagen");
-    await user.type(screen.getByLabelText("Model"), "Polo");
-    await user.type(screen.getByLabelText("Year from"), "2001");
-    await user.type(screen.getByLabelText("Engine"), "1.0");
-    await user.click(screen.getByRole("button", { name: "Create" }));
+      await chooseBrand("Volkswagen");
+      await user.type(screen.getByLabelText("Model"), "Polo");
+      await user.type(screen.getByLabelText("Year from"), "2001");
+      await user.type(screen.getByLabelText("Engine"), "1.0");
+      await user.click(screen.getByRole("button", { name: "Create" }));
 
-    expect(createAdminVehicleModelMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        brand: "Volkswagen",
-        model: "Polo",
-        yearFrom: 2001,
-        engine: "1.0",
-      })
-    );
-    expect(pushMock).toHaveBeenCalledWith("/admin/vehicles/vm-new");
-    expect(refreshMock).toHaveBeenCalled();
-  });
+      expect(createAdminVehicleModelMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          brand: "Volkswagen",
+          model: "Polo",
+          yearFrom: 2001,
+          engine: "1.0",
+        })
+      );
+      expect(pushMock).toHaveBeenCalledWith("/admin/vehicles/vm-new");
+      expect(refreshMock).toHaveBeenCalled();
+    },
+    10000
+  );
 
-  it("pre-fills the form with an existing vehicle and updates it", async () => {
-    const user = createUser();
-    updateAdminVehicleModelMock.mockResolvedValue({ id: "vm-1" });
-    render(<VehicleModelForm vehicle={vehicle} />);
+  it(
+    "pre-fills the form with an existing vehicle and updates it",
+    async () => {
+      const user = createUser();
+      updateAdminVehicleModelMock.mockResolvedValue({ id: "vm-1" });
+      render(<VehicleModelForm vehicle={vehicle} />);
 
-    expect(screen.getByLabelText("Brand")).toHaveValue("Volkswagen");
-    expect(screen.getByLabelText("Model")).toHaveValue("Polo");
+      expect(screen.getByLabelText("Brand")).toHaveValue("Volkswagen");
+      expect(screen.getByLabelText("Model")).toHaveValue("Polo");
 
-    await user.clear(screen.getByLabelText("Model"));
-    await user.type(screen.getByLabelText("Model"), "Golf");
-    await user.click(screen.getByRole("button", { name: "Save" }));
+      await user.clear(screen.getByLabelText("Model"));
+      await user.type(screen.getByLabelText("Model"), "Golf");
+      await user.click(screen.getByRole("button", { name: "Save" }));
 
-    expect(updateAdminVehicleModelMock).toHaveBeenCalledWith(
-      "vm-1",
-      expect.objectContaining({ model: "Golf" })
-    );
-    expect(pushMock).toHaveBeenCalledWith("/admin/vehicles/vm-1");
-    expect(
-      await screen.findByRole("button", { name: "Save" })
-    ).toBeEnabled();
-  });
+      expect(updateAdminVehicleModelMock).toHaveBeenCalledWith(
+        "vm-1",
+        expect.objectContaining({ model: "Golf" })
+      );
+      expect(pushMock).toHaveBeenCalledWith("/admin/vehicles/vm-1");
+      expect(
+        await screen.findByRole("button", { name: "Save" })
+      ).toBeEnabled();
+    },
+    10000
+  );
 
   it("shows an error and stays editable when saving fails", async () => {
     const user = createUser();

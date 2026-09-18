@@ -141,6 +141,7 @@ export function IssueComments({
               key={comment.id}
               comment={comment}
               isOwner={currentUser?.id === comment.userId}
+              canReport={currentUser !== null}
               onUpdated={handleUpdated}
               onDeleted={handleDeleted}
             />

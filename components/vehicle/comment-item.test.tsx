@@ -17,6 +17,12 @@ jest.mock("@/lib/api/storage", () => ({
   uploadCommentImage: jest.fn(),
 }));
 
+jest.mock("@/components/vehicle/report-content-dialog", () => ({
+  ReportContentDialog: ({ contentId }: { contentId: string }) => (
+    <button type="button">Report {contentId}</button>
+  ),
+}));
+
 jest.mock("next-intl", () => ({
   useLocale: () => "en-GB",
   useTranslations: () => (key: string) => {
@@ -70,6 +76,7 @@ describe("CommentItem", () => {
         <CommentItem
           comment={comment}
           isOwner={false}
+          canReport={false}
           onUpdated={jest.fn()}
           onDeleted={jest.fn()}
         />
@@ -93,6 +100,7 @@ describe("CommentItem", () => {
           imageUrl: "https://cdn.example.com/comments/user-1/uuid.jpg",
         }}
         isOwner={false}
+        canReport={false}
         onUpdated={jest.fn()}
         onDeleted={jest.fn()}
       />
@@ -109,6 +117,7 @@ describe("CommentItem", () => {
       <CommentItem
         comment={comment}
         isOwner={false}
+        canReport={false}
         onUpdated={jest.fn()}
         onDeleted={jest.fn()}
       />
@@ -122,6 +131,54 @@ describe("CommentItem", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("shows the report action for non-owners when the viewer can report", () => {
+    render(
+      <CommentItem
+        comment={comment}
+        isOwner={false}
+        canReport={true}
+        onUpdated={jest.fn()}
+        onDeleted={jest.fn()}
+      />
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Report comment-1" })
+    ).toBeInTheDocument();
+  });
+
+  it("hides the report action for the comment owner", () => {
+    render(
+      <CommentItem
+        comment={comment}
+        isOwner
+        canReport={true}
+        onUpdated={jest.fn()}
+        onDeleted={jest.fn()}
+      />
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Report comment-1" })
+    ).not.toBeInTheDocument();
+  });
+
+  it("hides the report action when the viewer cannot report", () => {
+    render(
+      <CommentItem
+        comment={comment}
+        isOwner={false}
+        canReport={false}
+        onUpdated={jest.fn()}
+        onDeleted={jest.fn()}
+      />
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Report comment-1" })
+    ).not.toBeInTheDocument();
+  });
+
   it("switches to edit mode and calls updateComment on submit", async () => {
     const user = userEvent.setup({ delay: null });
     updateCommentMock.mockResolvedValue({ ...comment, body: "Updated body" });
@@ -131,6 +188,7 @@ describe("CommentItem", () => {
       <CommentItem
         comment={comment}
         isOwner
+        canReport={false}
         onUpdated={onUpdated}
         onDeleted={jest.fn()}
       />
@@ -165,6 +223,7 @@ describe("CommentItem", () => {
       <CommentItem
         comment={comment}
         isOwner
+        canReport={false}
         onUpdated={jest.fn()}
         onDeleted={jest.fn()}
       />
@@ -190,6 +249,7 @@ describe("CommentItem", () => {
       <CommentItem
         comment={comment}
         isOwner
+        canReport={false}
         onUpdated={jest.fn()}
         onDeleted={onDeleted}
       />
@@ -217,6 +277,7 @@ describe("CommentItem", () => {
       <CommentItem
         comment={comment}
         isOwner
+        canReport={false}
         onUpdated={jest.fn()}
         onDeleted={jest.fn()}
       />
@@ -240,6 +301,7 @@ describe("CommentItem", () => {
       <CommentItem
         comment={comment}
         isOwner
+        canReport={false}
         onUpdated={jest.fn()}
         onDeleted={onDeleted}
       />

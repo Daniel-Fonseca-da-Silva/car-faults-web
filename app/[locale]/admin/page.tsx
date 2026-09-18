@@ -69,6 +69,22 @@ export default async function AdminPage({ params }: AdminPageProps) {
             </Button>
           </CardContent>
         </Card>
+
+        <Card>
+          <CardHeader>
+            <h2 className="text-lg font-medium text-foreground">
+              {t("dashboard.reportsCardTitle")}
+            </h2>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              {t("dashboard.reportsCardDescription")}
+            </p>
+            <Button size="sm" render={<Link href="/admin/reports" />} nativeButton={false}>
+              {t("dashboard.goToReports")}
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </SiteShell>
   );

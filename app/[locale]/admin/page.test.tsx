@@ -58,6 +58,9 @@ describe("AdminPage", () => {
     expect(
       screen.getByRole("button", { name: "admin.dashboard.goToVehicles" })
     ).toHaveAttribute("href", "/admin/vehicles");
+    expect(
+      screen.getByRole("button", { name: "admin.dashboard.goToReports" })
+    ).toHaveAttribute("href", "/admin/reports");
   });
 
   it("redirects to login when the user is not an admin", async () => {

@@ -121,6 +121,24 @@
       "loginCta": "Entrar",
       "submitError": "Não foi possível publicar a avaliação. Tenta novamente.",
       "deleteError": "Não foi possível eliminar a avaliação. Tenta novamente."
+    },
+    "report": {
+      "action": "Denunciar",
+      "dialogTitle": "Denunciar conteúdo",
+      "reason": {
+        "spam": "Spam",
+        "offensive": "Ofensivo ou abusivo",
+        "inappropriate_photo": "Foto inadequada",
+        "harassment": "Assédio",
+        "other": "Outro"
+      },
+      "detailsPlaceholder": "Detalhes adicionais (opcional)",
+      "submit": "Enviar denúncia",
+      "cancel": "Cancelar",
+      "close": "Fechar",
+      "success": "Denúncia enviada. Obrigado por ajudares a manter a comunidade segura.",
+      "duplicateError": "Já denunciaste este conteúdo.",
+      "submitError": "Não foi possível enviar a denúncia. Tenta novamente."
     }
   }
 }

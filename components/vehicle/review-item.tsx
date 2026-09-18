@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ReportContentDialog } from "@/components/vehicle/report-content-dialog";
 import {
   ReviewForm,
   type ReviewFormSubmitData,
@@ -18,6 +19,7 @@ import type { Review } from "@/types/review";
 interface ReviewItemProps {
   review: Review;
   isOwner: boolean;
+  canReport: boolean;
   onUpdated: (review: Review) => void;
   onDeleted: (id: string) => void;
 }
@@ -25,6 +27,7 @@ interface ReviewItemProps {
 export function ReviewItem({
   review,
   isOwner,
+  canReport,
   onUpdated,
   onDeleted,
 }: ReviewItemProps) {
@@ -122,6 +125,12 @@ export function ReviewItem({
             >
               {t("vehicle.reviews.delete")}
             </Button>
+          </div>
+        )}
+
+        {!isOwner && canReport && !confirmingDelete && (
+          <div className="flex shrink-0 items-center gap-1">
+            <ReportContentDialog contentType="review" contentId={review.id} />
           </div>
         )}
       </div>

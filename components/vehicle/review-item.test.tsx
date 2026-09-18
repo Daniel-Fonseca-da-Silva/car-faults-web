@@ -13,6 +13,12 @@ jest.mock("@/lib/api/reviews", () => ({
   deleteReview: (...args: unknown[]) => deleteReviewMock(...args),
 }));
 
+jest.mock("@/components/vehicle/report-content-dialog", () => ({
+  ReportContentDialog: ({ contentId }: { contentId: string }) => (
+    <button type="button">Report {contentId}</button>
+  ),
+}));
+
 jest.mock("next-intl", () => ({
   useLocale: () => "en-GB",
   useTranslations: () => (key: string) => {
@@ -66,6 +72,7 @@ describe("ReviewItem", () => {
         <ReviewItem
           review={review}
           isOwner={false}
+          canReport={false}
           onUpdated={jest.fn()}
           onDeleted={jest.fn()}
         />
@@ -87,6 +94,7 @@ describe("ReviewItem", () => {
       <ReviewItem
         review={{ ...review, comment: null }}
         isOwner={false}
+        canReport={false}
         onUpdated={jest.fn()}
         onDeleted={jest.fn()}
       />
@@ -102,6 +110,7 @@ describe("ReviewItem", () => {
       <ReviewItem
         review={review}
         isOwner={false}
+        canReport={false}
         onUpdated={jest.fn()}
         onDeleted={jest.fn()}
       />
@@ -121,6 +130,7 @@ describe("ReviewItem", () => {
       <ReviewItem
         review={review}
         isOwner
+        canReport={false}
         onUpdated={jest.fn()}
         onDeleted={jest.fn()}
       />
@@ -129,6 +139,54 @@ describe("ReviewItem", () => {
     expect(screen.getByText("your review")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument();
+  });
+
+  it("shows the report action for non-owners when the viewer can report", () => {
+    render(
+      <ReviewItem
+        review={review}
+        isOwner={false}
+        canReport={true}
+        onUpdated={jest.fn()}
+        onDeleted={jest.fn()}
+      />
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Report review-1" })
+    ).toBeInTheDocument();
+  });
+
+  it("hides the report action for the review owner", () => {
+    render(
+      <ReviewItem
+        review={review}
+        isOwner
+        canReport={true}
+        onUpdated={jest.fn()}
+        onDeleted={jest.fn()}
+      />
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Report review-1" })
+    ).not.toBeInTheDocument();
+  });
+
+  it("hides the report action when the viewer cannot report", () => {
+    render(
+      <ReviewItem
+        review={review}
+        isOwner={false}
+        canReport={false}
+        onUpdated={jest.fn()}
+        onDeleted={jest.fn()}
+      />
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Report review-1" })
+    ).not.toBeInTheDocument();
   });
 
   it("switches to edit mode and calls updateReview on submit", async () => {
@@ -141,6 +199,7 @@ describe("ReviewItem", () => {
       <ReviewItem
         review={review}
         isOwner
+        canReport={false}
         onUpdated={onUpdated}
         onDeleted={jest.fn()}
       />
@@ -169,6 +228,7 @@ describe("ReviewItem", () => {
       <ReviewItem
         review={review}
         isOwner
+        canReport={false}
         onUpdated={jest.fn()}
         onDeleted={jest.fn()}
       />
@@ -192,6 +252,7 @@ describe("ReviewItem", () => {
       <ReviewItem
         review={review}
         isOwner
+        canReport={false}
         onUpdated={jest.fn()}
         onDeleted={onDeleted}
       />
@@ -217,6 +278,7 @@ describe("ReviewItem", () => {
       <ReviewItem
         review={review}
         isOwner
+        canReport={false}
         onUpdated={jest.fn()}
         onDeleted={jest.fn()}
       />
@@ -240,6 +302,7 @@ describe("ReviewItem", () => {
       <ReviewItem
         review={review}
         isOwner
+        canReport={false}
         onUpdated={jest.fn()}
         onDeleted={onDeleted}
       />

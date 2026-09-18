@@ -62,3 +62,27 @@ export interface AdminFix {
 export interface AdminKnownIssueDetail extends AdminKnownIssue {
   fixes: AdminFix[];
 }
+
+export type AdminReportContentType = "comment" | "review";
+
+export type AdminReportReason =
+  | "spam"
+  | "offensive"
+  | "inappropriate_photo"
+  | "harassment"
+  | "other";
+
+export type AdminReportStatus = "pending" | "reviewed" | "dismissed";
+
+export interface AdminReport {
+  id: string;
+  reporterUserId: string;
+  contentType: AdminReportContentType;
+  contentId: string;
+  contentPreview: string | null;
+  contentExists: boolean;
+  reason: AdminReportReason;
+  details: string | null;
+  status: AdminReportStatus;
+  createdAt: string;
+}
