@@ -121,6 +121,24 @@
       "loginCta": "Sign in",
       "submitError": "Couldn't submit the review. Please try again.",
       "deleteError": "Couldn't delete the review. Please try again."
+    },
+    "report": {
+      "action": "Report",
+      "dialogTitle": "Report content",
+      "reason": {
+        "spam": "Spam",
+        "offensive": "Offensive or abusive",
+        "inappropriate_photo": "Inappropriate photo",
+        "harassment": "Harassment",
+        "other": "Other"
+      },
+      "detailsPlaceholder": "Additional details (optional)",
+      "submit": "Submit report",
+      "cancel": "Cancel",
+      "close": "Close",
+      "success": "Report submitted. Thanks for helping keep the community safe.",
+      "duplicateError": "You've already reported this content.",
+      "submitError": "Couldn't submit the report. Please try again."
     }
   }
 }

@@ -16,7 +16,10 @@
     "description": "Gerir o catálogo de veículos, problemas conhecidos e soluções.",
     "vehiclesCardTitle": "Catálogo de veículos",
     "vehiclesCardDescription": "Criar, editar e remover modelos de veículos, problemas conhecidos e soluções.",
-    "goToVehicles": "Gerir veículos"
+    "goToVehicles": "Gerir veículos",
+    "reportsCardTitle": "Denúncias de conteúdo",
+    "reportsCardDescription": "Analisa comentários e avaliações denunciados por utilizadores.",
+    "goToReports": "Gerir denúncias"
   },
   "vehicles": {
     "title": "Veículos",
@@ -108,5 +111,43 @@
     "estimatedCostEur": "Custo estimado (EUR)",
     "addFix": "Adicionar solução",
     "editFix": "Editar solução"
+  },
+  "reports": {
+    "title": "Denúncias",
+    "description": "Analisa comentários e avaliações denunciados pela comunidade.",
+    "filterStatus": "Estado",
+    "filterApply": "Filtrar",
+    "statusAll": "Todos",
+    "status": {
+      "pending": "Pendente",
+      "reviewed": "Revista",
+      "dismissed": "Dispensada"
+    },
+    "contentType": {
+      "comment": "Comentário",
+      "review": "Avaliação"
+    },
+    "reason": {
+      "spam": "Spam",
+      "offensive": "Ofensivo ou abusivo",
+      "inappropriate_photo": "Foto inadequada",
+      "harassment": "Assédio",
+      "other": "Outro"
+    },
+    "contentDeleted": "Conteúdo já não está disponível",
+    "columnType": "Tipo",
+    "columnContent": "Conteúdo",
+    "columnReason": "Motivo",
+    "columnDetails": "Detalhes",
+    "columnStatus": "Estado",
+    "columnReported": "Denunciado",
+    "columnActions": "Ações",
+    "empty": "Nenhuma denúncia encontrada.",
+    "markReviewed": "Marcar como revista",
+    "dismiss": "Dispensar",
+    "removeContent": "Remover conteúdo",
+    "removeContentConfirmTitle": "Remover este conteúdo?",
+    "removeContentConfirmDescription": "Isto elimina o comentário ou avaliação denunciado e marca a denúncia como revista. Esta ação não pode ser desfeita aqui.",
+    "contentAlreadyRemoved": "Este conteúdo já foi removido."
   }
 }

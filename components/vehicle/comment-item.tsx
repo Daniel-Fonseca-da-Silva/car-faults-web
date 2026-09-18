@@ -9,6 +9,7 @@ import {
   CommentForm,
   type CommentFormSubmitData,
 } from "@/components/vehicle/comment-form";
+import { ReportContentDialog } from "@/components/vehicle/report-content-dialog";
 import { deleteComment, updateComment } from "@/lib/api/comments";
 import { formatRelativeTime, getInitials } from "@/lib/utils";
 import type { Comment } from "@/types/comment";
@@ -16,6 +17,7 @@ import type { Comment } from "@/types/comment";
 interface CommentItemProps {
   comment: Comment;
   isOwner: boolean;
+  canReport: boolean;
   onUpdated: (comment: Comment) => void;
   onDeleted: (id: string) => void;
 }
@@ -23,6 +25,7 @@ interface CommentItemProps {
 export function CommentItem({
   comment,
   isOwner,
+  canReport,
   onUpdated,
   onDeleted,
 }: CommentItemProps) {
@@ -110,6 +113,12 @@ export function CommentItem({
             >
               {t("vehicle.comments.delete")}
             </Button>
+          </div>
+        )}
+
+        {!isOwner && canReport && !confirmingDelete && (
+          <div className="flex shrink-0 items-center gap-1">
+            <ReportContentDialog contentType="comment" contentId={comment.id} />
           </div>
         )}
       </div>

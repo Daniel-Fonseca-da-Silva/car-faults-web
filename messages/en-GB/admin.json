@@ -16,7 +16,10 @@
     "description": "Manage the vehicle catalog, known issues and fixes.",
     "vehiclesCardTitle": "Vehicle catalog",
     "vehiclesCardDescription": "Create, edit and remove vehicle models, known issues and fixes.",
-    "goToVehicles": "Manage vehicles"
+    "goToVehicles": "Manage vehicles",
+    "reportsCardTitle": "Content reports",
+    "reportsCardDescription": "Review comments and reviews flagged by users.",
+    "goToReports": "Manage reports"
   },
   "vehicles": {
     "title": "Vehicles",
@@ -108,5 +111,43 @@
     "estimatedCostEur": "Estimated cost (EUR)",
     "addFix": "Add fix",
     "editFix": "Edit fix"
+  },
+  "reports": {
+    "title": "Reports",
+    "description": "Review comments and reviews flagged by the community.",
+    "filterStatus": "Status",
+    "filterApply": "Filter",
+    "statusAll": "All",
+    "status": {
+      "pending": "Pending",
+      "reviewed": "Reviewed",
+      "dismissed": "Dismissed"
+    },
+    "contentType": {
+      "comment": "Comment",
+      "review": "Review"
+    },
+    "reason": {
+      "spam": "Spam",
+      "offensive": "Offensive or abusive",
+      "inappropriate_photo": "Inappropriate photo",
+      "harassment": "Harassment",
+      "other": "Other"
+    },
+    "contentDeleted": "Content no longer available",
+    "columnType": "Type",
+    "columnContent": "Content",
+    "columnReason": "Reason",
+    "columnDetails": "Details",
+    "columnStatus": "Status",
+    "columnReported": "Reported",
+    "columnActions": "Actions",
+    "empty": "No reports found.",
+    "markReviewed": "Mark reviewed",
+    "dismiss": "Dismiss",
+    "removeContent": "Remove content",
+    "removeContentConfirmTitle": "Remove this content?",
+    "removeContentConfirmDescription": "This deletes the reported comment or review and marks the report as reviewed. This cannot be undone from here.",
+    "contentAlreadyRemoved": "This content was already removed."
   }
 }
