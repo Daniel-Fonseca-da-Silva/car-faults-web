@@ -21,7 +21,8 @@
     },
     "legal": {
       "privacy": "Privacy",
-      "terms": "Terms"
+      "terms": "Terms",
+      "accountDeletion": "Delete account"
     }
   },
   "notFound": {

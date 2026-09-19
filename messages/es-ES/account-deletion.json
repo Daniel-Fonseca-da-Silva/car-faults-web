@@ -1,0 +1,41 @@
+{
+  "hero": {
+    "title": "Eliminación de cuenta",
+    "lead": "Aquí explicamos cómo solicitar la eliminación de tu cuenta de Auto Crónica y los datos asociados, incluso si ya no tienes la aplicación instalada."
+  },
+  "policy": {
+    "title": "Cómo eliminar tu cuenta y tus datos",
+    "effectiveDate": "Fecha de vigencia: 18 de septiembre de 2026",
+    "lastUpdated": "Última actualización: 18 de septiembre de 2026",
+    "sections": {
+      "overview": {
+        "heading": "1. Sobre esta página",
+        "body": "Este proceso se aplica a las cuentas creadas en la aplicación Auto Crónica (Android), desarrollada por Daniel Fonseca da Silva. Si tienes una cuenta en Auto Crónica, puedes solicitar su eliminación y la de los datos personales asociados en cualquier momento, tengas o no la aplicación instalada."
+      },
+      "inApp": {
+        "heading": "2. Eliminar desde la aplicación (más rápido)",
+        "body": "1. Abre la aplicación Auto Crónica e inicia sesión.\n2. Toca la pestaña \"Perfil\" en la barra de navegación inferior.\n3. Desplázate hasta la sección \"Zona de riesgo\".\n4. Toca \"Eliminar cuenta\" y confirma en \"Sí, eliminar cuenta\".\n\nTu cuenta se elimina de inmediato tras la confirmación; no es necesario contactar con soporte."
+      },
+      "withoutApp": {
+        "heading": "3. Eliminar sin tener la aplicación instalada",
+        "body": "Si ya no tienes la aplicación instalada pero tenías una cuenta, envía un correo a dafondeveloper@gmail.com con el asunto \"Eliminación de cuenta\", desde la misma dirección de correo de la cuenta de Google que usaste para iniciar sesión en Auto Crónica. Confirmaremos la solicitud y procesaremos la eliminación manualmente."
+      },
+      "dataDeleted": {
+        "heading": "4. Datos eliminados de inmediato",
+        "body": "Al confirmar la eliminación, los siguientes datos personales identificables se eliminan o anonimizan de inmediato: nombre de perfil, dirección de correo electrónico, foto de perfil (avatar) y el vínculo con tu cuenta de Google. Ya no será posible volver a asociar el historial de la cuenta contigo a través de estos datos."
+      },
+      "dataRetained": {
+        "heading": "5. Datos que pueden conservarse, de forma anonimizada",
+        "body": "Para preservar la integridad del catálogo compartido de averías, parte del contenido que aportaste (comentarios, valoraciones y votos en averías conocidas) puede permanecer visible en el Servicio, pero desvinculado de tu identidad (mostrado como \"Usuario eliminado\"). Los registros técnicos y de seguridad pueden conservarse durante el tiempo necesario para la operación, seguridad y cumplimiento de obligaciones legales.\n\nPara más detalles sobre plazos de conservación y bases legales, consulta la sección \"Retención y Eliminación de Datos\" de nuestra Política de Privacidad."
+      },
+      "timeframe": {
+        "heading": "6. Plazo de procesamiento",
+        "body": "Las solicitudes realizadas desde la aplicación se procesan de inmediato. Las solicitudes por correo electrónico se confirman y suelen procesarse en pocos días hábiles, y nunca más allá del plazo de 30 días previsto por el RGPD."
+      },
+      "contact": {
+        "heading": "7. Contacto",
+        "body": "Para preguntas sobre este proceso o tus datos, contáctanos en dafondeveloper@gmail.com o consulta nuestra Política de Privacidad completa."
+      }
+    }
+  }
+}

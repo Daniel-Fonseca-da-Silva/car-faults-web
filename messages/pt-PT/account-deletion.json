@@ -1,0 +1,41 @@
+{
+  "hero": {
+    "title": "Eliminação de Conta",
+    "lead": "Explicamos aqui, de forma direta, como pedir a eliminação da sua conta Auto Crónica e dos dados associados - mesmo que já não tenha a aplicação instalada."
+  },
+  "policy": {
+    "title": "Como eliminar a sua conta e dados",
+    "effectiveDate": "Data de vigência: 18 de setembro de 2026",
+    "lastUpdated": "Última atualização: 18 de setembro de 2026",
+    "sections": {
+      "overview": {
+        "heading": "1. Sobre esta página",
+        "body": "Este processo aplica-se a contas criadas na aplicação Auto Crónica (Android), desenvolvida por Daniel Fonseca da Silva. Se tiver uma conta na Auto Crónica, pode pedir a eliminação da mesma e dos dados pessoais associados a qualquer momento, com ou sem a aplicação instalada no seu dispositivo."
+      },
+      "inApp": {
+        "heading": "2. Eliminar pela aplicação (mais rápido)",
+        "body": "1. Abra a aplicação Auto Crónica e inicie sessão.\n2. Toque no separador \"Perfil\" na barra de navegação inferior.\n3. Percorra até à secção \"Zona de risco\".\n4. Toque em \"Excluir conta\" e confirme em \"Sim, excluir conta\".\n\nA conta é eliminada de imediato após a confirmação; não é necessário contactar o suporte."
+      },
+      "withoutApp": {
+        "heading": "3. Eliminar sem ter a aplicação instalada",
+        "body": "Se já não tem a aplicação instalada mas tinha uma conta, envie um e-mail para dafondeveloper@gmail.com com o assunto \"Eliminação de conta\", a partir do endereço de e-mail da conta Google que usou para iniciar sessão na Auto Crónica. Vamos confirmar o pedido e processar a eliminação manualmente."
+      },
+      "dataDeleted": {
+        "heading": "4. Dados eliminados de imediato",
+        "body": "Ao confirmar a eliminação, os seguintes dados pessoais identificáveis são removidos ou anonimizados de imediato: nome de perfil, endereço de e-mail, foto de perfil (avatar) e a ligação à sua conta Google. Deixa de ser possível voltar a associar o histórico da conta a si através destes dados."
+      },
+      "dataRetained": {
+        "heading": "5. Dados que podem ser retidos, de forma anonimizada",
+        "body": "Para preservar a integridade do catálogo partilhado de avarias, alguns conteúdos que contribuiu, comentários, avaliações e votos em avarias conhecidas, podem permanecer visíveis no Serviço, mas desassociados da sua identidade (apresentados como \"Utilizador eliminado\"). Registos técnicos e de segurança podem ser mantidos pelo tempo necessário para efeitos de operação, segurança e cumprimento de obrigações legais.\n\nPara mais detalhes sobre prazos e bases legais, consulte a secção \"Retenção e Eliminação de Dados\" da nossa Política de Privacidade."
+      },
+      "timeframe": {
+        "heading": "6. Prazo de processamento",
+        "body": "Os pedidos feitos pela aplicação são processados de imediato. Os pedidos feitos por e-mail são confirmados e processados normalmente em poucos dias úteis, e nunca além do prazo legal de 30 dias previsto no RGPD."
+      },
+      "contact": {
+        "heading": "7. Contacto",
+        "body": "Para questões sobre este processo ou sobre os seus dados, contacte-nos em dafondeveloper@gmail.com ou consulte a Política de Privacidade completa."
+      }
+    }
+  }
+}

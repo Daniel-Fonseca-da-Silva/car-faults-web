@@ -46,5 +46,9 @@
   "privacy": {
     "title": "Privacy & Terms",
     "description": "Read the Auto Crónica Privacy Policy and Terms of Service."
+  },
+  "accountDeletion": {
+    "title": "Account Deletion",
+    "description": "Learn how to delete your Auto Crónica account and associated data, from the app or by email."
   }
 }

@@ -1,0 +1,41 @@
+{
+  "hero": {
+    "title": "Account Deletion",
+    "lead": "Here's how to request deletion of your Auto Crónica account and associated data — even if you no longer have the app installed."
+  },
+  "policy": {
+    "title": "How to delete your account and data",
+    "effectiveDate": "Effective date: 18 September 2026",
+    "lastUpdated": "Last updated: 18 September 2026",
+    "sections": {
+      "overview": {
+        "heading": "1. About this page",
+        "body": "This process applies to accounts created in the Auto Crónica app (Android), developed by Daniel Fonseca da Silva. If you have an Auto Crónica account, you can request its deletion and the deletion of the associated personal data at any time, whether or not you still have the app installed."
+      },
+      "inApp": {
+        "heading": "2. Delete from the app (fastest)",
+        "body": "1. Open the Auto Crónica app and sign in.\n2. Tap the \"Profile\" tab in the bottom navigation bar.\n3. Scroll to the \"Danger zone\" section.\n4. Tap \"Delete account\" and confirm with \"Yes, delete account\".\n\nYour account is deleted immediately after confirmation; there is no need to contact support."
+      },
+      "withoutApp": {
+        "heading": "3. Delete without the app installed",
+        "body": "If you no longer have the app installed but previously had an account, email dafondeveloper@gmail.com with the subject \"Account deletion\", from the same Google account email you used to sign in to Auto Crónica. We will confirm the request and process the deletion manually."
+      },
+      "dataDeleted": {
+        "heading": "4. Data deleted immediately",
+        "body": "Once you confirm deletion, the following personally identifiable data is removed or anonymised immediately: profile name, email address, profile photo (avatar), and the link to your Google account. Your account history can no longer be linked back to you through this data."
+      },
+      "dataRetained": {
+        "heading": "5. Data that may be retained, anonymised",
+        "body": "To preserve the integrity of the shared faults catalogue, some content you contributed — comments, reviews and votes on known issues — may remain visible on the Service, but disassociated from your identity (shown as \"Deleted user\"). Technical and security logs may be kept for as long as needed for operation, security and legal compliance purposes.\n\nFor more detail on retention periods and legal grounds, see the \"Data Retention and Deletion\" section of our Privacy Policy."
+      },
+      "timeframe": {
+        "heading": "6. Processing time",
+        "body": "Requests made through the app are processed immediately. Requests made by email are confirmed and typically processed within a few business days, and never beyond the 30-day period required under GDPR."
+      },
+      "contact": {
+        "heading": "7. Contact",
+        "body": "For questions about this process or your data, contact us at dafondeveloper@gmail.com or see our full Privacy Policy."
+      }
+    }
+  }
+}
