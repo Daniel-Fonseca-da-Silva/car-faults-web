@@ -63,7 +63,7 @@
       "hybrid": "Híbrido"
     },
     "summaryBanner": "{count} defeitos conhecidos identificados",
-    "knownIssuesTitle": "Defeitos conhecidos",
+    "knownIssuesTitle": "Defeitos conhecidos e problemas comuns",
     "noKnownIssues": "Ainda não há defeitos conhecidos reportados para este veículo.",
     "atKm": "aos {km} km",
     "solutionsCount": "{count} soluções",

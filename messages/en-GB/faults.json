@@ -63,7 +63,7 @@
       "hybrid": "Hybrid"
     },
     "summaryBanner": "{count} known issues found",
-    "knownIssuesTitle": "Known issues",
+    "knownIssuesTitle": "Known issues and common problems",
     "noKnownIssues": "No known issues have been reported for this vehicle yet.",
     "atKm": "at {km} km",
     "solutionsCount": "{count} solutions",

@@ -16,8 +16,8 @@
     "descriptionTemplate": "Explore {make} {model} variants by year, fuel type and engine, and see the most reported chronic faults."
   },
   "vehiclePage": {
-    "titleTemplate": "{make} {model} {year} faults",
-    "descriptionTemplate": "Discover the most reported chronic faults of the {make} {model} {year}: severity, typical cost and owner reports."
+    "titleTemplate": "{make} {model}{variant} {year} faults",
+    "descriptionTemplate": "Common problems and known faults reported for the {make} {model}{variant} {year}: severity, typical cost and real owner reports."
   },
   "about": {
     "title": "About",

@@ -67,9 +67,15 @@ export async function generateMetadata({
     locale: resolvedParams.locale,
     namespace: "seo.vehiclePage",
   });
+  const genericTitle = `${lookup.vehicle.brand} ${lookup.vehicle.model}`;
+  const variant =
+    lookup.vehicle.name && lookup.vehicle.name !== genericTitle
+      ? ` (${lookup.vehicle.name})`
+      : "";
   const templateValues = {
     make: lookup.vehicle.brand,
     model: lookup.vehicle.model,
+    variant,
     year: formatYearRange(lookup.vehicle.yearFrom, lookup.vehicle.yearTo),
   };
 
