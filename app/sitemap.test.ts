@@ -39,7 +39,13 @@ describe("sitemap", () => {
     });
 
     const entries = await sitemap();
-    const staticPaths = ["", "/defects", "/about", "/privacy"];
+    const staticPaths = [
+      "",
+      "/defects",
+      "/about",
+      "/privacy",
+      "/account-deletion",
+    ];
 
     for (const locale of locales) {
       for (const path of staticPaths) {
@@ -107,7 +113,7 @@ describe("sitemap", () => {
     });
 
     const entries = await sitemap();
-    const staticCount = locales.length * 4;
+    const staticCount = locales.length * 5;
     const brandCount = locales.length * 2;
     const modelCount = locales.length * 2;
     const vehicleCount = locales.length * vehicles.length;
