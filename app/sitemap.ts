@@ -16,6 +16,7 @@ const STATIC_PATHS: {
   { path: "/defects", priority: 0.9, changeFrequency: "daily" },
   { path: "/about", priority: 0.3, changeFrequency: "monthly" },
   { path: "/privacy", priority: 0.1, changeFrequency: "yearly" },
+  { path: "/account-deletion", priority: 0.1, changeFrequency: "yearly" },
 ];
 
 const BRAND_HUB_PRIORITY = 0.7;

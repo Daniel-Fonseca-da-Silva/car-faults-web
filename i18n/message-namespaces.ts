@@ -12,4 +12,5 @@ export const messageNamespaces = [
   "admin",
   "about",
   "privacy",
+  "account-deletion",
 ] as const;
