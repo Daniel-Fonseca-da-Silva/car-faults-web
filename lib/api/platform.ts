@@ -26,6 +26,7 @@ export interface PlatformStats {
 interface PlatformVehicleItemDto {
   brand: string;
   model: string;
+  name?: string;
   yearFrom: number;
   engine: string;
   fuelType: string;

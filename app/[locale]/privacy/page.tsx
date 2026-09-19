@@ -26,6 +26,7 @@ const POLICY_SECTION_IDS = [
   "communications",
   "updates",
   "contact",
+  "regionalDisclosures",
 ] as const;
 
 const TERMS_SECTION_IDS = [
@@ -44,6 +45,7 @@ const TERMS_SECTION_IDS = [
   "serviceModifications",
   "governingLaw",
   "additionalProvisions",
+  "regionalTerms",
 ] as const;
 
 export function generateStaticParams() {

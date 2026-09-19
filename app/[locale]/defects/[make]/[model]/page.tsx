@@ -128,6 +128,11 @@ export default async function ModelHubPage({ params }: ModelHubPageProps) {
                     >
                       {formatYearRange(variant.yearFrom, null)} ·{" "}
                       {variant.engine}
+                      {variant.name && (
+                        <span className="block text-sm font-normal text-muted-foreground">
+                          {variant.name}
+                        </span>
+                      )}
                     </Link>
                   </CardContent>
                 </Card>

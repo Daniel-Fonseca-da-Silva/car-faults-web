@@ -6,6 +6,7 @@ const CATALOG_PAGE_LIMIT = 200;
 export interface CatalogVehicle {
   brand: string;
   model: string;
+  name?: string;
   yearFrom: number;
   engine: string;
   fuelType: string;
