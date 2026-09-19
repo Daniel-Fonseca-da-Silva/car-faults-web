@@ -46,5 +46,9 @@
   "privacy": {
     "title": "Privacidade e Termos",
     "description": "Leia a Política de Privacidade e os Termos de Serviço da Auto Crónica."
+  },
+  "accountDeletion": {
+    "title": "Eliminação de Conta",
+    "description": "Saiba como eliminar a sua conta Auto Crónica e os dados associados, pela aplicação ou por e-mail."
   }
 }

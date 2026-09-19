@@ -28,9 +28,9 @@ describe("getSiteContactEmail", () => {
   });
 
   it("returns the configured contact email", () => {
-    process.env.NEXT_PUBLIC_SITE_CONTACT_EMAIL = "contact@autocronica.autos";
+    process.env.NEXT_PUBLIC_SITE_CONTACT_EMAIL = "dafondeveloper@gmail.com";
 
-    expect(getSiteContactEmail()).toBe("contact@autocronica.autos");
+    expect(getSiteContactEmail()).toBe("dafondeveloper@gmail.com");
   });
 
   it("throws when NEXT_PUBLIC_SITE_CONTACT_EMAIL is not set", () => {

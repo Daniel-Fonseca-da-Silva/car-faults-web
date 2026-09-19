@@ -34,6 +34,12 @@ export async function SiteFooter() {
           >
             {t("footer.legal.terms")}
           </Link>
+          <Link
+            href="/account-deletion"
+            className="underline-offset-4 hover:text-foreground hover:underline"
+          >
+            {t("footer.legal.accountDeletion")}
+          </Link>
           <CookieSettingsButton />
         </div>
 
