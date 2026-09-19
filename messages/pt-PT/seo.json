@@ -16,8 +16,8 @@
     "descriptionTemplate": "Explore as versões do {make} {model} por ano, combustível e motor, e conheça os defeitos crónicos mais reportados."
   },
   "vehiclePage": {
-    "titleTemplate": "Defeitos do {make} {model} {year}",
-    "descriptionTemplate": "Conheça os defeitos crónicos mais reportados do {make} {model} {year}: gravidade, custo típico e relatos de proprietários."
+    "titleTemplate": "Defeitos do {make} {model}{variant} {year}",
+    "descriptionTemplate": "Avarias e problemas comuns reportados no {make} {model}{variant} {year}: gravidade, custo típico e relatos de proprietários reais."
   },
   "about": {
     "title": "Sobre",
