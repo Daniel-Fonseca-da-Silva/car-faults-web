@@ -23,13 +23,17 @@
     "title": "Sobre",
     "description": "Engenheiro de software e aficionado por automóveis: porque criei a Auto Crónica e como o catálogo de defeitos crónicos ajuda a comprar com mais informação."
   },
+  "support": {
+    "title": "Apoio",
+    "description": "Apoia o Auto Crónica com uma doação por MBWay e ajuda a manter os servidores no ar e novas funcionalidades a chegar."
+  },
   "login": {
     "title": "Entrar",
-    "description": "Acesse a sua conta Auto Crónica para consultar defeitos."
+    "description": "Acede à tua conta Auto Crónica para consultar defeitos."
   },
   "profile": {
     "title": "A minha conta",
-    "description": "Consulte o seu perfil, estatísticas de utilização e veículos salvos na Auto Crónica."
+    "description": "Consulta o teu perfil, as tuas estatísticas de utilização e os veículos guardados na Auto Crónica."
   },
   "garage": {
     "title": "A minha garagem",
@@ -40,7 +44,7 @@
     "description": "Acompanha os veículos cujos problemas queres seguir na Auto Crónica."
   },
   "admin": {
-    "title": "Admin",
+    "title": "Administrador",
     "description": "Gerir o catálogo de veículos, problemas conhecidos e soluções."
   },
   "privacy": {

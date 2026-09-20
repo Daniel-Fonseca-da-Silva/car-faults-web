@@ -11,6 +11,7 @@ export const messageNamespaces = [
   "favorites",
   "admin",
   "about",
+  "support",
   "privacy",
   "account-deletion",
 ] as const;

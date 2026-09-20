@@ -1,11 +1,11 @@
 {
-  "title": "Encontre os defeitos do seu veículo",
+  "title": "Encontra os defeitos do teu veículo",
   "statusActive": "Banco ativo",
   "statusInactive": "Banco indisponível",
   "fields": {
     "make": "Marca",
     "makePlaceholder": "ex.: Volkswagen",
-    "makeNoResults": "Sem marcas correspondentes. Será usado o texto escrito.",
+    "makeNoResults": "Sem marcas correspondentes. Usamos o texto que escreveste.",
     "model": "Modelo",
     "modelPlaceholder": "ex.: Golf",
     "year": "Ano",
@@ -13,9 +13,9 @@
     "engine": "Motor",
     "enginePlaceholder": "ex.: 2.0 TDI",
     "fuel": "Combustível",
-    "fuelPlaceholder": "Selecione o combustível",
+    "fuelPlaceholder": "Seleciona o combustível",
     "doors": "Portas (opcional)",
-    "doorsPlaceholder": "Selecione o número de portas"
+    "doorsPlaceholder": "Seleciona o número de portas"
   },
   "fuelOptions": {
     "gasoline": "Gasolina",
@@ -24,14 +24,14 @@
     "gpl": "GPL",
     "hybrid": "Híbrido"
   },
-  "submit": "Buscar defeitos",
+  "submit": "Pesquisar defeitos",
   "verifying": "A verificar...",
   "errors": {
-    "required": "Preencha este campo.",
-    "yearRange": "Indique um ano entre {min} e {max}."
+    "required": "Preenche este campo.",
+    "yearRange": "Indica um ano entre {min} e {max}."
   },
-  "captchaError": "Falha na verificação. Complete o desafio novamente.",
-  "searchError": "Ocorreu um erro na pesquisa. Tente novamente.",
-  "searchUnavailable": "O serviço de pesquisa está temporariamente indisponível. Tente novamente dentro de momentos.",
-  "searchInvalidCriteria": "Verifique os dados do veículo e tente novamente."
+  "captchaError": "Falha na verificação. Tenta novamente.",
+  "searchError": "Ocorreu um erro na pesquisa. Tenta novamente.",
+  "searchUnavailable": "O serviço de pesquisa está temporariamente indisponível. Tenta novamente daqui a pouco.",
+  "searchInvalidCriteria": "Verifica os dados do veículo e tenta novamente."
 }

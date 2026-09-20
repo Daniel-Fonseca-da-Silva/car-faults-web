@@ -15,6 +15,7 @@ const STATIC_PATHS: {
   { path: "", priority: 1, changeFrequency: "daily" },
   { path: "/defects", priority: 0.9, changeFrequency: "daily" },
   { path: "/about", priority: 0.3, changeFrequency: "monthly" },
+  { path: "/support", priority: 0.3, changeFrequency: "monthly" },
   { path: "/privacy", priority: 0.1, changeFrequency: "yearly" },
   { path: "/account-deletion", priority: 0.1, changeFrequency: "yearly" },
 ];

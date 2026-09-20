@@ -1,7 +1,7 @@
 "use client";
 
-import { AlertTriangle, ArrowRight, Flame } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { AlertTriangle, ArrowRight, Flame, Languages } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -19,6 +19,7 @@ interface FaultCardProps {
   faultTitle: string;
   severity: FaultSeverity;
   reportCount: number;
+  contentLocale: string;
 }
 
 const SEVERITY_BADGE_VARIANT: Record<
@@ -41,8 +42,11 @@ export function FaultCard({
   faultTitle,
   severity,
   reportCount,
+  contentLocale,
 }: FaultCardProps) {
   const t = useTranslations("faults");
+  const locale = useLocale();
+  const isOtherLanguage = contentLocale !== locale;
   const SeverityIcon =
     severity === "high" || severity === "critical" ? Flame : AlertTriangle;
   const href = fuelType
@@ -60,6 +64,12 @@ export function FaultCard({
             <h3 className="mt-1 text-base font-semibold text-foreground">
               {faultTitle}
             </h3>
+            {isOtherLanguage ? (
+              <p className="mt-1 flex items-center gap-1 text-xs italic text-muted-foreground">
+                <Languages className="size-3" aria-hidden="true" />
+                {t("otherLanguageNotice")}
+              </p>
+            ) : null}
           </div>
           <Badge
             variant={SEVERITY_BADGE_VARIANT[severity]}

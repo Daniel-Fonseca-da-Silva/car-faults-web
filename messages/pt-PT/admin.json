@@ -8,11 +8,11 @@
     "delete": "Eliminar",
     "deleting": "A eliminar…",
     "edit": "Editar",
-    "error": "Ocorreu um erro. Tente novamente.",
+    "error": "Ocorreu um erro. Tenta novamente.",
     "notFound": "Não encontrado."
   },
   "dashboard": {
-    "title": "Admin",
+    "title": "Administrador",
     "description": "Gerir o catálogo de veículos, problemas conhecidos e soluções.",
     "vehiclesCardTitle": "Catálogo de veículos",
     "vehiclesCardDescription": "Criar, editar e remover modelos de veículos, problemas conhecidos e soluções.",
@@ -45,7 +45,7 @@
   "vehicleForm": {
     "brand": "Marca",
     "brandPlaceholder": "ex.: Volkswagen",
-    "brandNoResults": "Sem marcas correspondentes. Será usado o texto escrito.",
+    "brandNoResults": "Sem marcas correspondentes. Usamos o texto que escreveste.",
     "model": "Modelo",
     "name": "Nome a apresentar",
     "yearFrom": "Ano inicial",
@@ -64,7 +64,7 @@
     "uploading": "A carregar…",
     "uploadSucceeded": "Foto carregada com sucesso.",
     "removeImage": "Remover foto",
-    "invalidImageType": "Escolha uma imagem JPEG, PNG ou WEBP.",
+    "invalidImageType": "Escolhe uma imagem JPEG, PNG ou WEBP.",
     "imageTooLarge": "A imagem deve ter menos de 5 MB."
   },
   "vehicleDetail": {

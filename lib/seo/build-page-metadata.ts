@@ -6,6 +6,11 @@ import { buildHreflangLanguages } from "./build-hreflang";
 import { getSiteUrl } from "./get-site-url";
 import { getSiteName } from "./site-brand";
 
+/** Resolved against `metadataBase` (set in the root layout) by Next's Metadata API. */
+const OG_IMAGE_PATH = "/feature-graphic.png";
+const OG_IMAGE_WIDTH = 1024;
+const OG_IMAGE_HEIGHT = 500;
+
 export interface BuildPageMetadataParams {
   title: string;
   description: string;
@@ -43,11 +48,20 @@ export function buildPageMetadata({
       siteName: getSiteName(),
       locale,
       type: "website",
+      images: [
+        {
+          url: OG_IMAGE_PATH,
+          width: OG_IMAGE_WIDTH,
+          height: OG_IMAGE_HEIGHT,
+          alt: getSiteName(),
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [OG_IMAGE_PATH],
     },
     ...(noIndex ? { robots: { index: false, follow: false } } : {}),
   };

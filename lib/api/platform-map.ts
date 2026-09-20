@@ -5,6 +5,7 @@ export interface TopFaultDto {
   faultTitle: string;
   severity: TopFaultEntry["severity"];
   reportCount: number;
+  contentLocale: string;
   vehicle: {
     brand: string;
     model: string;
@@ -29,5 +30,6 @@ export function mapTopFault(dto: TopFaultDto): TopFaultEntry {
     faultTitle: dto.faultTitle,
     severity: dto.severity,
     reportCount: dto.reportCount,
+    contentLocale: dto.contentLocale,
   };
 }

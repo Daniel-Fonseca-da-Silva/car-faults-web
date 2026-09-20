@@ -16,4 +16,9 @@ export interface TopFaultEntry {
   faultTitle: string;
   severity: FaultSeverity;
   reportCount: number;
+  // API language tag (e.g. "pt-PT") this fault's content is actually
+  // written in. The API falls back to another locale when the requested
+  // one has no content yet for this fault, so this can differ from the
+  // page's locale - compare the two to show a notice.
+  contentLocale: string;
 }

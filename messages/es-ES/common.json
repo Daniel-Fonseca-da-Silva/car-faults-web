@@ -28,7 +28,8 @@
   "notFound": {
     "title": "Página no encontrada",
     "description": "La página que buscas no existe o ha sido movida.",
-    "backHome": "Volver al inicio"
+    "backHome": "Volver al inicio",
+    "imageAlt": "Ilustración de página no encontrada"
   },
   "error": {
     "title": "Algo salió mal",

@@ -1,0 +1,52 @@
+{
+  "badge": "🚀 Independent project",
+  "title": "Support Auto Crónica",
+  "photoAlt": "My Volkswagen Polo 6N1",
+  "authorName": "Daniel Fonseca da Silva",
+  "authorRole": "Creator and sole developer of Auto Crónica",
+  "intro": "Hey, it's me again. Auto Crónica is built and maintained by me alone, in my spare time and with no funding behind it. If the project has already helped you buy a car with more confidence, a small donation via MBWay makes a real difference. 🙏",
+  "benefitsTitle": "What your donation goes towards",
+  "benefits": {
+    "servers": {
+      "emoji": "🖥️",
+      "title": "Keeps the servers running",
+      "body": "Your donation helps pay for hosting, the database and the AI that analyses faults, so the site stays available whenever you need it."
+    },
+    "features": {
+      "emoji": "🚀",
+      "title": "Incentive for new features",
+      "body": "Every bit of support is extra motivation to keep building: more makes, more models and better search tools."
+    },
+    "coffee": {
+      "emoji": "☕",
+      "title": "A coffee for the developer",
+      "body": "This project runs on spare time. A coffee (or two) helps keep the energy up to keep building it with care."
+    }
+  },
+  "donationTitle": "☕ Buy me a coffee",
+  "donationBody": "Send your donation via MBWay to the number below, through your banking app.",
+  "numberLabel": "MBWay number",
+  "copyNumber": "Copy number",
+  "copied": "Copied!",
+  "internationalTitle": "🌍 Outside Portugal? Pay with Wise",
+  "internationalBody": "MBWay only works with Portuguese bank accounts. If you're abroad, scan the code with the Wise app or use the button below, no need to know an IBAN or SWIFT code.",
+  "wiseQrAlt": "QR code to pay via Wise",
+  "wiseButtonLabel": "Pay via Wise",
+  "wiseLinkLabel": "Wise payment link",
+  "copyLink": "Copy link",
+  "pixTitle": "🇧🇷 In Brazil? Pay via Pix",
+  "pixBody": "Scan the code with your banking app or copy the Pix code. The amount is left open, so you choose how much to donate.",
+  "pixQrAlt": "QR code to pay via Pix",
+  "copyPixCode": "Copy Pix code",
+  "pixKeyLabel": "Or use the Pix key",
+  "copyPixKey": "Copy key",
+  "amountsTitle": "Suggested amounts",
+  "amounts": {
+    "coffee": { "emoji": "☕", "label": "A coffee" },
+    "snack": { "emoji": "🥐", "label": "Coffee and a pastry" },
+    "boost": { "emoji": "🚀", "label": "Boost a new feature" }
+  },
+  "thanksTitle": "Thank you! 🙌",
+  "thanksBody": "Any amount is welcome and makes a real difference. Thank you for being part of this community of car enthusiasts.",
+  "signature": "Daniel Fonseca da Silva"
+}

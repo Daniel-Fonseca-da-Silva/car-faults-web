@@ -1,10 +1,10 @@
 {
   "hero": {
     "eyebrow": "Base de dados de fiabilidade automóvel",
-    "titleBeforeHighlight": "Conheça os",
+    "titleBeforeHighlight": "Conhece os",
     "titleHighlight": "defeitos",
     "titleAfterHighlight": "antes de comprar",
-    "subtitle": "Pesquise avarias crónicas por marca, modelo, ano e motor, reportadas por milhares de proprietários reais."
+    "subtitle": "Pesquisa avarias crónicas por marca, modelo, ano e motor, reportadas por milhares de proprietários reais."
   },
   "stats": {
     "reports": { "label": "Relatos de proprietários" },

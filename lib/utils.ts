@@ -67,6 +67,14 @@ export function formatCompactCount(value: number, locale: string): string {
   return `${formatter.format(value).toLocaleUpperCase(locale)}+`
 }
 
+export function formatEuroAmount(value: number, locale: string): string {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: value % 1 === 0 ? 0 : 2,
+  }).format(value)
+}
+
 export function getInitials(name: string): string {
   return name
     .split(" ")

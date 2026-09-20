@@ -23,6 +23,7 @@ export function FaultCardGrid({ entries }: FaultCardGridProps) {
           faultTitle={entry.faultTitle}
           severity={entry.severity}
           reportCount={entry.reportCount}
+          contentLocale={entry.contentLocale}
         />
       ))}
     </div>

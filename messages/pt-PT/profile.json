@@ -14,7 +14,7 @@
     "copied": "ID copiado"
   },
   "stats": {
-    "searches": "Buscas realizadas",
+    "searches": "Pesquisas realizadas",
     "defectsConsulted": "Defeitos consultados",
     "savedVehicles": "Os meus veículos",
     "favoritedVehicles": "Favoritos",
@@ -23,18 +23,18 @@
   "vehicles": {
     "title": "Os meus veículos",
     "count": "{count} veículos",
-    "empty": "Ainda não guardou nenhum veículo.",
+    "empty": "Ainda não guardaste nenhum veículo.",
     "knownIssuesCount": "{count} defeitos",
     "viewDetails": "Ver detalhes de {brand} {model}"
   },
   "dangerZone": {
     "title": "Zona de risco",
-    "deleteAccount": "Excluir conta",
-    "deleteAccountDescription": "Desativa a sua conta (eliminação lógica). Voltar a iniciar sessão com a mesma conta Google pode restaurar o acesso.",
-    "confirmTitle": "Tem a certeza?",
-    "confirmDescription": "A sua conta será desativada de imediato. Voltar a iniciar sessão com a mesma conta Google pode restaurar o acesso.",
+    "deleteAccount": "Eliminar conta",
+    "deleteAccountDescription": "Desativa a tua conta (eliminação lógica). Voltar a iniciar sessão com a mesma conta Google pode restaurar o acesso.",
+    "confirmTitle": "Tens a certeza?",
+    "confirmDescription": "A tua conta será desativada de imediato. Voltar a iniciar sessão com a mesma conta Google pode restaurar o acesso.",
     "confirmCancel": "Cancelar",
-    "confirmDelete": "Sim, excluir conta",
-    "deleteError": "Não foi possível excluir a conta. Tente novamente."
+    "confirmDelete": "Sim, eliminar conta",
+    "deleteError": "Não foi possível eliminar a conta. Tenta novamente."
   }
 }

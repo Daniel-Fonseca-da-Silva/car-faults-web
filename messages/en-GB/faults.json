@@ -7,6 +7,7 @@
   },
   "reportsCount": "{count} reports",
   "viewReports": "View reports",
+  "otherLanguageNotice": "Content shown in another language",
   "disclaimer": "The information shown comes from owner reports and does not replace a mechanical inspection.",
   "hub": {
     "title": "Faults by vehicle",

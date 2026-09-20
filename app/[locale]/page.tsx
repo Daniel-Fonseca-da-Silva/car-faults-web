@@ -11,6 +11,11 @@ import { routing } from "@/i18n/routing";
 import { getAdsenseHomeSlot } from "@/lib/api/config";
 import { getDatabaseStatus } from "@/lib/api/platform";
 import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
+import {
+  buildOrganizationJsonLd,
+  buildWebsiteJsonLd,
+  serializeJsonLd,
+} from "@/lib/seo/json-ld";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -40,9 +45,21 @@ export default async function HomePage({ params }: HomePageProps) {
   setRequestLocale(locale);
   const isDatabaseUp = await getDatabaseStatus();
   const adsenseHomeSlot = getAdsenseHomeSlot();
+  const websiteJsonLd = buildWebsiteJsonLd(locale);
+  const organizationJsonLd = buildOrganizationJsonLd();
 
   return (
     <SiteShell>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(organizationJsonLd),
+        }}
+      />
       <HeroSection />
       <div className="mx-auto max-w-3xl pb-8">
         <VehicleSearchForm isDatabaseUp={isDatabaseUp} />
