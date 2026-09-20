@@ -18,7 +18,7 @@ export function generatePixBrCode({
     transactionAmount: 0,
   });
 
-  if ("error" in pix && pix.error) {
+  if ("error" in pix) {
     throw new Error(`Failed to generate Pix BR Code: ${pix.message}`);
   }
 
