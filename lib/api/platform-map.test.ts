@@ -8,6 +8,7 @@ describe("mapTopFault", () => {
         faultTitle: "Timing chain",
         severity: "high",
         reportCount: 10,
+        contentLocale: "en-GB",
         vehicle: {
           brand: "Volkswagen",
           model: "Golf",
@@ -22,6 +23,7 @@ describe("mapTopFault", () => {
       faultTitle: "Timing chain",
       severity: "high",
       reportCount: 10,
+      contentLocale: "en-GB",
       vehicle: {
         make: "Volkswagen",
         model: "Golf",

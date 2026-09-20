@@ -43,6 +43,7 @@ describe("sitemap", () => {
       "",
       "/defects",
       "/about",
+      "/support",
       "/privacy",
       "/account-deletion",
     ];
@@ -113,7 +114,7 @@ describe("sitemap", () => {
     });
 
     const entries = await sitemap();
-    const staticCount = locales.length * 5;
+    const staticCount = locales.length * 6;
     const brandCount = locales.length * 2;
     const modelCount = locales.length * 2;
     const vehicleCount = locales.length * vehicles.length;

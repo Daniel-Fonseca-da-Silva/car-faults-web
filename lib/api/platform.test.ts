@@ -66,6 +66,7 @@ describe("getPlatformFaults", () => {
             faultTitle: "Timing chain tensioner wear",
             severity: "high",
             reportCount: 412,
+            contentLocale: "en-GB",
             vehicle: {
               brand: "Volkswagen",
               model: "Golf",
@@ -100,6 +101,7 @@ describe("getPlatformFaults", () => {
           faultTitle: "Timing chain tensioner wear",
           severity: "high",
           reportCount: 412,
+          contentLocale: "en-GB",
         },
       ],
       nextCursor: null,
@@ -115,6 +117,7 @@ describe("getPlatformFaults", () => {
             faultTitle: "Timing chain tensioner wear",
             severity: "high",
             reportCount: 412,
+            contentLocale: "en-GB",
             vehicle: {
               brand: "Volkswagen",
               model: "Golf",

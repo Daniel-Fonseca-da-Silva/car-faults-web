@@ -84,6 +84,7 @@ const topFaults: TopFaultEntry[] = [
     faultTitle: "Timing chain tensioner wear",
     severity: "high",
     reportCount: 412,
+    contentLocale: "en-GB",
   },
 ];
 

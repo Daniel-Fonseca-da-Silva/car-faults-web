@@ -27,6 +27,7 @@ describe("fetchPlatformFaultsPage", () => {
             faultTitle: "Timing chain",
             severity: "high",
             reportCount: 10,
+            contentLocale: "pt-PT",
             vehicle: {
               brand: "Volkswagen",
               model: "Golf",
@@ -49,6 +50,7 @@ describe("fetchPlatformFaultsPage", () => {
           faultTitle: "Timing chain",
           severity: "high",
           reportCount: 10,
+          contentLocale: "pt-PT",
           vehicle: {
             make: "Volkswagen",
             model: "Golf",

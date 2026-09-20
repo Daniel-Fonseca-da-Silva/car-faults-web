@@ -11,12 +11,14 @@ jest.mock("next-intl", () => ({
       "severity.high": "High",
       "severity.critical": "Critical",
       viewReports: "View reports",
+      otherLanguageNotice: "Content shown in another language",
     };
     if (key === "reportsCount") {
       return `${values?.count} reports`;
     }
     return dict[key] ?? key;
   },
+  useLocale: () => "en-GB",
 }));
 
 jest.mock("@/i18n/navigation", () => ({
@@ -42,6 +44,7 @@ const baseProps = {
   faultTitle: "Timing chain tensioner wear",
   severity: "high" as const,
   reportCount: 412,
+  contentLocale: "en-GB",
 };
 
 describe("FaultCard", () => {
@@ -86,9 +89,26 @@ describe("FaultCard", () => {
         faultTitle="EDC dual-clutch jerking"
         severity="medium"
         reportCount={231}
+        contentLocale="en-GB"
       />
     );
 
     expect(screen.getByText("Medium")).toBeInTheDocument();
+  });
+
+  it("shows a notice when the fault content is in another language than the page", () => {
+    render(<FaultCard {...baseProps} contentLocale="pt-PT" />);
+
+    expect(
+      screen.getByText("Content shown in another language")
+    ).toBeInTheDocument();
+  });
+
+  it("does not show the other-language notice when content matches the page locale", () => {
+    render(<FaultCard {...baseProps} />);
+
+    expect(
+      screen.queryByText("Content shown in another language")
+    ).not.toBeInTheDocument();
   });
 });
