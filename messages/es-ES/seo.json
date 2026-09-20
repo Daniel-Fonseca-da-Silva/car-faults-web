@@ -23,6 +23,10 @@
     "title": "Acerca de",
     "description": "Ingeniero de software y aficionado a los coches: por qué creé Auto Crónica y cómo el catálogo de defectos crónicos ayuda a comprar con más información."
   },
+  "support": {
+    "title": "Apoyo",
+    "description": "Apoya Auto Crónica con una donación por MBWay y ayuda a mantener los servidores en marcha y nuevas funciones en camino."
+  },
   "login": {
     "title": "Iniciar sesión",
     "description": "Accede a tu cuenta de Auto Crónica para consultar defectos."

@@ -26,6 +26,7 @@ const entry: TopFaultEntry = {
   faultTitle: "Timing chain",
   severity: "high",
   reportCount: 412,
+  contentLocale: "pt-PT",
 };
 
 describe("FaultsInfiniteList", () => {

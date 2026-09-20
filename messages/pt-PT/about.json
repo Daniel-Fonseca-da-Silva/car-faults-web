@@ -1,14 +1,14 @@
 {
   "title": "Sobre a Auto Crónica",
-  "lead": "Chamo-me Daniel Fonseca da Silva. Sou engenheiro de software em Portugal quase nove anos a construir sistemas fiáveis, da cloud aos produtos que as pessoas usam todos os dias e sou também um aficionado por automóveis. A Auto Crónica nasceu do encontro destas duas coisas.",
-  "photoAlt": "Retrato de Daniel Fonseca da Silva",
+  "lead": "Chamo-me Daniel Fonseca da Silva e sou engenheiro de software em Portugal, com quase dez anos a construir sistemas fiáveis, da cloud aos produtos que as pessoas usam todos os dias, e sou também apaixonado por carros de todo o tipo. Foi do encontro destas duas coisas que nasceu a Auto Crónica.",
+  "photoAlt": "O meu Volkswagen 1300 de 1973, o carocha que tenho na garagem",
   "problemTitle": "O problema",
-  "problemBody": "Em qualquer país da Europa, comprar um carro novo ou usado significa muitas vezes avançar às cegas. Todo o veículo tem falhas que, mais cedo ou mais tarde, acabam por aparecer: uma peça que falha sempre no mesmo sítio, um motor com um vício conhecido, uma caixa que dá problemas a partir de determinada quilometragem. Essa informação existe, mas está espalhada por fóruns, grupos e conversas soltas e é difícil saber em que confiar.",
+  "problemBody": "Epah, quem já comprou um carro sabe do que falo: novo ou em segunda mão, é quase sempre um salto no escuro. Todo o carro tem as suas manias, uma peça que parte sempre no mesmo sítio, um motor com um vício conhecido, uma embraiagem que começa a dar problemas a partir de uma certa quilometragem. Essa informação até existe, mas anda espalhada por fóruns, grupos e conversas de café e nunca se sabe bem em que confiar.",
   "solutionTitle": "A solução",
-  "solutionBody": "A Auto Crónica é um catálogo de defeitos crónicos organizado por marca e modelo, pensado para crescer com o tempo. Quando ainda não há dados suficientes sobre um veículo, a inteligência artificial ajuda a sugerir os problemas mais prováveis; e a comunidade de proprietários comenta, corrige e vota nos relatos, para que a informação fique cada vez mais fiável.",
-  "communityTitle": "Para quem gosta de carros",
-  "communityBody": "Este projecto é para quem gosta de urbanos práticos, eléctricos silenciosos, clássicos com história ou desportivos com carácter e quer decidir com mais informação e menos surpresas.",
+  "solutionBody": "A Auto Crónica é um catálogo de defeitos crónicos organizado por marca, modelo e ano, feito para crescer com o tempo. Quando ainda não há dados suficientes sobre um carro, a inteligência artificial ajuda a apontar os problemas mais prováveis e a comunidade de proprietários comenta, corrige e vota nos relatos para que a informação fique cada vez mais fiável. A ideia é simples: antes de fechares negócio num carro usado ou antes de uma peça te pregar uma partida, sabes sempre ao que vais, porque o teu próximo carro merece menos surpresas.",
+  "communityTitle": "Para quem gosta mesmo de carros",
+  "communityBody": "Este projeto é para quem gosta de citadinos práticos, elétricos silenciosos, clássicos giros com história (o meu carocha de 73 ali em cima é prova disso) ou desportivos com carácter e prefere decidir com informação em vez de levar com surpresas.",
   "linkedinLabel": "Ver perfil no LinkedIn",
   "ctaLabel": "Pesquisar defeitos",
-  "ctaHint": "Comece por procurar a marca e o modelo que tem em mente."
+  "ctaHint": "Começa por pesquisar a marca, o ano e o modelo que tens em mente."
 }

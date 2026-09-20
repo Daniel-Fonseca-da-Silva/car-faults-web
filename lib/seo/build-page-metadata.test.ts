@@ -43,6 +43,7 @@ describe("buildPageMetadata", () => {
       card: "summary_large_image",
       title: "Defects hub",
       description: "Browse known defects.",
+      images: ["/feature-graphic.png"],
     });
     expect(metadata.robots).toBeUndefined();
   });

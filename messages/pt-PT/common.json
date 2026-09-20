@@ -28,11 +28,12 @@
   "notFound": {
     "title": "Página não encontrada",
     "description": "A página que procura não existe ou foi movida.",
-    "backHome": "Voltar à página inicial"
+    "backHome": "Voltar à página inicial",
+    "imageAlt": "Ilustração de página não encontrada"
   },
   "error": {
     "title": "Algo correu mal",
-    "description": "Ocorreu um erro inesperado. Por favor, tente novamente.",
+    "description": "Ocorreu um erro inesperado. Tenta novamente.",
     "tryAgain": "Tentar novamente",
     "backHome": "Voltar à página inicial"
   },

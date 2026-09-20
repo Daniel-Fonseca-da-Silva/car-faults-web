@@ -1,8 +1,8 @@
 # Car Faults Web
 
-Frontend for **Auto Crónica** - a SaaS focused on **chronic reliability by vehicle model**: what typically fails on a given make / model / year / engine, how severe it is, typical cost and how it gets fixed.
+Frontend for **Auto Crónica** - a SaaS focused on **chronic reliability by vehicle model**: what typically fails on a given make / model / year / engine, how severe it is, typical cost and how it gets fixed. Covers any vehicle type, not just cars.
 
-Initial market: **Portugal** (later ES/FR). Product languages: `pt-PT` (default), `en-GB` and `es-ES`.
+Target markets: **Europe** (all countries), with growing reach in the **US**, **Brazil**, **Mexico**, **India** and **Indonesia**. Product languages currently shipped: `pt-PT` (default), `en-GB` and `es-ES` - more locales are added as new markets are prioritized.
 
 ## What we are
 
@@ -14,7 +14,7 @@ We do **not** call the AI service directly, provide VIN history, odometer fraud 
 
 ## Problem we solve
 
-Known-issue information is fragmented across forums, YouTube, ADAC/TÜV reports, and Facebook groups. Buyers and used-car owners often discover chronic faults too late. This app gives them one place to look up a model before they buy.
+Known-issue information is fragmented across forums, YouTube, ADAC/TÜV reports, and Facebook groups. Buyers and owners of any type of vehicle - anywhere in the world - often discover chronic faults too late. This app gives them one place to look up a model before they buy.
 
 ## Stack
 

@@ -23,6 +23,10 @@
     "title": "About",
     "description": "Software engineer and car enthusiast: why I built Auto Crónica and how the chronic faults catalogue helps you buy with more information."
   },
+  "support": {
+    "title": "Support",
+    "description": "Support Auto Crónica with a donation via MBWay and help keep the servers running and new features coming."
+  },
   "login": {
     "title": "Sign in",
     "description": "Sign in to your Auto Crónica account to browse faults."

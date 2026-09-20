@@ -11,7 +11,7 @@ import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
 
 const LINKEDIN_PROFILE_URL =
   "https://www.linkedin.com/in/daniel-fonseca-da-silva/";
-const FOUNDER_PHOTO_SRC = "/about/daniel-fonseca-da-silva.jpg";
+const FOUNDER_PHOTO_SRC = "/about/vw-1300-1973.webp";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

@@ -1,1 +1,1 @@
-export const NAV_ITEMS = ["defects", "about"] as const;
+export const NAV_ITEMS = ["defects", "about", "support"] as const;

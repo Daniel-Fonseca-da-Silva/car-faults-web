@@ -53,6 +53,22 @@ export const metadata: Metadata = {
   },
   description:
     "Chronic reliability by vehicle model - known issues by make, model, year and engine.",
+  openGraph: {
+    siteName: getSiteName(),
+    type: "website",
+    images: [
+      {
+        url: "/feature-graphic.png",
+        width: 1024,
+        height: 500,
+        alt: getSiteName(),
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/feature-graphic.png"],
+  },
 };
 
 export default async function RootLayout({

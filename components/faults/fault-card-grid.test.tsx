@@ -23,6 +23,7 @@ const entries: TopFaultEntry[] = [
     faultTitle: "Timing chain tensioner wear",
     severity: "high",
     reportCount: 412,
+    contentLocale: "pt-PT",
   },
   {
     id: "b",
@@ -36,6 +37,7 @@ const entries: TopFaultEntry[] = [
     faultTitle: "Timing chain and guide wear",
     severity: "critical",
     reportCount: 387,
+    contentLocale: "pt-PT",
   },
 ];
 
@@ -71,6 +73,7 @@ describe("FaultCardGrid", () => {
             faultTitle: "Rust on wheel arches",
             severity: "low",
             reportCount: 12,
+            contentLocale: "pt-PT",
           },
         ]}
       />
