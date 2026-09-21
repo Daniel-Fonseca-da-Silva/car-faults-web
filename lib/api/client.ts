@@ -1,11 +1,11 @@
-import { getApiBaseUrl } from "@/lib/api/config";
-
 /**
- * For Client Components. Relies on the API's own httpOnly cookie
- * (set cross-site on its callback redirect), sent via `credentials: "include"`.
+ * For Client Components. Browser fetches to the API's origin can't carry
+ * the session cookie (it's SameSite and set on the web app's own domain),
+ * so this goes through our own /api/bff route, which attaches the Bearer
+ * token server-side via `serverApiFetch`.
  */
 export function apiFetch(path: string, init?: RequestInit): Promise<Response> {
-  return fetch(`${getApiBaseUrl()}${path}`, {
+  return fetch(`/api/bff?path=${encodeURIComponent(path)}`, {
     ...init,
     credentials: "include",
   });
