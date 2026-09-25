@@ -127,6 +127,42 @@ describe("AdminVehiclesPage", () => {
     );
   });
 
+  it("forwards a valid image filter and preselects it", async () => {
+    requireAdminUserMock.mockResolvedValue({ id: "u1", role: "admin" });
+    getAdminVehicleModelsMock.mockResolvedValue({
+      items: [vehicle],
+      nextCursor: null,
+    });
+
+    const jsx = await AdminVehiclesPage({
+      params: Promise.resolve({ locale: "pt-PT" }),
+      searchParams: Promise.resolve({ hasImage: "false" }),
+    });
+    render(jsx);
+
+    expect(getAdminVehicleModelsMock).toHaveBeenCalledWith(
+      expect.objectContaining({ hasImage: "false" })
+    );
+    expect(screen.getByRole("combobox")).toHaveValue("false");
+  });
+
+  it("ignores an invalid image filter", async () => {
+    requireAdminUserMock.mockResolvedValue({ id: "u1", role: "admin" });
+    getAdminVehicleModelsMock.mockResolvedValue({
+      items: [],
+      nextCursor: null,
+    });
+
+    await AdminVehiclesPage({
+      params: Promise.resolve({ locale: "pt-PT" }),
+      searchParams: Promise.resolve({ hasImage: "maybe" }),
+    });
+
+    expect(getAdminVehicleModelsMock).toHaveBeenCalledWith(
+      expect.objectContaining({ hasImage: undefined })
+    );
+  });
+
   it("shows the empty table state when there are no vehicles", async () => {
     requireAdminUserMock.mockResolvedValue({ id: "u1", role: "admin" });
     getAdminVehicleModelsMock.mockResolvedValue({
