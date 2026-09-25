@@ -34,6 +34,11 @@
     "columnYears": "Years",
     "columnEngine": "Engine",
     "columnFuelType": "Fuel",
+    "columnImageUrl": "Image URL",
+    "filterImage": "Image",
+    "imageAll": "All",
+    "imageWith": "With image",
+    "imageWithout": "Without image",
     "previous": "Previous",
     "next": "Next",
     "pageInfo": "Page {page} of {totalPages}"
