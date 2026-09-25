@@ -38,6 +38,18 @@ describe("getAdminVehicleModels", () => {
     );
   });
 
+  it("forwards the image filter", async () => {
+    serverApiFetchMock.mockResolvedValue(
+      jsonResponse({ items: [], nextCursor: null })
+    );
+
+    await getAdminVehicleModels({ hasImage: "false" });
+
+    expect(serverApiFetchMock).toHaveBeenCalledWith(
+      "/v1/admin/vehicle-models?hasImage=false"
+    );
+  });
+
   it("omits query params when no filters are given", async () => {
     serverApiFetchMock.mockResolvedValue(
       jsonResponse({ items: [], nextCursor: null })

@@ -65,4 +65,22 @@ describe("AdminVehiclesTable", () => {
     expect(screen.getByText("1994–1999")).toBeInTheDocument();
     expect(screen.getByText("1994")).toBeInTheDocument();
   });
+
+  it("renders the image URL as an external link, or a dash when missing", () => {
+    const imageUrl = "https://cdn.example.com/vehicles/polo.jpg";
+    render(
+      <AdminVehiclesTable
+        initialItems={[vehicle, { ...vehicle, id: "veh-2", imageUrl }]}
+        initialCursor={null}
+      />
+    );
+
+    expect(
+      screen.getByRole("columnheader", { name: "admin.vehicles.columnImageUrl" })
+    ).toBeInTheDocument();
+    const imageLink = screen.getByRole("link", { name: imageUrl });
+    expect(imageLink).toHaveAttribute("href", imageUrl);
+    expect(imageLink).toHaveAttribute("target", "_blank");
+    expect(screen.getByText("-")).toBeInTheDocument();
+  });
 });

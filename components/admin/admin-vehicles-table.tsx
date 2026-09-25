@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/table";
 import { Link } from "@/i18n/navigation";
 import { fetchAdminVehiclesPage } from "@/lib/admin/fetch-admin-vehicles-page";
+import type { AdminVehicleImageFilter } from "@/lib/api/admin-vehicles-query";
 import { ADMIN_VEHICLES_PAGE_SIZE } from "@/lib/lists/page-sizes";
 import { useCursorList } from "@/lib/lists/use-cursor-list";
 import type { AdminVehicleModel } from "@/types/admin";
@@ -23,6 +24,7 @@ interface AdminVehiclesTableProps {
   initialCursor: string | null;
   brand?: string;
   model?: string;
+  hasImage?: AdminVehicleImageFilter;
 }
 
 function formatYears(vehicle: AdminVehicleModel): string {
@@ -37,6 +39,7 @@ export const AdminVehiclesTable = ({
   initialCursor,
   brand,
   model,
+  hasImage,
 }: AdminVehiclesTableProps) => {
   const t = useTranslations("admin");
   const tCommon = useTranslations("common");
@@ -48,8 +51,9 @@ export const AdminVehiclesTable = ({
         limit: ADMIN_VEHICLES_PAGE_SIZE,
         brand,
         model,
+        hasImage,
       }),
-    [brand, model]
+    [brand, model, hasImage]
   );
 
   const { items, nextCursor, isLoading, loadMore } = useCursorList({
@@ -72,6 +76,7 @@ export const AdminVehiclesTable = ({
             <TableHead>{t("vehicles.columnYears")}</TableHead>
             <TableHead>{t("vehicles.columnEngine")}</TableHead>
             <TableHead>{t("vehicles.columnFuelType")}</TableHead>
+            <TableHead>{t("vehicles.columnImageUrl")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -89,6 +94,21 @@ export const AdminVehiclesTable = ({
               <TableCell>{formatYears(vehicle)}</TableCell>
               <TableCell>{vehicle.engine}</TableCell>
               <TableCell>{vehicle.fuelType ?? "-"}</TableCell>
+              <TableCell>
+                {vehicle.imageUrl ? (
+                  <a
+                    href={vehicle.imageUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={vehicle.imageUrl}
+                    className="block max-w-[16rem] truncate text-primary hover:underline"
+                  >
+                    {vehicle.imageUrl}
+                  </a>
+                ) : (
+                  "-"
+                )}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

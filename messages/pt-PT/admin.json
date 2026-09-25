@@ -34,6 +34,11 @@
     "columnYears": "Anos",
     "columnEngine": "Motor",
     "columnFuelType": "Combustível",
+    "columnImageUrl": "URL da imagem",
+    "filterImage": "Imagem",
+    "imageAll": "Todos",
+    "imageWith": "Com imagem",
+    "imageWithout": "Sem imagem",
     "previous": "Anterior",
     "next": "Seguinte",
     "pageInfo": "Página {page} de {totalPages}"

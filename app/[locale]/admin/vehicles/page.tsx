@@ -6,10 +6,12 @@ import { AdminVehiclesTable } from "@/components/admin/admin-vehicles-table";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import type { Locale } from "@/i18n/locales";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { requireAdminUser } from "@/lib/admin/require-admin-user";
+import type { AdminVehicleImageFilter } from "@/lib/api/admin-vehicles-query";
 import { getAdminVehicleModels } from "@/lib/api/admin-vehicles.server";
 import { ADMIN_VEHICLES_PAGE_SIZE } from "@/lib/lists/page-sizes";
 import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
@@ -20,7 +22,13 @@ export function generateStaticParams() {
 
 interface AdminVehiclesPageProps {
   params: Promise<{ locale: Locale }>;
-  searchParams: Promise<{ brand?: string; model?: string }>;
+  searchParams: Promise<{ brand?: string; model?: string; hasImage?: string }>;
+}
+
+function parseImageFilter(
+  value: string | undefined
+): AdminVehicleImageFilter | undefined {
+  return value === "true" || value === "false" ? value : undefined;
 }
 
 export async function generateMetadata({
@@ -49,12 +57,14 @@ export default async function AdminVehiclesPage({
     redirect(`/${locale}/login`);
   }
 
-  const { brand, model } = await searchParams;
+  const { brand, model, hasImage: rawHasImage } = await searchParams;
+  const hasImage = parseImageFilter(rawHasImage);
   const t = await getTranslations("admin");
   const { items, nextCursor } = await getAdminVehicleModels({
     limit: ADMIN_VEHICLES_PAGE_SIZE,
     brand,
     model,
+    hasImage,
   });
 
   return (
@@ -86,6 +96,22 @@ export default async function AdminVehiclesPage({
           </label>
           <Input id="model" name="model" defaultValue={model ?? ""} />
         </div>
+        <div className="space-y-1.5">
+          <label htmlFor="hasImage" className="text-sm font-medium text-foreground">
+            {t("vehicles.filterImage")}
+          </label>
+          <NativeSelect id="hasImage" name="hasImage" defaultValue={hasImage ?? ""}>
+            <NativeSelectOption value="">
+              {t("vehicles.imageAll")}
+            </NativeSelectOption>
+            <NativeSelectOption value="true">
+              {t("vehicles.imageWith")}
+            </NativeSelectOption>
+            <NativeSelectOption value="false">
+              {t("vehicles.imageWithout")}
+            </NativeSelectOption>
+          </NativeSelect>
+        </div>
         <Button type="submit" variant="outline">
           {t("vehicles.search")}
         </Button>
@@ -97,6 +123,7 @@ export default async function AdminVehiclesPage({
           initialCursor={nextCursor}
           brand={brand}
           model={model}
+          hasImage={hasImage}
         />
       </div>
     </SiteShell>
