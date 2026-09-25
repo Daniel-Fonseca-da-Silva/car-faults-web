@@ -291,28 +291,6 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
                 )}
               </Field>
 
-              {!isElectric && (
-                <Field data-invalid={invalidFields.has("engine")}>
-                  <FieldLabel htmlFor="vehicle-engine" required>
-                    {t("fields.engine")}
-                  </FieldLabel>
-                  <Input
-                    id="vehicle-engine"
-                    name="engine"
-                    value={engine}
-                    onChange={(event) => {
-                      setEngine(event.target.value);
-                      clearFieldError("engine", event.target.value);
-                    }}
-                    placeholder={t("fields.enginePlaceholder")}
-                    className="h-11"
-                  />
-                  {invalidFields.has("engine") && (
-                    <FieldError>{t("errors.required")}</FieldError>
-                  )}
-                </Field>
-              )}
-
               <Field data-invalid={invalidFields.has("fuel")}>
                 <FieldLabel htmlFor="vehicle-fuel" required>
                   {t("fields.fuel")}
@@ -340,6 +318,28 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
                   <FieldError>{t("errors.required")}</FieldError>
                 )}
               </Field>
+
+              {!isElectric && (
+                <Field data-invalid={invalidFields.has("engine")}>
+                  <FieldLabel htmlFor="vehicle-engine" required>
+                    {t("fields.engine")}
+                  </FieldLabel>
+                  <Input
+                    id="vehicle-engine"
+                    name="engine"
+                    value={engine}
+                    onChange={(event) => {
+                      setEngine(event.target.value);
+                      clearFieldError("engine", event.target.value);
+                    }}
+                    placeholder={t("fields.enginePlaceholder")}
+                    className="h-11"
+                  />
+                  {invalidFields.has("engine") && (
+                    <FieldError>{t("errors.required")}</FieldError>
+                  )}
+                </Field>
+              )}
 
               <Field>
                 <FieldLabel htmlFor="vehicle-doors">
