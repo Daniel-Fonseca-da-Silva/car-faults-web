@@ -155,10 +155,10 @@ async function fillFullSearchFields(
   await chooseMake(user, make);
   await user.type(labelledControl("Model"), model);
   await user.type(labelledControl("Year"), year);
+  await user.selectOptions(labelledControl("Fuel"), fuel);
   if (fuel !== "electric") {
     await user.type(labelledControl("Engine"), engine);
   }
-  await user.selectOptions(labelledControl("Fuel"), fuel);
   if (doors) {
     await user.selectOptions(labelledControl("Doors (optional)"), doors);
   }
@@ -608,6 +608,17 @@ describe("VehicleSearchForm", () => {
     expect(hasRequiredError("Model")).toBe(false);
     expect(pushMock).not.toHaveBeenCalled();
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("renders the fuel field before the engine field", () => {
+    render(<VehicleSearchForm isDatabaseUp={true} />);
+
+    const fuel = labelledControl("Fuel");
+    const engine = labelledControl("Engine");
+
+    expect(
+      fuel.compareDocumentPosition(engine) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
   });
 
   it("hides the engine field once electric fuel is selected", async () => {
