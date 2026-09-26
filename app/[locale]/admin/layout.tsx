@@ -1,13 +1,12 @@
 import { redirect } from "next/navigation";
 
-import type { Locale } from "@/i18n/locales";
 import { requireAdminUser } from "@/lib/admin/require-admin-user";
 
 export const dynamic = "force-dynamic";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
-  params: Promise<{ locale: Locale }>;
+  params: Promise<{ locale: string }>;
 }
 
 // Defense in depth: every admin page also calls requireAdminUser() and the API
