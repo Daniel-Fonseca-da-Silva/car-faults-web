@@ -12,10 +12,6 @@ jest.mock("next-intl", () => ({
   useTranslations: () => (key: string) => authDict[key] ?? key,
 }));
 
-jest.mock("@/lib/api/config", () => ({
-  getApiBaseUrl: () => "https://api.example.com",
-}));
-
 describe("GoogleSignInButton", () => {
   const originalLocation = window.location;
 
@@ -41,7 +37,7 @@ describe("GoogleSignInButton", () => {
     ).toBeInTheDocument();
   });
 
-  it("redirects to the API's Google OAuth endpoint with the current locale as state", async () => {
+  it("starts the OAuth flow through the web route that binds the state to the browser", async () => {
     const user = userEvent.setup();
     render(<GoogleSignInButton />);
 
@@ -50,7 +46,7 @@ describe("GoogleSignInButton", () => {
     );
 
     expect(window.location.href).toBe(
-      "https://api.example.com/v1/auth/google?state=pt-PT"
+      "/api/auth/google?locale=pt-PT"
     );
   });
 });

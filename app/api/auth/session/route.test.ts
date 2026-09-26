@@ -25,6 +25,18 @@ function buildTokenWithoutExp(): string {
   return `${header}.${body}.signature`;
 }
 
+const STATE = `en-GB.${"a".repeat(43)}`;
+
+function buildRequest(query: string, stateCookie: string | null = STATE) {
+  const request = new NextRequest(
+    `https://web.example.com/api/auth/session${query}`
+  );
+  if (stateCookie !== null) {
+    request.cookies.set("oauth_state", stateCookie);
+  }
+  return request;
+}
+
 function mockExchange(accessToken: string, ok = true): jest.Mock {
   const fetchMock = jest.fn().mockResolvedValue(
     new Response(JSON.stringify({ accessToken }), {
@@ -51,9 +63,7 @@ describe("GET /api/auth/session", () => {
     const exp = Math.floor(Date.now() / 1000) + 3600;
     const token = buildToken(exp);
     const fetchMock = mockExchange(token);
-    const request = new NextRequest(
-      "https://web.example.com/api/auth/session?code=xyz123&locale=en-GB"
-    );
+    const request = buildRequest(`?code=xyz123&state=${STATE}&locale=en-GB`);
 
     const response = await GET(request);
 
@@ -74,14 +84,37 @@ describe("GET /api/auth/session", () => {
     expect(cookie?.httpOnly).toBe(true);
     expect(cookie?.path).toBe("/");
     expect(cookie?.maxAge).toBeGreaterThan(3590);
+    expect(response.cookies.get("oauth_state")?.maxAge).toBe(0);
   });
+
+  it.each([
+    ["a state that does not match the cookie", `en-GB.${"b".repeat(43)}`, STATE],
+    ["no state cookie (login CSRF link)", STATE, null],
+    ["no state in the query", "", STATE],
+  ])(
+    "redirects to login without exchanging the code when there is %s",
+    async (_label, state, stateCookie) => {
+      const fetchMock = jest.fn();
+      global.fetch = fetchMock;
+      const request = buildRequest(
+        `?code=attacker-code&state=${state}&locale=en-GB`,
+        stateCookie
+      );
+
+      const response = await GET(request);
+
+      expect(fetchMock).not.toHaveBeenCalled();
+      expect(response.headers.get("location")).toBe(
+        "https://web.example.com/en-GB/login"
+      );
+      expect(response.cookies.get("access_token")).toBeUndefined();
+    }
+  );
 
   it("redirects to login without setting a cookie when there is no code", async () => {
     const fetchMock = jest.fn();
     global.fetch = fetchMock;
-    const request = new NextRequest(
-      "https://web.example.com/api/auth/session?locale=pt-PT"
-    );
+    const request = buildRequest(`?state=${STATE}&locale=pt-PT`);
 
     const response = await GET(request);
 
@@ -95,9 +128,7 @@ describe("GET /api/auth/session", () => {
 
   it("redirects to login without setting a cookie when the exchange fails", async () => {
     mockExchange("", false);
-    const request = new NextRequest(
-      "https://web.example.com/api/auth/session?code=bad-code&locale=pt-PT"
-    );
+    const request = buildRequest(`?code=bad-code&state=${STATE}&locale=pt-PT`);
 
     const response = await GET(request);
 
@@ -111,9 +142,7 @@ describe("GET /api/auth/session", () => {
   it("falls back to the default locale when none is provided", async () => {
     const fetchMock = jest.fn();
     global.fetch = fetchMock;
-    const request = new NextRequest(
-      "https://web.example.com/api/auth/session"
-    );
+    const request = buildRequest("", null);
 
     const response = await GET(request);
 
@@ -125,9 +154,7 @@ describe("GET /api/auth/session", () => {
   it("falls back to a 7-day maxAge when the token has no exp claim", async () => {
     const token = buildTokenWithoutExp();
     mockExchange(token);
-    const request = new NextRequest(
-      "https://web.example.com/api/auth/session?code=xyz123&locale=en-GB"
-    );
+    const request = buildRequest(`?code=xyz123&state=${STATE}&locale=en-GB`);
 
     const response = await GET(request);
 
@@ -145,9 +172,7 @@ describe("GET /api/auth/session", () => {
     const exp = Math.floor(Date.now() / 1000) + 3600;
     const token = buildToken(exp);
     mockExchange(token);
-    const request = new NextRequest(
-      "https://web.example.com/api/auth/session?code=xyz123&locale=en-GB"
-    );
+    const request = buildRequest(`?code=xyz123&state=${STATE}&locale=en-GB`);
 
     const response = await GET(request);
 

@@ -1,6 +1,6 @@
 import { act, render } from "@testing-library/react";
 
-import { TurnstileWidget } from "./turnstile-widget";
+import { mapTurnstileLanguage, TurnstileWidget } from "./turnstile-widget";
 
 let scriptOnReady: (() => void) | undefined;
 
@@ -10,6 +10,12 @@ jest.mock("next/script", () => ({
     scriptOnReady = onReady;
     return null;
   },
+}));
+
+let mockLocale = "pt-PT";
+
+jest.mock("next-intl", () => ({
+  useLocale: () => mockLocale,
 }));
 
 jest.mock("@/lib/api/config", () => ({
@@ -35,6 +41,7 @@ describe("TurnstileWidget", () => {
     resetMock = jest.fn();
     delete window.turnstile;
     scriptOnReady = undefined;
+    mockLocale = "pt-PT";
   });
 
   afterEach(() => {
@@ -147,5 +154,39 @@ describe("TurnstileWidget", () => {
     rerender(<TurnstileWidget onSuccess={jest.fn()} />);
 
     expect(resetMock).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["pt-PT", "pt"],
+    ["en-GB", "en"],
+    ["es-ES", "es"],
+  ])("renders the widget in the site locale %s as %s", (locale, language) => {
+    mockLocale = locale;
+    installTurnstileGlobal();
+
+    render(<TurnstileWidget onSuccess={jest.fn()} />);
+
+    expect(renderMock).toHaveBeenCalledWith(
+      expect.any(HTMLElement),
+      expect.objectContaining({ language })
+    );
+  });
+
+  it("re-renders the widget in the new language when the locale changes", () => {
+    installTurnstileGlobal();
+    const { rerender } = render(<TurnstileWidget onSuccess={jest.fn()} />);
+
+    mockLocale = "es-ES";
+    rerender(<TurnstileWidget onSuccess={jest.fn()} />);
+
+    expect(removeMock).toHaveBeenCalledWith("widget-1");
+    expect(renderMock).toHaveBeenLastCalledWith(
+      expect.any(HTMLElement),
+      expect.objectContaining({ language: "es" })
+    );
+  });
+
+  it("falls back to the browser language for unknown locales", () => {
+    expect(mapTurnstileLanguage("fr-FR")).toBe("auto");
   });
 });
