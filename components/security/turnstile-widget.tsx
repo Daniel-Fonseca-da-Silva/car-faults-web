@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale } from "next-intl";
 import Script from "next/script";
 import { useEffect, useId, useRef, useState } from "react";
 
@@ -8,12 +9,25 @@ import { getTurnstileSiteKey } from "@/lib/api/config";
 const SCRIPT_SRC =
   "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
+// Without an explicit language Turnstile follows the browser language
+// instead of the site locale.
+const TURNSTILE_LANGUAGES: Record<string, string> = {
+  "pt-PT": "pt",
+  "en-GB": "en",
+  "es-ES": "es",
+};
+
+export function mapTurnstileLanguage(locale: string): string {
+  return TURNSTILE_LANGUAGES[locale] ?? "auto";
+}
+
 interface TurnstileRenderOptions {
   sitekey: string;
   callback: (token: string) => void;
   "expired-callback"?: () => void;
   "error-callback"?: () => void;
   retry?: "auto" | "never";
+  language?: string;
 }
 
 interface TurnstileGlobal {
@@ -45,6 +59,7 @@ export function TurnstileWidget({
   onError,
   resetSignal,
 }: TurnstileWidgetProps) {
+  const locale = useLocale();
   const containerId = useId();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const widgetIdRef = useRef<string | null>(null);
@@ -74,6 +89,7 @@ export function TurnstileWidget({
       "expired-callback": () => onExpireRef.current?.(),
       "error-callback": () => onErrorRef.current?.(),
       retry: "auto",
+      language: mapTurnstileLanguage(locale),
     });
     widgetIdRef.current = widgetId;
 
@@ -81,7 +97,7 @@ export function TurnstileWidget({
       window.turnstile?.remove(widgetId);
       widgetIdRef.current = null;
     };
-  }, [scriptLoaded]);
+  }, [scriptLoaded, locale]);
 
   useEffect(() => {
     if (resetSignal === undefined || widgetIdRef.current === null) {

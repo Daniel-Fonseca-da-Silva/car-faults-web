@@ -3,7 +3,6 @@
 import { useLocale, useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
-import { getApiBaseUrl } from "@/lib/api/config";
 
 function GoogleIcon() {
   return (
@@ -33,7 +32,7 @@ export function GoogleSignInButton() {
   const locale = useLocale();
 
   function handleClick() {
-    window.location.href = `${getApiBaseUrl()}/v1/auth/google?state=${locale}`;
+    window.location.href = `/api/auth/google?locale=${locale}`;
   }
 
   return (
