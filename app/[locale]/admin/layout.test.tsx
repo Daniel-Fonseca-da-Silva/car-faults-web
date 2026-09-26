@@ -8,7 +8,7 @@ jest.mock("@/lib/admin/require-admin-user", () => ({
   requireAdminUser: jest.fn(),
 }));
 
-const redirect = jest.fn(() => {
+const redirect = jest.fn<never, [string]>(() => {
   throw new Error("NEXT_REDIRECT");
 });
 jest.mock("next/navigation", () => ({
