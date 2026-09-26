@@ -1,19 +1,44 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { defaultLocale } from "@/i18n/locales";
+import { defaultLocale, locales, type Locale } from "@/i18n/locales";
 import { getApiBaseUrl } from "@/lib/api/config";
 import { resolveTokenExpirySeconds } from "@/lib/api/jwt";
 import { SESSION_COOKIE_NAME } from "@/lib/api/constants";
+import {
+  OAUTH_STATE_COOKIE_NAME,
+  OAUTH_STATE_COOKIE_PATH,
+  oauthStatesMatch,
+} from "@/lib/api/oauth-state";
 
 const FALLBACK_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
+
+function resolveLocale(value: string | null): Locale {
+  return locales.find((locale) => locale === value) ?? defaultLocale;
+}
+
+function clearOAuthState(response: NextResponse): NextResponse {
+  response.cookies.set(OAUTH_STATE_COOKIE_NAME, "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: OAUTH_STATE_COOKIE_PATH,
+    maxAge: 0,
+  });
+  return response;
+}
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
   const { searchParams } = request.nextUrl;
   const code = searchParams.get("code");
-  const locale = searchParams.get("locale") ?? defaultLocale;
+  const state = searchParams.get("state");
+  const locale = resolveLocale(searchParams.get("locale"));
+  const expectedState = request.cookies.get(OAUTH_STATE_COOKIE_NAME)?.value;
 
-  if (!code) {
-    return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
+  // Login CSRF guard: only the browser that started the flow holds the nonce.
+  if (!code || !oauthStatesMatch(expectedState, state)) {
+    return clearOAuthState(
+      NextResponse.redirect(new URL(`/${locale}/login`, request.url))
+    );
   }
 
   const exchangeResponse = await fetch(
@@ -27,14 +52,18 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   );
 
   if (!exchangeResponse.ok) {
-    return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
+    return clearOAuthState(
+      NextResponse.redirect(new URL(`/${locale}/login`, request.url))
+    );
   }
 
   const { accessToken } = (await exchangeResponse.json()) as {
     accessToken: string;
   };
 
-  const response = NextResponse.redirect(new URL(`/${locale}`, request.url));
+  const response = clearOAuthState(
+    NextResponse.redirect(new URL(`/${locale}`, request.url))
+  );
 
   response.cookies.set(SESSION_COOKIE_NAME, accessToken, {
     httpOnly: true,
