@@ -31,7 +31,6 @@ export interface IssueFix {
   userId?: string;
   summary: string;
   steps: string;
-  estimatedCostEur: string | number | null;
   source: FixSource;
   likes: number;
   dislikes: number;
