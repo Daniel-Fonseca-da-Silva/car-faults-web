@@ -38,7 +38,6 @@ export const lookupResults: LookupResponse[] = [
             summary: "Replace gearbox synchros",
             steps:
               "Remove gearbox, replace synchro rings for 2nd and 3rd gear, reassemble and refill with fresh gear oil.",
-            estimatedCostEur: "450.00",
             source: "ai",
             likes: 12,
             dislikes: 3,
@@ -50,7 +49,6 @@ export const lookupResults: LookupResponse[] = [
             summary: "Full gearbox rebuild with reinforced parts",
             steps:
               "Send gearbox to a specialist for a full rebuild using reinforced aftermarket synchro rings for longer-lasting results.",
-            estimatedCostEur: "780.00",
             source: "user",
             likes: 8,
             dislikes: 1,
@@ -73,7 +71,6 @@ export const lookupResults: LookupResponse[] = [
             summary: "Replace window regulator mechanism",
             steps:
               "Remove door card, disconnect the old regulator, fit a new mechanism and reconnect the window glass.",
-            estimatedCostEur: "120.00",
             source: "user",
             likes: 5,
             dislikes: 0,
@@ -113,7 +110,6 @@ export const lookupResults: LookupResponse[] = [
             summary: "Replace faulty injector(s)",
             steps:
               "Diagnose the faulty cylinder with a balance test, remove and replace the affected injector(s), then reset adaptation values.",
-            estimatedCostEur: "520.00",
             source: "ai",
             likes: 20,
             dislikes: 2,

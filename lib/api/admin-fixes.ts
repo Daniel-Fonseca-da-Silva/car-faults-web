@@ -7,7 +7,6 @@ export interface AdminFixInput {
   knownIssueId: string;
   summary: string;
   steps: string;
-  estimatedCostEur?: number;
 }
 
 export async function createAdminFix(

@@ -18,13 +18,11 @@ import type { AdminFix } from "@/types/admin";
 interface FixFormValues {
   summary: string;
   steps: string;
-  estimatedCostEur: string;
 }
 
 const EMPTY_FORM: FixFormValues = {
   summary: "",
   steps: "",
-  estimatedCostEur: "",
 };
 
 interface FixListProps {
@@ -77,16 +75,12 @@ export function FixList({ knownIssueId, fixes }: FixListProps) {
                 initial={{
                   summary: fix.summary,
                   steps: fix.steps,
-                  estimatedCostEur: fix.estimatedCostEur ?? "",
                 }}
                 onCancel={() => setEditingId(null)}
                 onSubmit={async (values) => {
                   const updated = await updateAdminFix(fix.id, {
                     summary: values.summary,
                     steps: values.steps,
-                    estimatedCostEur: values.estimatedCostEur
-                      ? Number(values.estimatedCostEur)
-                      : undefined,
                   });
                   handleUpdated(updated);
                 }}
@@ -103,11 +97,6 @@ export function FixList({ knownIssueId, fixes }: FixListProps) {
               <p className="whitespace-pre-line text-sm text-muted-foreground">
                 {fix.steps}
               </p>
-              {fix.estimatedCostEur && (
-                <p className="text-xs text-muted-foreground">
-                  {t("fixForm.estimatedCostEur")}: {fix.estimatedCostEur} €
-                </p>
-              )}
               <div className="flex items-center gap-2">
                 <Button
                   type="button"
@@ -151,9 +140,6 @@ export function FixList({ knownIssueId, fixes }: FixListProps) {
                 knownIssueId,
                 summary: values.summary,
                 steps: values.steps,
-                estimatedCostEur: values.estimatedCostEur
-                  ? Number(values.estimatedCostEur)
-                  : undefined,
               });
               handleCreated(created);
             }}
@@ -184,9 +170,6 @@ function FixForm({ initial, onSubmit, onCancel }: FixFormProps) {
   const t = useTranslations("admin");
   const [summary, setSummary] = useState(initial.summary);
   const [steps, setSteps] = useState(initial.steps);
-  const [estimatedCostEur, setEstimatedCostEur] = useState(
-    initial.estimatedCostEur
-  );
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -200,7 +183,6 @@ function FixForm({ initial, onSubmit, onCancel }: FixFormProps) {
       await onSubmit({
         summary: summary.trim(),
         steps: steps.trim(),
-        estimatedCostEur: estimatedCostEur.trim(),
       });
     } catch {
       setError(t("common.error"));
@@ -231,19 +213,6 @@ function FixForm({ initial, onSubmit, onCancel }: FixFormProps) {
           value={steps}
           onChange={(event) => setSteps(event.target.value)}
           required
-          disabled={submitting}
-        />
-      </div>
-      <div className="space-y-1.5">
-        <Label htmlFor={`fix-cost-${initial.summary}`}>
-          {t("fixForm.estimatedCostEur")}
-        </Label>
-        <Input
-          id={`fix-cost-${initial.summary}`}
-          type="number"
-          min={0}
-          value={estimatedCostEur}
-          onChange={(event) => setEstimatedCostEur(event.target.value)}
           disabled={submitting}
         />
       </div>

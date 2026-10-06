@@ -49,9 +49,6 @@ function isYearInRange(value: string): boolean {
   const year = Number(value);
   return Number.isInteger(year) && year >= MIN_YEAR && year <= MAX_YEAR;
 }
-// Base UI clears the input when the popup closes without a selected item.
-// Keep free-text makes so unmatched brands can still be searched.
-const COMBOBOX_INPUT_CLEAR_REASON = "input-clear";
 
 interface VehicleSearchFormProps {
   isDatabaseUp: boolean;
@@ -201,20 +198,13 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
                 </FieldLabel>
                 <Combobox
                   items={EUROPEAN_VEHICLE_MAKES}
-                  value={EUROPEAN_VEHICLE_MAKES.includes(make) ? make : null}
+                  // Only makes from the list can be selected; unmatched typed
+                  // text is cleared by Base UI when the popup closes.
+                  value={make || null}
                   onValueChange={(value) => {
-                    if (value != null) {
-                      setMake(value);
-                      clearFieldError("make", value);
-                    }
-                  }}
-                  inputValue={make}
-                  onInputValueChange={(value, eventDetails) => {
-                    if (eventDetails.reason === COMBOBOX_INPUT_CLEAR_REASON) {
-                      return;
-                    }
-                    setMake(value);
-                    clearFieldError("make", value);
+                    const nextMake = value ?? "";
+                    setMake(nextMake);
+                    clearFieldError("make", nextMake);
                   }}
                 >
                   <ComboboxInput
