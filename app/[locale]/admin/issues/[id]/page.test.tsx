@@ -104,7 +104,6 @@ const issue: AdminKnownIssueDetail = {
       userId: null,
       summary: "Replace the synchros",
       steps: "Remove gearbox, replace synchros, reassemble.",
-      estimatedCostEur: "350",
       source: "user",
       createdAt: "2026-01-01T00:00:00.000Z",
       updatedAt: "2026-01-01T00:00:00.000Z",
