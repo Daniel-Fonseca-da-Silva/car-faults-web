@@ -22,7 +22,6 @@ jest.mock("@/i18n/navigation", () => ({
 jest.mock("next-intl", () => ({
   useTranslations: () => {
     const dict: Record<string, string> = {
-      "vehicle.estimatedCost": "Custo estimado",
       "vehicle.viewSteps": "Ver passo a passo",
       "vehicle.hideSteps": "Ocultar passo a passo",
       "vehicle.helpful": "Foi útil?",
@@ -37,7 +36,6 @@ const baseFix: IssueFix = {
   id: "fix-1",
   summary: "Replace gearbox synchros",
   steps: "Remove gearbox, replace synchro rings, reassemble.",
-  estimatedCostEur: "450.00",
   source: "ai",
   likes: 12,
   dislikes: 3,
@@ -61,22 +59,11 @@ describe("IssueFixCard", () => {
     pushMock.mockReset();
   });
 
-  it("renders the summary and formatted cost", () => {
+  it("renders the summary without an estimated cost", () => {
     render(<IssueFixCard fix={baseFix} currentUser={null} />);
 
     expect(screen.getByText("Replace gearbox synchros")).toBeInTheDocument();
-    expect(screen.getByText(/450€/)).toBeInTheDocument();
-  });
-
-  it("omits the cost badge when estimatedCostEur is null", () => {
-    render(
-      <IssueFixCard
-        fix={{ ...baseFix, estimatedCostEur: null }}
-        currentUser={null}
-      />
-    );
-
-    expect(screen.queryByText(/Custo estimado/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/450/)).not.toBeInTheDocument();
   });
 
   it("toggles the repair steps visibility", async () => {

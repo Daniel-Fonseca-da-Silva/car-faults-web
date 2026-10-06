@@ -53,7 +53,6 @@ export interface AdminFix {
   userId: string | null;
   summary: string;
   steps: string;
-  estimatedCostEur: string | null;
   source: FixSource;
   createdAt: string;
   updatedAt: string;

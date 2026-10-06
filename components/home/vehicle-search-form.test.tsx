@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { VehicleSearchForm } from "./vehicle-search-form";
@@ -120,15 +120,15 @@ async function completeCaptcha(user: TestUser) {
 }
 
 /**
- * Set the make via a single change event. Opening the Base UI Combobox popup
- * (paste/type + option click) is slow and flaky under coverage: the popup can
- * leave the form inert and push the full-search flows past Jest's 5s timeout.
- * fireEvent.change has no inputType, so Base UI treats it like autofill and
- * updates inputValue without opening the listbox.
+ * Select the make from the combobox list. The form only accepts makes picked
+ * from the list (typed text alone is cleared by Base UI), so the option has to
+ * be clicked. Pasting avoids per-keystroke filtering of the long make list.
  */
-async function chooseMake(_user: TestUser, make: string) {
+async function chooseMake(user: TestUser, make: string) {
   const input = labelledControl("Make");
-  fireEvent.change(input, { target: { value: make } });
+  await user.click(input);
+  await user.paste(make);
+  await user.click(await screen.findByRole("option", { name: make }));
   await waitFor(() => expect(input).toHaveValue(make));
 }
 
@@ -723,7 +723,7 @@ describe("VehicleSearchForm", () => {
     expect(pushMock).not.toHaveBeenCalled();
   });
 
-  it("shows errors for the remaining required fields when a typed make with no known match is submitted", async () => {
+  it("clears a typed make with no known match and requires a make from the list", async () => {
     const user = createUser();
     render(<VehicleSearchForm isDatabaseUp={true} />);
 
@@ -741,9 +741,9 @@ describe("VehicleSearchForm", () => {
     await user.keyboard("{Escape}");
     await user.click(screen.getByRole("button", { name: "Search faults" }));
 
-    expect(labelledControl("Make")).toHaveValue("Skodaa");
-    expect(screen.getAllByText(REQUIRED_ERROR_TEXT)).toHaveLength(4);
-    expect(hasRequiredError("Make")).toBe(false);
+    expect(labelledControl("Make")).toHaveValue("");
+    expect(screen.getAllByText(REQUIRED_ERROR_TEXT)).toHaveLength(5);
+    expect(hasRequiredError("Make")).toBe(true);
     expect(pushMock).not.toHaveBeenCalled();
   });
 

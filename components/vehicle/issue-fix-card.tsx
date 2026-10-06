@@ -4,7 +4,6 @@ import { ChevronDown, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
-import { Badge } from "@/components/ui/badge";
 import { useRouter } from "@/i18n/navigation";
 import { removeFixVote, voteFix } from "@/lib/api/fixes";
 import { cn } from "@/lib/utils";
@@ -16,18 +15,6 @@ interface IssueFixCardProps {
   currentUser: UserProfile | null;
 }
 
-function formatCostEur(
-  estimatedCostEur: IssueFix["estimatedCostEur"]
-): string | null {
-  if (estimatedCostEur === null || estimatedCostEur === undefined) return null;
-  const value =
-    typeof estimatedCostEur === "string"
-      ? Number(estimatedCostEur)
-      : estimatedCostEur;
-  if (Number.isNaN(value)) return null;
-  return `${value}€`;
-}
-
 export function IssueFixCard({ fix, currentUser }: IssueFixCardProps) {
   const t = useTranslations("faults");
   const router = useRouter();
@@ -37,8 +24,6 @@ export function IssueFixCard({ fix, currentUser }: IssueFixCardProps) {
   const [myVote, setMyVote] = useState<FixVote | null>(fix.myVote ?? null);
   const [voting, setVoting] = useState(false);
   const [voteError, setVoteError] = useState(false);
-
-  const cost = formatCostEur(fix.estimatedCostEur);
 
   async function handleVote(nextVote: FixVote) {
     if (!currentUser) {
@@ -74,14 +59,7 @@ export function IssueFixCard({ fix, currentUser }: IssueFixCardProps) {
 
   return (
     <div className="rounded-xl border border-border bg-card p-4">
-      <div className="flex items-start justify-between gap-3">
-        <p className="text-sm font-medium text-foreground">{fix.summary}</p>
-        {cost && (
-          <Badge variant="outline" className="shrink-0">
-            {t("vehicle.estimatedCost")}: {cost}
-          </Badge>
-        )}
-      </div>
+      <p className="text-sm font-medium text-foreground">{fix.summary}</p>
 
       <button
         type="button"

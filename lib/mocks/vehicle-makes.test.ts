@@ -71,6 +71,7 @@ describe("EUROPEAN_VEHICLE_MAKES", () => {
     "Suzuki",
     "Triumph",
     "Yamaha",
+    "Skoda",
   ])("contains %s", (make) => {
     expect(EUROPEAN_VEHICLE_MAKES).toContain(make);
   });
@@ -96,6 +97,6 @@ describe("filterVehicleMakes", () => {
   });
 
   it("returns an empty array when nothing matches", () => {
-    expect(filterVehicleMakes("Skoda")).toEqual([]);
+    expect(filterVehicleMakes("Skodaa")).toEqual([]);
   });
 });

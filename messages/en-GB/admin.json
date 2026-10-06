@@ -113,7 +113,6 @@
   "fixForm": {
     "summary": "Summary",
     "steps": "Steps",
-    "estimatedCostEur": "Estimated cost (EUR)",
     "addFix": "Add fix",
     "editFix": "Edit fix"
   },
