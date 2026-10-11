@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 
+import { locales } from "@/i18n/locales";
+
 import LocaleLayout, { generateStaticParams } from "./layout";
 
 jest.mock("next-intl", () => ({
@@ -71,7 +73,7 @@ describe("LocaleLayout", () => {
     await expect(
       LocaleLayout({
         children: <p>page content</p>,
-        params: Promise.resolve({ locale: "fr-FR" }),
+        params: Promise.resolve({ locale: "ja-JP" }),
       })
     ).rejects.toThrow();
   });
@@ -79,10 +81,8 @@ describe("LocaleLayout", () => {
 
 describe("generateStaticParams", () => {
   it("returns a param entry for every supported locale", () => {
-    expect(generateStaticParams()).toEqual([
-      { locale: "pt-PT" },
-      { locale: "en-GB" },
-      { locale: "es-ES" },
-    ]);
+    expect(generateStaticParams()).toEqual(
+      locales.map((locale) => ({ locale }))
+    );
   });
 });

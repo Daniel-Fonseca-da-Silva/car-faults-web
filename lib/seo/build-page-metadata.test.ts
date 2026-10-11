@@ -1,3 +1,5 @@
+import { locales } from "@/i18n/locales";
+
 import { buildPageMetadata } from "./build-page-metadata";
 
 const TEST_SITE_NAME = "Auto Crónica";
@@ -27,16 +29,20 @@ describe("buildPageMetadata", () => {
       "http://localhost:3000/pt-PT/defects"
     );
     expect(metadata.alternates?.languages).toEqual({
-      "pt-PT": "http://localhost:3000/pt-PT/defects",
-      "en-GB": "http://localhost:3000/en-GB/defects",
-      "es-ES": "http://localhost:3000/es-ES/defects",
+      ...Object.fromEntries(
+        locales.map((locale) => [
+          locale,
+          `http://localhost:3000/${locale}/defects`,
+        ])
+      ),
+      "x-default": "http://localhost:3000/defects",
     });
     expect(metadata.openGraph).toMatchObject({
       title: "Defects hub",
       description: "Browse known defects.",
       url: "http://localhost:3000/pt-PT/defects",
       siteName: TEST_SITE_NAME,
-      locale: "pt-PT",
+      locale: "pt_PT",
       type: "website",
     });
     expect(metadata.twitter).toEqual({

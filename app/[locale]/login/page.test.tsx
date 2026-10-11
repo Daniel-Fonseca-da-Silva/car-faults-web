@@ -40,14 +40,15 @@ describe("generateMetadata", () => {
 
     expect(metadata.title).toBe("seo.login.title");
     expect(metadata.description).toBe("seo.login.description");
-    expect(metadata.alternates?.languages).toEqual(
-      Object.fromEntries(
+    expect(metadata.alternates?.languages).toEqual({
+      ...Object.fromEntries(
         locales.map((locale) => [
           locale,
           `http://localhost:3000/${locale}/login`,
         ])
-      )
-    );
+      ),
+      "x-default": "http://localhost:3000/login",
+    });
     expect(metadata.robots).toEqual({ index: false, follow: false });
   });
 });

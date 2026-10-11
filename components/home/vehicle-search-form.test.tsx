@@ -206,25 +206,35 @@ describe("VehicleSearchForm", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("does not show the Turnstile widget until all required fields are filled in", async () => {
-    const user = createUser();
-    render(<VehicleSearchForm isDatabaseUp={true} />);
+  it(
+    "does not show the Turnstile widget until all required fields are filled in",
+    async () => {
+      const user = createUser();
+      render(<VehicleSearchForm isDatabaseUp={true} />);
 
-    expect(screen.queryByTestId("turnstile-widget")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("turnstile-widget")).not.toBeInTheDocument();
 
-    await fillFullSearchFields(user);
+      await fillFullSearchFields(user);
 
-    expect(screen.getByTestId("turnstile-widget")).toBeInTheDocument();
-  });
+      expect(screen.getByTestId("turnstile-widget")).toBeInTheDocument();
+    },
+    FULL_SEARCH_TEST_TIMEOUT_MS
+  );
 
-  it("disables submit for a full search until the Turnstile challenge succeeds", async () => {
-    const user = createUser();
-    render(<VehicleSearchForm isDatabaseUp={true} />);
+  it(
+    "disables submit for a full search until the Turnstile challenge succeeds",
+    async () => {
+      const user = createUser();
+      render(<VehicleSearchForm isDatabaseUp={true} />);
 
-    await fillFullSearchFields(user);
+      await fillFullSearchFields(user);
 
-    expect(screen.getByRole("button", { name: "Search faults" })).toBeDisabled();
-  });
+      expect(
+        screen.getByRole("button", { name: "Search faults" })
+      ).toBeDisabled();
+    },
+    FULL_SEARCH_TEST_TIMEOUT_MS
+  );
 
   it(
     "prepares the lookup and navigates to the returned href once the fields and captcha are complete",
@@ -528,51 +538,59 @@ describe("VehicleSearchForm", () => {
     FULL_SEARCH_TEST_TIMEOUT_MS
   );
 
-  it("clears the token when the Turnstile challenge expires", async () => {
-    const user = createUser();
-    render(<VehicleSearchForm isDatabaseUp={true} />);
+  it(
+    "clears the token when the Turnstile challenge expires",
+    async () => {
+      const user = createUser();
+      render(<VehicleSearchForm isDatabaseUp={true} />);
 
-    await fillFullSearchFields(user);
+      await fillFullSearchFields(user);
 
-    await waitFor(() => expect(turnstileOnSuccess).toBeDefined());
-    act(() => turnstileOnSuccess?.("test-turnstile-token"));
-    await waitFor(() =>
-      expect(
-        screen.getByRole("button", { name: "Search faults" })
-      ).toBeEnabled()
-    );
+      await waitFor(() => expect(turnstileOnSuccess).toBeDefined());
+      act(() => turnstileOnSuccess?.("test-turnstile-token"));
+      await waitFor(() =>
+        expect(
+          screen.getByRole("button", { name: "Search faults" })
+        ).toBeEnabled()
+      );
 
-    act(() => turnstileOnExpire?.());
+      act(() => turnstileOnExpire?.());
 
-    await waitFor(() =>
-      expect(
-        screen.getByRole("button", { name: "Search faults" })
-      ).toBeDisabled()
-    );
-  });
+      await waitFor(() =>
+        expect(
+          screen.getByRole("button", { name: "Search faults" })
+        ).toBeDisabled()
+      );
+    },
+    FULL_SEARCH_TEST_TIMEOUT_MS
+  );
 
-  it("clears the token when the Turnstile widget errors", async () => {
-    const user = createUser();
-    render(<VehicleSearchForm isDatabaseUp={true} />);
+  it(
+    "clears the token when the Turnstile widget errors",
+    async () => {
+      const user = createUser();
+      render(<VehicleSearchForm isDatabaseUp={true} />);
 
-    await fillFullSearchFields(user);
+      await fillFullSearchFields(user);
 
-    await waitFor(() => expect(turnstileOnSuccess).toBeDefined());
-    act(() => turnstileOnSuccess?.("test-turnstile-token"));
-    await waitFor(() =>
-      expect(
-        screen.getByRole("button", { name: "Search faults" })
-      ).toBeEnabled()
-    );
+      await waitFor(() => expect(turnstileOnSuccess).toBeDefined());
+      act(() => turnstileOnSuccess?.("test-turnstile-token"));
+      await waitFor(() =>
+        expect(
+          screen.getByRole("button", { name: "Search faults" })
+        ).toBeEnabled()
+      );
 
-    act(() => turnstileOnError?.());
+      act(() => turnstileOnError?.());
 
-    await waitFor(() =>
-      expect(
-        screen.getByRole("button", { name: "Search faults" })
-      ).toBeDisabled()
-    );
-  });
+      await waitFor(() =>
+        expect(
+          screen.getByRole("button", { name: "Search faults" })
+        ).toBeDisabled()
+      );
+    },
+    FULL_SEARCH_TEST_TIMEOUT_MS
+  );
 
   it("shows errors for engine and fuel when make, model and year are filled in but engine and fuel are missing", async () => {
     const user = createUser();

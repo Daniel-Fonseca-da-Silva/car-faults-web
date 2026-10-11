@@ -187,6 +187,6 @@ describe("TurnstileWidget", () => {
   });
 
   it("falls back to the browser language for unknown locales", () => {
-    expect(mapTurnstileLanguage("fr-FR")).toBe("auto");
+    expect(mapTurnstileLanguage("ja-JP")).toBe("auto");
   });
 });

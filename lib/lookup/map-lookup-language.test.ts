@@ -14,6 +14,6 @@ describe("mapLookupLanguage", () => {
   });
 
   it("falls back to the default locale for unknown values", () => {
-    expect(mapLookupLanguage("fr-FR")).toBe("pt-PT");
+    expect(mapLookupLanguage("ja-JP")).toBe("pt-PT");
   });
 });
