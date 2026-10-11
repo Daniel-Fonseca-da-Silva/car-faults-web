@@ -1,0 +1,157 @@
+{
+  "common": {
+    "save": "Save",
+    "saving": "Saving…",
+    "create": "Create",
+    "creating": "Creating…",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleting": "Deleting…",
+    "edit": "Edit",
+    "error": "Something went wrong. Please try again.",
+    "notFound": "Not found."
+  },
+  "dashboard": {
+    "title": "Admin",
+    "description": "Manage the vehicle catalog, known issues and fixes.",
+    "vehiclesCardTitle": "Vehicle catalog",
+    "vehiclesCardDescription": "Create, edit and remove vehicle models, known issues and fixes.",
+    "goToVehicles": "Manage vehicles",
+    "reportsCardTitle": "Content reports",
+    "reportsCardDescription": "Review comments and reviews flagged by users.",
+    "goToReports": "Manage reports"
+  },
+  "vehicles": {
+    "title": "Vehicles",
+    "description": "Search and manage the vehicle catalog.",
+    "searchBrandPlaceholder": "Brand",
+    "searchModelPlaceholder": "Model",
+    "search": "Search",
+    "newVehicle": "New vehicle",
+    "empty": "No vehicles found.",
+    "columnBrand": "Brand",
+    "columnModel": "Model",
+    "columnYears": "Years",
+    "columnEngine": "Engine",
+    "columnFuelType": "Fuel",
+    "columnImageUrl": "Image URL",
+    "filterImage": "Image",
+    "imageAll": "All",
+    "imageWith": "With image",
+    "imageWithout": "Without image",
+    "previous": "Previous",
+    "next": "Next",
+    "pageInfo": "Page {page} of {totalPages}"
+  },
+  "newVehiclePage": {
+    "title": "New vehicle",
+    "description": "Add a vehicle model to the catalog."
+  },
+  "vehicleForm": {
+    "brand": "Brand",
+    "brandPlaceholder": "e.g. Volkswagen",
+    "brandNoResults": "No matching brand. Your typed name will be used.",
+    "model": "Model",
+    "name": "Display name",
+    "yearFrom": "Year from",
+    "yearTo": "Year to",
+    "engine": "Engine",
+    "doors": "Doors",
+    "fuelType": "Fuel type",
+    "fuelTypeNone": "Not set",
+    "fuelTypeGasoline": "Gasoline",
+    "fuelTypeDiesel": "Diesel",
+    "fuelTypeElectric": "Electric",
+    "fuelTypeGpl": "LPG",
+    "fuelTypeHybrid": "Hybrid",
+    "image": "Catalog photo",
+    "uploadImage": "Upload photo",
+    "uploading": "Uploading…",
+    "uploadSucceeded": "Photo uploaded successfully.",
+    "removeImage": "Remove photo",
+    "invalidImageType": "Please choose a JPEG, PNG or WEBP image.",
+    "imageTooLarge": "The image must be smaller than 5 MB."
+  },
+  "vehicleDetail": {
+    "backToVehicles": "Back to vehicles",
+    "knownIssuesTitle": "Known issues",
+    "addIssue": "New known issue",
+    "noIssues": "No known issues yet.",
+    "deleteVehicle": "Delete vehicle",
+    "deleteConfirmTitle": "Delete this vehicle?",
+    "deleteConfirmDescription": "This removes {vehicle} and hides it from public lookups. This cannot be undone from here.",
+    "columnTitle": "Title",
+    "columnSeverity": "Severity",
+    "columnLocale": "Locale"
+  },
+  "newIssuePage": {
+    "title": "New known issue",
+    "description": "Add a known issue for {vehicle}."
+  },
+  "issueForm": {
+    "title": "Title",
+    "description": "Description",
+    "severity": "Severity",
+    "severityLow": "Low",
+    "severityMedium": "Medium",
+    "severityHigh": "High",
+    "severityCritical": "Critical",
+    "locale": "Locale",
+    "typicalKm": "Typical mileage (km)",
+    "sources": "Sources",
+    "sourcesHint": "One URL per line."
+  },
+  "issueDetail": {
+    "backToVehicle": "Back to vehicle",
+    "fixesTitle": "Fixes",
+    "noFixes": "No fixes yet.",
+    "addFix": "New fix",
+    "deleteIssue": "Delete known issue",
+    "deleteConfirmTitle": "Delete this known issue?",
+    "deleteConfirmDescription": "This removes \"{issue}\" and its fixes. This cannot be undone from here."
+  },
+  "fixForm": {
+    "summary": "Summary",
+    "steps": "Steps",
+    "addFix": "Add fix",
+    "editFix": "Edit fix"
+  },
+  "reports": {
+    "title": "Reports",
+    "description": "Review comments and reviews flagged by the community.",
+    "filterStatus": "Status",
+    "filterApply": "Filter",
+    "statusAll": "All",
+    "status": {
+      "pending": "Pending",
+      "reviewed": "Reviewed",
+      "dismissed": "Dismissed"
+    },
+    "contentType": {
+      "comment": "Comment",
+      "review": "Review"
+    },
+    "reason": {
+      "spam": "Spam",
+      "offensive": "Offensive or abusive",
+      "inappropriate_photo": "Inappropriate photo",
+      "harassment": "Harassment",
+      "other": "Other"
+    },
+    "contentDeleted": "Content no longer available",
+    "columnType": "Type",
+    "columnContent": "Content",
+    "columnReason": "Reason",
+    "columnDetails": "Details",
+    "columnStatus": "Status",
+    "columnReported": "Reported",
+    "columnActions": "Actions",
+    "empty": "No reports found.",
+    "markReviewed": "Mark reviewed",
+    "dismiss": "Dismiss",
+    "removeContent": "Remove content",
+    "removeContentConfirmTitle": "Remove this content?",
+    "removeContentConfirmDescription": "This deletes the reported comment or review and marks the report as reviewed. This cannot be undone from here.",
+    "contentAlreadyRemoved": "This content was already removed."
+  }
+}

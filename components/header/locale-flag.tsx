@@ -1,14 +1,26 @@
+import BR from "country-flag-icons/react/3x2/BR";
+import DE from "country-flag-icons/react/3x2/DE";
 import ES from "country-flag-icons/react/3x2/ES";
+import FR from "country-flag-icons/react/3x2/FR";
 import GB from "country-flag-icons/react/3x2/GB";
+import IT from "country-flag-icons/react/3x2/IT";
+import MX from "country-flag-icons/react/3x2/MX";
 import PT from "country-flag-icons/react/3x2/PT";
+import US from "country-flag-icons/react/3x2/US";
 
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";
 
 const FLAGS: Record<Locale, typeof PT> = {
   "pt-PT": PT,
+  "pt-BR": BR,
   "en-GB": GB,
+  "en-US": US,
   "es-ES": ES,
+  "es-MX": MX,
+  "fr-FR": FR,
+  "de-DE": DE,
+  "it-IT": IT,
 };
 
 type LocaleFlagProps = {

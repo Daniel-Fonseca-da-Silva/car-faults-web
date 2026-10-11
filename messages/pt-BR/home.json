@@ -1,0 +1,14 @@
+{
+  "hero": {
+    "eyebrow": "Banco de dados de confiabilidade automotiva",
+    "titleBeforeHighlight": "Conheça os",
+    "titleHighlight": "defeitos",
+    "titleAfterHighlight": "antes de comprar",
+    "subtitle": "Pesquise falhas crônicas por marca, modelo, ano e motor, reportadas por milhares de proprietários reais."
+  },
+  "stats": {
+    "reports": { "label": "Relatos de proprietários" },
+    "vehicles": { "label": "Veículos catalogados" },
+    "faults": { "label": "Defeitos documentados" }
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "common": {
+    "save": "Salva",
+    "saving": "Salvataggio…",
+    "create": "Crea",
+    "creating": "Creazione…",
+    "cancel": "Annulla",
+    "delete": "Elimina",
+    "deleting": "Eliminazione…",
+    "edit": "Modifica",
+    "error": "Qualcosa è andato storto. Riprova.",
+    "notFound": "Non trovato."
+  },
+  "dashboard": {
+    "title": "Admin",
+    "description": "Gestisci il catalogo dei veicoli, i problemi noti e le soluzioni.",
+    "vehiclesCardTitle": "Catalogo veicoli",
+    "vehiclesCardDescription": "Crea, modifica e rimuovi modelli di veicoli, problemi noti e soluzioni.",
+    "goToVehicles": "Gestisci veicoli",
+    "reportsCardTitle": "Segnalazioni di contenuti",
+    "reportsCardDescription": "Esamina i commenti e le recensioni segnalati dagli utenti.",
+    "goToReports": "Gestisci segnalazioni"
+  },
+  "vehicles": {
+    "title": "Veicoli",
+    "description": "Cerca e gestisci il catalogo dei veicoli.",
+    "searchBrandPlaceholder": "Marca",
+    "searchModelPlaceholder": "Modello",
+    "search": "Cerca",
+    "newVehicle": "Nuovo veicolo",
+    "empty": "Nessun veicolo trovato.",
+    "columnBrand": "Marca",
+    "columnModel": "Modello",
+    "columnYears": "Anni",
+    "columnEngine": "Motore",
+    "columnFuelType": "Alimentazione",
+    "columnImageUrl": "URL immagine",
+    "filterImage": "Immagine",
+    "imageAll": "Tutti",
+    "imageWith": "Con immagine",
+    "imageWithout": "Senza immagine",
+    "previous": "Precedente",
+    "next": "Successiva",
+    "pageInfo": "Pagina {page} di {totalPages}"
+  },
+  "newVehiclePage": {
+    "title": "Nuovo veicolo",
+    "description": "Aggiungi un modello di veicolo al catalogo."
+  },
+  "vehicleForm": {
+    "brand": "Marca",
+    "brandPlaceholder": "es. Volkswagen",
+    "brandNoResults": "Nessuna marca corrispondente. Verrà usato il nome digitato.",
+    "model": "Modello",
+    "name": "Nome visualizzato",
+    "yearFrom": "Anno da",
+    "yearTo": "Anno a",
+    "engine": "Motore",
+    "doors": "Porte",
+    "fuelType": "Tipo di alimentazione",
+    "fuelTypeNone": "Non impostato",
+    "fuelTypeGasoline": "Benzina",
+    "fuelTypeDiesel": "Diesel",
+    "fuelTypeElectric": "Elettrico",
+    "fuelTypeGpl": "GPL",
+    "fuelTypeHybrid": "Ibrido",
+    "image": "Foto del catalogo",
+    "uploadImage": "Carica foto",
+    "uploading": "Caricamento…",
+    "uploadSucceeded": "Foto caricata correttamente.",
+    "removeImage": "Rimuovi foto",
+    "invalidImageType": "Scegli un'immagine JPEG, PNG o WEBP.",
+    "imageTooLarge": "L'immagine deve essere inferiore a 5 MB."
+  },
+  "vehicleDetail": {
+    "backToVehicles": "Torna ai veicoli",
+    "knownIssuesTitle": "Problemi noti",
+    "addIssue": "Nuovo problema noto",
+    "noIssues": "Ancora nessun problema noto.",
+    "deleteVehicle": "Elimina veicolo",
+    "deleteConfirmTitle": "Eliminare questo veicolo?",
+    "deleteConfirmDescription": "Questa azione rimuove {vehicle} e lo nasconde dalle ricerche pubbliche. Non può essere annullata da qui.",
+    "columnTitle": "Titolo",
+    "columnSeverity": "Gravità",
+    "columnLocale": "Lingua"
+  },
+  "newIssuePage": {
+    "title": "Nuovo problema noto",
+    "description": "Aggiungi un problema noto per {vehicle}."
+  },
+  "issueForm": {
+    "title": "Titolo",
+    "description": "Descrizione",
+    "severity": "Gravità",
+    "severityLow": "Bassa",
+    "severityMedium": "Media",
+    "severityHigh": "Alta",
+    "severityCritical": "Critica",
+    "locale": "Lingua",
+    "typicalKm": "Chilometraggio tipico (km)",
+    "sources": "Fonti",
+    "sourcesHint": "Un URL per riga."
+  },
+  "issueDetail": {
+    "backToVehicle": "Torna al veicolo",
+    "fixesTitle": "Soluzioni",
+    "noFixes": "Ancora nessuna soluzione.",
+    "addFix": "Nuova soluzione",
+    "deleteIssue": "Elimina problema noto",
+    "deleteConfirmTitle": "Eliminare questo problema noto?",
+    "deleteConfirmDescription": "Questa azione rimuove \"{issue}\" e le relative soluzioni. Non può essere annullata da qui."
+  },
+  "fixForm": {
+    "summary": "Riepilogo",
+    "steps": "Passaggi",
+    "addFix": "Aggiungi soluzione",
+    "editFix": "Modifica soluzione"
+  },
+  "reports": {
+    "title": "Segnalazioni",
+    "description": "Esamina i commenti e le recensioni segnalati dalla community.",
+    "filterStatus": "Stato",
+    "filterApply": "Filtra",
+    "statusAll": "Tutti",
+    "status": {
+      "pending": "In attesa",
+      "reviewed": "Esaminata",
+      "dismissed": "Archiviata"
+    },
+    "contentType": {
+      "comment": "Commento",
+      "review": "Recensione"
+    },
+    "reason": {
+      "spam": "Spam",
+      "offensive": "Offensivo o abusivo",
+      "inappropriate_photo": "Foto inappropriata",
+      "harassment": "Molestie",
+      "other": "Altro"
+    },
+    "contentDeleted": "Contenuto non più disponibile",
+    "columnType": "Tipo",
+    "columnContent": "Contenuto",
+    "columnReason": "Motivo",
+    "columnDetails": "Dettagli",
+    "columnStatus": "Stato",
+    "columnReported": "Segnalato",
+    "columnActions": "Azioni",
+    "empty": "Nessuna segnalazione trovata.",
+    "markReviewed": "Segna come esaminata",
+    "dismiss": "Archivia",
+    "removeContent": "Rimuovi contenuto",
+    "removeContentConfirmTitle": "Rimuovere questo contenuto?",
+    "removeContentConfirmDescription": "Questa azione elimina il commento o la recensione segnalati e segna la segnalazione come esaminata. Non può essere annullata da qui.",
+    "contentAlreadyRemoved": "Questo contenuto è già stato rimosso."
+  }
+}

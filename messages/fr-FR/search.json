@@ -1,0 +1,37 @@
+{
+  "title": "Trouvez les pannes de votre véhicule",
+  "statusActive": "Base de données active",
+  "statusInactive": "Base de données indisponible",
+  "fields": {
+    "make": "Marque",
+    "makePlaceholder": "ex. Volkswagen",
+    "makeNoResults": "Aucune marque correspondante. Le nom saisi sera utilisé.",
+    "model": "Modèle",
+    "modelPlaceholder": "ex. Golf",
+    "year": "Année",
+    "yearPlaceholder": "ex. 2018",
+    "engine": "Moteur",
+    "enginePlaceholder": "ex. 2.0 TDI",
+    "fuel": "Carburant",
+    "fuelPlaceholder": "Sélectionnez le type de carburant",
+    "doors": "Portes (facultatif)",
+    "doorsPlaceholder": "Sélectionnez le nombre de portes"
+  },
+  "fuelOptions": {
+    "gasoline": "Essence",
+    "diesel": "Diesel",
+    "electric": "Électrique",
+    "gpl": "GPL",
+    "hybrid": "Hybride"
+  },
+  "submit": "Rechercher des pannes",
+  "verifying": "Vérification...",
+  "errors": {
+    "required": "Veuillez remplir ce champ.",
+    "yearRange": "Saisissez une année entre {min} et {max}."
+  },
+  "captchaError": "La vérification a échoué. Veuillez refaire le test.",
+  "searchError": "Un problème est survenu lors de votre recherche. Veuillez réessayer.",
+  "searchUnavailable": "Le service de recherche est temporairement indisponible. Veuillez réessayer dans quelques instants.",
+  "searchInvalidCriteria": "Veuillez vérifier les informations du véhicule et réessayer."
+}

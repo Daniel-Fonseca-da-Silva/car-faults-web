@@ -1,0 +1,22 @@
+{
+  "hero": {
+    "eyebrow": "Garagem",
+    "emptyTitle": "Sua garagem está vazia",
+    "fallbackAlt": "Cena de garagem clássica"
+  },
+  "list": {
+    "title": "Seus veículos",
+    "empty": "Você ainda não tem veículos na garagem…",
+    "knownIssuesCount": "{count} defeitos",
+    "remove": "Remover da garagem",
+    "removeAriaLabel": "Remover {vehicle} da garagem",
+    "removeConfirmTitle": "Remover veículo?",
+    "removeConfirmDescription": "Tem certeza de que deseja remover {vehicle} da sua garagem?",
+    "removeCancel": "Cancelar"
+  },
+  "issues": {
+    "title": "Problemas conhecidos",
+    "empty": "Ainda não há problemas conhecidos para este veículo.",
+    "viewDetails": "Ver detalhes"
+  }
+}

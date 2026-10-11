@@ -1,0 +1,40 @@
+{
+  "eyebrow": "Konto",
+  "identity": {
+    "memberSince": "Mitglied seit {date}",
+    "onlineStatus": "Online"
+  },
+  "account": {
+    "title": "Kontoinformationen",
+    "email": "E-Mail",
+    "createdAt": "Erstellt am",
+    "updatedAt": "Aktualisiert am",
+    "id": "Konto-ID",
+    "copyId": "Konto-ID kopieren",
+    "copied": "ID kopiert"
+  },
+  "stats": {
+    "searches": "Durchgeführte Suchen",
+    "defectsConsulted": "Aufgerufene Mängel",
+    "savedVehicles": "Meine Fahrzeuge",
+    "favoritedVehicles": "Favoriten",
+    "votes": "Abgegebene Stimmen"
+  },
+  "vehicles": {
+    "title": "Meine Fahrzeuge",
+    "count": "{count} Fahrzeuge",
+    "empty": "Sie haben noch keine Fahrzeuge gespeichert.",
+    "knownIssuesCount": "{count} Mängel",
+    "viewDetails": "Details zu {brand} {model} ansehen"
+  },
+  "dangerZone": {
+    "title": "Gefahrenzone",
+    "deleteAccount": "Konto löschen",
+    "deleteAccountDescription": "Deaktiviert Ihr Konto (logische Löschung). Eine erneute Anmeldung mit demselben Google-Konto kann den Zugang wiederherstellen.",
+    "confirmTitle": "Sind Sie sicher?",
+    "confirmDescription": "Ihr Konto wird sofort deaktiviert. Eine erneute Anmeldung mit demselben Google-Konto kann den Zugang wiederherstellen.",
+    "confirmCancel": "Abbrechen",
+    "confirmDelete": "Ja, Konto löschen",
+    "deleteError": "Das Konto konnte nicht gelöscht werden. Bitte versuchen Sie es erneut."
+  }
+}

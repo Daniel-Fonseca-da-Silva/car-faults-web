@@ -1,0 +1,52 @@
+{
+  "badge": "🚀 Projeto independente",
+  "title": "Apoie o Auto Crónica",
+  "photoAlt": "Meu Volkswagen Polo 6N1",
+  "authorName": "Daniel Fonseca da Silva",
+  "authorRole": "Criador e único programador do Auto Crónica",
+  "intro": "Oi, sou eu de novo. O Auto Crónica é feito e mantido só por mim, nas horas vagas e sem nenhum financiamento. Se o projeto já te ajudou a comprar um carro com mais confiança, uma doação por Pix faz uma baita diferença. 🙏",
+  "benefitsTitle": "Para que serve sua doação",
+  "benefits": {
+    "servers": {
+      "emoji": "🖥️",
+      "title": "Mantém os servidores funcionando",
+      "body": "Sua doação ajuda a pagar a hospedagem, o banco de dados e a inteligência artificial que analisa os defeitos, para o site estar sempre disponível."
+    },
+    "features": {
+      "emoji": "🚀",
+      "title": "Incentivo para novas funcionalidades",
+      "body": "Cada apoio é um empurrão extra para continuar a desenvolver novidades: mais marcas, mais modelos e melhores ferramentas de pesquisa."
+    },
+    "coffee": {
+      "emoji": "☕",
+      "title": "Um café para o programador",
+      "body": "Este projeto nasce das horas vagas. Um café (ou dois) me ajuda a manter a energia para continuar construindo com carinho."
+    }
+  },
+  "donationTitle": "☕ Me pague um café",
+  "donationBody": "Em Portugal? Mande sua doação por MBWay para o número abaixo, pelo app do seu banco.",
+  "numberLabel": "Número MBWay",
+  "copyNumber": "Copiar número",
+  "copied": "Copiado!",
+  "internationalTitle": "🌍 Fora de Portugal? Pague com a Wise",
+  "internationalBody": "O MBWay só funciona com contas portuguesas. Se você está em outro país, escaneie o código com o app da Wise ou use o botão abaixo, sem precisar saber o IBAN nem o SWIFT.",
+  "wiseQrAlt": "Código QR para pagar pela Wise",
+  "wiseButtonLabel": "Pagar pela Wise",
+  "wiseLinkLabel": "Link de pagamento Wise",
+  "copyLink": "Copiar link",
+  "pixTitle": "🇧🇷 No Brasil? Pague por Pix",
+  "pixBody": "Escaneie o código com o app do seu banco ou copie o código Pix. O valor fica em aberto: você escolhe quanto quer doar.",
+  "pixQrAlt": "Código QR para pagar por Pix",
+  "copyPixCode": "Copiar código Pix",
+  "pixKeyLabel": "Ou use a chave Pix",
+  "copyPixKey": "Copiar chave",
+  "amountsTitle": "Sugestões de valores",
+  "amounts": {
+    "coffee": { "emoji": "☕", "label": "Um café" },
+    "snack": { "emoji": "🥐", "label": "Café com pão de queijo" },
+    "boost": { "emoji": "🚀", "label": "Impulsiona uma nova funcionalidade" }
+  },
+  "thanksTitle": "Obrigado! 🙌",
+  "thanksBody": "Qualquer valor é bem-vindo e faz toda a diferença. Obrigado por fazer parte desta comunidade de apaixonados por carros.",
+  "signature": "Daniel Fonseca da Silva"
+}

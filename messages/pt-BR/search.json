@@ -1,0 +1,37 @@
+{
+  "title": "Encontre os defeitos do seu veículo",
+  "statusActive": "Banco ativo",
+  "statusInactive": "Banco indisponível",
+  "fields": {
+    "make": "Marca",
+    "makePlaceholder": "ex.: Volkswagen",
+    "makeNoResults": "Sem marcas correspondentes. Usamos o texto que você digitou.",
+    "model": "Modelo",
+    "modelPlaceholder": "ex.: Golf",
+    "year": "Ano",
+    "yearPlaceholder": "ex.: 2018",
+    "engine": "Motor",
+    "enginePlaceholder": "ex.: 2.0 TDI",
+    "fuel": "Combustível",
+    "fuelPlaceholder": "Selecione o combustível",
+    "doors": "Portas (opcional)",
+    "doorsPlaceholder": "Selecione o número de portas"
+  },
+  "fuelOptions": {
+    "gasoline": "Gasolina",
+    "diesel": "Diesel",
+    "electric": "Elétrico",
+    "gpl": "GNV/GLP",
+    "hybrid": "Híbrido"
+  },
+  "submit": "Pesquisar defeitos",
+  "verifying": "Verificando...",
+  "errors": {
+    "required": "Preencha este campo.",
+    "yearRange": "Informe um ano entre {min} e {max}."
+  },
+  "captchaError": "Falha na verificação. Tente novamente.",
+  "searchError": "Ocorreu um erro na pesquisa. Tente novamente.",
+  "searchUnavailable": "O serviço de pesquisa está temporariamente indisponível. Tente novamente daqui a pouco.",
+  "searchInvalidCriteria": "Verifique os dados do veículo e tenta novamente."
+}

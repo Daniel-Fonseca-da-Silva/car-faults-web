@@ -1,0 +1,157 @@
+{
+  "common": {
+    "save": "Speichern",
+    "saving": "Wird gespeichert…",
+    "create": "Erstellen",
+    "creating": "Wird erstellt…",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "deleting": "Wird gelöscht…",
+    "edit": "Bearbeiten",
+    "error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+    "notFound": "Nicht gefunden."
+  },
+  "dashboard": {
+    "title": "Admin",
+    "description": "Fahrzeugkatalog, bekannte Probleme und Lösungen verwalten.",
+    "vehiclesCardTitle": "Fahrzeugkatalog",
+    "vehiclesCardDescription": "Fahrzeugmodelle, bekannte Probleme und Lösungen erstellen, bearbeiten und entfernen.",
+    "goToVehicles": "Fahrzeuge verwalten",
+    "reportsCardTitle": "Inhaltsmeldungen",
+    "reportsCardDescription": "Von Nutzern gemeldete Kommentare und Bewertungen prüfen.",
+    "goToReports": "Meldungen verwalten"
+  },
+  "vehicles": {
+    "title": "Fahrzeuge",
+    "description": "Fahrzeugkatalog durchsuchen und verwalten.",
+    "searchBrandPlaceholder": "Marke",
+    "searchModelPlaceholder": "Modell",
+    "search": "Suchen",
+    "newVehicle": "Neues Fahrzeug",
+    "empty": "Keine Fahrzeuge gefunden.",
+    "columnBrand": "Marke",
+    "columnModel": "Modell",
+    "columnYears": "Baujahre",
+    "columnEngine": "Motor",
+    "columnFuelType": "Kraftstoff",
+    "columnImageUrl": "Bild-URL",
+    "filterImage": "Bild",
+    "imageAll": "Alle",
+    "imageWith": "Mit Bild",
+    "imageWithout": "Ohne Bild",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "pageInfo": "Seite {page} von {totalPages}"
+  },
+  "newVehiclePage": {
+    "title": "Neues Fahrzeug",
+    "description": "Ein Fahrzeugmodell zum Katalog hinzufügen."
+  },
+  "vehicleForm": {
+    "brand": "Marke",
+    "brandPlaceholder": "z. B. Volkswagen",
+    "brandNoResults": "Keine passende Marke. Der eingegebene Name wird verwendet.",
+    "model": "Modell",
+    "name": "Anzeigename",
+    "yearFrom": "Baujahr von",
+    "yearTo": "Baujahr bis",
+    "engine": "Motor",
+    "doors": "Türen",
+    "fuelType": "Kraftstoffart",
+    "fuelTypeNone": "Nicht festgelegt",
+    "fuelTypeGasoline": "Benzin",
+    "fuelTypeDiesel": "Diesel",
+    "fuelTypeElectric": "Elektro",
+    "fuelTypeGpl": "Autogas (LPG)",
+    "fuelTypeHybrid": "Hybrid",
+    "image": "Katalogfoto",
+    "uploadImage": "Foto hochladen",
+    "uploading": "Wird hochgeladen…",
+    "uploadSucceeded": "Foto erfolgreich hochgeladen.",
+    "removeImage": "Foto entfernen",
+    "invalidImageType": "Bitte wählen Sie ein JPEG-, PNG- oder WEBP-Bild.",
+    "imageTooLarge": "Das Bild muss kleiner als 5 MB sein."
+  },
+  "vehicleDetail": {
+    "backToVehicles": "Zurück zu den Fahrzeugen",
+    "knownIssuesTitle": "Bekannte Probleme",
+    "addIssue": "Neues bekanntes Problem",
+    "noIssues": "Noch keine bekannten Probleme.",
+    "deleteVehicle": "Fahrzeug löschen",
+    "deleteConfirmTitle": "Dieses Fahrzeug löschen?",
+    "deleteConfirmDescription": "Dadurch wird {vehicle} entfernt und aus öffentlichen Suchen ausgeblendet. Dies kann hier nicht rückgängig gemacht werden.",
+    "columnTitle": "Titel",
+    "columnSeverity": "Schweregrad",
+    "columnLocale": "Sprache"
+  },
+  "newIssuePage": {
+    "title": "Neues bekanntes Problem",
+    "description": "Ein bekanntes Problem für {vehicle} hinzufügen."
+  },
+  "issueForm": {
+    "title": "Titel",
+    "description": "Beschreibung",
+    "severity": "Schweregrad",
+    "severityLow": "Gering",
+    "severityMedium": "Mittel",
+    "severityHigh": "Hoch",
+    "severityCritical": "Kritisch",
+    "locale": "Sprache",
+    "typicalKm": "Typische Laufleistung (km)",
+    "sources": "Quellen",
+    "sourcesHint": "Eine URL pro Zeile."
+  },
+  "issueDetail": {
+    "backToVehicle": "Zurück zum Fahrzeug",
+    "fixesTitle": "Lösungen",
+    "noFixes": "Noch keine Lösungen.",
+    "addFix": "Neue Lösung",
+    "deleteIssue": "Bekanntes Problem löschen",
+    "deleteConfirmTitle": "Dieses bekannte Problem löschen?",
+    "deleteConfirmDescription": "Dadurch werden \"{issue}\" und die zugehörigen Lösungen entfernt. Dies kann hier nicht rückgängig gemacht werden."
+  },
+  "fixForm": {
+    "summary": "Zusammenfassung",
+    "steps": "Schritte",
+    "addFix": "Lösung hinzufügen",
+    "editFix": "Lösung bearbeiten"
+  },
+  "reports": {
+    "title": "Meldungen",
+    "description": "Von der Community gemeldete Kommentare und Bewertungen prüfen.",
+    "filterStatus": "Status",
+    "filterApply": "Filtern",
+    "statusAll": "Alle",
+    "status": {
+      "pending": "Ausstehend",
+      "reviewed": "Geprüft",
+      "dismissed": "Verworfen"
+    },
+    "contentType": {
+      "comment": "Kommentar",
+      "review": "Bewertung"
+    },
+    "reason": {
+      "spam": "Spam",
+      "offensive": "Beleidigend oder missbräuchlich",
+      "inappropriate_photo": "Unangemessenes Foto",
+      "harassment": "Belästigung",
+      "other": "Sonstiges"
+    },
+    "contentDeleted": "Inhalt nicht mehr verfügbar",
+    "columnType": "Typ",
+    "columnContent": "Inhalt",
+    "columnReason": "Grund",
+    "columnDetails": "Details",
+    "columnStatus": "Status",
+    "columnReported": "Gemeldet",
+    "columnActions": "Aktionen",
+    "empty": "Keine Meldungen gefunden.",
+    "markReviewed": "Als geprüft markieren",
+    "dismiss": "Verwerfen",
+    "removeContent": "Inhalt entfernen",
+    "removeContentConfirmTitle": "Diesen Inhalt entfernen?",
+    "removeContentConfirmDescription": "Dadurch wird der gemeldete Kommentar bzw. die Bewertung gelöscht und die Meldung als geprüft markiert. Dies kann hier nicht rückgängig gemacht werden.",
+    "contentAlreadyRemoved": "Dieser Inhalt wurde bereits entfernt."
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "home": {
+    "title": "Auto Crónica - Chronische Mängel nach Marke und Modell",
+    "description": "Suchen Sie vor dem Gebrauchtwagenkauf nach chronischen Problemen nach Marke, Modell, Baujahr und Motor."
+  },
+  "defectsHub": {
+    "title": "Mängel nach Fahrzeug",
+    "description": "Entdecken Sie die am häufigsten gemeldeten chronischen Probleme nach Marke und Modell."
+  },
+  "brandPage": {
+    "titleTemplate": "{make} Mängel - Modelle und häufige Probleme",
+    "descriptionTemplate": "Verfügbare {make}-Modelle und die am häufigsten gemeldeten chronischen Mängel nach Baujahr, Kraftstoffart und Motor."
+  },
+  "modelPage": {
+    "titleTemplate": "{make} {model} Mängel - Baujahre und Motorvarianten",
+    "descriptionTemplate": "Entdecken Sie die Varianten des {make} {model} nach Baujahr, Kraftstoffart und Motor und sehen Sie die am häufigsten gemeldeten chronischen Mängel."
+  },
+  "vehiclePage": {
+    "titleTemplate": "{make} {model}{variant} {year} Mängel",
+    "descriptionTemplate": "Häufige Probleme und bekannte Mängel des {make} {model}{variant} {year}: Schweregrad, Lösungen und echte Berichte von Besitzern."
+  },
+  "about": {
+    "title": "Über uns",
+    "description": "Softwareentwickler und Autoliebhaber: warum ich Auto Crónica entwickelt habe und wie der Katalog chronischer Mängel Ihnen hilft, mit mehr Informationen zu kaufen."
+  },
+  "support": {
+    "title": "Unterstützen",
+    "description": "Unterstützen Sie Auto Crónica mit einer Spende über MBWay und helfen Sie, die Server am Laufen zu halten und neue Funktionen zu ermöglichen."
+  },
+  "login": {
+    "title": "Anmelden",
+    "description": "Melden Sie sich bei Ihrem Auto-Crónica-Konto an, um Mängel zu durchsuchen."
+  },
+  "profile": {
+    "title": "Mein Konto",
+    "description": "Sehen Sie Ihr Profil, Ihre Nutzungsstatistiken und gespeicherten Fahrzeuge bei Auto Crónica."
+  },
+  "garage": {
+    "title": "Meine Garage",
+    "description": "Sehen Sie die Fahrzeuge, die Sie besitzen, und ihre bekannten Probleme in Ihrer Auto-Crónica-Garage."
+  },
+  "favorites": {
+    "title": "Favoriten",
+    "description": "Verfolgen Sie bei Auto Crónica die Fahrzeuge, deren Probleme Sie im Blick behalten möchten."
+  },
+  "admin": {
+    "title": "Admin",
+    "description": "Fahrzeugkatalog, bekannte Probleme und Lösungen verwalten."
+  },
+  "privacy": {
+    "title": "Datenschutz & Nutzungsbedingungen",
+    "description": "Lesen Sie die Datenschutzerklärung und die Nutzungsbedingungen von Auto Crónica."
+  },
+  "accountDeletion": {
+    "title": "Kontolöschung",
+    "description": "Erfahren Sie, wie Sie Ihr Auto-Crónica-Konto und die zugehörigen Daten löschen, in der App oder per E-Mail."
+  }
+}

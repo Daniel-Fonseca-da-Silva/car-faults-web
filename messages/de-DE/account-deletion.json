@@ -1,0 +1,41 @@
+{
+  "hero": {
+    "title": "Kontolöschung",
+    "lead": "So beantragen Sie die Löschung Ihres Auto-Crónica-Kontos und der zugehörigen Daten – auch wenn Sie die App nicht mehr installiert haben."
+  },
+  "policy": {
+    "title": "So löschen Sie Ihr Konto und Ihre Daten",
+    "effectiveDate": "Gültig ab: 18. September 2026",
+    "lastUpdated": "Zuletzt aktualisiert: 18. September 2026",
+    "sections": {
+      "overview": {
+        "heading": "1. Über diese Seite",
+        "body": "Dieses Verfahren gilt für Konten, die in der Auto-Crónica-App (Android) erstellt wurden, entwickelt von Daniel Fonseca da Silva. Wenn Sie ein Auto-Crónica-Konto haben, können Sie jederzeit dessen Löschung und die Löschung der zugehörigen personenbezogenen Daten beantragen, unabhängig davon, ob Sie die App noch installiert haben."
+      },
+      "inApp": {
+        "heading": "2. Löschen in der App (am schnellsten)",
+        "body": "1. Öffnen Sie die Auto-Crónica-App und melden Sie sich an.\n2. Tippen Sie in der unteren Navigationsleiste auf den Tab \"Profil\".\n3. Scrollen Sie zum Abschnitt \"Gefahrenzone\".\n4. Tippen Sie auf \"Konto löschen\" und bestätigen Sie mit \"Ja, Konto löschen\".\n\nIhr Konto wird unmittelbar nach der Bestätigung gelöscht; Sie müssen den Support nicht kontaktieren."
+      },
+      "withoutApp": {
+        "heading": "3. Löschen ohne installierte App",
+        "body": "Wenn Sie die App nicht mehr installiert haben, aber zuvor ein Konto hatten, senden Sie eine E-Mail mit dem Betreff \"Kontolöschung\" an dafondeveloper@gmail.com, und zwar von derselben E-Mail-Adresse des Google-Kontos, mit dem Sie sich bei Auto Crónica angemeldet haben. Wir bestätigen die Anfrage und führen die Löschung manuell durch."
+      },
+      "dataDeleted": {
+        "heading": "4. Sofort gelöschte Daten",
+        "body": "Sobald Sie die Löschung bestätigen, werden die folgenden personenbezogenen Daten sofort entfernt oder anonymisiert: Profilname, E-Mail-Adresse, Profilfoto (Avatar) und die Verknüpfung mit Ihrem Google-Konto. Ihr Kontoverlauf kann über diese Daten nicht mehr mit Ihnen in Verbindung gebracht werden."
+      },
+      "dataRetained": {
+        "heading": "5. Daten, die anonymisiert aufbewahrt werden können",
+        "body": "Um die Integrität des gemeinsamen Mängelkatalogs zu wahren, können einige von Ihnen beigetragene Inhalte – Kommentare, Bewertungen und Stimmen zu bekannten Problemen – im Dienst sichtbar bleiben, jedoch von Ihrer Identität getrennt (angezeigt als \"Gelöschter Nutzer\"). Technische und Sicherheitsprotokolle können so lange aufbewahrt werden, wie es für Betrieb, Sicherheit und die Einhaltung gesetzlicher Vorschriften erforderlich ist.\n\nWeitere Informationen zu Aufbewahrungsfristen und Rechtsgrundlagen finden Sie im Abschnitt \"Datenspeicherung und Löschung\" unserer Datenschutzerklärung."
+      },
+      "timeframe": {
+        "heading": "6. Bearbeitungszeit",
+        "body": "Anfragen über die App werden sofort bearbeitet. Anfragen per E-Mail werden bestätigt und in der Regel innerhalb weniger Werktage bearbeitet, keinesfalls jedoch später als innerhalb der nach der DSGVO vorgeschriebenen Frist von 30 Tagen."
+      },
+      "contact": {
+        "heading": "7. Kontakt",
+        "body": "Bei Fragen zu diesem Verfahren oder zu Ihren Daten kontaktieren Sie uns unter dafondeveloper@gmail.com oder lesen Sie unsere vollständige Datenschutzerklärung."
+      }
+    }
+  }
+}

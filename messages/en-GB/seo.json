@@ -17,7 +17,7 @@
   },
   "vehiclePage": {
     "titleTemplate": "{make} {model}{variant} {year} faults",
-    "descriptionTemplate": "Common problems and known faults reported for the {make} {model}{variant} {year}: severity, typical cost and real owner reports."
+    "descriptionTemplate": "Common problems and known faults reported for the {make} {model}{variant} {year}: severity, fixes and real owner reports."
   },
   "about": {
     "title": "About",

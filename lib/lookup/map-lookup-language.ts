@@ -1,6 +1,6 @@
 import { defaultLocale, locales, type Locale } from "@/i18n/locales";
 
-export type LookupLanguage = "pt-PT" | "en-GB" | "es-ES";
+export type LookupLanguage = Locale;
 
 function isLocale(value: string): value is Locale {
   return (locales as readonly string[]).includes(value);

@@ -17,7 +17,7 @@
   },
   "vehiclePage": {
     "titleTemplate": "Defectos del {make} {model}{variant} {year}",
-    "descriptionTemplate": "Problemas comunes y averías conocidas del {make} {model}{variant} {year}: gravedad, coste típico y reportes reales de propietarios."
+    "descriptionTemplate": "Problemas comunes y averías conocidas del {make} {model}{variant} {year}: gravedad, soluciones y reportes reales de propietarios."
   },
   "about": {
     "title": "Acerca de",

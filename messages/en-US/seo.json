@@ -1,0 +1,58 @@
+{
+  "home": {
+    "title": "Auto Crónica - Chronic faults by make and model",
+    "description": "Search chronic issues by make, model, year and engine before buying a used car."
+  },
+  "defectsHub": {
+    "title": "Faults by vehicle",
+    "description": "Explore the most reported chronic issues by make and model."
+  },
+  "brandPage": {
+    "titleTemplate": "{make} faults - models and common issues",
+    "descriptionTemplate": "Browse available {make} models and the most reported chronic faults by year, fuel type and engine."
+  },
+  "modelPage": {
+    "titleTemplate": "{make} {model} faults - years and engine variants",
+    "descriptionTemplate": "Explore {make} {model} variants by year, fuel type and engine, and see the most reported chronic faults."
+  },
+  "vehiclePage": {
+    "titleTemplate": "{make} {model}{variant} {year} faults",
+    "descriptionTemplate": "Common problems and known faults reported for the {make} {model}{variant} {year}: severity, fixes and real owner reports."
+  },
+  "about": {
+    "title": "About",
+    "description": "Software engineer and car enthusiast: why I built Auto Crónica and how the chronic faults catalog helps you buy with more information."
+  },
+  "support": {
+    "title": "Support",
+    "description": "Support Auto Crónica with a donation via MBWay and help keep the servers running and new features coming."
+  },
+  "login": {
+    "title": "Sign in",
+    "description": "Sign in to your Auto Crónica account to browse faults."
+  },
+  "profile": {
+    "title": "My account",
+    "description": "View your profile, usage stats and saved vehicles on Auto Crónica."
+  },
+  "garage": {
+    "title": "My garage",
+    "description": "View the vehicles you own and their known issues in your Auto Crónica garage."
+  },
+  "favorites": {
+    "title": "Favorites",
+    "description": "Follow the vehicles whose issues you want to keep an eye on on Auto Crónica."
+  },
+  "admin": {
+    "title": "Admin",
+    "description": "Manage the vehicle catalog, known issues and fixes."
+  },
+  "privacy": {
+    "title": "Privacy & Terms",
+    "description": "Read the Auto Crónica Privacy Policy and Terms of Service."
+  },
+  "accountDeletion": {
+    "title": "Account Deletion",
+    "description": "Learn how to delete your Auto Crónica account and associated data, from the app or by email."
+  }
+}

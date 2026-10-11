@@ -1,0 +1,41 @@
+{
+  "hero": {
+    "title": "Suppression du compte",
+    "lead": "Voici comment demander la suppression de votre compte Auto Crónica et des données associées, même si l'application n'est plus installée."
+  },
+  "policy": {
+    "title": "Comment supprimer votre compte et vos données",
+    "effectiveDate": "Date d'entrée en vigueur : 18 septembre 2026",
+    "lastUpdated": "Dernière mise à jour : 18 septembre 2026",
+    "sections": {
+      "overview": {
+        "heading": "1. À propos de cette page",
+        "body": "Cette procédure s'applique aux comptes créés dans l'application Auto Crónica (Android), développée par Daniel Fonseca da Silva. Si vous avez un compte Auto Crónica, vous pouvez demander à tout moment sa suppression ainsi que celle des données personnelles associées, que l'application soit encore installée ou non."
+      },
+      "inApp": {
+        "heading": "2. Supprimer depuis l'application (le plus rapide)",
+        "body": "1. Ouvrez l'application Auto Crónica et connectez-vous.\n2. Touchez l'onglet « Profil » dans la barre de navigation inférieure.\n3. Faites défiler jusqu'à la section « Zone de danger ».\n4. Touchez « Supprimer le compte » et confirmez avec « Oui, supprimer le compte ».\n\nVotre compte est supprimé immédiatement après confirmation ; il n'est pas nécessaire de contacter le support."
+      },
+      "withoutApp": {
+        "heading": "3. Supprimer sans l'application installée",
+        "body": "Si l'application n'est plus installée mais que vous aviez un compte, envoyez un e-mail à dafondeveloper@gmail.com avec l'objet « Suppression du compte », depuis l'adresse du compte Google utilisé pour vous connecter à Auto Crónica. Nous confirmerons la demande et procéderons manuellement à la suppression."
+      },
+      "dataDeleted": {
+        "heading": "4. Données supprimées immédiatement",
+        "body": "Dès que vous confirmez la suppression, les données personnelles identifiables suivantes sont supprimées ou anonymisées immédiatement : nom du profil, adresse e-mail, photo de profil (avatar) et lien avec votre compte Google. L'historique de votre compte ne peut plus vous être rattaché à travers ces données."
+      },
+      "dataRetained": {
+        "heading": "5. Données pouvant être conservées, de manière anonymisée",
+        "body": "Afin de préserver l'intégrité du catalogue de pannes partagé, certains contenus que vous avez publiés (commentaires, avis et votes sur des problèmes connus) peuvent rester visibles sur le Service, mais dissociés de votre identité (affichés comme « Utilisateur supprimé »). Les journaux techniques et de sécurité peuvent être conservés aussi longtemps que nécessaire pour le fonctionnement, la sécurité et le respect des obligations légales.\n\nPour plus de détails sur les durées de conservation et les bases légales, consultez la section « Conservation et suppression des données » de notre Politique de confidentialité."
+      },
+      "timeframe": {
+        "heading": "6. Délai de traitement",
+        "body": "Les demandes effectuées depuis l'application sont traitées immédiatement. Les demandes envoyées par e-mail sont confirmées et généralement traitées en quelques jours ouvrables, et jamais au-delà du délai de 30 jours prévu par le RGPD."
+      },
+      "contact": {
+        "heading": "7. Contact",
+        "body": "Pour toute question sur cette procédure ou sur vos données, contactez-nous à dafondeveloper@gmail.com ou consultez notre Politique de confidentialité complète."
+      }
+    }
+  }
+}

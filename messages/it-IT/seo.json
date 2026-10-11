@@ -1,0 +1,58 @@
+{
+  "home": {
+    "title": "Auto Crónica - Difetti cronici per marca e modello",
+    "description": "Cerca i problemi cronici per marca, modello, anno e motore prima di comprare un'auto usata."
+  },
+  "defectsHub": {
+    "title": "Difetti per veicolo",
+    "description": "Esplora i problemi cronici più segnalati per marca e modello."
+  },
+  "brandPage": {
+    "titleTemplate": "Difetti {make} - modelli e problemi comuni",
+    "descriptionTemplate": "Sfoglia i modelli {make} disponibili e i difetti cronici più segnalati per anno, alimentazione e motore."
+  },
+  "modelPage": {
+    "titleTemplate": "Difetti {make} {model} - anni e motorizzazioni",
+    "descriptionTemplate": "Esplora le versioni di {make} {model} per anno, alimentazione e motore e scopri i difetti cronici più segnalati."
+  },
+  "vehiclePage": {
+    "titleTemplate": "Difetti {make} {model}{variant} {year}",
+    "descriptionTemplate": "Problemi comuni e difetti noti segnalati per {make} {model}{variant} {year}: gravità, soluzioni e segnalazioni reali dei proprietari."
+  },
+  "about": {
+    "title": "Chi siamo",
+    "description": "Ingegnere del software e appassionato di auto: perché ho creato Auto Crónica e come il catalogo dei difetti cronici ti aiuta a comprare con più informazioni."
+  },
+  "support": {
+    "title": "Sostieni",
+    "description": "Sostieni Auto Crónica con una donazione tramite MBWay e aiuta a mantenere attivi i server e a portare nuove funzionalità."
+  },
+  "login": {
+    "title": "Accedi",
+    "description": "Accedi al tuo account Auto Crónica per consultare i difetti."
+  },
+  "profile": {
+    "title": "Il mio account",
+    "description": "Visualizza il tuo profilo, le statistiche di utilizzo e i veicoli salvati su Auto Crónica."
+  },
+  "garage": {
+    "title": "Il mio garage",
+    "description": "Visualizza i veicoli che possiedi e i loro problemi noti nel tuo garage di Auto Crónica."
+  },
+  "favorites": {
+    "title": "Preferiti",
+    "description": "Segui su Auto Crónica i veicoli di cui vuoi tenere d'occhio i problemi."
+  },
+  "admin": {
+    "title": "Admin",
+    "description": "Gestisci il catalogo dei veicoli, i problemi noti e le soluzioni."
+  },
+  "privacy": {
+    "title": "Privacy e Termini",
+    "description": "Leggi l'Informativa sulla privacy e i Termini di servizio di Auto Crónica."
+  },
+  "accountDeletion": {
+    "title": "Eliminazione dell'account",
+    "description": "Scopri come eliminare il tuo account Auto Crónica e i dati associati, dall'app o via email."
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "hero": {
+    "title": "Eliminazione dell'account",
+    "lead": "Ecco come richiedere l'eliminazione del tuo account Auto Crónica e dei dati associati, anche se non hai più l'app installata."
+  },
+  "policy": {
+    "title": "Come eliminare il tuo account e i tuoi dati",
+    "effectiveDate": "Data di entrata in vigore: 18 settembre 2026",
+    "lastUpdated": "Ultimo aggiornamento: 18 settembre 2026",
+    "sections": {
+      "overview": {
+        "heading": "1. Informazioni su questa pagina",
+        "body": "Questa procedura si applica agli account creati nell'app Auto Crónica (Android), sviluppata da Daniel Fonseca da Silva. Se hai un account Auto Crónica, puoi richiederne in qualsiasi momento l'eliminazione e l'eliminazione dei dati personali associati, che tu abbia ancora l'app installata o meno."
+      },
+      "inApp": {
+        "heading": "2. Elimina dall'app (il modo più rapido)",
+        "body": "1. Apri l'app Auto Crónica ed effettua l'accesso.\n2. Tocca la scheda \"Profilo\" nella barra di navigazione in basso.\n3. Scorri fino alla sezione \"Zona pericolosa\".\n4. Tocca \"Elimina account\" e conferma con \"Sì, elimina account\".\n\nIl tuo account viene eliminato subito dopo la conferma; non è necessario contattare l'assistenza."
+      },
+      "withoutApp": {
+        "heading": "3. Elimina senza l'app installata",
+        "body": "Se non hai più l'app installata ma in precedenza avevi un account, invia un'email a dafondeveloper@gmail.com con oggetto \"Eliminazione account\", dallo stesso indirizzo email dell'account Google che usavi per accedere ad Auto Crónica. Confermeremo la richiesta ed elaboreremo l'eliminazione manualmente."
+      },
+      "dataDeleted": {
+        "heading": "4. Dati eliminati immediatamente",
+        "body": "Una volta confermata l'eliminazione, i seguenti dati personali identificativi vengono rimossi o anonimizzati immediatamente: nome del profilo, indirizzo email, foto del profilo (avatar) e il collegamento al tuo account Google. La cronologia del tuo account non potrà più essere ricondotta a te tramite questi dati."
+      },
+      "dataRetained": {
+        "heading": "5. Dati che possono essere conservati in forma anonima",
+        "body": "Per preservare l'integrità del catalogo condiviso dei difetti, alcuni contenuti che hai contribuito - commenti, recensioni e voti sui problemi noti - possono restare visibili nel Servizio, ma dissociati dalla tua identità (mostrati come \"Utente eliminato\"). I log tecnici e di sicurezza possono essere conservati per il tempo necessario a fini operativi, di sicurezza e di conformità legale.\n\nPer maggiori dettagli sui periodi di conservazione e sulle basi giuridiche, consulta la sezione \"Conservazione ed eliminazione dei dati\" della nostra Informativa sulla privacy."
+      },
+      "timeframe": {
+        "heading": "6. Tempi di elaborazione",
+        "body": "Le richieste effettuate tramite l'app vengono elaborate immediatamente. Le richieste inviate via email vengono confermate e di solito elaborate entro pochi giorni lavorativi, e mai oltre il termine di 30 giorni previsto dal GDPR."
+      },
+      "contact": {
+        "heading": "7. Contatti",
+        "body": "Per domande su questa procedura o sui tuoi dati, contattaci all'indirizzo dafondeveloper@gmail.com oppure consulta la nostra Informativa sulla privacy completa."
+      }
+    }
+  }
+}

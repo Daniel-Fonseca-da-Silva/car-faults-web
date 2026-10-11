@@ -5,7 +5,16 @@ import type {
   VehicleTechSpecs,
 } from "@/types/lookup";
 
-export type AdminIssueLocale = "pt-PT" | "en-GB" | "es-ES";
+export type AdminIssueLocale =
+  | "pt-PT"
+  | "pt-BR"
+  | "en-GB"
+  | "en-US"
+  | "es-ES"
+  | "es-MX"
+  | "fr-FR"
+  | "de-DE"
+  | "it-IT";
 
 export interface AdminVehicleModel {
   id: string;
