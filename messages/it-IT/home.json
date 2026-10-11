@@ -1,0 +1,20 @@
+{
+  "hero": {
+    "eyebrow": "Database sull'affidabilità delle auto",
+    "titleBeforeHighlight": "Conosci i",
+    "titleHighlight": "difetti",
+    "titleAfterHighlight": "prima di comprare",
+    "subtitle": "Cerca i problemi cronici per marca, modello, anno e motore - segnalati da migliaia di proprietari reali."
+  },
+  "stats": {
+    "reports": {
+      "label": "Segnalazioni dei proprietari"
+    },
+    "vehicles": {
+      "label": "Veicoli catalogati"
+    },
+    "faults": {
+      "label": "Difetti documentati"
+    }
+  }
+}

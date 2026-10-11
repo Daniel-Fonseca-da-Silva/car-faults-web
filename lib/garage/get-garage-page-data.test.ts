@@ -137,7 +137,7 @@ describe("getGaragePageData", () => {
       nextCursor: null,
     });
 
-    await getGaragePageData("fr-FR");
+    await getGaragePageData("ja-JP");
 
     expect(getCurrentUserVehiclesMock).toHaveBeenCalledWith({
       language: "pt-PT",

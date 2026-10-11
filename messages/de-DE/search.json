@@ -1,0 +1,37 @@
+{
+  "title": "Finden Sie die Mängel Ihres Fahrzeugs",
+  "statusActive": "Datenbank aktiv",
+  "statusInactive": "Datenbank nicht verfügbar",
+  "fields": {
+    "make": "Marke",
+    "makePlaceholder": "z. B. Volkswagen",
+    "makeNoResults": "Keine passende Marke. Der eingegebene Name wird verwendet.",
+    "model": "Modell",
+    "modelPlaceholder": "z. B. Golf",
+    "year": "Baujahr",
+    "yearPlaceholder": "z. B. 2018",
+    "engine": "Motor",
+    "enginePlaceholder": "z. B. 2.0 TDI",
+    "fuel": "Kraftstoff",
+    "fuelPlaceholder": "Kraftstoffart auswählen",
+    "doors": "Türen (optional)",
+    "doorsPlaceholder": "Anzahl der Türen auswählen"
+  },
+  "fuelOptions": {
+    "gasoline": "Benzin",
+    "diesel": "Diesel",
+    "electric": "Elektro",
+    "gpl": "Autogas (LPG)",
+    "hybrid": "Hybrid"
+  },
+  "submit": "Mängel suchen",
+  "verifying": "Wird überprüft...",
+  "errors": {
+    "required": "Bitte füllen Sie dieses Feld aus.",
+    "yearRange": "Geben Sie ein Jahr zwischen {min} und {max} ein."
+  },
+  "captchaError": "Überprüfung fehlgeschlagen. Bitte lösen Sie die Aufgabe erneut.",
+  "searchError": "Bei Ihrer Suche ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+  "searchUnavailable": "Der Suchdienst ist vorübergehend nicht verfügbar. Bitte versuchen Sie es in Kürze erneut.",
+  "searchInvalidCriteria": "Bitte überprüfen Sie die Fahrzeugdaten und versuchen Sie es erneut."
+}

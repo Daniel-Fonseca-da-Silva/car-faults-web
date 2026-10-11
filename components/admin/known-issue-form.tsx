@@ -27,7 +27,17 @@ const SEVERITY_LABEL_KEYS = {
   critical: "issueForm.severityCritical",
 } as const satisfies Record<IssueSeverity, string>;
 
-const LOCALES: AdminIssueLocale[] = ["en-GB", "pt-PT", "es-ES"];
+const LOCALES: AdminIssueLocale[] = [
+  "en-GB",
+  "pt-PT",
+  "pt-BR",
+  "en-US",
+  "es-ES",
+  "es-MX",
+  "fr-FR",
+  "de-DE",
+  "it-IT",
+];
 
 interface KnownIssueFormProps {
   vehicleModelId: string;

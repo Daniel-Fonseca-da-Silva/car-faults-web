@@ -13,8 +13,14 @@ const SCRIPT_SRC =
 // instead of the site locale.
 const TURNSTILE_LANGUAGES: Record<string, string> = {
   "pt-PT": "pt",
+  "pt-BR": "pt-br",
   "en-GB": "en",
+  "en-US": "en",
   "es-ES": "es",
+  "es-MX": "es",
+  "fr-FR": "fr",
+  "de-DE": "de",
+  "it-IT": "it",
 };
 
 export function mapTurnstileLanguage(locale: string): string {

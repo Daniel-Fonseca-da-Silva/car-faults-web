@@ -1,0 +1,14 @@
+{
+  "defects": "Défauts",
+  "about": "À propos",
+  "support": "Soutenir",
+  "menu": "Menu",
+  "avatarAlt": "Avatar de {name}",
+  "accountMenu": "Menu du compte de {name}",
+  "profile": "Profil",
+  "garage": "Garage",
+  "favorites": "Favoris",
+  "admin": "Admin",
+  "logout": "Se déconnecter",
+  "login": "Se connecter"
+}

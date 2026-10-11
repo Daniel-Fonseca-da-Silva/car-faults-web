@@ -1,0 +1,157 @@
+{
+  "common": {
+    "save": "Enregistrer",
+    "saving": "Enregistrement…",
+    "create": "Créer",
+    "creating": "Création…",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "deleting": "Suppression…",
+    "edit": "Modifier",
+    "error": "Une erreur s'est produite. Veuillez réessayer.",
+    "notFound": "Introuvable."
+  },
+  "dashboard": {
+    "title": "Admin",
+    "description": "Gérer le catalogue de véhicules, les problèmes connus et les solutions.",
+    "vehiclesCardTitle": "Catalogue de véhicules",
+    "vehiclesCardDescription": "Créer, modifier et supprimer des modèles de véhicules, des problèmes connus et des solutions.",
+    "goToVehicles": "Gérer les véhicules",
+    "reportsCardTitle": "Signalements de contenu",
+    "reportsCardDescription": "Examiner les commentaires et avis signalés par les utilisateurs.",
+    "goToReports": "Gérer les signalements"
+  },
+  "vehicles": {
+    "title": "Véhicules",
+    "description": "Rechercher et gérer le catalogue de véhicules.",
+    "searchBrandPlaceholder": "Marque",
+    "searchModelPlaceholder": "Modèle",
+    "search": "Rechercher",
+    "newVehicle": "Nouveau véhicule",
+    "empty": "Aucun véhicule trouvé.",
+    "columnBrand": "Marque",
+    "columnModel": "Modèle",
+    "columnYears": "Années",
+    "columnEngine": "Moteur",
+    "columnFuelType": "Carburant",
+    "columnImageUrl": "URL de l'image",
+    "filterImage": "Image",
+    "imageAll": "Toutes",
+    "imageWith": "Avec image",
+    "imageWithout": "Sans image",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "pageInfo": "Page {page} sur {totalPages}"
+  },
+  "newVehiclePage": {
+    "title": "Nouveau véhicule",
+    "description": "Ajouter un modèle de véhicule au catalogue."
+  },
+  "vehicleForm": {
+    "brand": "Marque",
+    "brandPlaceholder": "ex. Volkswagen",
+    "brandNoResults": "Aucune marque correspondante. Le nom saisi sera utilisé.",
+    "model": "Modèle",
+    "name": "Nom affiché",
+    "yearFrom": "Année de début",
+    "yearTo": "Année de fin",
+    "engine": "Moteur",
+    "doors": "Portes",
+    "fuelType": "Type de carburant",
+    "fuelTypeNone": "Non défini",
+    "fuelTypeGasoline": "Essence",
+    "fuelTypeDiesel": "Diesel",
+    "fuelTypeElectric": "Électrique",
+    "fuelTypeGpl": "GPL",
+    "fuelTypeHybrid": "Hybride",
+    "image": "Photo du catalogue",
+    "uploadImage": "Téléverser une photo",
+    "uploading": "Téléversement…",
+    "uploadSucceeded": "Photo téléversée avec succès.",
+    "removeImage": "Supprimer la photo",
+    "invalidImageType": "Veuillez choisir une image JPEG, PNG ou WEBP.",
+    "imageTooLarge": "L'image doit faire moins de 5 Mo."
+  },
+  "vehicleDetail": {
+    "backToVehicles": "Retour aux véhicules",
+    "knownIssuesTitle": "Problèmes connus",
+    "addIssue": "Nouveau problème connu",
+    "noIssues": "Aucun problème connu pour le moment.",
+    "deleteVehicle": "Supprimer le véhicule",
+    "deleteConfirmTitle": "Supprimer ce véhicule ?",
+    "deleteConfirmDescription": "Cette action supprime {vehicle} et le masque des recherches publiques. Elle ne peut pas être annulée ici.",
+    "columnTitle": "Titre",
+    "columnSeverity": "Gravité",
+    "columnLocale": "Langue"
+  },
+  "newIssuePage": {
+    "title": "Nouveau problème connu",
+    "description": "Ajouter un problème connu pour {vehicle}."
+  },
+  "issueForm": {
+    "title": "Titre",
+    "description": "Description",
+    "severity": "Gravité",
+    "severityLow": "Faible",
+    "severityMedium": "Moyenne",
+    "severityHigh": "Élevée",
+    "severityCritical": "Critique",
+    "locale": "Langue",
+    "typicalKm": "Kilométrage typique (km)",
+    "sources": "Sources",
+    "sourcesHint": "Une URL par ligne."
+  },
+  "issueDetail": {
+    "backToVehicle": "Retour au véhicule",
+    "fixesTitle": "Solutions",
+    "noFixes": "Aucune solution pour le moment.",
+    "addFix": "Nouvelle solution",
+    "deleteIssue": "Supprimer le problème connu",
+    "deleteConfirmTitle": "Supprimer ce problème connu ?",
+    "deleteConfirmDescription": "Cette action supprime « {issue} » et ses solutions. Elle ne peut pas être annulée ici."
+  },
+  "fixForm": {
+    "summary": "Résumé",
+    "steps": "Étapes",
+    "addFix": "Ajouter une solution",
+    "editFix": "Modifier la solution"
+  },
+  "reports": {
+    "title": "Signalements",
+    "description": "Examiner les commentaires et avis signalés par la communauté.",
+    "filterStatus": "Statut",
+    "filterApply": "Filtrer",
+    "statusAll": "Tous",
+    "status": {
+      "pending": "En attente",
+      "reviewed": "Examiné",
+      "dismissed": "Rejeté"
+    },
+    "contentType": {
+      "comment": "Commentaire",
+      "review": "Avis"
+    },
+    "reason": {
+      "spam": "Spam",
+      "offensive": "Offensant ou abusif",
+      "inappropriate_photo": "Photo inappropriée",
+      "harassment": "Harcèlement",
+      "other": "Autre"
+    },
+    "contentDeleted": "Contenu plus disponible",
+    "columnType": "Type",
+    "columnContent": "Contenu",
+    "columnReason": "Motif",
+    "columnDetails": "Détails",
+    "columnStatus": "Statut",
+    "columnReported": "Signalé le",
+    "columnActions": "Actions",
+    "empty": "Aucun signalement trouvé.",
+    "markReviewed": "Marquer comme examiné",
+    "dismiss": "Rejeter",
+    "removeContent": "Supprimer le contenu",
+    "removeContentConfirmTitle": "Supprimer ce contenu ?",
+    "removeContentConfirmDescription": "Cette action supprime le commentaire ou l'avis signalé et marque le signalement comme examiné. Elle ne peut pas être annulée ici.",
+    "contentAlreadyRemoved": "Ce contenu a déjà été supprimé."
+  }
+}

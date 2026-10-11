@@ -1,0 +1,14 @@
+{
+  "hero": {
+    "eyebrow": "Base de données de fiabilité automobile",
+    "titleBeforeHighlight": "Connaissez les",
+    "titleHighlight": "pannes",
+    "titleAfterHighlight": "avant d'acheter",
+    "subtitle": "Recherchez les problèmes chroniques par marque, modèle, année et moteur - signalés par des milliers de vrais propriétaires."
+  },
+  "stats": {
+    "reports": { "label": "Signalements de propriétaires" },
+    "vehicles": { "label": "Véhicules catalogués" },
+    "faults": { "label": "Pannes documentées" }
+  }
+}

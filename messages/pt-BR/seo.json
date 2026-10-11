@@ -1,0 +1,58 @@
+{
+  "home": {
+    "title": "Auto Crónica: Defeitos crônicos por marca e modelo",
+    "description": "Pesquise falhas crônicas por marca, modelo, ano e motor antes de comprar um carro usado."
+  },
+  "defectsHub": {
+    "title": "Defeitos por veículo",
+    "description": "Explore os defeitos crônicos mais reportados por marca e modelo."
+  },
+  "brandPage": {
+    "titleTemplate": "Defeitos {make}: modelos e falhas comuns",
+    "descriptionTemplate": "Veja os modelos {make} disponíveis e os defeitos crônicos mais reportados por ano, combustível e motor."
+  },
+  "modelPage": {
+    "titleTemplate": "Defeitos {make} {model}: anos e motores",
+    "descriptionTemplate": "Explore as versões do {make} {model} por ano, combustível e motor, e conheça os defeitos crônicos mais reportados."
+  },
+  "vehiclePage": {
+    "titleTemplate": "Defeitos do {make} {model}{variant} {year}",
+    "descriptionTemplate": "Falhas e problemas comuns reportados no {make} {model}{variant} {year}: gravidade, soluções e relatos de proprietários reais."
+  },
+  "about": {
+    "title": "Sobre",
+    "description": "Engenheiro de software e apaixonado por carros: porque criei a Auto Crónica e como o catálogo de defeitos crônicos ajuda a comprar com mais informação."
+  },
+  "support": {
+    "title": "Apoiar",
+    "description": "Apoie o Auto Crónica com uma doação por Pix e ajude a manter os servidores no ar e novas funcionalidades a chegar."
+  },
+  "login": {
+    "title": "Entrar",
+    "description": "Acesse sua conta Auto Crónica para consultar defeitos."
+  },
+  "profile": {
+    "title": "Minha conta",
+    "description": "Confira seu perfil, suas estatísticas de uso e os veículos guardados na Auto Crónica."
+  },
+  "garage": {
+    "title": "Minha garagem",
+    "description": "Confira os veículos que você possui e os problemas conhecidos na sua garagem Auto Crónica."
+  },
+  "favorites": {
+    "title": "Favoritos",
+    "description": "Acompanhe os veículos cujos problemas você quer seguir na Auto Crónica."
+  },
+  "admin": {
+    "title": "Administrador",
+    "description": "Gerenciar o catálogo de veículos, problemas conhecidos e soluções."
+  },
+  "privacy": {
+    "title": "Privacidade e Termos",
+    "description": "Leia a Política de Privacidade e os Termos de Serviço da Auto Crónica."
+  },
+  "accountDeletion": {
+    "title": "Exclusão de Conta",
+    "description": "Saiba como excluir sua conta Auto Crónica e os dados associados, pelo aplicativo ou por e-mail."
+  }
+}

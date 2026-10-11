@@ -1,0 +1,57 @@
+{
+  "brand": "Auto Crónica",
+  "breadcrumbs": {
+    "home": "Inicio"
+  },
+  "locales": {
+    "pt-PT": "Português (PT)",
+    "pt-BR": "Português (BR)",
+    "en-GB": "English (UK)",
+    "en-US": "English (US)",
+    "es-ES": "Español (ES)",
+    "es-MX": "Español (MX)",
+    "fr-FR": "Français (FR)",
+    "de-DE": "Deutsch (DE)",
+    "it-IT": "Italiano (IT)"
+  },
+  "language": "Idioma",
+  "loadingMore": "Cargando más…",
+  "footer": {
+    "disclaimer": "Datos obtenidos de informes públicos, foros o mediante el uso de agentes e IA.",
+    "copyright": "© {year}",
+    "social": {
+      "instagram": "Auto Crónica en Instagram",
+      "facebook": "Auto Crónica en Facebook",
+      "youtube": "Auto Crónica en YouTube",
+      "tiktok": "Auto Crónica en TikTok"
+    },
+    "legal": {
+      "privacy": "Privacidad",
+      "terms": "Términos",
+      "accountDeletion": "Eliminar cuenta"
+    }
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o ha sido movida.",
+    "backHome": "Volver al inicio",
+    "imageAlt": "Ilustración de página no encontrada"
+  },
+  "error": {
+    "title": "Algo salió mal",
+    "description": "Se produjo un error inesperado. Por favor, inténtalo de nuevo.",
+    "tryAgain": "Intentar de nuevo",
+    "backHome": "Volver al inicio"
+  },
+  "ads": {
+    "label": "Publicidad",
+    "placeholder": "Espacio de anuncio (AdSense - solo en producción)"
+  },
+  "cookies": {
+    "description": "Utilizamos cookies esenciales para el funcionamiento del sitio. La publicidad y las estadísticas solo se activan con tu sí. Rechazar no impide usar el sitio.",
+    "privacyLink": "Política de Privacidad y cookies",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "manage": "Cookies"
+  }
+}

@@ -27,8 +27,10 @@ export function LocaleSwitcher() {
   return (
     <Select value={locale as Locale} onValueChange={handleValueChange}>
       <SelectTrigger size="sm" aria-label={t("language")}>
-        <LocaleFlag locale={locale as Locale} />
-        <SelectValue>{t(`locales.${locale}`)}</SelectValue>
+        <SelectValue>
+          <LocaleFlag locale={locale as Locale} />
+          <span className="sr-only">{t(`locales.${locale}`)}</span>
+        </SelectValue>
       </SelectTrigger>
       <SelectContent>
         {routing.locales.map((availableLocale) => (

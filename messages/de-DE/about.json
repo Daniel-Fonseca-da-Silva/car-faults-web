@@ -1,0 +1,14 @@
+{
+  "title": "Über Auto Crónica",
+  "lead": "Mein Name ist Daniel Fonseca da Silva. Ich bin Softwareentwickler in Portugal und baue seit fast zehn Jahren zuverlässige Systeme, von der Cloud bis zu den Produkten, die Menschen jeden Tag nutzen, und ich bin außerdem Autoliebhaber. Auto Crónica ist dort entstanden, wo sich diese beiden Dinge treffen.",
+  "photoAlt": "Mein Volkswagen 1300 von 1973, der Klassiker in meiner Garage",
+  "problemTitle": "Das Problem",
+  "problemBody": "Überall in Europa bedeutet der Kauf eines Autos, ob neu oder gebraucht, oft einen Blindflug. Jedes Fahrzeug hat Mängel, die früher oder später auftreten: ein Teil, das immer an derselben Stelle versagt, ein Motor mit einer bekannten Schwachstelle, ein Getriebe, das ab einer bestimmten Laufleistung Probleme macht. Diese Informationen gibt es, aber sie sind über Foren, Gruppen und lose Gespräche verstreut, und es ist schwer zu wissen, wem man trauen kann.",
+  "solutionTitle": "Die Lösung",
+  "solutionBody": "Auto Crónica ist ein Katalog chronischer Mängel, geordnet nach Marke und Modell, der mit der Zeit wachsen soll. Wenn es zu einem Fahrzeug noch nicht genug Daten gibt, hilft KI dabei, die wahrscheinlichsten Probleme vorzuschlagen; und eine Community von Besitzern kommentiert, korrigiert und bewertet die Berichte, damit die Informationen immer zuverlässiger werden.",
+  "communityTitle": "Für alle, die Autos lieben",
+  "communityBody": "Dieses Projekt ist für alle, die praktische Stadtautos, leise Elektroautos, charakterstarke Klassiker oder sportliche Fahrzeuge lieben und mit mehr Informationen und weniger Überraschungen entscheiden möchten.",
+  "linkedinLabel": "LinkedIn-Profil ansehen",
+  "ctaLabel": "Mängel suchen",
+  "ctaHint": "Suchen Sie zuerst nach der Marke und dem Modell, die Sie im Sinn haben."
+}

@@ -1,0 +1,37 @@
+{
+  "title": "Trova i difetti del tuo veicolo",
+  "statusActive": "Database attivo",
+  "statusInactive": "Database non disponibile",
+  "fields": {
+    "make": "Marca",
+    "makePlaceholder": "es. Volkswagen",
+    "makeNoResults": "Nessuna marca corrispondente. Verrà usato il nome digitato.",
+    "model": "Modello",
+    "modelPlaceholder": "es. Golf",
+    "year": "Anno",
+    "yearPlaceholder": "es. 2018",
+    "engine": "Motore",
+    "enginePlaceholder": "es. 2.0 TDI",
+    "fuel": "Alimentazione",
+    "fuelPlaceholder": "Seleziona l'alimentazione",
+    "doors": "Porte (facoltativo)",
+    "doorsPlaceholder": "Seleziona il numero di porte"
+  },
+  "fuelOptions": {
+    "gasoline": "Benzina",
+    "diesel": "Diesel",
+    "electric": "Elettrico",
+    "gpl": "GPL",
+    "hybrid": "Ibrido"
+  },
+  "submit": "Cerca difetti",
+  "verifying": "Verifica in corso...",
+  "errors": {
+    "required": "Compila questo campo.",
+    "yearRange": "Inserisci un anno tra {min} e {max}."
+  },
+  "captchaError": "Verifica non riuscita. Completa di nuovo la sfida.",
+  "searchError": "Si è verificato un errore durante la ricerca. Riprova.",
+  "searchUnavailable": "Il servizio di ricerca è temporaneamente non disponibile. Riprova tra qualche istante.",
+  "searchInvalidCriteria": "Controlla i dati del veicolo e riprova."
+}

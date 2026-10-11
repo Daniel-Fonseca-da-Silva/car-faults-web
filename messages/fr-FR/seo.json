@@ -1,0 +1,58 @@
+{
+  "home": {
+    "title": "Auto Crónica - Pannes chroniques par marque et modèle",
+    "description": "Recherchez les problèmes chroniques par marque, modèle, année et moteur avant d'acheter une voiture d'occasion."
+  },
+  "defectsHub": {
+    "title": "Pannes par véhicule",
+    "description": "Découvrez les problèmes chroniques les plus signalés par marque et modèle."
+  },
+  "brandPage": {
+    "titleTemplate": "Pannes {make} - modèles et problèmes fréquents",
+    "descriptionTemplate": "Parcourez les modèles {make} disponibles et les pannes chroniques les plus signalées par année, carburant et moteur."
+  },
+  "modelPage": {
+    "titleTemplate": "Pannes {make} {model} - années et motorisations",
+    "descriptionTemplate": "Découvrez les versions de la {make} {model} par année, carburant et moteur, et consultez les pannes chroniques les plus signalées."
+  },
+  "vehiclePage": {
+    "titleTemplate": "Pannes {make} {model}{variant} {year}",
+    "descriptionTemplate": "Problèmes fréquents et pannes connues signalés pour la {make} {model}{variant} {year} : gravité, solutions et retours de vrais propriétaires."
+  },
+  "about": {
+    "title": "À propos",
+    "description": "Ingénieur logiciel et passionné d'automobile : pourquoi j'ai créé Auto Crónica et comment le catalogue de pannes chroniques vous aide à acheter en étant mieux informé."
+  },
+  "support": {
+    "title": "Soutenir",
+    "description": "Soutenez Auto Crónica avec un don via MBWay et aidez à faire tourner les serveurs et à développer de nouvelles fonctionnalités."
+  },
+  "login": {
+    "title": "Se connecter",
+    "description": "Connectez-vous à votre compte Auto Crónica pour consulter les pannes."
+  },
+  "profile": {
+    "title": "Mon compte",
+    "description": "Consultez votre profil, vos statistiques d'utilisation et vos véhicules enregistrés sur Auto Crónica."
+  },
+  "garage": {
+    "title": "Mon garage",
+    "description": "Consultez les véhicules que vous possédez et leurs problèmes connus dans votre garage Auto Crónica."
+  },
+  "favorites": {
+    "title": "Favoris",
+    "description": "Suivez sur Auto Crónica les véhicules dont vous voulez surveiller les problèmes."
+  },
+  "admin": {
+    "title": "Admin",
+    "description": "Gérer le catalogue de véhicules, les problèmes connus et les solutions."
+  },
+  "privacy": {
+    "title": "Confidentialité et conditions",
+    "description": "Consultez la Politique de confidentialité et les Conditions d'utilisation d'Auto Crónica."
+  },
+  "accountDeletion": {
+    "title": "Suppression du compte",
+    "description": "Découvrez comment supprimer votre compte Auto Crónica et les données associées, depuis l'application ou par e-mail."
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "eyebrow": "Conta",
+  "identity": {
+    "memberSince": "Membro desde {date}",
+    "onlineStatus": "Online"
+  },
+  "account": {
+    "title": "Informações da conta",
+    "email": "E-mail",
+    "createdAt": "Criado em",
+    "updatedAt": "Atualizado em",
+    "id": "ID da conta",
+    "copyId": "Copiar ID da conta",
+    "copied": "ID copiado"
+  },
+  "stats": {
+    "searches": "Pesquisas realizadas",
+    "defectsConsulted": "Defeitos consultados",
+    "savedVehicles": "Meus veículos",
+    "favoritedVehicles": "Favoritos",
+    "votes": "Votos dados"
+  },
+  "vehicles": {
+    "title": "Meus veículos",
+    "count": "{count} veículos",
+    "empty": "Você ainda não salvou nenhum veículo.",
+    "knownIssuesCount": "{count} defeitos",
+    "viewDetails": "Ver detalhes de {brand} {model}"
+  },
+  "dangerZone": {
+    "title": "Zona de risco",
+    "deleteAccount": "Excluir conta",
+    "deleteAccountDescription": "Desativa sua conta (exclusão lógica). Entrar novamente com a mesma conta Google pode restaurar o acesso.",
+    "confirmTitle": "Tem certeza?",
+    "confirmDescription": "Sua conta será desativada imediatamente. Entrar novamente com a mesma conta Google pode restaurar o acesso.",
+    "confirmCancel": "Cancelar",
+    "confirmDelete": "Sim, excluir conta",
+    "deleteError": "Não foi possível excluir a conta. Tente novamente."
+  }
+}

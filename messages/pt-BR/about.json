@@ -1,0 +1,14 @@
+{
+  "title": "Sobre a Auto Crónica",
+  "lead": "Meu nome é Daniel Fonseca da Silva e sou engenheiro de software em Portugal, com quase dez anos construindo sistemas confiáveis, da cloud aos produtos que as pessoas usam todos os dias, e sou também apaixonado por carros de todo o tipo. Foi do encontro destas duas coisas que nasceu a Auto Crónica.",
+  "photoAlt": "Meu Volkswagen 1300 de 1973, o Fusca que tenho na garagem",
+  "problemTitle": "O problema",
+  "problemBody": "Olha, quem já comprou um carro sabe do que estou falando: novo ou usado, é quase sempre um salto no escuro. Todo o carro tem as suas manias, uma peça que parte sempre no mesmo sítio, um motor com um vício conhecido, uma embreagem que começa a dar problema a partir de uma certa quilometragem. Essa informação até existe, mas anda espalhada por fóruns, grupos e conversas de boteco e nunca se sabe bem em que confiar.",
+  "solutionTitle": "A solução",
+  "solutionBody": "A Auto Crónica é um catálogo de defeitos crônicos organizado por marca, modelo e ano, feito para crescer com o tempo. Quando ainda não há dados suficientes sobre um carro, a inteligência artificial ajuda a apontar os problemas mais prováveis e a comunidade de proprietários comenta, corrige e vota nos relatos para que a informação fique cada vez mais confiável. A ideia é simples: antes de fechar negócio em um carro usado ou antes de uma peça te pregar uma peça, você sabe exatamente onde está se metendo, porque seu próximo carro merece menos surpresas.",
+  "communityTitle": "Para quem gosta mesmo de carros",
+  "communityBody": "Este projeto é para quem gosta de citadinos práticos, elétricos silenciosos, clássicos charmosos com história (meu Fusca 73 ali em cima é prova disso) ou esportivos com personalidade e prefere decidir com informação em vez de ser pego de surpresa.",
+  "linkedinLabel": "Ver perfil no LinkedIn",
+  "ctaLabel": "Pesquisar defeitos",
+  "ctaHint": "Comece pesquisando a marca, o ano e o modelo que você tem em mente."
+}

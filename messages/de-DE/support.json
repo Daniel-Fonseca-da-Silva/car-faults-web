@@ -1,0 +1,61 @@
+{
+  "badge": "🚀 Unabhängiges Projekt",
+  "title": "Auto Crónica unterstützen",
+  "photoAlt": "Mein Volkswagen Polo 6N1",
+  "authorName": "Daniel Fonseca da Silva",
+  "authorRole": "Gründer und einziger Entwickler von Auto Crónica",
+  "intro": "Hallo, ich bin's wieder. Auto Crónica wird von mir allein entwickelt und betrieben, in meiner Freizeit und ohne Finanzierung im Hintergrund. Wenn Ihnen das Projekt schon geholfen hat, ein Auto mit mehr Sicherheit zu kaufen, macht eine kleine Spende über MBWay einen echten Unterschied. 🙏",
+  "benefitsTitle": "Wofür Ihre Spende verwendet wird",
+  "benefits": {
+    "servers": {
+      "emoji": "🖥️",
+      "title": "Hält die Server am Laufen",
+      "body": "Ihre Spende hilft, Hosting, Datenbank und die KI zu bezahlen, die Mängel analysiert, damit die Website immer verfügbar ist, wenn Sie sie brauchen."
+    },
+    "features": {
+      "emoji": "🚀",
+      "title": "Ansporn für neue Funktionen",
+      "body": "Jede Unterstützung ist zusätzliche Motivation, weiterzumachen: mehr Marken, mehr Modelle und bessere Suchwerkzeuge."
+    },
+    "coffee": {
+      "emoji": "☕",
+      "title": "Ein Kaffee für den Entwickler",
+      "body": "Dieses Projekt entsteht in der Freizeit. Ein Kaffee (oder zwei) hilft, die Energie hochzuhalten, um es mit Sorgfalt weiterzuentwickeln."
+    }
+  },
+  "donationTitle": "☕ Spendieren Sie mir einen Kaffee",
+  "donationBody": "Senden Sie Ihre Spende über MBWay an die untenstehende Nummer, über Ihre Banking-App.",
+  "numberLabel": "MBWay-Nummer",
+  "copyNumber": "Nummer kopieren",
+  "copied": "Kopiert!",
+  "internationalTitle": "🌍 Außerhalb Portugals? Mit Wise bezahlen",
+  "internationalBody": "MBWay funktioniert nur mit portugiesischen Bankkonten. Wenn Sie im Ausland sind, scannen Sie den Code mit der Wise-App oder nutzen Sie die Schaltfläche unten, ganz ohne IBAN oder SWIFT-Code.",
+  "wiseQrAlt": "QR-Code zum Bezahlen über Wise",
+  "wiseButtonLabel": "Über Wise bezahlen",
+  "wiseLinkLabel": "Wise-Zahlungslink",
+  "copyLink": "Link kopieren",
+  "pixTitle": "🇧🇷 In Brasilien? Mit Pix bezahlen",
+  "pixBody": "Scannen Sie den Code mit Ihrer Banking-App oder kopieren Sie den Pix-Code. Der Betrag ist offen, Sie entscheiden also selbst, wie viel Sie spenden.",
+  "pixQrAlt": "QR-Code zum Bezahlen über Pix",
+  "copyPixCode": "Pix-Code kopieren",
+  "pixKeyLabel": "Oder verwenden Sie den Pix-Schlüssel",
+  "copyPixKey": "Schlüssel kopieren",
+  "amountsTitle": "Vorgeschlagene Beträge",
+  "amounts": {
+    "coffee": {
+      "emoji": "☕",
+      "label": "Ein Kaffee"
+    },
+    "snack": {
+      "emoji": "🥐",
+      "label": "Kaffee und Gebäck"
+    },
+    "boost": {
+      "emoji": "🚀",
+      "label": "Eine neue Funktion fördern"
+    }
+  },
+  "thanksTitle": "Vielen Dank! 🙌",
+  "thanksBody": "Jeder Betrag ist willkommen und macht einen echten Unterschied. Danke, dass Sie Teil dieser Community von Autoliebhabern sind.",
+  "signature": "Daniel Fonseca da Silva"
+}

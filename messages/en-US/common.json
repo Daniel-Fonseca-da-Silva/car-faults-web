@@ -1,0 +1,57 @@
+{
+  "brand": "Auto Crónica",
+  "breadcrumbs": {
+    "home": "Home"
+  },
+  "locales": {
+    "pt-PT": "Português (PT)",
+    "pt-BR": "Português (BR)",
+    "en-GB": "English (UK)",
+    "en-US": "English (US)",
+    "es-ES": "Español (ES)",
+    "es-MX": "Español (MX)",
+    "fr-FR": "Français (FR)",
+    "de-DE": "Deutsch (DE)",
+    "it-IT": "Italiano (IT)"
+  },
+  "language": "Language",
+  "loadingMore": "Loading more…",
+  "footer": {
+    "disclaimer": "Data sourced from public reports, forums or through agents and AI.",
+    "copyright": "© {year}",
+    "social": {
+      "instagram": "Auto Crónica on Instagram",
+      "facebook": "Auto Crónica on Facebook",
+      "youtube": "Auto Crónica on YouTube",
+      "tiktok": "Auto Crónica on TikTok"
+    },
+    "legal": {
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "accountDeletion": "Delete account"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist or has been moved.",
+    "backHome": "Back to home page",
+    "imageAlt": "Page not found illustration"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again.",
+    "tryAgain": "Try again",
+    "backHome": "Back to home page"
+  },
+  "ads": {
+    "label": "Advertisement",
+    "placeholder": "Ad slot (AdSense - production only)"
+  },
+  "cookies": {
+    "description": "We use essential cookies to run this site. Advertising and statistics only run with your yes. Declining does not stop you from using the site.",
+    "privacyLink": "Privacy Policy and cookies",
+    "accept": "Accept",
+    "reject": "Reject",
+    "manage": "Cookies"
+  }
+}

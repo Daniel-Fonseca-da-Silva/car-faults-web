@@ -1,0 +1,20 @@
+{
+  "hero": {
+    "eyebrow": "Datenbank zur Fahrzeugzuverlässigkeit",
+    "titleBeforeHighlight": "Kennen Sie die",
+    "titleHighlight": "Mängel",
+    "titleAfterHighlight": "vor dem Kauf",
+    "subtitle": "Suchen Sie chronische Probleme nach Marke, Modell, Baujahr und Motor - gemeldet von Tausenden echter Besitzer."
+  },
+  "stats": {
+    "reports": {
+      "label": "Berichte von Besitzern"
+    },
+    "vehicles": {
+      "label": "Erfasste Fahrzeuge"
+    },
+    "faults": {
+      "label": "Dokumentierte Mängel"
+    }
+  }
+}

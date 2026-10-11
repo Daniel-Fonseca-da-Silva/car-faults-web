@@ -44,7 +44,7 @@ describe("GET /api/auth/google", () => {
   });
 
   it("falls back to the default locale for unknown locales", () => {
-    const response = startLogin("?locale=fr-FR");
+    const response = startLogin("?locale=ja-JP");
 
     expect(response.cookies.get("oauth_state")?.value).toMatch(/^pt-PT\./);
   });

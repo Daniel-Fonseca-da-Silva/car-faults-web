@@ -11,6 +11,11 @@ const OG_IMAGE_PATH = "/feature-graphic.png";
 const OG_IMAGE_WIDTH = 1024;
 const OG_IMAGE_HEIGHT = 500;
 
+/** Open Graph expects `pt_BR`, not the BCP-47 `pt-BR`. */
+function toOpenGraphLocale(locale: Locale): string {
+  return locale.replace("-", "_");
+}
+
 export interface BuildPageMetadataParams {
   title: string;
   description: string;
@@ -46,7 +51,7 @@ export function buildPageMetadata({
       description,
       url: canonical,
       siteName: getSiteName(),
-      locale,
+      locale: toOpenGraphLocale(locale),
       type: "website",
       images: [
         {

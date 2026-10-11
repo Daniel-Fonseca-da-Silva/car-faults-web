@@ -5,8 +5,14 @@
   },
   "locales": {
     "pt-PT": "Português (PT)",
+    "pt-BR": "Português (BR)",
     "en-GB": "English (UK)",
-    "es-ES": "Español (ES)"
+    "en-US": "English (US)",
+    "es-ES": "Español (ES)",
+    "es-MX": "Español (MX)",
+    "fr-FR": "Français (FR)",
+    "de-DE": "Deutsch (DE)",
+    "it-IT": "Italiano (IT)"
   },
   "language": "Idioma",
   "loadingMore": "A carregar mais…",

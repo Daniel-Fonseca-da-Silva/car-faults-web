@@ -1,0 +1,40 @@
+{
+  "eyebrow": "Compte",
+  "identity": {
+    "memberSince": "Membre depuis {date}",
+    "onlineStatus": "En ligne"
+  },
+  "account": {
+    "title": "Informations du compte",
+    "email": "E-mail",
+    "createdAt": "Créé le",
+    "updatedAt": "Mis à jour le",
+    "id": "ID du compte",
+    "copyId": "Copier l'ID du compte",
+    "copied": "ID copié"
+  },
+  "stats": {
+    "searches": "Recherches effectuées",
+    "defectsConsulted": "Défauts consultés",
+    "savedVehicles": "Mes véhicules",
+    "favoritedVehicles": "Favoris",
+    "votes": "Votes exprimés"
+  },
+  "vehicles": {
+    "title": "Mes véhicules",
+    "count": "{count} véhicules",
+    "empty": "Vous n'avez encore enregistré aucun véhicule.",
+    "knownIssuesCount": "{count} défauts",
+    "viewDetails": "Voir les détails de la {brand} {model}"
+  },
+  "dangerZone": {
+    "title": "Zone de danger",
+    "deleteAccount": "Supprimer le compte",
+    "deleteAccountDescription": "Désactive votre compte (suppression logique). Se reconnecter avec le même compte Google peut rétablir l'accès.",
+    "confirmTitle": "Êtes-vous sûr ?",
+    "confirmDescription": "Votre compte sera désactivé immédiatement. Se reconnecter avec le même compte Google peut rétablir l'accès.",
+    "confirmCancel": "Annuler",
+    "confirmDelete": "Oui, supprimer le compte",
+    "deleteError": "Impossible de supprimer le compte. Veuillez réessayer."
+  }
+}

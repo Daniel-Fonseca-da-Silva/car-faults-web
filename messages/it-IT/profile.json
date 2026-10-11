@@ -1,0 +1,40 @@
+{
+  "eyebrow": "Account",
+  "identity": {
+    "memberSince": "Membro dal {date}",
+    "onlineStatus": "Online"
+  },
+  "account": {
+    "title": "Informazioni sull'account",
+    "email": "Email",
+    "createdAt": "Creato il",
+    "updatedAt": "Aggiornato il",
+    "id": "ID account",
+    "copyId": "Copia ID account",
+    "copied": "ID copiato"
+  },
+  "stats": {
+    "searches": "Ricerche effettuate",
+    "defectsConsulted": "Difetti consultati",
+    "savedVehicles": "I miei veicoli",
+    "favoritedVehicles": "Preferiti",
+    "votes": "Voti espressi"
+  },
+  "vehicles": {
+    "title": "I miei veicoli",
+    "count": "{count} veicoli",
+    "empty": "Non hai ancora salvato nessun veicolo.",
+    "knownIssuesCount": "{count} difetti",
+    "viewDetails": "Vedi i dettagli di {brand} {model}"
+  },
+  "dangerZone": {
+    "title": "Zona pericolosa",
+    "deleteAccount": "Elimina account",
+    "deleteAccountDescription": "Disattiva il tuo account (eliminazione logica). Un nuovo accesso con lo stesso account Google potrebbe ripristinare l'accesso.",
+    "confirmTitle": "Sei sicuro?",
+    "confirmDescription": "Il tuo account verrà disattivato immediatamente. Un nuovo accesso con lo stesso account Google potrebbe ripristinare l'accesso.",
+    "confirmCancel": "Annulla",
+    "confirmDelete": "Sì, elimina account",
+    "deleteError": "Impossibile eliminare l'account. Riprova."
+  }
+}

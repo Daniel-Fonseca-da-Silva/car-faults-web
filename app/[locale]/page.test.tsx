@@ -96,9 +96,13 @@ describe("generateMetadata", () => {
     expect(metadata.title).toEqual({ absolute: "seo.home.title" });
     expect(metadata.description).toBe("seo.home.description");
     expect(metadata.alternates?.languages).toEqual({
-      "pt-PT": "http://localhost:3000/pt-PT",
-      "en-GB": "http://localhost:3000/en-GB",
-      "es-ES": "http://localhost:3000/es-ES",
+      ...Object.fromEntries(
+        locales.map((locale) => [
+          locale,
+          `http://localhost:3000/${locale}`,
+        ])
+      ),
+      "x-default": "http://localhost:3000/",
     });
   });
 });
