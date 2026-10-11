@@ -2,7 +2,7 @@
 
 Frontend for **Auto Crónica** - a SaaS focused on **chronic reliability by vehicle model**: what typically fails on a given make / model / year / engine, how severe it is, typical cost and how it gets fixed. Covers any vehicle type, not just cars.
 
-Target markets: **Europe** (all countries), with growing reach in the **US**, **Brazil**, **Mexico**, **India** and **Indonesia**. Product languages currently shipped: `pt-PT` (default), `en-GB` and `es-ES` - more locales are added as new markets are prioritized.
+Target markets: **Europe** (all countries), with growing reach in the **US**, **Brazil**, **Mexico**, **India** and **Indonesia**. Product languages currently shipped: `pt-PT` (default), `pt-BR`, `en-GB`, `en-US`, `es-ES`, `es-MX`, `fr-FR`, `de-DE` and `it-IT` - more locales are added as new markets are prioritized.
 
 ## What we are
 
@@ -22,7 +22,7 @@ Known-issue information is fragmented across forums, YouTube, ADAC/TÜV reports,
 |-------|------------|
 | Framework | Next.js 16 (App Router) + React 19 |
 | Styling | Tailwind CSS + shadcn/ui |
-| i18n | [next-intl](https://next-intl.dev) (`pt-PT` / `en-GB` / `es-ES`, locale-prefixed routes) |
+| i18n | [next-intl](https://next-intl.dev) (`pt-PT` / `pt-BR` / `en-GB` / `en-US` / `es-ES` / `es-MX` / `fr-FR` / `de-DE` / `it-IT`, locale-prefixed routes) |
 | Tests | Jest + React Testing Library |
 | Backend | [car-faults-api](../car-faults-api) (Nest) - never calls AI directly |
 
@@ -61,7 +61,7 @@ components/
   cookies/     # cookie consent banner (Accept/Reject) + provider
   brand/       # logo
 i18n/          # next-intl routing, navigation and request config
-messages/      # pt-PT/, en-GB/, es-ES/ - one JSON file per namespace
+messages/      # pt-PT/, pt-BR/, en-GB/, en-US/, es-ES/, es-MX/, fr-FR/, de-DE/, it-IT/ - one JSON file per namespace
 lib/api/       # car-faults-api client (fetch wrappers per resource)
 lib/mocks/     # make/model autocomplete data for the home search form only
 types/
