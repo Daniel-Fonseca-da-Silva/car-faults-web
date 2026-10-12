@@ -19,9 +19,10 @@ const pushMock = jest.fn();
 let turnstileOnSuccess: ((token: string) => void) | undefined;
 let turnstileOnExpire: (() => void) | undefined;
 let turnstileOnError: (() => void) | undefined;
+let mockLocale = "en-GB";
 
 jest.mock("next-intl", () => ({
-  useLocale: () => "en-GB",
+  useLocale: () => mockLocale,
   useTranslations: () => {
     const dict: Record<string, string> = {
       title: "Find your vehicle's faults",
@@ -45,6 +46,8 @@ jest.mock("next-intl", () => ({
       "fuelOptions.electric": "Electric",
       "fuelOptions.gpl": "LPG",
       "fuelOptions.hybrid": "Hybrid",
+      "fuelOptions.ethanol": "Ethanol",
+      "fuelOptions.flex": "Flex Fuel (E85)",
       submit: "Search faults",
       verifying: "Verifying...",
       "errors.required": REQUIRED_ERROR_TEXT,
@@ -168,6 +171,7 @@ describe("VehicleSearchForm", () => {
   let fetchMock: jest.Mock;
 
   beforeEach(() => {
+    mockLocale = "en-GB";
     pushMock.mockClear();
     turnstileOnSuccess = undefined;
     turnstileOnExpire = undefined;
@@ -637,6 +641,48 @@ describe("VehicleSearchForm", () => {
     expect(
       fuel.compareDocumentPosition(engine) & Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy();
+  });
+
+  function fuelOptionValues(): string[] {
+    return within(labelledControl("Fuel"))
+      .getAllByRole("option")
+      .map((option) => (option as HTMLOptionElement).value)
+      .filter(Boolean);
+  }
+
+  it("offers flex and ethanol fuel options for pt-BR", () => {
+    mockLocale = "pt-BR";
+    render(<VehicleSearchForm isDatabaseUp={true} />);
+
+    expect(fuelOptionValues()).toEqual([
+      "gasoline",
+      "flex",
+      "ethanol",
+      "diesel",
+      "electric",
+      "gpl",
+      "hybrid",
+    ]);
+  });
+
+  it("offers only the flex fuel option for en-US", () => {
+    mockLocale = "en-US";
+    render(<VehicleSearchForm isDatabaseUp={true} />);
+
+    expect(fuelOptionValues()).toContain("flex");
+    expect(fuelOptionValues()).not.toContain("ethanol");
+  });
+
+  it("does not offer ethanol-based fuel options for other locales", () => {
+    render(<VehicleSearchForm isDatabaseUp={true} />);
+
+    expect(fuelOptionValues()).toEqual([
+      "gasoline",
+      "diesel",
+      "electric",
+      "gpl",
+      "hybrid",
+    ]);
   });
 
   it("hides the engine field once electric fuel is selected", async () => {

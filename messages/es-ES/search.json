@@ -22,7 +22,9 @@
     "diesel": "Diésel",
     "electric": "Eléctrico",
     "gpl": "GLP",
-    "hybrid": "Híbrido"
+    "hybrid": "Híbrido",
+    "ethanol": "Etanol",
+    "flex": "Flex (gasolina/etanol)"
   },
   "submit": "Buscar defectos",
   "verifying": "Verificando...",

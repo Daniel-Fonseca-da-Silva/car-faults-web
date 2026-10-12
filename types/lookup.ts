@@ -1,4 +1,11 @@
-export type LookupFuelType = "gasoline" | "diesel" | "electric" | "gpl" | "hybrid";
+export type LookupFuelType =
+  | "gasoline"
+  | "diesel"
+  | "electric"
+  | "gpl"
+  | "hybrid"
+  | "ethanol"
+  | "flex";
 
 export type IssueSeverity = "low" | "medium" | "high" | "critical";
 

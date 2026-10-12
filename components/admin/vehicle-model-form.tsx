@@ -42,6 +42,8 @@ const FUEL_TYPE_LABEL_KEYS = {
   electric: "vehicleForm.fuelTypeElectric",
   gpl: "vehicleForm.fuelTypeGpl",
   hybrid: "vehicleForm.fuelTypeHybrid",
+  ethanol: "vehicleForm.fuelTypeEthanol",
+  flex: "vehicleForm.fuelTypeFlex",
 } as const satisfies Record<LookupFuelType, string>;
 
 const FUEL_TYPES = Object.keys(FUEL_TYPE_LABEL_KEYS) as LookupFuelType[];

@@ -8,7 +8,7 @@
   "reportsCount": "{count} Berichte",
   "viewReports": "Berichte ansehen",
   "otherLanguageNotice": "Inhalt in einer anderen Sprache angezeigt",
-  "disclaimer": "Die angezeigten Informationen stammen aus Berichten von Besitzern und ersetzen keine Werkstattprüfung.",
+  "disclaimer": "Die angezeigten Informationen stammen aus Berichten von Besitzern oder KI-generierten Analysen und ersetzen keine Werkstattprüfung.",
   "hub": {
     "title": "Mängel nach Fahrzeug",
     "subtitle": "Entdecken Sie die am häufigsten gemeldeten chronischen Probleme nach Marke und Modell.",
@@ -61,7 +61,9 @@
       "diesel": "Diesel",
       "electric": "Elektro",
       "gpl": "Autogas (LPG)",
-      "hybrid": "Hybrid"
+      "hybrid": "Hybrid",
+      "ethanol": "Ethanol",
+      "flex": "Flexfuel (E85)"
     },
     "summaryBanner": "{count} bekannte Probleme gefunden",
     "knownIssuesTitle": "Bekannte Mängel und häufige Probleme",
