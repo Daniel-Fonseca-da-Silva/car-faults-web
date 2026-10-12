@@ -32,14 +32,32 @@ import { Spinner } from "@/components/ui/spinner";
 import { useRouter } from "@/i18n/navigation";
 import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
 import { EUROPEAN_VEHICLE_MAKES } from "@/lib/mocks/vehicle-makes";
+import type { LookupFuelType } from "@/types/lookup";
 
-const FUEL_OPTIONS = [
-  "gasoline",
+const BASE_FUEL_OPTIONS = [
   "diesel",
   "electric",
   "gpl",
   "hybrid",
-] as const;
+] as const satisfies readonly LookupFuelType[];
+// Ethanol-capable cars are only common in some markets: Brazil (flex and
+// legacy "a álcool" cars) and the US (E85 flex-fuel). Elsewhere they would
+// just add noise to the select.
+const REGIONAL_FUEL_OPTIONS: Partial<
+  Record<string, readonly LookupFuelType[]>
+> = {
+  "pt-BR": ["flex", "ethanol"],
+  "en-US": ["flex"],
+};
+
+function getFuelOptions(locale: string): readonly LookupFuelType[] {
+  return [
+    "gasoline",
+    ...(REGIONAL_FUEL_OPTIONS[locale] ?? []),
+    ...BASE_FUEL_OPTIONS,
+  ];
+}
+
 const DOOR_OPTIONS = [2, 3, 4, 5] as const;
 const ELECTRIC_ENGINE_SENTINEL = "electric";
 const MIN_YEAR = 1900;
@@ -298,7 +316,7 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
                   <NativeSelectOption value="">
                     {t("fields.fuelPlaceholder")}
                   </NativeSelectOption>
-                  {FUEL_OPTIONS.map((option) => (
+                  {getFuelOptions(locale).map((option) => (
                     <NativeSelectOption key={option} value={option}>
                       {t(`fuelOptions.${option}`)}
                     </NativeSelectOption>

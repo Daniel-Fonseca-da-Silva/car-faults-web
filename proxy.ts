@@ -33,5 +33,10 @@ export default function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
+  // Skip only real static asset extensions (public/, metadata routes). Other
+  // dotted paths (e.g. /wp-admin/install.php from bot scans) must still pass
+  // through so next-intl resolves a locale and the localized 404 renders.
+  matcher: [
+    "/((?!api|_next|_vercel|.*\\.(?:png|jpe?g|webp|gif|svg|ico|txt|xml|html|json|webmanifest|css|js|map|woff2?)$).*)",
+  ],
 };
