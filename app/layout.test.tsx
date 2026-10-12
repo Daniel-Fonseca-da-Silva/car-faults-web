@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render, within } from '@testing-library/react'
 import RootLayout from './layout'
 
 jest.mock('next/font/google', () => ({
@@ -10,13 +10,12 @@ jest.mock('next-intl/server', () => ({
   getLocale: jest.fn(async () => 'en-GB'),
 }))
 
-jest.mock('next/script', () => ({
-  __esModule: true,
-  default: (props: { id?: string; dangerouslySetInnerHTML?: { __html: string } }) => (
+jest.mock('@/components/scripts/ssr-inline-script', () => ({
+  SsrInlineScript: (props: { id: string; html: string }) => (
     <script
       id={props.id}
       data-testid="google-consent-mode-script"
-      dangerouslySetInnerHTML={props.dangerouslySetInnerHTML}
+      dangerouslySetInnerHTML={{ __html: props.html }}
     />
   ),
 }))
@@ -54,8 +53,9 @@ describe('RootLayout', () => {
 
   it('renders the Google Consent Mode default script with denied defaults', async () => {
     const jsx = await RootLayout({ children: <span /> })
-    const { getByTestId } = render(jsx)
-    const script = getByTestId('google-consent-mode-script')
+    render(jsx)
+    // The script lives in <head>, outside the RTL container.
+    const script = within(document.head).getByTestId('google-consent-mode-script')
 
     expect(script).toHaveAttribute('id', 'google-consent-mode-default')
     expect(script.innerHTML).toContain("ad_storage: 'denied'")
