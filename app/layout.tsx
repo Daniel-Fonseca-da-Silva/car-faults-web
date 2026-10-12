@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
 import { getLocale } from "next-intl/server";
 import "./globals.css";
 
+import { SsrInlineScript } from "@/components/scripts/ssr-inline-script";
 import {
   COOKIE_CONSENT_ACCEPTED_VALUE,
   COOKIE_CONSENT_NAME,
@@ -83,12 +83,13 @@ export default async function RootLayout({
       lang={locale}
       className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-grid-pattern">
-        <Script
+      <head>
+        <SsrInlineScript
           id="google-consent-mode-default"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: googleConsentModeDefaultScript }}
+          html={googleConsentModeDefaultScript}
         />
+      </head>
+      <body className="min-h-full flex flex-col bg-grid-pattern">
         {children}
       </body>
     </html>
