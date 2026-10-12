@@ -8,7 +8,7 @@
   "reportsCount": "{count} signalements",
   "viewReports": "Voir les signalements",
   "otherLanguageNotice": "Contenu affiché dans une autre langue",
-  "disclaimer": "Les informations affichées proviennent de signalements de propriétaires et ne remplacent pas une inspection mécanique.",
+  "disclaimer": "Les informations affichées proviennent de signalements de propriétaires ou d'analyses générées par IA et ne remplacent pas une inspection mécanique.",
   "hub": {
     "title": "Pannes par véhicule",
     "subtitle": "Découvrez les problèmes chroniques les plus signalés par marque et modèle.",
@@ -61,7 +61,9 @@
       "diesel": "Diesel",
       "electric": "Électrique",
       "gpl": "GPL",
-      "hybrid": "Hybride"
+      "hybrid": "Hybride",
+      "ethanol": "Éthanol",
+      "flex": "Flex-fuel (E85)"
     },
     "summaryBanner": "{count} problèmes connus trouvés",
     "knownIssuesTitle": "Problèmes connus et pannes fréquentes",

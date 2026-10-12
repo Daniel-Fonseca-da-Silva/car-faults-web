@@ -64,6 +64,8 @@
     "fuelTypeElectric": "Électrique",
     "fuelTypeGpl": "GPL",
     "fuelTypeHybrid": "Hybride",
+    "fuelTypeEthanol": "Éthanol",
+    "fuelTypeFlex": "Flex-fuel (E85)",
     "image": "Photo du catalogue",
     "uploadImage": "Téléverser une photo",
     "uploading": "Téléversement…",

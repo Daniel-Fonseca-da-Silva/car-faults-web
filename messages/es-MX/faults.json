@@ -8,7 +8,7 @@
   "reportsCount": "{count} reportes",
   "viewReports": "Ver reportes",
   "otherLanguageNotice": "Contenido mostrado en otro idioma",
-  "disclaimer": "La información mostrada proviene de reportes de propietarios y no sustituye una inspección mecánica.",
+  "disclaimer": "La información mostrada proviene de reportes de propietarios o de análisis generados por IA y no sustituye una inspección mecánica.",
   "hub": {
     "title": "Defectos por vehículo",
     "subtitle": "Explora los defectos crónicos más reportados por marca y modelo.",
@@ -61,7 +61,9 @@
       "diesel": "Diésel",
       "electric": "Eléctrico",
       "gpl": "GLP",
-      "hybrid": "Híbrido"
+      "hybrid": "Híbrido",
+      "ethanol": "Etanol",
+      "flex": "Flex (gasolina/etanol)"
     },
     "summaryBanner": "{count} defectos conocidos encontrados",
     "knownIssuesTitle": "Defectos conocidos y problemas comunes",

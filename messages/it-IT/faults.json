@@ -8,7 +8,7 @@
   "reportsCount": "{count} segnalazioni",
   "viewReports": "Vedi segnalazioni",
   "otherLanguageNotice": "Contenuto mostrato in un'altra lingua",
-  "disclaimer": "Le informazioni mostrate provengono dalle segnalazioni dei proprietari e non sostituiscono un controllo meccanico.",
+  "disclaimer": "Le informazioni mostrate provengono dalle segnalazioni dei proprietari o da analisi generate dall'IA e non sostituiscono un controllo meccanico.",
   "hub": {
     "title": "Difetti per veicolo",
     "subtitle": "Esplora i problemi cronici più segnalati per marca e modello.",
@@ -61,7 +61,9 @@
       "diesel": "Diesel",
       "electric": "Elettrico",
       "gpl": "GPL",
-      "hybrid": "Ibrido"
+      "hybrid": "Ibrido",
+      "ethanol": "Etanolo",
+      "flex": "Flex-fuel (E85)"
     },
     "summaryBanner": "{count} problemi noti trovati",
     "knownIssuesTitle": "Problemi noti e difetti comuni",

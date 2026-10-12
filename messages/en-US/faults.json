@@ -8,7 +8,7 @@
   "reportsCount": "{count} reports",
   "viewReports": "View reports",
   "otherLanguageNotice": "Content shown in another language",
-  "disclaimer": "The information shown comes from owner reports and does not replace a mechanical inspection.",
+  "disclaimer": "The information shown comes from owner reports or AI-generated analysis and does not replace a mechanical inspection.",
   "hub": {
     "title": "Faults by vehicle",
     "subtitle": "Explore the most reported chronic issues by make and model.",
@@ -61,7 +61,9 @@
       "diesel": "Diesel",
       "electric": "Electric",
       "gpl": "LPG",
-      "hybrid": "Hybrid"
+      "hybrid": "Hybrid",
+      "ethanol": "Ethanol",
+      "flex": "Flex Fuel (E85)"
     },
     "summaryBanner": "{count} known issues found",
     "knownIssuesTitle": "Known issues and common problems",
