@@ -8,22 +8,29 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { AmazonPartsLink } from "@/components/vehicle/amazon-parts-link";
 import { IssueComments } from "@/components/vehicle/issue-comments";
 import { IssueFixCard } from "@/components/vehicle/issue-fix-card";
 import { IssueReviews } from "@/components/vehicle/issue-reviews";
 import { IssueSources } from "@/components/vehicle/issue-sources";
 import { SeverityBadge } from "@/components/vehicle/severity-badge";
+import type { AmazonStore } from "@/lib/affiliate/amazon";
 import type { KnownIssue } from "@/types/lookup";
 import type { UserProfile } from "@/types/user";
 
 interface KnownIssuesAccordionProps {
   knownIssues: KnownIssue[];
   currentUser: UserProfile | null;
+  /** Prefix for the parts search (e.g. "SEAT León"); links show only with a store. */
+  vehicleLabel?: string;
+  amazonStore?: AmazonStore | null;
 }
 
 export function KnownIssuesAccordion({
   knownIssues,
   currentUser,
+  vehicleLabel,
+  amazonStore,
 }: KnownIssuesAccordionProps) {
   const t = useTranslations("faults");
 
@@ -51,6 +58,15 @@ export function KnownIssuesAccordion({
             <p className="text-muted-foreground">{issue.description}</p>
 
             <IssueSources sources={issue.sources} label={t("vehicle.sources")} />
+
+            {amazonStore && (
+              <AmazonPartsLink
+                store={amazonStore}
+                query={[vehicleLabel, issue.title].filter(Boolean).join(" ")}
+                label={t("vehicle.amazonParts.cta")}
+                disclosure={t("vehicle.amazonParts.disclosure")}
+              />
+            )}
 
             <IssueReviews
               knownIssueId={issue.id}

@@ -141,6 +141,24 @@
       "success": "Segnalazione inviata. Grazie per aiutarci a mantenere la community sicura.",
       "duplicateError": "Hai già segnalato questo contenuto.",
       "submitError": "Impossibile inviare la segnalazione. Riprova."
+    },
+    "amazonParts": {
+      "cta": "Vedi ricambi su Amazon",
+      "disclosure": "Link di affiliazione: potremmo ricevere una commissione senza costi aggiuntivi per te."
+    },
+    "mercadoLivre": {
+      "title": "Mantieni la tua {vehicle} in forma",
+      "subtitle": "Scopri le offerte su Mercado Livre per gli articoli essenziali di ogni auto e trova il prezzo migliore.",
+      "disclosure": "Link sponsorizzati: potremmo ricevere una commissione, senza costi aggiuntivi per te.",
+      "products": {
+        "steeringWheelCover": "Coprivolante",
+        "lubricantSpray": "Lubrificante WD-40",
+        "engineOil": "Olio motore",
+        "battery": "Batteria",
+        "wipers": "Spazzole tergicristallo",
+        "tools": "Attrezzi",
+        "headlightBulbs": "Lampadine fari"
+      }
     }
   }
 }

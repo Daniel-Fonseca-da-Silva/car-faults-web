@@ -16,5 +16,113 @@
     "faults": {
       "label": "Dokumentierte Mängel"
     }
+  },
+  "showcase": {
+    "badge": "Komplettes Fahrzeugprofil",
+    "titleLead": "Klüger suchen.",
+    "titleHighlight": "Sicher kaufen.",
+    "subtitle": "Jedes Fahrzeugprofil bündelt technische Daten, typische Mängel und echte Halterberichte, damit Sie genau wissen, worauf Sie sich einlassen.",
+    "primaryCta": "Mängel ansehen",
+    "secondaryCta": "So funktioniert's",
+    "features": {
+      "ownerReports": "Echte Halterberichte",
+      "aiAnalysis": "KI-gestützte Analyse",
+      "garage": "Garage & Favoriten"
+    },
+    "imageAlt": "Fahrzeugprofil des Ford Fiesta Mk4 mit Baujahr, Motor, Kraftstoff, Türen und Leistung"
+  },
+  "problemSolution": {
+    "titleLead": "Schluss mit dem Blindkauf,",
+    "titleHighlight": "kaufen Sie informiert",
+    "subtitle": "Während andere die chronischen Mängel eines Autos erst nach dem Bezahlen entdecken, kennen Sie sie schon vor der Unterschrift.",
+    "problem": {
+      "title": "Das Problem",
+      "subtitle": "Mängel zu spät entdeckt",
+      "items": {
+        "scattered": "Verstreute Foren, Gruppen und Videos durchsuchen, um die Geschichte eines Autos zusammenzusetzen",
+        "tooLate": "Einen bekannten chronischen Mangel erst nach dem Kauf entdecken",
+        "sellerWord": "Sich allein auf das Wort des Verkäufers verlassen, ohne unabhängige Informationen",
+        "surpriseRepairs": "Für Reparaturen zahlen, die vorhersehbar gewesen wären"
+      }
+    },
+    "solution": {
+      "title": "Die Lösung",
+      "subtitle": "Alle bekannten Mängel in einer Suche",
+      "items": {
+        "oneSearch": "Chronische Mängel nach Marke, Modell, Baujahr und Motor in einer einzigen Suche",
+        "severity": "Schweregrad und typischer Kilometerstand, bei dem jeder Mangel auftritt",
+        "fixes": "Schritt-für-Schritt-Lösungen, bewertet von echten Besitzern",
+        "aiFlagged": "Von KI markierte wahrscheinliche Mängel bei dünner Datenlage, stets klar gekennzeichnet"
+      }
+    },
+    "transitionLabel": "Vom Problem zur Lösung",
+    "highlight": {
+      "title": "Kostenlos suchen, ohne Konto",
+      "subtitle": "Schließen Sie sich den Besitzern an, die ihre Erfahrungen teilen, um jeden Gebrauchtwagenkauf sicherer zu machen."
+    }
+  },
+  "howItWorks": {
+    "badge": "So funktioniert's",
+    "titleLead": "Von der Suche zur Entscheidung,",
+    "titleHighlight": "in unter einer Minute",
+    "subtitle": "AutoCronica bündelt die chronischen Mängel jeder Marke, jedes Modells, Baujahrs und Motors, damit Sie die Risiken vor dem Kauf kennen.",
+    "steps": {
+      "search": {
+        "title": "Fahrzeug suchen",
+        "description": "Marke, Modell, Baujahr und Motor wählen. Kein Konto nötig."
+      },
+      "faults": {
+        "title": "Chronische Mängel ansehen",
+        "description": "Jeder bekannte Mangel mit Schweregrad und typischem Kilometerstand, bei dem er auftritt."
+      },
+      "fixes": {
+        "title": "Lösungen prüfen",
+        "description": "Schritt-für-Schritt-Lösungen, bewertet von echten Besitzern."
+      },
+      "save": {
+        "title": "Speichern und vergleichen",
+        "description": "Autos zur Garage und zu Favoriten hinzufügen, um vor der Entscheidung zu vergleichen."
+      }
+    },
+    "videoLabel": "Demo der AutoCronica-App: Suche nach einem Fahrzeug und Anzeige seiner chronischen Mängel",
+    "playLabel": "Demovideo abspielen"
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "subtitle": "Alles, was du wissen musst, um mit Auto Crónica die Schwachstellen eines Fahrzeugs vor dem Kauf zu kennen.",
+    "items": {
+      "whatIs": {
+        "question": "Was ist Auto Crónica?",
+        "answer": "Ein Katalog chronischer Mängel, geordnet nach Marke, Modell, Baujahr und Motor. Er bündelt an einem Ort, was bei jedem Fahrzeug typischerweise kaputtgeht, wie schwer es wiegt, ab welchem Kilometerstand es auftritt und wie man es behebt – Informationen, die sonst über Foren, Gruppen und Videos verstreut sind."
+      },
+      "howToSearch": {
+        "question": "Wie suche ich nach den Mängeln eines Fahrzeugs?",
+        "answer": "Gib auf der Startseite Marke, Modell, Baujahr, Motor und Kraftstoff ein (die Anzahl der Türen ist optional) und klicke auf „Mängel suchen“. Du kannst auch den Bereich Mängel durchstöbern, der die am häufigsten gemeldeten Probleme nach Marke und Modell auflistet."
+      },
+      "sources": {
+        "question": "Woher stammen die Informationen?",
+        "answer": "Aus Berichten von Besitzern und ausgewählten technischen Quellen. Wenn es zu einem Fahrzeug noch nicht genug Daten gibt, zeigt eine künstliche Intelligenz die wahrscheinlichsten Mängel auf; diese Inhalte sind immer als KI-generiert gekennzeichnet. Mit der Zeit kommentiert, korrigiert und bewertet die Community alles, damit es immer zuverlässiger wird."
+      },
+      "mechanic": {
+        "question": "Ersetzen die Informationen eine Werkstattprüfung?",
+        "answer": "Nein. Die Ergebnisse sind Richtwerte und helfen dir, besser vorbereitet in einen Kauf oder eine Inspektion zu gehen. Lass das Fahrzeug vor dem Abschluss immer von einer Werkstatt deines Vertrauens prüfen."
+      },
+      "severity": {
+        "question": "Was bedeuten die Schweregrade?",
+        "answer": "Jeder Mangel wird als Gering, Mittel, Hoch oder Kritisch eingestuft – je nach Auswirkung auf Sicherheit, Zuverlässigkeit und Reparaturkosten. Sofern verfügbar, zeigen wir auch den Kilometerstand, ab dem das Problem meist auftritt, sowie bekannte Lösungen Schritt für Schritt."
+      },
+      "account": {
+        "question": "Brauche ich ein Konto? Ist es kostenlos?",
+        "answer": "Die Suche ist kostenlos und ohne Konto möglich. Mit einer Google-Anmeldung kannst du Fahrzeuge in deiner Garage speichern, Favoriten verfolgen, kommentieren und über Lösungen abstimmen. Das Projekt ist unabhängig und finanziert sich über freiwillige Spenden."
+      },
+      "garageVsFavorites": {
+        "question": "Was ist der Unterschied zwischen Garage und Favoriten?",
+        "answer": "Die Garage ist für die Fahrzeuge, die du besitzt: Dort siehst du auf einen Blick die bekannten Probleme jedes einzelnen. Mit Favoriten verfolgst du Fahrzeuge, deren Kauf du überlegst oder die dich einfach interessieren."
+      },
+      "contribute": {
+        "question": "Wie kann ich beitragen?",
+        "answer": "Kommentiere Mängel mit deinen eigenen Erfahrungen, gern auch mit Fotos der Reparatur, und stimme für die Lösungen ab, die bei dir funktioniert haben. Wenn dir das Projekt geholfen hat, kannst du es auch mit einer Spende auf der Seite Unterstützen fördern."
+      }
+    }
   }
 }

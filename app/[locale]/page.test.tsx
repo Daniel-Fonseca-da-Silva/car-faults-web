@@ -26,6 +26,18 @@ jest.mock("next-intl/server", () => ({
 jest.mock("@/components/home/hero-section", () => ({
   HeroSection: () => <div data-testid="hero-section" />,
 }));
+jest.mock("@/components/home/showcase-section", () => ({
+  ShowcaseSection: () => <div data-testid="showcase-section" />,
+}));
+jest.mock("@/components/home/problem-solution-section", () => ({
+  ProblemSolutionSection: () => <div data-testid="problem-solution-section" />,
+}));
+jest.mock("@/components/home/how-it-works-section", () => ({
+  HowItWorksSection: () => <div data-testid="how-it-works-section" />,
+}));
+jest.mock("@/components/home/faq-section", () => ({
+  FaqSection: () => <div data-testid="faq-section" />,
+}));
 jest.mock("@/components/home/stats-bar", () => ({
   StatsBar: () => <div data-testid="stats-bar" />,
 }));
@@ -54,11 +66,17 @@ describe("HomePage", () => {
 
     expect(screen.getByTestId("hero-section")).toBeInTheDocument();
     expect(screen.getByTestId("vehicle-search-form")).toBeInTheDocument();
+    expect(screen.getByTestId("showcase-section")).toBeInTheDocument();
+    expect(
+      screen.getByTestId("showcase-section").nextElementSibling
+    ).toHaveAttribute("data-testid", "problem-solution-section");
     expect(screen.getByTestId("adsense-unit")).toHaveAttribute(
       "data-slot",
       "mock-slot"
     );
+    expect(screen.getByTestId("how-it-works-section")).toBeInTheDocument();
     expect(screen.getByTestId("stats-bar")).toBeInTheDocument();
+    expect(screen.getByTestId("faq-section")).toBeInTheDocument();
   });
 
   it("passes the database status down to the search form", async () => {

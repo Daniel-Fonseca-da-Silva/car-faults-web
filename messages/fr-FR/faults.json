@@ -141,6 +141,24 @@
       "success": "Signalement envoyé. Merci de contribuer à la sécurité de la communauté.",
       "duplicateError": "Vous avez déjà signalé ce contenu.",
       "submitError": "Impossible d'envoyer le signalement. Veuillez réessayer."
+    },
+    "amazonParts": {
+      "cta": "Voir les pièces sur Amazon",
+      "disclosure": "Lien affilié : nous pouvons percevoir une commission sans frais supplémentaires pour vous."
+    },
+    "mercadoLivre": {
+      "title": "Gardez votre {vehicle} en forme",
+      "subtitle": "Découvrez les offres Mercado Livre sur les essentiels dont toute voiture a besoin et trouvez le meilleur prix.",
+      "disclosure": "Liens sponsorisés : nous pouvons percevoir une commission, sans frais supplémentaires pour vous.",
+      "products": {
+        "steeringWheelCover": "Couvre-volant",
+        "lubricantSpray": "Lubrifiant WD-40",
+        "engineOil": "Huile moteur",
+        "battery": "Batterie",
+        "wipers": "Balais d'essuie-glace",
+        "tools": "Outils",
+        "headlightBulbs": "Ampoules de phare"
+      }
     }
   }
 }

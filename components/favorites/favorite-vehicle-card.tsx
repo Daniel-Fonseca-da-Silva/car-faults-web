@@ -12,9 +12,14 @@ const FALLBACK_IMAGE_SRC = "/garage/1951-volkswagen-beetle-garage-scene.webp";
 
 interface FavoriteVehicleCardProps {
   vehicle: FavoriteVehicle;
+  /** Loads the image eagerly for cards above the fold (LCP candidates). */
+  eager?: boolean;
 }
 
-export const FavoriteVehicleCard = ({ vehicle }: FavoriteVehicleCardProps) => {
+export const FavoriteVehicleCard = ({
+  vehicle,
+  eager = false,
+}: FavoriteVehicleCardProps) => {
   const t = useTranslations("favorites");
   const label = `${vehicle.brand} ${vehicle.model}`;
   const imageSrc = vehicle.imageUrl?.trim() || FALLBACK_IMAGE_SRC;
@@ -36,6 +41,7 @@ export const FavoriteVehicleCard = ({ vehicle }: FavoriteVehicleCardProps) => {
           src={imageSrc}
           alt={label}
           fill
+          loading={eager ? "eager" : "lazy"}
           sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw"
           className="object-cover"
         />

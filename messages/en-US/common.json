@@ -29,7 +29,8 @@
       "privacy": "Privacy",
       "terms": "Terms",
       "accountDeletion": "Delete account"
-    }
+    },
+    "affiliateDisclosure": "As an Amazon Associate we earn from qualifying purchases."
   },
   "notFound": {
     "title": "Page not found",

@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { SiteFooter } from "./site-footer";
 
 const openPreferences = jest.fn();
+let mockLocale = "pt-BR";
 
 const footerDict: Record<string, string> = {
   disclaimer:
@@ -18,10 +19,12 @@ const footerDict: Record<string, string> = {
 };
 
 jest.mock("next-intl/server", () => ({
+  getLocale: async () => mockLocale,
   getTranslations: async () => {
     return (key: string, values?: Record<string, unknown>) => {
       if (key === "footer.copyright") return `© ${values?.year}`;
       if (key === "footer.disclaimer") return footerDict.disclaimer;
+      if (key === "footer.affiliateDisclosure") return "Amazon disclosure";
       if (key.startsWith("footer.social.") || key.startsWith("footer.legal.")) {
         return footerDict[key.replace("footer.", "")];
       }
@@ -70,6 +73,7 @@ function textContentMatcher(text: string) {
 describe("SiteFooter", () => {
   afterEach(() => {
     openPreferences.mockReset();
+    mockLocale = "pt-BR";
   });
 
   it("renders the typographic logo", async () => {
@@ -126,5 +130,23 @@ describe("SiteFooter", () => {
     );
 
     expect(openPreferences).toHaveBeenCalledTimes(1);
+  });
+
+  it.each(["es-ES", "pt-PT", "en-GB", "de-DE", "fr-FR", "it-IT"])(
+    "shows the Amazon affiliate disclosure for %s",
+    async (locale) => {
+      mockLocale = locale;
+      const jsx = await SiteFooter();
+      render(jsx);
+
+      expect(screen.getByText(/Amazon disclosure/)).toBeInTheDocument();
+    }
+  );
+
+  it("hides the Amazon affiliate disclosure for locales without a store", async () => {
+    const jsx = await SiteFooter();
+    render(jsx);
+
+    expect(screen.queryByText(/Amazon disclosure/)).not.toBeInTheDocument();
   });
 });

@@ -50,6 +50,8 @@ jest.mock("next-intl", () => ({
       "vehicle.viewSteps": "Ver passo a passo",
       "vehicle.hideSteps": "Ocultar passo a passo",
       "vehicle.helpful": "Foi útil?",
+      "vehicle.amazonParts.cta": "Ver peças na Amazon",
+      "vehicle.amazonParts.disclosure": "Link de afiliado",
     };
     return (key: string, values?: Record<string, unknown>) => {
       const template = dict[key] ?? key;
@@ -200,5 +202,39 @@ describe("KnownIssuesAccordion", () => {
     expect(screen.getByTestId("issue-reviews-issue-1")).toHaveTextContent(
       "Ana Silva"
     );
+  });
+
+  it("links to Amazon parts for the issue when a store is provided", async () => {
+    const user = userEvent.setup();
+    render(
+      <KnownIssuesAccordion
+        knownIssues={knownIssues}
+        currentUser={null}
+        vehicleLabel="SEAT Leon"
+        amazonStore={{ domain: "www.amazon.es", tag: "autocronica17-21" }}
+      />
+    );
+
+    await user.click(clickTrigger("Problematic gearbox"));
+
+    expect(
+      screen.getByRole("link", { name: "Ver peças na Amazon" })
+    ).toHaveAttribute(
+      "href",
+      "https://www.amazon.es/s?k=SEAT+Leon+Problematic+gearbox&tag=autocronica17-21"
+    );
+  });
+
+  it("omits the Amazon parts link without a store", async () => {
+    const user = userEvent.setup();
+    render(
+      <KnownIssuesAccordion knownIssues={knownIssues} currentUser={null} />
+    );
+
+    await user.click(clickTrigger("Problematic gearbox"));
+
+    expect(
+      screen.queryByRole("link", { name: "Ver peças na Amazon" })
+    ).not.toBeInTheDocument();
   });
 });

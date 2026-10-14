@@ -10,5 +10,113 @@
     "reports": { "label": "Reportes de propietarios" },
     "vehicles": { "label": "Vehículos catalogados" },
     "faults": { "label": "Defectos documentados" }
+  },
+  "showcase": {
+    "badge": "Perfil completo del vehículo",
+    "titleLead": "Busca mejor.",
+    "titleHighlight": "Compra con confianza.",
+    "subtitle": "Cada perfil de vehículo reúne especificaciones, fallas crónicas y opiniones reales de dueños, para que sepas exactamente lo que estás comprando.",
+    "primaryCta": "Ver fallas",
+    "secondaryCta": "Cómo funciona",
+    "features": {
+      "ownerReports": "Opiniones reales de dueños",
+      "aiAnalysis": "Análisis asistido por IA",
+      "garage": "Garaje y favoritos"
+    },
+    "imageAlt": "Perfil del Ford Fiesta Mk4 con año, motor, combustible, puertas y potencia"
+  },
+  "problemSolution": {
+    "titleLead": "Deja de comprar a ciegas,",
+    "titleHighlight": "empieza a comprar informado",
+    "subtitle": "Mientras otros descubren las fallas crónicas de un auto después de pagar, tú puedes conocerlas antes de firmar.",
+    "problem": {
+      "title": "El problema",
+      "subtitle": "Fallas descubiertas demasiado tarde",
+      "items": {
+        "scattered": "Buscar en foros, grupos y videos dispersos para armar el historial de un auto",
+        "tooLate": "Descubrir una falla crónica conocida solo después de pagar",
+        "sellerWord": "Confiar solo en la palabra del vendedor, sin información independiente",
+        "surpriseRepairs": "Pagar reparaciones que se podían haber previsto"
+      }
+    },
+    "solution": {
+      "title": "La solución",
+      "subtitle": "Todas las fallas conocidas en una sola búsqueda",
+      "items": {
+        "oneSearch": "Fallas crónicas organizadas por marca, modelo, año y motor en una única búsqueda",
+        "severity": "Nivel de gravedad y kilometraje típico en que aparece cada falla",
+        "fixes": "Soluciones paso a paso, votadas por propietarios reales",
+        "aiFlagged": "Fallas probables señaladas por IA cuando aún hay pocos datos, siempre identificadas"
+      }
+    },
+    "transitionLabel": "Del problema a la solución",
+    "highlight": {
+      "title": "Búsqueda gratuita, sin necesidad de cuenta",
+      "subtitle": "Únete a los propietarios que comparten su experiencia para que cada compra de seminuevo sea más segura."
+    }
+  },
+  "howItWorks": {
+    "badge": "Cómo funciona",
+    "titleLead": "De la búsqueda a la decisión,",
+    "titleHighlight": "en menos de un minuto",
+    "subtitle": "AutoCronica reúne las fallas crónicas de cada marca, modelo, año y motor para que conozcas los riesgos antes de comprar.",
+    "steps": {
+      "search": {
+        "title": "Busca tu vehículo",
+        "description": "Elige marca, modelo, año y motor. Sin necesidad de cuenta."
+      },
+      "faults": {
+        "title": "Mira las fallas crónicas",
+        "description": "Cada falla conocida con su nivel de gravedad y el kilometraje típico en que aparece."
+      },
+      "fixes": {
+        "title": "Descubre cómo resolverla",
+        "description": "Soluciones paso a paso, votadas por propietarios reales."
+      },
+      "save": {
+        "title": "Guarda y compara",
+        "description": "Agrega autos a tu garaje y a favoritos para comparar antes de decidir."
+      }
+    },
+    "videoLabel": "Demostración de la app AutoCronica: buscando un vehículo y viendo sus fallas crónicas",
+    "playLabel": "Reproducir video de demostración"
+  },
+  "faq": {
+    "title": "Preguntas frecuentes",
+    "subtitle": "Todo lo que necesitas saber para usar Auto Crónica y conocer las fallas de un carro antes de comprarlo.",
+    "items": {
+      "whatIs": {
+        "question": "¿Qué es Auto Crónica?",
+        "answer": "Es un catálogo de fallas crónicas organizado por marca, modelo, año y motor. Junta en un solo lugar lo que suele fallarle a cada carro, qué tan grave es, a los cuántos kilómetros aparece y cómo se arregla, información que normalmente anda regada entre foros, grupos y videos."
+      },
+      "howToSearch": {
+        "question": "¿Cómo busco las fallas de un carro?",
+        "answer": "En la página de inicio, llena la marca, el modelo, el año, el motor y el combustible (el número de puertas es opcional) y da clic en \"Buscar defectos\". También puedes darte una vuelta por la sección Defectos, donde están las fallas más reportadas por marca y por modelo."
+      },
+      "sources": {
+        "question": "¿De dónde viene la información?",
+        "answer": "De los reportes de dueños y de una selección de fuentes técnicas. Cuando todavía no hay suficientes datos de un carro, una inteligencia artificial señala las fallas más probables, y ese contenido siempre aparece marcado como generado por IA. Con el tiempo, la comunidad comenta, corrige y vota para que todo sea cada vez más confiable."
+      },
+      "mechanic": {
+        "question": "¿Ya no necesito que lo cheque un mecánico?",
+        "answer": "Sí lo necesitas. Los resultados son solo de referencia y te ayudan a llegar mejor preparado a la compra o al servicio. Antes de cerrar el trato, lleva siempre el carro con un mecánico de confianza para que lo cheque."
+      },
+      "severity": {
+        "question": "¿Qué significan los niveles de gravedad?",
+        "answer": "Cada falla se clasifica como Baja, Media, Alta o Crítica, según qué tanto afecta la seguridad, la confiabilidad y el costo de la reparación. Cuando tenemos el dato, también te decimos a los cuántos kilómetros suele aparecer el problema y las soluciones conocidas, paso a paso."
+      },
+      "account": {
+        "question": "¿Necesito una cuenta? ¿Cuesta algo?",
+        "answer": "Buscar no cuesta nada y no necesitas cuenta. Si inicias sesión con Google, puedes guardar tus carros en el garaje, seguir favoritos, comentar y votar soluciones. El proyecto es independiente y se sostiene con donaciones."
+      },
+      "garageVsFavorites": {
+        "question": "¿Cuál es la diferencia entre Garaje y Favoritos?",
+        "answer": "El Garaje es para los carros que ya tienes: ahí checas rápido los problemas conocidos de cada uno. Favoritos te sirve para seguir los carros que traes en la mira para comprar o que simplemente te interesan."
+      },
+      "contribute": {
+        "question": "¿Cómo puedo apoyar?",
+        "answer": "Comenta en las fallas contando tu experiencia, hasta con fotos de la reparación, y vota por las soluciones que te funcionaron. Si el proyecto te sirvió, también puedes echarle la mano con una donación en la página Apoyo."
+      }
+    }
   }
 }

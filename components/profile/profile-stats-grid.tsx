@@ -1,6 +1,7 @@
 import { BookOpen, Heart, type LucideIcon, Search, Star, ThumbsUp } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
+import { Stagger, StaggerItem } from "@/components/motion/reveal";
 import { Card } from "@/components/ui/card";
 import type { UserStats } from "@/types/user-stats";
 
@@ -34,14 +35,16 @@ export async function ProfileStatsGrid({ stats }: ProfileStatsGridProps) {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
+    <Stagger className="grid grid-cols-2 gap-4 lg:grid-cols-3" stagger={0.08}>
       {entries.map(({ icon: Icon, value, labelKey }) => (
-        <Card key={labelKey} className="p-5">
-          <Icon aria-hidden="true" className="size-5 text-primary" />
-          <p className="mt-3 text-2xl font-bold text-foreground">{value}</p>
-          <p className="mt-1 text-sm text-muted-foreground">{t(labelKey)}</p>
-        </Card>
+        <StaggerItem key={labelKey} hoverLift>
+          <Card className="h-full p-5 transition-shadow hover:shadow-lg">
+            <Icon aria-hidden="true" className="size-5 text-primary" />
+            <p className="mt-3 text-2xl font-bold text-foreground">{value}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{t(labelKey)}</p>
+          </Card>
+        </StaggerItem>
       ))}
-    </div>
+    </Stagger>
   );
 }

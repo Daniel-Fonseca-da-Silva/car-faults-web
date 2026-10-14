@@ -1,13 +1,18 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { Logo } from "@/components/brand/logo";
 import { Link } from "@/i18n/navigation";
+import { getAmazonStore } from "@/lib/affiliate/amazon";
 
 import { CookieSettingsButton } from "./cookie-settings-button";
 import { SocialLinks } from "./social-links";
 
 export async function SiteFooter() {
-  const t = await getTranslations("common");
+  const [t, locale] = await Promise.all([
+    getTranslations("common"),
+    getLocale(),
+  ]);
+  const showAffiliateDisclosure = getAmazonStore(locale) !== null;
   const year = new Date().getFullYear();
 
   return (
@@ -19,6 +24,12 @@ export async function SiteFooter() {
 
         <p className="text-xs text-muted-foreground">
           {t("footer.disclaimer")}
+          {showAffiliateDisclosure && (
+            <>
+              <br />
+              {t("footer.affiliateDisclosure")}
+            </>
+          )}
         </p>
 
         <div className="flex items-center gap-3 text-xs text-muted-foreground">

@@ -10,5 +10,113 @@
     "reports": { "label": "Relatos de proprietários" },
     "vehicles": { "label": "Veículos catalogados" },
     "faults": { "label": "Defeitos documentados" }
+  },
+  "showcase": {
+    "badge": "Perfil completo do veículo",
+    "titleLead": "Pesquise melhor.",
+    "titleHighlight": "Compre com confiança.",
+    "subtitle": "Cada perfil de veículo reúne especificações, defeitos crônicos e relatos reais de proprietários, para você saber exatamente o que está comprando.",
+    "primaryCta": "Ver defeitos",
+    "secondaryCta": "Como funciona",
+    "features": {
+      "ownerReports": "Relatos reais de proprietários",
+      "aiAnalysis": "Análise assistida por IA",
+      "garage": "Garagem e favoritos"
+    },
+    "imageAlt": "Perfil do Ford Fiesta Mk4 com ano, motor, combustível, portas e potência"
+  },
+  "problemSolution": {
+    "titleLead": "Pare de comprar no escuro,",
+    "titleHighlight": "comece a comprar informado",
+    "subtitle": "Enquanto outros só descobrem os defeitos crônicos de um carro depois de pagar, você pode conhecê-los antes de assinar.",
+    "problem": {
+      "title": "O problema",
+      "subtitle": "Defeitos descobertos tarde demais",
+      "items": {
+        "scattered": "Vasculhar fóruns, grupos e vídeos espalhados para montar o histórico de um carro",
+        "tooLate": "Descobrir um defeito crônico conhecido só depois de pagar",
+        "sellerWord": "Confiar apenas na palavra do vendedor, sem informação independente",
+        "surpriseRepairs": "Pagar por consertos que poderiam ter sido previstos"
+      }
+    },
+    "solution": {
+      "title": "A solução",
+      "subtitle": "Todos os defeitos conhecidos em uma só busca",
+      "items": {
+        "oneSearch": "Defeitos crônicos organizados por marca, modelo, ano e motor em uma única busca",
+        "severity": "Nível de gravidade e quilometragem típica em que cada defeito aparece",
+        "fixes": "Soluções passo a passo, votadas por proprietários reais",
+        "aiFlagged": "Defeitos prováveis sinalizados por IA quando ainda há poucos dados, sempre identificados"
+      }
+    },
+    "transitionLabel": "Do problema à solução",
+    "highlight": {
+      "title": "Busca gratuita, sem precisar de conta",
+      "subtitle": "Junte-se aos proprietários que compartilham sua experiência para tornar cada compra de usado mais segura."
+    }
+  },
+  "howItWorks": {
+    "badge": "Como funciona",
+    "titleLead": "Da busca à decisão,",
+    "titleHighlight": "em menos de um minuto",
+    "subtitle": "O AutoCronica reúne os defeitos crônicos de cada marca, modelo, ano e motor para você conhecer os riscos antes de comprar.",
+    "steps": {
+      "search": {
+        "title": "Busque seu veículo",
+        "description": "Escolha marca, modelo, ano e motor. Sem precisar de conta."
+      },
+      "faults": {
+        "title": "Veja os defeitos crônicos",
+        "description": "Cada defeito conhecido com o nível de gravidade e a quilometragem típica em que aparece."
+      },
+      "fixes": {
+        "title": "Confira como resolver",
+        "description": "Soluções passo a passo, votadas por proprietários reais."
+      },
+      "save": {
+        "title": "Salve e compare",
+        "description": "Adicione carros à garagem e aos favoritos para comparar antes de decidir."
+      }
+    },
+    "videoLabel": "Demonstração do app AutoCronica: buscando um veículo e vendo seus defeitos crônicos",
+    "playLabel": "Reproduzir vídeo de demonstração"
+  },
+  "faq": {
+    "title": "Perguntas frequentes",
+    "subtitle": "Tudo o que você precisa saber para usar a Auto Crónica e descobrir os problemas de um carro antes de fechar negócio.",
+    "items": {
+      "whatIs": {
+        "question": "O que é a Auto Crónica?",
+        "answer": "É um catálogo de defeitos crônicos organizado por marca, modelo, ano e motor. A gente reúne em um só lugar o que costuma dar problema em cada carro, o quanto é grave, com quantos quilômetros costuma aparecer e como resolver, informação que normalmente fica espalhada por fóruns, grupos e vídeos."
+      },
+      "howToSearch": {
+        "question": "Como faço para pesquisar os defeitos de um carro?",
+        "answer": "Na página inicial, preencha marca, modelo, ano, motor e combustível (o número de portas é opcional) e clique em \"Pesquisar defeitos\". Você também pode dar uma olhada na seção Defeitos, que mostra os problemas mais relatados por marca e por modelo."
+      },
+      "sources": {
+        "question": "De onde vêm as informações?",
+        "answer": "Dos relatos de donos de carro e de uma seleção de fontes técnicas. Quando ainda não tem dados suficientes sobre um veículo, uma inteligência artificial aponta os defeitos mais prováveis, e esse conteúdo sempre aparece marcado como gerado por IA. Com o tempo, a comunidade comenta, corrige e vota para deixar tudo cada vez mais confiável."
+      },
+      "mechanic": {
+        "question": "Dá para dispensar a vistoria do mecânico?",
+        "answer": "Não. Os resultados são só uma referência para você chegar mais preparado na hora de comprar ou de fazer a revisão. Antes de fechar negócio, leve sempre o carro em um mecânico de confiança para dar uma olhada."
+      },
+      "severity": {
+        "question": "O que significam os níveis de gravidade?",
+        "answer": "Cada defeito é classificado como Baixa, Média, Alta ou Crítica, de acordo com o impacto na segurança, na confiabilidade e no custo do conserto. Quando a gente tem essa informação, também mostra com quantos quilômetros o problema costuma aparecer e as soluções conhecidas, com o passo a passo."
+      },
+      "account": {
+        "question": "Preciso criar uma conta? É de graça?",
+        "answer": "A pesquisa é de graça e não precisa de conta. Entrando com o Google, você pode salvar seus carros na garagem, acompanhar favoritos, comentar e votar nas soluções. O projeto é independente e se mantém com doações de quem curte a ideia."
+      },
+      "garageVsFavorites": {
+        "question": "Qual a diferença entre Garagem e Favoritos?",
+        "answer": "A Garagem é para os carros que você já tem: ali você vê rapidinho os problemas conhecidos de cada um. Os Favoritos são para acompanhar os carros que você está de olho para comprar ou que simplesmente te interessam."
+      },
+      "contribute": {
+        "question": "Como posso ajudar?",
+        "answer": "Comente nos defeitos contando a sua experiência, até com fotos do conserto, e vote nas soluções que deram certo para você. Se o projeto te ajudou, você também pode dar uma força com uma doação na página Apoiar."
+      }
+    }
   }
 }

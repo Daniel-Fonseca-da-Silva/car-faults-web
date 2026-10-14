@@ -37,6 +37,6 @@ export const config = {
   // dotted paths (e.g. /wp-admin/install.php from bot scans) must still pass
   // through so next-intl resolves a locale and the localized 404 renders.
   matcher: [
-    "/((?!api|_next|_vercel|.*\\.(?:png|jpe?g|webp|gif|svg|ico|txt|xml|html|json|webmanifest|css|js|map|woff2?)$).*)",
+    "/((?!api|_next|_vercel|.*\\.(?:png|jpe?g|webp|gif|svg|ico|txt|xml|html|json|webmanifest|css|js|map|woff2?|mp4|webm)$).*)",
   ],
 };

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { Car, SearchCheck } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { FaultsInfiniteList } from "@/components/faults/faults-infinite-list";
 import { SiteShell } from "@/components/layout/site-shell";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import type { Locale } from "@/i18n/locales";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
@@ -81,16 +83,25 @@ export default async function DefectsHubPage({
 
   return (
     <SiteShell className="py-12 sm:py-16">
-      <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-        {t("title")}
-      </h1>
-      <p className="mt-2 max-w-2xl text-muted-foreground">
-        {hasQuery
-          ? t("resultsFor", {
-              query: [make, model, year].filter(Boolean).join(" "),
-            })
-          : t("subtitle")}
-      </p>
+      <Stagger>
+        <StaggerItem>
+          <h1 className="flex items-center gap-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary sm:size-12">
+              <SearchCheck className="size-5 sm:size-6" aria-hidden="true" />
+            </span>
+            {t("title")}
+          </h1>
+        </StaggerItem>
+        <StaggerItem>
+          <p className="mt-2 max-w-2xl text-muted-foreground">
+            {hasQuery
+              ? t("resultsFor", {
+                  query: [make, model, year].filter(Boolean).join(" "),
+                })
+              : t("subtitle")}
+          </p>
+        </StaggerItem>
+      </Stagger>
 
       <div className="mt-8">
         <FaultsInfiniteList
@@ -100,22 +111,26 @@ export default async function DefectsHubPage({
         />
       </div>
 
-      <h2 className="mt-14 text-xl font-semibold text-foreground">
-        {t("browseBrandsTitle")}
-      </h2>
+      <Reveal className="mt-14">
+        <h2 className="flex items-center gap-2 text-xl font-semibold text-foreground">
+          <Car className="size-5 text-primary" aria-hidden="true" />
+          {t("browseBrandsTitle")}
+        </h2>
+      </Reveal>
       <div className="mt-4">
         {brands.length > 0 ? (
-          <div className="flex flex-wrap gap-2">
+          <Stagger className="flex flex-wrap gap-2" stagger={0.02}>
             {brands.map((brand) => (
-              <Link
-                key={brand.slug}
-                href={`/defects/${brand.slug}`}
-                className="rounded-full border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
-              >
-                {brand.name}
-              </Link>
+              <StaggerItem key={brand.slug} hoverLift>
+                <Link
+                  href={`/defects/${brand.slug}`}
+                  className="block rounded-full border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+                >
+                  {brand.name}
+                </Link>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         ) : (
           <p className="text-muted-foreground">{t("noBrands")}</p>
         )}

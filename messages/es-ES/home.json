@@ -10,5 +10,113 @@
     "reports": { "label": "Reportes de propietarios" },
     "vehicles": { "label": "Vehículos catalogados" },
     "faults": { "label": "Defectos documentados" }
+  },
+  "showcase": {
+    "badge": "Perfil completo del vehículo",
+    "titleLead": "Busca mejor.",
+    "titleHighlight": "Compra con confianza.",
+    "subtitle": "Cada perfil de vehículo reúne especificaciones, averías crónicas y opiniones reales de propietarios, para que sepas exactamente lo que compras.",
+    "primaryCta": "Ver averías",
+    "secondaryCta": "Cómo funciona",
+    "features": {
+      "ownerReports": "Opiniones reales de propietarios",
+      "aiAnalysis": "Análisis asistido por IA",
+      "garage": "Garaje y favoritos"
+    },
+    "imageAlt": "Perfil del Ford Fiesta Mk4 con año, motor, combustible, puertas y potencia"
+  },
+  "problemSolution": {
+    "titleLead": "Deja de comprar a ciegas,",
+    "titleHighlight": "empieza a comprar informado",
+    "subtitle": "Mientras otros descubren las averías crónicas de un coche después de pagar, tú puedes conocerlas antes de firmar.",
+    "problem": {
+      "title": "El problema",
+      "subtitle": "Averías descubiertas demasiado tarde",
+      "items": {
+        "scattered": "Rebuscar en foros, grupos y vídeos dispersos para reconstruir el historial de un coche",
+        "tooLate": "Descubrir una avería crónica conocida solo después de pagar",
+        "sellerWord": "Fiarte solo de la palabra del vendedor, sin información independiente",
+        "surpriseRepairs": "Pagar reparaciones que se podían haber previsto"
+      }
+    },
+    "solution": {
+      "title": "La solución",
+      "subtitle": "Todas las averías conocidas en una sola búsqueda",
+      "items": {
+        "oneSearch": "Averías crónicas organizadas por marca, modelo, año y motor en una única búsqueda",
+        "severity": "Nivel de gravedad y kilometraje típico en que aparece cada avería",
+        "fixes": "Soluciones paso a paso, votadas por propietarios reales",
+        "aiFlagged": "Averías probables señaladas por IA cuando aún hay pocos datos, siempre identificadas"
+      }
+    },
+    "transitionLabel": "Del problema a la solución",
+    "highlight": {
+      "title": "Búsqueda gratuita, sin necesidad de cuenta",
+      "subtitle": "Únete a los propietarios que comparten su experiencia para que cada compra de segunda mano sea más segura."
+    }
+  },
+  "howItWorks": {
+    "badge": "Cómo funciona",
+    "titleLead": "De la búsqueda a la decisión,",
+    "titleHighlight": "en menos de un minuto",
+    "subtitle": "AutoCronica reúne las fallas crónicas de cada marca, modelo, año y motor para que conozcas los riesgos antes de comprar.",
+    "steps": {
+      "search": {
+        "title": "Busca tu vehículo",
+        "description": "Elige marca, modelo, año y motor. Sin necesidad de cuenta."
+      },
+      "faults": {
+        "title": "Mira las fallas crónicas",
+        "description": "Cada falla conocida con su nivel de gravedad y el kilometraje típico en que aparece."
+      },
+      "fixes": {
+        "title": "Descubre cómo resolverla",
+        "description": "Soluciones paso a paso, votadas por propietarios reales."
+      },
+      "save": {
+        "title": "Guarda y compara",
+        "description": "Añade coches a tu garaje y a favoritos para comparar antes de decidir."
+      }
+    },
+    "videoLabel": "Demostración de la app AutoCronica: buscando un vehículo y viendo sus fallas crónicas",
+    "playLabel": "Reproducir vídeo de demostración"
+  },
+  "faq": {
+    "title": "Preguntas frecuentes",
+    "subtitle": "Todo lo que necesitas saber para usar Auto Crónica y conocer las averías de un coche antes de comprarlo.",
+    "items": {
+      "whatIs": {
+        "question": "¿Qué es Auto Crónica?",
+        "answer": "Es un catálogo de averías crónicas ordenado por marca, modelo, año y motor. Reúne en un mismo sitio lo que suele fallar en cada coche, lo grave que es, a partir de cuántos kilómetros aparece y cómo se arregla, información que normalmente anda desperdigada por foros, grupos y vídeos."
+      },
+      "howToSearch": {
+        "question": "¿Cómo busco las averías de un coche?",
+        "answer": "En la página de inicio, rellena la marca, el modelo, el año, el motor y el combustible (el número de puertas es opcional) y pulsa \"Buscar defectos\". También puedes echar un vistazo a la sección Defectos, donde aparecen las averías más comunes por marca y por modelo."
+      },
+      "sources": {
+        "question": "¿De dónde sale la información?",
+        "answer": "De los testimonios de propietarios y de una selección de fuentes técnicas. Cuando todavía no hay datos suficientes sobre un coche, una inteligencia artificial señala las averías más probables, y ese contenido siempre aparece marcado como generado por IA. Con el tiempo, la comunidad comenta, corrige y vota para que todo sea cada vez más fiable."
+      },
+      "mechanic": {
+        "question": "¿Puedo ahorrarme pasar por el taller?",
+        "answer": "No. Los resultados son orientativos y te sirven para llegar mejor preparado a la compra o a la revisión. Antes de cerrar el trato, lleva siempre el coche a un taller de confianza para que le echen un ojo."
+      },
+      "severity": {
+        "question": "¿Qué significan los niveles de gravedad?",
+        "answer": "Cada avería se clasifica como Baja, Media, Alta o Crítica, según cómo afecte a la seguridad, a la fiabilidad y a lo que cuesta repararla. Siempre que podemos, indicamos también a partir de cuántos kilómetros suele aparecer el problema y las soluciones conocidas, paso a paso."
+      },
+      "account": {
+        "question": "¿Tengo que registrarme? ¿Es gratis?",
+        "answer": "Buscar es gratis y no hace falta registrarse. Si inicias sesión con Google, puedes guardar coches en tu garaje, seguir favoritos, comentar y votar soluciones. El proyecto es independiente y se mantiene gracias a donativos."
+      },
+      "garageVsFavorites": {
+        "question": "¿En qué se diferencian Garaje y Favoritos?",
+        "answer": "El Garaje es para los coches que ya tienes: ahí ves de un vistazo los problemas conocidos de cada uno. Favoritos sirve para seguir coches que te estás planteando comprar o que, sencillamente, te llaman la atención."
+      },
+      "contribute": {
+        "question": "¿Cómo puedo echar una mano?",
+        "answer": "Comenta las averías contando tu experiencia, incluso con fotos de la reparación, y vota las soluciones que te hayan funcionado. Si el proyecto te ha sido útil, también puedes apoyarlo con un donativo en la página Apoyo."
+      }
+    }
   }
 }

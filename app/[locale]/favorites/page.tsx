@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import { FavoritesGrid } from "@/components/favorites/favorites-grid";
 import { SiteShell } from "@/components/layout/site-shell";
+import { Reveal } from "@/components/motion/reveal";
 import type { Locale } from "@/i18n/locales";
 import { routing } from "@/i18n/routing";
 import { getFavoriteVehicles } from "@/lib/api/activity-logs";
@@ -50,10 +51,12 @@ export default async function FavoritesPage({ params }: FavoritesPageProps) {
 
   return (
     <SiteShell className="py-12 sm:py-16">
-      <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-        {t("title")}
-      </h1>
-      <p className="mt-2 max-w-2xl text-muted-foreground">{t("subtitle")}</p>
+      <Reveal>
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          {t("title")}
+        </h1>
+        <p className="mt-2 max-w-2xl text-muted-foreground">{t("subtitle")}</p>
+      </Reveal>
       <FavoritesGrid initialItems={items} initialCursor={nextCursor} />
     </SiteShell>
   );
