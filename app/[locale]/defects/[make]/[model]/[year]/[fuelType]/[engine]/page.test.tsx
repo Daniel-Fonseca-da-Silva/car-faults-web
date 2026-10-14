@@ -319,6 +319,43 @@ describe("VehiclePage", () => {
     );
   });
 
+  it("shows the Mercado Livre products box on pt-BR pages", async () => {
+    getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
+
+    const jsx = await VehiclePage({
+      params: Promise.resolve({ ...pathParams, locale: "pt-BR" }),
+      searchParams: Promise.resolve({}),
+    });
+    render(jsx);
+
+    expect(
+      screen.getByRole("heading", {
+        name: 'faults.vehicle.mercadoLivre.title({"vehicle":"Volkswagen Polo"})',
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", {
+        name: "faults.vehicle.mercadoLivre.products.engineOil",
+      })
+    ).toHaveAttribute("href", expect.stringMatching(/^https:\/\/meli\.la\//));
+  });
+
+  it("does not show the Mercado Livre products box outside pt-BR", async () => {
+    getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
+
+    const jsx = await VehiclePage({
+      params: Promise.resolve(pathParams),
+      searchParams: Promise.resolve({}),
+    });
+    render(jsx);
+
+    expect(
+      screen.queryByRole("heading", {
+        name: /faults\.vehicle\.mercadoLivre\.title/,
+      })
+    ).not.toBeInTheDocument();
+  });
+
   it("passes doors through when present in the query", async () => {
     getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
 

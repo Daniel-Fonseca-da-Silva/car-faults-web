@@ -8,6 +8,17 @@ jest.mock("@/lib/api/platform", () => ({
   getPlatformStats: (...args: unknown[]) => getPlatformStatsMock(...args),
 }));
 
+// The real counter only animates once it scrolls into view, which never
+// happens in jsdom, so render the final formatted value straight away.
+jest.mock("./animated-count", () => {
+  const { formatCompactCount } = jest.requireActual("@/lib/utils");
+  return {
+    AnimatedCount: ({ value, locale }: { value: number; locale: string }) => (
+      <p>{formatCompactCount(value, locale)}</p>
+    ),
+  };
+});
+
 jest.mock("next-intl/server", () => ({
   getLocale: async () => "en-GB",
   getTranslations: async (namespace: string) => {

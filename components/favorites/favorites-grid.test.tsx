@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
+import type { ReactNode } from "react";
 
 import type { FavoriteVehicle } from "@/types/favorite-vehicle";
 
@@ -16,9 +17,23 @@ jest.mock("next-intl", () => ({
   useTranslations: () => (key: string) => key,
 }));
 
+// Keeps the captured IntersectionObserver bound to the sentinel, not to
+// the motion wrappers around each card.
+jest.mock("@/components/motion/reveal", () => ({
+  Reveal: ({ children }: { children: ReactNode }) => <>{children}</>,
+}));
+
 jest.mock("./favorite-vehicle-card", () => ({
-  FavoriteVehicleCard: ({ vehicle }: { vehicle: FavoriteVehicle }) => (
-    <div>{vehicle.brand} {vehicle.model} {vehicle.year}</div>
+  FavoriteVehicleCard: ({
+    vehicle,
+    eager,
+  }: {
+    vehicle: FavoriteVehicle;
+    eager?: boolean;
+  }) => (
+    <div data-eager={String(eager)}>
+      {vehicle.brand} {vehicle.model} {vehicle.year}
+    </div>
   ),
 }));
 
@@ -63,6 +78,25 @@ beforeEach(() => {
 });
 
 describe("FavoritesGrid", () => {
+  it("loads only the first row of card images eagerly", () => {
+    const items = [1, 2, 3, 4].map((n) => ({
+      ...polo,
+      vehicleModelId: `vm-${n}`,
+      year: 2000 + n,
+    }));
+    render(<FavoritesGrid initialItems={items} initialCursor={null} />);
+
+    expect(
+      screen.getByText("Volkswagen Polo 2001")
+    ).toHaveAttribute("data-eager", "true");
+    expect(
+      screen.getByText("Volkswagen Polo 2003")
+    ).toHaveAttribute("data-eager", "true");
+    expect(
+      screen.getByText("Volkswagen Polo 2004")
+    ).toHaveAttribute("data-eager", "false");
+  });
+
   it("renders the empty state when there are no favorites", () => {
     render(<FavoritesGrid initialItems={[]} initialCursor={null} />);
 

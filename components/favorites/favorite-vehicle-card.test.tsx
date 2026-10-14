@@ -54,6 +54,18 @@ describe("FavoriteVehicleCard", () => {
     expect(screen.getByText("1996 · 1.0")).toBeInTheDocument();
   });
 
+  it("lazy-loads the image by default", () => {
+    render(<FavoriteVehicleCard vehicle={vehicle} />);
+
+    expect(screen.getByRole("img")).toHaveAttribute("loading", "lazy");
+  });
+
+  it("loads the image eagerly when marked as above the fold", () => {
+    render(<FavoriteVehicleCard vehicle={vehicle} eager />);
+
+    expect(screen.getByRole("img")).toHaveAttribute("loading", "eager");
+  });
+
   it("renders without a link when fuel type is missing", () => {
     render(
       <FavoriteVehicleCard vehicle={{ ...vehicle, fuelType: null }} />
