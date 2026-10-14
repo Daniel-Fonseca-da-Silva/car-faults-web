@@ -10,5 +10,113 @@
     "reports": { "label": "Owner reports" },
     "vehicles": { "label": "Vehicles catalogued" },
     "faults": { "label": "Documented faults" }
+  },
+  "showcase": {
+    "badge": "Full vehicle profile",
+    "titleLead": "Search smarter.",
+    "titleHighlight": "Buy with confidence.",
+    "subtitle": "Every vehicle profile brings together its specs, chronic faults and real owner reports, so you know exactly what you're getting into.",
+    "primaryCta": "Browse defects",
+    "secondaryCta": "How it works",
+    "features": {
+      "ownerReports": "Real owner reports",
+      "aiAnalysis": "AI-assisted analysis",
+      "garage": "Garage & favourites"
+    },
+    "imageAlt": "Ford Fiesta Mk4 vehicle profile showing year, engine, fuel type, doors and power"
+  },
+  "problemSolution": {
+    "titleLead": "Stop buying blind,",
+    "titleHighlight": "start buying informed",
+    "subtitle": "While others only find out about a car's chronic faults after handing over the money, you can know them before you sign.",
+    "problem": {
+      "title": "The problem",
+      "subtitle": "Faults found out too late",
+      "items": {
+        "scattered": "Trawling through scattered forums, groups and videos to piece together a car's history",
+        "tooLate": "Finding out about a well-known chronic fault only after you've paid",
+        "sellerWord": "Relying on the seller's word with no independent information",
+        "surpriseRepairs": "Forking out for repairs that could have been seen coming"
+      }
+    },
+    "solution": {
+      "title": "The solution",
+      "subtitle": "Every known fault in one search",
+      "items": {
+        "oneSearch": "Chronic faults organised by make, model, year and engine in a single search",
+        "severity": "A severity rating and the typical mileage at which each fault appears",
+        "fixes": "Step-by-step fixes, voted on by real owners",
+        "aiFlagged": "AI-flagged likely faults when data is still thin, always clearly labelled"
+      }
+    },
+    "transitionLabel": "From the problem to the solution",
+    "highlight": {
+      "title": "Free to search, no account needed",
+      "subtitle": "Join the owners sharing their experience to make every used-car purchase safer."
+    }
+  },
+  "howItWorks": {
+    "badge": "How it works",
+    "titleLead": "From search to decision,",
+    "titleHighlight": "in under a minute",
+    "subtitle": "AutoCronica brings together the chronic faults of every make, model, year and engine so you know the risks before you buy.",
+    "steps": {
+      "search": {
+        "title": "Search your vehicle",
+        "description": "Pick make, model, year and engine. No account needed."
+      },
+      "faults": {
+        "title": "See the chronic faults",
+        "description": "Each known fault with its severity and the typical mileage at which it appears."
+      },
+      "fixes": {
+        "title": "Check how to fix it",
+        "description": "Step-by-step solutions, voted on by real owners."
+      },
+      "save": {
+        "title": "Save and compare",
+        "description": "Add cars to your garage and favourites to compare before you decide."
+      }
+    },
+    "videoLabel": "AutoCronica app demo: searching for a vehicle and viewing its chronic faults",
+    "playLabel": "Play demo video"
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "subtitle": "Everything you need to know about using Auto Crónica to suss out a car's faults before you buy.",
+    "items": {
+      "whatIs": {
+        "question": "What is Auto Crónica?",
+        "answer": "It's a catalogue of chronic faults, organised by make, model, year and engine. It pulls together in one place what tends to go wrong with each car, how serious it is, at roughly what mileage it crops up and how to sort it, information that's usually scattered across forums, groups and videos."
+      },
+      "howToSearch": {
+        "question": "How do I look up a car's faults?",
+        "answer": "On the home page, fill in the make, model, year, engine and fuel type (number of doors is optional) and click \"Search faults\". You can also have a browse through the Defects section, which lists the most commonly reported faults by make and model."
+      },
+      "sources": {
+        "question": "Where does the information come from?",
+        "answer": "From owners' reports and a selection of technical sources. Where there isn't enough data on a car yet, an AI flags the most likely faults, and that content is always clearly labelled as AI-generated. Over time, the community comments, corrects and votes to make it all more reliable."
+      },
+      "mechanic": {
+        "question": "Does this replace a proper inspection?",
+        "answer": "No. The results are a guide to help you go into a purchase or a service better informed. Before you hand over any money, always have the car looked over by a garage you trust."
+      },
+      "severity": {
+        "question": "What do the severity levels mean?",
+        "answer": "Each fault is rated Low, Medium, High or Critical, depending on how much it affects safety, reliability and the cost of putting it right. Where we have it, we also show the mileage at which the problem typically appears and the known fixes, step by step."
+      },
+      "account": {
+        "question": "Do I need an account? Is it free?",
+        "answer": "Searching is free and you don't need an account. Signing in with Google lets you save cars to your garage, keep track of favourites, leave comments and vote on fixes. The project is independent and kept going by donations."
+      },
+      "garageVsFavorites": {
+        "question": "What's the difference between Garage and Favourites?",
+        "answer": "Your Garage is for the cars you actually own: it shows you each one's known issues at a glance. Favourites are for keeping an eye on cars you're thinking of buying or simply fancy."
+      },
+      "contribute": {
+        "question": "How can I help out?",
+        "answer": "Leave a comment on a fault with your own experience, photos of the repair included if you like, and vote for the fixes that worked for you. If the project has been useful, you can also chip in with a donation on the Support page."
+      }
+    }
   }
 }

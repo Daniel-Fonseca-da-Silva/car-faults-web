@@ -16,5 +16,113 @@
     "faults": {
       "label": "Difetti documentati"
     }
+  },
+  "showcase": {
+    "badge": "Scheda veicolo completa",
+    "titleLead": "Cerca meglio.",
+    "titleHighlight": "Compra con fiducia.",
+    "subtitle": "Ogni scheda veicolo riunisce caratteristiche, difetti cronici e segnalazioni reali dei proprietari, così sai esattamente cosa stai comprando.",
+    "primaryCta": "Vedi i difetti",
+    "secondaryCta": "Come funziona",
+    "features": {
+      "ownerReports": "Segnalazioni reali dei proprietari",
+      "aiAnalysis": "Analisi assistita dall'IA",
+      "garage": "Garage e preferiti"
+    },
+    "imageAlt": "Scheda della Ford Fiesta Mk4 con anno, motore, carburante, porte e potenza"
+  },
+  "problemSolution": {
+    "titleLead": "Smetti di comprare alla cieca,",
+    "titleHighlight": "inizia a comprare informato",
+    "subtitle": "Mentre altri scoprono i guasti cronici di un'auto solo dopo aver pagato, tu puoi conoscerli prima di firmare.",
+    "problem": {
+      "title": "Il problema",
+      "subtitle": "Guasti scoperti troppo tardi",
+      "items": {
+        "scattered": "Setacciare forum, gruppi e video sparsi per ricostruire la storia di un'auto",
+        "tooLate": "Scoprire un guasto cronico noto solo dopo aver pagato",
+        "sellerWord": "Fidarsi solo della parola del venditore, senza informazioni indipendenti",
+        "surpriseRepairs": "Pagare riparazioni che si potevano prevedere"
+      }
+    },
+    "solution": {
+      "title": "La soluzione",
+      "subtitle": "Tutti i guasti noti in un'unica ricerca",
+      "items": {
+        "oneSearch": "Guasti cronici organizzati per marca, modello, anno e motore in un'unica ricerca",
+        "severity": "Livello di gravità e chilometraggio tipico in cui compare ogni guasto",
+        "fixes": "Soluzioni passo dopo passo, votate da proprietari reali",
+        "aiFlagged": "Guasti probabili segnalati dall'IA quando i dati sono ancora pochi, sempre chiaramente indicati"
+      }
+    },
+    "transitionLabel": "Dal problema alla soluzione",
+    "highlight": {
+      "title": "Ricerca gratuita, senza account",
+      "subtitle": "Unisciti ai proprietari che condividono la loro esperienza per rendere ogni acquisto di un usato più sicuro."
+    }
+  },
+  "howItWorks": {
+    "badge": "Come funziona",
+    "titleLead": "Dalla ricerca alla decisione,",
+    "titleHighlight": "in meno di un minuto",
+    "subtitle": "AutoCronica riunisce i difetti cronici di ogni marca, modello, anno e motore, così conosci i rischi prima di acquistare.",
+    "steps": {
+      "search": {
+        "title": "Cerca il tuo veicolo",
+        "description": "Scegli marca, modello, anno e motore. Nessun account richiesto."
+      },
+      "faults": {
+        "title": "Scopri i difetti cronici",
+        "description": "Ogni difetto noto con la sua gravità e il chilometraggio tipico in cui si presenta."
+      },
+      "fixes": {
+        "title": "Vedi come risolverlo",
+        "description": "Soluzioni passo passo, votate da proprietari reali."
+      },
+      "save": {
+        "title": "Salva e confronta",
+        "description": "Aggiungi auto al garage e ai preferiti per confrontarle prima di decidere."
+      }
+    },
+    "videoLabel": "Demo dell'app AutoCronica: ricerca di un veicolo e visualizzazione dei suoi difetti cronici",
+    "playLabel": "Riproduci il video dimostrativo"
+  },
+  "faq": {
+    "title": "Domande frequenti",
+    "subtitle": "Tutto ciò che ti serve sapere per usare Auto Crónica e conoscere i difetti di un veicolo prima di acquistarlo.",
+    "items": {
+      "whatIs": {
+        "question": "Che cos'è Auto Crónica?",
+        "answer": "È un catalogo di difetti cronici organizzato per marca, modello, anno e motore. Riunisce in un unico posto ciò che di solito si guasta su ogni veicolo, con quale gravità, intorno a quale chilometraggio e come risolverlo: informazioni che di solito sono sparse tra forum, gruppi e video."
+      },
+      "howToSearch": {
+        "question": "Come cerco i difetti di un veicolo?",
+        "answer": "Nella home page indica marca, modello, anno, motore e alimentazione (il numero di porte è facoltativo) e clicca su \"Cerca difetti\". Puoi anche esplorare la sezione Difetti, che elenca i guasti più segnalati per marca e per modello."
+      },
+      "sources": {
+        "question": "Da dove provengono le informazioni?",
+        "answer": "Dalle segnalazioni dei proprietari e da una selezione di fonti tecniche. Quando su un veicolo non ci sono ancora dati sufficienti, un'intelligenza artificiale indica i difetti più probabili, e questo contenuto è sempre contrassegnato come generato dall'IA. Col tempo la community commenta, corregge e vota per rendere tutto più affidabile."
+      },
+      "mechanic": {
+        "question": "Le informazioni sostituiscono un controllo meccanico?",
+        "answer": "No. I risultati sono indicativi e servono ad affrontare un acquisto o un tagliando più preparato. Prima di concludere, fai sempre controllare il veicolo da un meccanico di fiducia."
+      },
+      "severity": {
+        "question": "Cosa significano i livelli di gravità?",
+        "answer": "Ogni difetto è classificato come Bassa, Media, Alta o Critica in base all'impatto su sicurezza, affidabilità e costo di riparazione. Quando disponibili, mostriamo anche il chilometraggio a cui il problema compare di solito e le soluzioni note, passo dopo passo."
+      },
+      "account": {
+        "question": "Serve un account? È gratuito?",
+        "answer": "La ricerca è gratuita e non richiede un account. Accedendo con Google puoi salvare veicoli nel tuo garage, seguire i preferiti, commentare e votare le soluzioni. Il progetto è indipendente e si sostiene con donazioni volontarie."
+      },
+      "garageVsFavorites": {
+        "question": "Qual è la differenza tra Garage e Preferiti?",
+        "answer": "Il Garage è per i veicoli che possiedi: lì vedi a colpo d'occhio i problemi noti di ciascuno. I Preferiti servono a seguire i veicoli che stai pensando di acquistare o che semplicemente ti interessano."
+      },
+      "contribute": {
+        "question": "Come posso contribuire?",
+        "answer": "Commenta i difetti con la tua esperienza, anche con foto della riparazione, e vota le soluzioni che hanno funzionato per te. Se il progetto ti è stato utile, puoi anche sostenerlo con una donazione nella pagina Sostieni."
+      }
+    }
   }
 }

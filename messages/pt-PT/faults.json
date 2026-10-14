@@ -141,6 +141,24 @@
       "success": "Denúncia enviada. Obrigado por ajudares a manter a comunidade segura.",
       "duplicateError": "Já denunciaste este conteúdo.",
       "submitError": "Não foi possível enviar a denúncia. Tenta novamente."
+    },
+    "amazonParts": {
+      "cta": "Ver peças na Amazon",
+      "disclosure": "Link de afiliado: podemos receber uma comissão sem custo adicional para ti."
+    },
+    "mercadoLivre": {
+      "title": "Mantém o teu {vehicle} em dia",
+      "subtitle": "Vê ofertas no Mercado Livre de artigos de que qualquer carro precisa e encontra o melhor preço.",
+      "disclosure": "Links patrocinados: podemos receber comissão, sem custo extra para ti.",
+      "products": {
+        "steeringWheelCover": "Capa de volante",
+        "lubricantSpray": "Lubrificante WD-40",
+        "engineOil": "Óleo de motor",
+        "battery": "Bateria",
+        "wipers": "Escovas",
+        "tools": "Ferramentas",
+        "headlightBulbs": "Lâmpadas"
+      }
     }
   }
 }

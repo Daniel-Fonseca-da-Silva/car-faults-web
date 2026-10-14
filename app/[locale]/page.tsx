@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { AdSenseUnit } from "@/components/ads/adsense-unit";
+import { FaqSection } from "@/components/home/faq-section";
 import { HeroSection } from "@/components/home/hero-section";
+import { HowItWorksSection } from "@/components/home/how-it-works-section";
+import { ProblemSolutionSection } from "@/components/home/problem-solution-section";
+import { ShowcaseSection } from "@/components/home/showcase-section";
 import { StatsBar } from "@/components/home/stats-bar";
 import { VehicleSearchForm } from "@/components/home/vehicle-search-form";
 import { SiteShell } from "@/components/layout/site-shell";
@@ -64,12 +68,16 @@ export default async function HomePage({ params }: HomePageProps) {
       <div className="mx-auto max-w-3xl pb-8">
         <VehicleSearchForm isDatabaseUp={isDatabaseUp} />
       </div>
+      <ShowcaseSection />
+      <ProblemSolutionSection />
+      <HowItWorksSection />
       {adsenseHomeSlot && (
         <div className="mx-auto max-w-3xl">
           <AdSenseUnit slot={adsenseHomeSlot} />
         </div>
       )}
       <StatsBar />
+      <FaqSection />
     </SiteShell>
   );
 }

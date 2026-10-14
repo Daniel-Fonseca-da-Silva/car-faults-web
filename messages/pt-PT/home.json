@@ -10,5 +10,113 @@
     "reports": { "label": "Relatos de proprietários" },
     "vehicles": { "label": "Veículos catalogados" },
     "faults": { "label": "Defeitos documentados" }
+  },
+  "showcase": {
+    "badge": "Perfil completo do veículo",
+    "titleLead": "Pesquisa melhor.",
+    "titleHighlight": "Compra com confiança.",
+    "subtitle": "Cada perfil de veículo junta especificações, avarias crónicas e relatos reais de proprietários, para saberes exatamente o que estás a comprar.",
+    "primaryCta": "Ver defeitos",
+    "secondaryCta": "Como funciona",
+    "features": {
+      "ownerReports": "Relatos reais de proprietários",
+      "aiAnalysis": "Análise assistida por IA",
+      "garage": "Garagem e favoritos"
+    },
+    "imageAlt": "Perfil do Ford Fiesta Mk4 com ano, motor, combustível, portas e potência"
+  },
+  "problemSolution": {
+    "titleLead": "Deixa de comprar às cegas,",
+    "titleHighlight": "começa a comprar informado",
+    "subtitle": "Enquanto outros só descobrem as avarias crónicas de um carro depois de pagar, tu podes conhecê-las antes de assinar.",
+    "problem": {
+      "title": "O problema",
+      "subtitle": "Avarias descobertas tarde demais",
+      "items": {
+        "scattered": "Percorrer fóruns, grupos e vídeos dispersos para reconstruir o historial de um carro",
+        "tooLate": "Descobrir uma avaria crónica conhecida só depois de pagar",
+        "sellerWord": "Confiar apenas na palavra do vendedor, sem informação independente",
+        "surpriseRepairs": "Pagar reparações que podiam ter sido previstas"
+      }
+    },
+    "solution": {
+      "title": "A solução",
+      "subtitle": "Todas as avarias conhecidas numa só pesquisa",
+      "items": {
+        "oneSearch": "Avarias crónicas organizadas por marca, modelo, ano e motor numa única pesquisa",
+        "severity": "Nível de gravidade e quilometragem típica em que cada avaria aparece",
+        "fixes": "Soluções passo a passo, votadas por proprietários reais",
+        "aiFlagged": "Avarias prováveis sinalizadas por IA quando ainda há poucos dados, sempre identificadas"
+      }
+    },
+    "transitionLabel": "Do problema à solução",
+    "highlight": {
+      "title": "Pesquisa gratuita, sem precisar de conta",
+      "subtitle": "Junta-te aos proprietários que partilham a sua experiência para tornar cada compra de usado mais segura."
+    }
+  },
+  "howItWorks": {
+    "badge": "Como funciona",
+    "titleLead": "Da pesquisa à decisão,",
+    "titleHighlight": "em menos de um minuto",
+    "subtitle": "O AutoCronica reúne as avarias crónicas de cada marca, modelo, ano e motor para conhecer os riscos antes de comprar.",
+    "steps": {
+      "search": {
+        "title": "Pesquise o seu veículo",
+        "description": "Escolha marca, modelo, ano e motor. Sem necessidade de conta."
+      },
+      "faults": {
+        "title": "Veja as avarias crónicas",
+        "description": "Cada avaria conhecida com o nível de gravidade e a quilometragem típica em que surge."
+      },
+      "fixes": {
+        "title": "Saiba como resolver",
+        "description": "Soluções passo a passo, votadas por proprietários reais."
+      },
+      "save": {
+        "title": "Guarde e compare",
+        "description": "Adicione carros à garagem e aos favoritos para comparar antes de decidir."
+      }
+    },
+    "videoLabel": "Demonstração da app AutoCronica: a pesquisar um veículo e a ver as suas avarias crónicas",
+    "playLabel": "Reproduzir vídeo de demonstração"
+  },
+  "faq": {
+    "title": "Perguntas frequentes",
+    "subtitle": "Tudo o que precisa de saber para usar a Auto Crónica e ficar a conhecer as avarias de um carro antes de o comprar.",
+    "items": {
+      "whatIs": {
+        "question": "O que é a Auto Crónica?",
+        "answer": "É um catálogo de avarias crónicas organizado por marca, modelo, ano e motor. Junta num só sítio aquilo que costuma avariar em cada viatura, a gravidade, por volta de quantos quilómetros aparece e como se resolve, informação que normalmente anda dispersa por fóruns, grupos e vídeos."
+      },
+      "howToSearch": {
+        "question": "Como faço para pesquisar as avarias de um carro?",
+        "answer": "Na página inicial, preencha a marca, o modelo, o ano, o motor e o combustível (o número de portas é opcional) e carregue em \"Pesquisar defeitos\". Também pode consultar a secção Defeitos, onde estão as avarias mais registadas por marca e por modelo."
+      },
+      "sources": {
+        "question": "De onde vem a informação?",
+        "answer": "Dos relatos de proprietários e de uma seleção de fontes técnicas. Quando ainda não existem dados suficientes sobre uma viatura, uma inteligência artificial aponta as avarias mais prováveis, e esse conteúdo está sempre assinalado como gerado por IA. Com o tempo, a comunidade comenta, corrige e vota, para que tudo fique cada vez mais fiável."
+      },
+      "mechanic": {
+        "question": "A informação dispensa uma ida à oficina?",
+        "answer": "Não. Os resultados são meramente indicativos e servem para chegar mais bem preparado à compra ou à revisão. Antes de fechar negócio, leve sempre o carro a uma oficina da sua confiança."
+      },
+      "severity": {
+        "question": "O que querem dizer os níveis de gravidade?",
+        "answer": "Cada avaria é classificada como Baixa, Média, Alta ou Crítica, consoante o impacto na segurança, na fiabilidade e no custo da reparação. Sempre que possível, indicamos também os quilómetros a partir dos quais o problema costuma surgir e as soluções conhecidas, explicadas passo a passo."
+      },
+      "account": {
+        "question": "Tenho de criar conta? É gratuito?",
+        "answer": "A pesquisa é gratuita e não obriga a ter conta. Se iniciar sessão com o Google, pode guardar viaturas na garagem, acompanhar favoritos, comentar e votar nas soluções. O projeto é independente e mantém-se graças a donativos."
+      },
+      "garageVsFavorites": {
+        "question": "Qual é a diferença entre Garagem e Favoritos?",
+        "answer": "A Garagem é para as viaturas que já tem: aí fica a ver, num instante, os problemas conhecidos de cada uma. Os Favoritos servem para acompanhar carros que está a pensar comprar ou que simplesmente lhe despertam interesse."
+      },
+      "contribute": {
+        "question": "Como posso contribuir?",
+        "answer": "Deixe um comentário nas avarias a contar a sua experiência, se quiser com fotografias da reparação, e vote nas soluções que resultaram consigo. Se o projeto lhe foi útil, também o pode apoiar com um donativo na página Apoio."
+      }
+    }
   }
 }

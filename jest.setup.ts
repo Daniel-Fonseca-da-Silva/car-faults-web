@@ -49,3 +49,25 @@ if (typeof window !== 'undefined') {
     window.HTMLElement.prototype.scrollIntoView = () => {}
   }
 }
+
+// jsdom does not implement IntersectionObserver, but motion's `whileInView`
+// and `useInView` construct one on mount. A no-op stub lets those components
+// render; elements simply never report entering the viewport.
+if (typeof window !== 'undefined' && !window.IntersectionObserver) {
+  class IntersectionObserver {
+    readonly root: Element | Document | null = null
+    readonly rootMargin: string = ''
+    readonly thresholds: ReadonlyArray<number> = []
+
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+    takeRecords(): IntersectionObserverEntry[] {
+      return []
+    }
+  }
+
+  window.IntersectionObserver =
+    IntersectionObserver as unknown as typeof window.IntersectionObserver
+  globalThis.IntersectionObserver = window.IntersectionObserver
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { Search } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import { useLocale, useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 
@@ -68,6 +69,13 @@ function isYearInRange(value: string): boolean {
   return Number.isInteger(year) && year >= MIN_YEAR && year <= MAX_YEAR;
 }
 
+const SEARCH_PULSE_TRANSITION = {
+  duration: 1.2,
+  repeat: Infinity,
+  repeatDelay: 2,
+  ease: "easeOut",
+} as const;
+
 interface VehicleSearchFormProps {
   isDatabaseUp: boolean;
 }
@@ -95,9 +103,12 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
 
   const isElectric = fuel === ELECTRIC_ENGINE_SENTINEL;
   const effectiveEngine = isElectric ? ELECTRIC_ENGINE_SENTINEL : engine.trim();
+  const prefersReducedMotion = useReducedMotion();
   const isFullSearch = Boolean(
     make.trim() && model.trim() && year.trim() && effectiveEngine && fuel
   );
+  const isSearchDisabled = isFullSearch && (!turnstileToken || isSubmitting);
+  const shouldPulseSearch = !prefersReducedMotion && !isSearchDisabled;
 
   function resetWidget() {
     setTurnstileToken(null);
@@ -387,18 +398,47 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
             {showCaptchaError && <FieldError>{t("captchaError")}</FieldError>}
             {searchErrorKey && <FieldError>{t(searchErrorKey)}</FieldError>}
 
-            <Button
-              type="submit"
-              className="h-11 w-full gap-2 sm:w-auto"
-              disabled={isFullSearch && (!turnstileToken || isSubmitting)}
+            <motion.div
+              className="flex w-full flex-col rounded-lg"
+              animate={
+                shouldPulseSearch
+                  ? {
+                      boxShadow: [
+                        "0 0 0 0 oklch(0.702 0.2 45.1 / 55%)",
+                        "0 0 0 12px oklch(0.702 0.2 45.1 / 0%)",
+                      ],
+                    }
+                  : { boxShadow: "0 0 0 0 oklch(0.702 0.2 45.1 / 0%)" }
+              }
+              transition={
+                shouldPulseSearch ? SEARCH_PULSE_TRANSITION : undefined
+              }
             >
-              {isSubmitting ? (
-                <Spinner aria-hidden="true" />
-              ) : (
-                <Search aria-hidden="true" />
-              )}
-              {isSubmitting ? t("verifying") : t("submit")}
-            </Button>
+              <Button
+                type="submit"
+                className="h-11 w-full gap-2 sm:w-auto"
+                disabled={isSearchDisabled}
+              >
+                {isSubmitting ? (
+                  <Spinner aria-hidden="true" />
+                ) : (
+                  <motion.span
+                    className="inline-flex"
+                    animate={
+                      shouldPulseSearch
+                        ? { scale: [1, 1.25, 1], rotate: [0, -12, 0] }
+                        : { scale: 1, rotate: 0 }
+                    }
+                    transition={
+                      shouldPulseSearch ? SEARCH_PULSE_TRANSITION : undefined
+                    }
+                  >
+                    <Search aria-hidden="true" />
+                  </motion.span>
+                )}
+                {isSubmitting ? t("verifying") : t("submit")}
+              </Button>
+            </motion.div>
           </FieldGroup>
         </form>
       </CardContent>

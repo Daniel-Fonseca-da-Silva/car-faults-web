@@ -141,6 +141,24 @@
       "success": "Meldung gesendet. Danke, dass Sie helfen, die Community sicher zu halten.",
       "duplicateError": "Sie haben diesen Inhalt bereits gemeldet.",
       "submitError": "Die Meldung konnte nicht gesendet werden. Bitte versuchen Sie es erneut."
+    },
+    "amazonParts": {
+      "cta": "Teile bei Amazon ansehen",
+      "disclosure": "Affiliate-Link: Wir erhalten ggf. eine Provision, für dich ohne Mehrkosten."
+    },
+    "mercadoLivre": {
+      "title": "Halte deinen {vehicle} in Schuss",
+      "subtitle": "Entdecke Angebote bei Mercado Livre für alles, was jedes Auto braucht, und finde den besten Preis.",
+      "disclosure": "Gesponserte Links: Wir erhalten ggf. eine Provision, für dich ohne Mehrkosten.",
+      "products": {
+        "steeringWheelCover": "Lenkradbezug",
+        "lubricantSpray": "WD-40 Schmiermittel",
+        "engineOil": "Motoröl",
+        "battery": "Batterie",
+        "wipers": "Scheibenwischer",
+        "tools": "Werkzeug",
+        "headlightBulbs": "Scheinwerferlampen"
+      }
     }
   }
 }

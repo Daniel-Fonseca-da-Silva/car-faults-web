@@ -29,7 +29,8 @@
       "privacy": "Confidentialité",
       "terms": "Conditions",
       "accountDeletion": "Supprimer le compte"
-    }
+    },
+    "affiliateDisclosure": "En tant que Partenaire Amazon, nous réalisons un bénéfice sur les achats remplissant les conditions requises."
   },
   "notFound": {
     "title": "Page introuvable",

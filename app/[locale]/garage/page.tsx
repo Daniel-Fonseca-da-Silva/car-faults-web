@@ -6,6 +6,7 @@ import { GarageHero } from "@/components/garage/garage-hero";
 import { GarageKnownIssues } from "@/components/garage/garage-known-issues";
 import { GarageVehicleList } from "@/components/garage/garage-vehicle-list";
 import { SiteShell } from "@/components/layout/site-shell";
+import { Reveal } from "@/components/motion/reveal";
 import type { Locale } from "@/i18n/locales";
 import { routing } from "@/i18n/routing";
 import { getGaragePageData } from "@/lib/garage/get-garage-page-data";
@@ -54,10 +55,12 @@ export default async function GaragePage({
 
   return (
     <SiteShell className="py-12 sm:py-16">
-      <GarageHero vehicle={selectedVehicle} />
+      <Reveal>
+        <GarageHero vehicle={selectedVehicle} />
+      </Reveal>
 
       {vehicles.length === 0 ? (
-        <div className="mt-6">
+        <Reveal className="mt-6" delay={0.1}>
           <GarageVehicleList
             vehicles={vehicles}
             nextCursor={nextCursor}
@@ -65,17 +68,23 @@ export default async function GaragePage({
             locale={locale}
             language={language}
           />
-        </div>
+        </Reveal>
       ) : (
         <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,20rem)_1fr]">
-          <GarageVehicleList
-            vehicles={vehicles}
-            nextCursor={nextCursor}
-            selectedVehicleId={selectedVehicle?.id ?? null}
-            locale={locale}
-            language={language}
-          />
-          {selectedVehicle && <GarageKnownIssues vehicle={selectedVehicle} />}
+          <Reveal delay={0.1}>
+            <GarageVehicleList
+              vehicles={vehicles}
+              nextCursor={nextCursor}
+              selectedVehicleId={selectedVehicle?.id ?? null}
+              locale={locale}
+              language={language}
+            />
+          </Reveal>
+          {selectedVehicle && (
+            <Reveal delay={0.2}>
+              <GarageKnownIssues vehicle={selectedVehicle} />
+            </Reveal>
+          )}
         </div>
       )}
     </SiteShell>

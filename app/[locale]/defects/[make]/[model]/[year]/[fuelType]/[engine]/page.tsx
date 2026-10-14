@@ -6,10 +6,13 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { PageBreadcrumbs } from "@/components/seo/page-breadcrumbs";
 import { KnownIssuesAccordion } from "@/components/vehicle/known-issues-accordion";
 import { KnownIssuesSummary } from "@/components/vehicle/known-issues-summary";
+import { MercadoLivreProducts } from "@/components/vehicle/mercado-livre-products";
 import { VehicleBackLink } from "@/components/vehicle/vehicle-back-link";
 import { VehicleHero } from "@/components/vehicle/vehicle-hero";
 import { VehicleTechSpecs } from "@/components/vehicle/vehicle-tech-specs";
 import type { Locale } from "@/i18n/locales";
+import { getAmazonStore } from "@/lib/affiliate/amazon";
+import { getMercadoLivreProducts } from "@/lib/affiliate/mercado-livre";
 import { getVehicleFavoriteStatus } from "@/lib/api/activity-logs";
 import { getVehicleLookupByPath } from "@/lib/api/lookups";
 import { getCurrentUser, getGarageVehicleStatus } from "@/lib/api/users";
@@ -211,8 +214,28 @@ export default async function VehiclePage({
         <KnownIssuesAccordion
           knownIssues={knownIssues}
           currentUser={currentUser}
+          vehicleLabel={`${vehicle.brand} ${vehicle.model}`}
+          amazonStore={getAmazonStore(resolvedParams.locale)}
         />
       )}
+
+      <MercadoLivreProducts
+        products={getMercadoLivreProducts(resolvedParams.locale)}
+        title={t("vehicle.mercadoLivre.title", {
+          vehicle: `${vehicle.brand} ${vehicle.model}`,
+        })}
+        subtitle={t("vehicle.mercadoLivre.subtitle")}
+        disclosure={t("vehicle.mercadoLivre.disclosure")}
+        labels={{
+          steeringWheelCover: t("vehicle.mercadoLivre.products.steeringWheelCover"),
+          lubricantSpray: t("vehicle.mercadoLivre.products.lubricantSpray"),
+          engineOil: t("vehicle.mercadoLivre.products.engineOil"),
+          battery: t("vehicle.mercadoLivre.products.battery"),
+          wipers: t("vehicle.mercadoLivre.products.wipers"),
+          tools: t("vehicle.mercadoLivre.products.tools"),
+          headlightBulbs: t("vehicle.mercadoLivre.products.headlightBulbs"),
+        }}
+      />
 
       <p className="mt-10 text-xs text-muted-foreground/80">
         {t("disclaimer")}

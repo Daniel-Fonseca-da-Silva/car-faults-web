@@ -10,5 +10,113 @@
     "reports": { "label": "Signalements de propriétaires" },
     "vehicles": { "label": "Véhicules catalogués" },
     "faults": { "label": "Pannes documentées" }
+  },
+  "showcase": {
+    "badge": "Fiche véhicule complète",
+    "titleLead": "Cherchez mieux.",
+    "titleHighlight": "Achetez en confiance.",
+    "subtitle": "Chaque fiche véhicule réunit caractéristiques, pannes chroniques et témoignages réels de propriétaires, pour savoir exactement ce que vous achetez.",
+    "primaryCta": "Voir les pannes",
+    "secondaryCta": "Comment ça marche",
+    "features": {
+      "ownerReports": "Témoignages réels de propriétaires",
+      "aiAnalysis": "Analyse assistée par IA",
+      "garage": "Garage et favoris"
+    },
+    "imageAlt": "Fiche de la Ford Fiesta Mk4 avec année, moteur, carburant, portes et puissance"
+  },
+  "problemSolution": {
+    "titleLead": "Arrêtez d'acheter à l'aveugle,",
+    "titleHighlight": "achetez en connaissance de cause",
+    "subtitle": "Pendant que d'autres découvrent les pannes chroniques d'une voiture après avoir payé, vous pouvez les connaître avant de signer.",
+    "problem": {
+      "title": "Le problème",
+      "subtitle": "Des pannes découvertes trop tard",
+      "items": {
+        "scattered": "Fouiller des forums, groupes et vidéos éparpillés pour reconstituer l'historique d'une voiture",
+        "tooLate": "Découvrir une panne chronique connue seulement après avoir payé",
+        "sellerWord": "Se fier à la seule parole du vendeur, sans information indépendante",
+        "surpriseRepairs": "Payer des réparations qui auraient pu être anticipées"
+      }
+    },
+    "solution": {
+      "title": "La solution",
+      "subtitle": "Toutes les pannes connues en une seule recherche",
+      "items": {
+        "oneSearch": "Pannes chroniques classées par marque, modèle, année et moteur en une seule recherche",
+        "severity": "Niveau de gravité et kilométrage typique d'apparition de chaque panne",
+        "fixes": "Solutions étape par étape, votées par de vrais propriétaires",
+        "aiFlagged": "Pannes probables signalées par l'IA quand les données manquent encore, toujours clairement indiquées"
+      }
+    },
+    "transitionLabel": "Du problème à la solution",
+    "highlight": {
+      "title": "Recherche gratuite, sans compte",
+      "subtitle": "Rejoignez les propriétaires qui partagent leur expérience pour rendre chaque achat d'occasion plus sûr."
+    }
+  },
+  "howItWorks": {
+    "badge": "Comment ça marche",
+    "titleLead": "De la recherche à la décision,",
+    "titleHighlight": "en moins d'une minute",
+    "subtitle": "AutoCronica rassemble les défauts chroniques de chaque marque, modèle, année et moteur pour que vous connaissiez les risques avant d'acheter.",
+    "steps": {
+      "search": {
+        "title": "Recherchez votre véhicule",
+        "description": "Choisissez la marque, le modèle, l'année et le moteur. Sans compte."
+      },
+      "faults": {
+        "title": "Découvrez les défauts chroniques",
+        "description": "Chaque défaut connu avec sa gravité et le kilométrage typique auquel il apparaît."
+      },
+      "fixes": {
+        "title": "Voyez comment le réparer",
+        "description": "Des solutions pas à pas, votées par de vrais propriétaires."
+      },
+      "save": {
+        "title": "Enregistrez et comparez",
+        "description": "Ajoutez des voitures à votre garage et à vos favoris pour comparer avant de décider."
+      }
+    },
+    "videoLabel": "Démonstration de l'application AutoCronica : recherche d'un véhicule et consultation de ses défauts chroniques",
+    "playLabel": "Lire la vidéo de démonstration"
+  },
+  "faq": {
+    "title": "Questions fréquentes",
+    "subtitle": "Tout ce qu'il faut savoir pour utiliser Auto Crónica et connaître les défauts d'un véhicule avant de l'acheter.",
+    "items": {
+      "whatIs": {
+        "question": "Qu'est-ce qu'Auto Crónica ?",
+        "answer": "C'est un catalogue de défauts chroniques classés par marque, modèle, année et moteur. Il rassemble au même endroit ce qui tombe habituellement en panne sur chaque véhicule, avec quelle gravité, vers quel kilométrage et comment y remédier, des informations d'ordinaire éparpillées entre forums, groupes et vidéos."
+      },
+      "howToSearch": {
+        "question": "Comment rechercher les défauts d'un véhicule ?",
+        "answer": "Sur la page d'accueil, indiquez la marque, le modèle, l'année, le moteur et le carburant (le nombre de portes est facultatif), puis cliquez sur « Rechercher des pannes ». Vous pouvez aussi parcourir la section Défauts, qui liste les pannes les plus signalées par marque et par modèle."
+      },
+      "sources": {
+        "question": "D'où viennent les informations ?",
+        "answer": "Des témoignages de propriétaires et d'une sélection de sources techniques. Lorsqu'il n'y a pas encore assez de données sur un véhicule, une intelligence artificielle signale les défauts les plus probables, et ce contenu est toujours indiqué comme généré par IA. Au fil du temps, la communauté commente, corrige et vote pour rendre le tout plus fiable."
+      },
+      "mechanic": {
+        "question": "Ces informations remplacent-elles un contrôle mécanique ?",
+        "answer": "Non. Les résultats sont indicatifs et vous aident à aborder un achat ou un entretien mieux préparé. Avant de conclure, faites toujours examiner le véhicule par un mécanicien de confiance."
+      },
+      "severity": {
+        "question": "Que signifient les niveaux de gravité ?",
+        "answer": "Chaque défaut est classé Faible, Moyenne, Élevée ou Critique selon son impact sur la sécurité, la fiabilité et le coût de réparation. Lorsque c'est possible, nous indiquons aussi le kilométrage auquel le problème apparaît généralement et les solutions connues, étape par étape."
+      },
+      "account": {
+        "question": "Faut-il un compte ? Est-ce gratuit ?",
+        "answer": "La recherche est gratuite et ne nécessite pas de compte. En vous connectant avec Google, vous pouvez enregistrer des véhicules dans votre garage, suivre des favoris, commenter et voter pour des solutions. Le projet est indépendant et vit grâce aux dons volontaires."
+      },
+      "garageVsFavorites": {
+        "question": "Quelle différence entre Garage et Favoris ?",
+        "answer": "Le Garage est destiné aux véhicules que vous possédez : vous y voyez rapidement les problèmes connus de chacun. Les Favoris permettent de suivre les véhicules que vous envisagez d'acheter ou qui vous intéressent tout simplement."
+      },
+      "contribute": {
+        "question": "Comment contribuer ?",
+        "answer": "Commentez les défauts avec votre propre expérience, photos de la réparation à l'appui, et votez pour les solutions qui ont fonctionné pour vous. Si le projet vous a aidé, vous pouvez aussi le soutenir par un don sur la page Soutenir."
+      }
+    }
   }
 }

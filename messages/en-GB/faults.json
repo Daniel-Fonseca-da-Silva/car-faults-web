@@ -141,6 +141,24 @@
       "success": "Report submitted. Thanks for helping keep the community safe.",
       "duplicateError": "You've already reported this content.",
       "submitError": "Couldn't submit the report. Please try again."
+    },
+    "amazonParts": {
+      "cta": "View parts on Amazon",
+      "disclosure": "Affiliate link: we may earn a commission at no extra cost to you."
+    },
+    "mercadoLivre": {
+      "title": "Keep your {vehicle} in top shape",
+      "subtitle": "Browse Mercado Livre deals on essentials every car needs and find the best price.",
+      "disclosure": "Sponsored links: we may earn a commission at no extra cost to you.",
+      "products": {
+        "steeringWheelCover": "Steering wheel cover",
+        "lubricantSpray": "WD-40 lubricant",
+        "engineOil": "Engine oil",
+        "battery": "Battery",
+        "wipers": "Wiper blades",
+        "tools": "Tools",
+        "headlightBulbs": "Headlight bulbs"
+      }
     }
   }
 }
