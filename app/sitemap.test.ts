@@ -213,4 +213,73 @@ describe("sitemap", () => {
       "http://localhost:3000/de-DE/defects/volkswagen/golf"
     );
   });
+
+  describe("lastModified", () => {
+    const entryFor = (entries: Awaited<ReturnType<typeof sitemap>>, path: string) =>
+      entries.find((entry) => entry.url === `http://localhost:3000/pt-PT${path}`);
+
+    it("uses each vehicle's own updatedAt and the latest one for its hubs", async () => {
+      getPlatformVehiclesMock.mockResolvedValue({
+        items: [
+          { ...vehicles[0], updatedAt: "2026-03-01T00:00:00.000Z" },
+          {
+            ...vehicles[0],
+            engine: "1.6 TDI",
+            updatedAt: "2026-05-01T00:00:00.000Z",
+          },
+          { ...vehicles[1], updatedAt: "2026-01-01T00:00:00.000Z" },
+        ],
+        nextCursor: null,
+      });
+
+      const entries = await sitemap();
+
+      expect(
+        entryFor(entries, "/defects/volkswagen/golf/2018/diesel/2-0-tdi")
+          ?.lastModified
+      ).toEqual(new Date("2026-03-01T00:00:00.000Z"));
+      expect(
+        entryFor(entries, "/defects/volkswagen/golf/2018/diesel/1-6-tdi")
+          ?.lastModified
+      ).toEqual(new Date("2026-05-01T00:00:00.000Z"));
+      expect(entryFor(entries, "/defects/volkswagen/golf")?.lastModified).toEqual(
+        new Date("2026-05-01T00:00:00.000Z")
+      );
+      expect(entryFor(entries, "/defects/volkswagen")?.lastModified).toEqual(
+        new Date("2026-05-01T00:00:00.000Z")
+      );
+      expect(entryFor(entries, "/defects/mercedes-benz")?.lastModified).toEqual(
+        new Date("2026-01-01T00:00:00.000Z")
+      );
+    });
+
+    it("dates the catalog listing pages by the latest vehicle change and leaves other static pages undated", async () => {
+      getPlatformVehiclesMock.mockResolvedValue({
+        items: [
+          { ...vehicles[0], updatedAt: "2026-03-01T00:00:00.000Z" },
+          { ...vehicles[1], updatedAt: "2026-04-01T00:00:00.000Z" },
+        ],
+        nextCursor: null,
+      });
+
+      const entries = await sitemap();
+      const latest = new Date("2026-04-01T00:00:00.000Z");
+
+      expect(entryFor(entries, "")?.lastModified).toEqual(latest);
+      expect(entryFor(entries, "/defects")?.lastModified).toEqual(latest);
+      expect(entryFor(entries, "/about")).not.toHaveProperty("lastModified");
+      expect(entryFor(entries, "/privacy")).not.toHaveProperty("lastModified");
+    });
+
+    it("omits lastModified when the API sends no updatedAt or an invalid one", async () => {
+      getPlatformVehiclesMock.mockResolvedValue({
+        items: [vehicles[0], { ...vehicles[1], updatedAt: "not-a-date" }],
+        nextCursor: null,
+      });
+
+      const entries = await sitemap();
+
+      expect(entries.some((entry) => "lastModified" in entry)).toBe(false);
+    });
+  });
 });
