@@ -2,11 +2,13 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
 
+import { CurrentUserContext } from "@/components/auth/current-user-provider";
 import type { UserProfile } from "@/types/user";
 
 import { UserMenu } from "./user-menu";
 
 const pushMock = jest.fn();
+const setUserMock = jest.fn();
 const refreshMock = jest.fn();
 const logoutMock = jest.fn();
 
@@ -61,17 +63,31 @@ jest.mock("@/lib/auth/logout", () => ({
   logout: () => logoutMock(),
 }));
 
+function renderMenu(
+  currentUser: UserProfile | null,
+  { isLoading = false }: { isLoading?: boolean } = {}
+) {
+  return render(
+    <CurrentUserContext
+      value={{ user: currentUser, isLoading, setUser: setUserMock }}
+    >
+      <UserMenu />
+    </CurrentUserContext>
+  );
+}
+
 describe("UserMenu", () => {
   beforeEach(() => {
     pushMock.mockClear();
     refreshMock.mockClear();
     logoutMock.mockClear();
     logoutMock.mockResolvedValue(undefined);
+    setUserMock.mockClear();
   });
 
   it("opens a menu with profile and logout options", async () => {
     const testUser = userEvent.setup();
-    render(<UserMenu user={user} />);
+    renderMenu(user);
 
     await testUser.click(
       screen.getByRole("button", { name: "Account menu for Ana" })
@@ -93,7 +109,7 @@ describe("UserMenu", () => {
 
   it("logs out and navigates to login when logout is pressed", async () => {
     const testUser = userEvent.setup();
-    render(<UserMenu user={user} />);
+    renderMenu(user);
 
     await testUser.click(
       screen.getByRole("button", { name: "Account menu for Ana" })
@@ -105,13 +121,14 @@ describe("UserMenu", () => {
     await testUser.click(logoutItem);
 
     expect(logoutMock).toHaveBeenCalled();
+    expect(setUserMock).toHaveBeenCalledWith(null);
     expect(pushMock).toHaveBeenCalledWith("/login");
     expect(refreshMock).toHaveBeenCalled();
   });
 
   it("does not show an admin link for a regular user", async () => {
     const testUser = userEvent.setup();
-    render(<UserMenu user={user} />);
+    renderMenu(user);
 
     await testUser.click(
       screen.getByRole("button", { name: "Account menu for Ana" })
@@ -125,7 +142,7 @@ describe("UserMenu", () => {
 
   it("shows an admin link for an admin user", async () => {
     const testUser = userEvent.setup();
-    render(<UserMenu user={{ ...user, role: "admin" }} />);
+    renderMenu({ ...user, role: "admin" });
 
     await testUser.click(
       screen.getByRole("button", { name: "Account menu for Ana" })
@@ -137,11 +154,20 @@ describe("UserMenu", () => {
   });
 
   it("renders a sign-in link when there is no user", () => {
-    render(<UserMenu user={null} />);
+    renderMenu(null);
 
     expect(screen.getByRole("button", { name: "Sign in" })).toHaveAttribute(
       "href",
       "/login"
     );
+  });
+
+  it("shows a placeholder instead of the sign-in link while the user is loading", () => {
+    const { container } = renderMenu(null, { isLoading: true });
+
+    expect(
+      screen.queryByRole("button", { name: "Sign in" })
+    ).not.toBeInTheDocument();
+    expect(container.querySelector('[data-slot="skeleton"]')).not.toBeNull();
   });
 });

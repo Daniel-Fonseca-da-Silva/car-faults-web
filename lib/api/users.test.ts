@@ -8,7 +8,6 @@ import {
   getCurrentUserStats,
   getCurrentUserVehicle,
   getCurrentUserVehicles,
-  getGarageVehicleStatus,
   UserVehicleConflictError,
 } from "./users";
 
@@ -114,49 +113,6 @@ describe("getCurrentUserVehicles", () => {
     expect(serverApiFetchMock).toHaveBeenCalledWith(
       "/v1/user-vehicles?language=pt-PT&limit=20&cursor=c1"
     );
-  });
-});
-
-describe("getGarageVehicleStatus", () => {
-  afterEach(() => {
-    serverApiFetchMock.mockReset();
-  });
-
-  it("returns the garage status on a successful response", async () => {
-    const status = {
-      vehicleModelId: "vm-1",
-      year: 1996,
-      inGarage: true,
-      userVehicleId: "uv-1",
-    };
-    serverApiFetchMock.mockResolvedValue(jsonResponse(status));
-
-    await expect(getGarageVehicleStatus("vm-1", 1996)).resolves.toEqual(status);
-    expect(serverApiFetchMock).toHaveBeenCalledWith(
-      "/v1/user-vehicles/status?vehicleModelId=vm-1&year=1996"
-    );
-  });
-
-  it("returns not in garage on an error response", async () => {
-    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 401 }));
-
-    await expect(getGarageVehicleStatus("vm-1", 1996)).resolves.toEqual({
-      vehicleModelId: "vm-1",
-      year: 1996,
-      inGarage: false,
-      userVehicleId: null,
-    });
-  });
-
-  it("returns not in garage when the request throws", async () => {
-    serverApiFetchMock.mockRejectedValue(new Error("network error"));
-
-    await expect(getGarageVehicleStatus("vm-1", 1996)).resolves.toEqual({
-      vehicleModelId: "vm-1",
-      year: 1996,
-      inGarage: false,
-      userVehicleId: null,
-    });
   });
 });
 

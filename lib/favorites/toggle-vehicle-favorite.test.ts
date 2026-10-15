@@ -26,12 +26,11 @@ describe("favoriteVehicleAction", () => {
     jest.clearAllMocks();
   });
 
-  it("favorites the vehicle with year and revalidates profile, favorites and current pages", async () => {
+  it("favorites the vehicle with year and revalidates profile and favorites only", async () => {
     favoriteVehicleMock.mockResolvedValue(undefined);
 
     await favoriteVehicleAction(
       "pt-PT",
-      "/pt-PT/defects/vw/polo/1996",
       "vm-1",
       1996
     );
@@ -39,8 +38,8 @@ describe("favoriteVehicleAction", () => {
     expect(favoriteVehicleMock).toHaveBeenCalledWith("vm-1", 1996);
     expect(revalidatePathMock).toHaveBeenCalledWith("/pt-PT/profile");
     expect(revalidatePathMock).toHaveBeenCalledWith("/pt-PT/favorites");
-    expect(revalidatePathMock).toHaveBeenCalledWith(
-      "/pt-PT/defects/vw/polo/1996"
+    expect(revalidatePathMock).not.toHaveBeenCalledWith(
+      expect.stringContaining("/defects/")
     );
   });
 
@@ -48,7 +47,7 @@ describe("favoriteVehicleAction", () => {
     favoriteVehicleMock.mockRejectedValue(new Error("failed"));
 
     await expect(
-      favoriteVehicleAction("pt-PT", "/pt-PT/defects/vw/polo/1996", "vm-1", 1996)
+      favoriteVehicleAction("pt-PT", "vm-1", 1996)
     ).rejects.toThrow("failed");
 
     expect(revalidatePathMock).not.toHaveBeenCalled();
@@ -60,12 +59,11 @@ describe("unfavoriteVehicleAction", () => {
     jest.clearAllMocks();
   });
 
-  it("unfavorites the vehicle with year and revalidates profile, favorites and current pages", async () => {
+  it("unfavorites the vehicle with year and revalidates profile and favorites only", async () => {
     unfavoriteVehicleMock.mockResolvedValue(undefined);
 
     await unfavoriteVehicleAction(
       "pt-PT",
-      "/pt-PT/defects/vw/polo/1996",
       "vm-1",
       1996
     );
@@ -73,8 +71,8 @@ describe("unfavoriteVehicleAction", () => {
     expect(unfavoriteVehicleMock).toHaveBeenCalledWith("vm-1", 1996);
     expect(revalidatePathMock).toHaveBeenCalledWith("/pt-PT/profile");
     expect(revalidatePathMock).toHaveBeenCalledWith("/pt-PT/favorites");
-    expect(revalidatePathMock).toHaveBeenCalledWith(
-      "/pt-PT/defects/vw/polo/1996"
+    expect(revalidatePathMock).not.toHaveBeenCalledWith(
+      expect.stringContaining("/defects/")
     );
   });
 
@@ -84,7 +82,6 @@ describe("unfavoriteVehicleAction", () => {
     await expect(
       unfavoriteVehicleAction(
         "pt-PT",
-        "/pt-PT/defects/vw/polo/1996",
         "vm-1",
         1996
       )

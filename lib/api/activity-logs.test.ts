@@ -4,7 +4,6 @@
 import {
   favoriteVehicle,
   getFavoriteVehicles,
-  getVehicleFavoriteStatus,
   unfavoriteVehicle,
 } from "./activity-logs";
 
@@ -68,42 +67,6 @@ describe("unfavoriteVehicle", () => {
     await expect(unfavoriteVehicle("vm-1", 1996)).rejects.toThrow(
       "Failed to unfavorite vehicle: 404"
     );
-  });
-});
-
-describe("getVehicleFavoriteStatus", () => {
-  afterEach(() => {
-    serverApiFetchMock.mockReset();
-  });
-
-  it("returns the favorite status on a successful response", async () => {
-    const status = { vehicleModelId: "vm-1", favorited: true };
-    serverApiFetchMock.mockResolvedValue(jsonResponse(status));
-
-    await expect(getVehicleFavoriteStatus("vm-1", 1996)).resolves.toEqual(
-      status
-    );
-    expect(serverApiFetchMock).toHaveBeenCalledWith(
-      "/v1/activity-logs/favorites/vm-1?year=1996"
-    );
-  });
-
-  it("returns not favorited on an error response", async () => {
-    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 401 }));
-
-    await expect(getVehicleFavoriteStatus("vm-1", 1996)).resolves.toEqual({
-      vehicleModelId: "vm-1",
-      favorited: false,
-    });
-  });
-
-  it("returns not favorited when the request throws", async () => {
-    serverApiFetchMock.mockRejectedValue(new Error("network error"));
-
-    await expect(getVehicleFavoriteStatus("vm-1", 1996)).resolves.toEqual({
-      vehicleModelId: "vm-1",
-      favorited: false,
-    });
   });
 });
 

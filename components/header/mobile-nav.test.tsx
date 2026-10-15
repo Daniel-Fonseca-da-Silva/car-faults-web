@@ -2,11 +2,13 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
 
+import { CurrentUserContext } from "@/components/auth/current-user-provider";
 import type { UserProfile } from "@/types/user";
 
 import { MobileNav } from "./mobile-nav";
 
 const pushMock = jest.fn();
+const setUserMock = jest.fn();
 const refreshMock = jest.fn();
 const logoutMock = jest.fn();
 
@@ -59,17 +61,31 @@ jest.mock("@/lib/auth/logout", () => ({
   logout: () => logoutMock(),
 }));
 
+function renderNav(
+  currentUser: UserProfile | null,
+  { isLoading = false }: { isLoading?: boolean } = {}
+) {
+  return render(
+    <CurrentUserContext
+      value={{ user: currentUser, isLoading, setUser: setUserMock }}
+    >
+      <MobileNav />
+    </CurrentUserContext>
+  );
+}
+
 describe("MobileNav", () => {
   beforeEach(() => {
     pushMock.mockClear();
     refreshMock.mockClear();
     logoutMock.mockClear();
     logoutMock.mockResolvedValue(undefined);
+    setUserMock.mockClear();
   });
 
   it("links the avatar row to the profile page", async () => {
     const testUser = userEvent.setup();
-    render(<MobileNav user={user} />);
+    renderNav(user);
 
     await testUser.click(screen.getByRole("button", { name: "Menu" }));
 
@@ -79,7 +95,7 @@ describe("MobileNav", () => {
 
   it("links to the garage page when signed in", async () => {
     const testUser = userEvent.setup();
-    render(<MobileNav user={user} />);
+    renderNav(user);
 
     await testUser.click(screen.getByRole("button", { name: "Menu" }));
 
@@ -90,7 +106,7 @@ describe("MobileNav", () => {
 
   it("links to the favorites page when signed in", async () => {
     const testUser = userEvent.setup();
-    render(<MobileNav user={user} />);
+    renderNav(user);
 
     await testUser.click(screen.getByRole("button", { name: "Menu" }));
 
@@ -101,7 +117,7 @@ describe("MobileNav", () => {
 
   it("does not show an admin link for a regular user", async () => {
     const testUser = userEvent.setup();
-    render(<MobileNav user={user} />);
+    renderNav(user);
 
     await testUser.click(screen.getByRole("button", { name: "Menu" }));
 
@@ -112,7 +128,7 @@ describe("MobileNav", () => {
 
   it("links to the admin page for an admin user", async () => {
     const testUser = userEvent.setup();
-    render(<MobileNav user={{ ...user, role: "admin" }} />);
+    renderNav({ ...user, role: "admin" });
 
     await testUser.click(screen.getByRole("button", { name: "Menu" }));
 
@@ -123,7 +139,7 @@ describe("MobileNav", () => {
 
   it("renders the primary navigation links inside the sheet", async () => {
     const testUser = userEvent.setup();
-    render(<MobileNav user={user} />);
+    renderNav(user);
 
     await testUser.click(screen.getByRole("button", { name: "Menu" }));
 
@@ -134,19 +150,20 @@ describe("MobileNav", () => {
 
   it("logs out and navigates to login when logout is pressed", async () => {
     const testUser = userEvent.setup();
-    render(<MobileNav user={user} />);
+    renderNav(user);
 
     await testUser.click(screen.getByRole("button", { name: "Menu" }));
     await testUser.click(screen.getByRole("button", { name: "Sair" }));
 
     expect(logoutMock).toHaveBeenCalled();
+    expect(setUserMock).toHaveBeenCalledWith(null);
     expect(pushMock).toHaveBeenCalledWith("/login");
     expect(refreshMock).toHaveBeenCalled();
   });
 
   it("shows a sign-in link instead of the avatar/logout row when signed out", async () => {
     const testUser = userEvent.setup();
-    render(<MobileNav user={null} />);
+    renderNav(null);
 
     await testUser.click(screen.getByRole("button", { name: "Menu" }));
 
@@ -160,7 +177,7 @@ describe("MobileNav", () => {
 
   it("shows the sign-in link before the nav links when signed out", async () => {
     const testUser = userEvent.setup();
-    render(<MobileNav user={null} />);
+    renderNav(null);
 
     await testUser.click(screen.getByRole("button", { name: "Menu" }));
 
@@ -175,12 +192,26 @@ describe("MobileNav", () => {
 
   it("does not show a sign-in link when signed in", async () => {
     const testUser = userEvent.setup();
-    render(<MobileNav user={user} />);
+    renderNav(user);
 
     await testUser.click(screen.getByRole("button", { name: "Menu" }));
 
     expect(
       screen.queryByRole("button", { name: "Entrar" })
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows neither the sign-in link nor the account rows while the user is loading", async () => {
+    const testUser = userEvent.setup();
+    renderNav(null, { isLoading: true });
+
+    await testUser.click(screen.getByRole("button", { name: "Menu" }));
+
+    expect(
+      screen.queryByRole("button", { name: "Entrar" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Sair" })
     ).not.toBeInTheDocument();
   });
 });

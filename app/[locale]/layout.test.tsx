@@ -39,6 +39,12 @@ jest.mock("@/components/cookies/cookie-consent-modal", () => ({
   CookieConsentModal: () => <div data-testid="cookie-consent-modal" />,
 }));
 
+jest.mock("@/components/auth/current-user-provider", () => ({
+  CurrentUserProvider: ({ children }: { children: ReactNode }) => (
+    <div data-testid="current-user-provider">{children}</div>
+  ),
+}));
+
 jest.mock("@/components/analytics/consent-gated-analytics", () => ({
   ConsentGatedAnalytics: () => <div data-testid="consent-gated-analytics" />,
 }));
@@ -67,6 +73,18 @@ describe("LocaleLayout", () => {
     expect(screen.getByTestId("consent-gated-analytics")).toBeInTheDocument();
     expect(screen.getByTestId("adsense-script")).toBeInTheDocument();
     expect(screen.getByTestId("cookie-consent-modal")).toBeInTheDocument();
+  });
+
+  it("provides the signed-in user to the header and page from the browser", async () => {
+    const jsx = await LocaleLayout({
+      children: <p>page content</p>,
+      params: Promise.resolve({ locale: "pt-PT" }),
+    });
+    render(jsx);
+
+    const provider = screen.getByTestId("current-user-provider");
+    expect(provider).toContainElement(screen.getByTestId("site-header"));
+    expect(provider).toContainElement(screen.getByText("page content"));
   });
 
   it("triggers a not-found response for an unsupported locale", async () => {

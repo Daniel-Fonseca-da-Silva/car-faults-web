@@ -3,12 +3,14 @@ import Link from "next/link";
 
 import type { LookupResponse } from "@/types/lookup";
 
-import VehiclePage, { generateMetadata } from "./page";
+import VehiclePage, {
+  generateMetadata,
+  generateStaticParams,
+  revalidate,
+} from "./page";
 
 const getVehicleLookupByPathMock = jest.fn();
 const getCurrentUserMock = jest.fn();
-const getGarageVehicleStatusMock = jest.fn();
-const getVehicleFavoriteStatusMock = jest.fn();
 const findCatalogVehicleMock = jest.fn();
 
 jest.mock("@/lib/api/lookups", () => ({
@@ -22,15 +24,9 @@ jest.mock("@/lib/api/platform-catalog", () => ({
     .getContentLocales,
 }));
 
+// Only to prove the page never reads the session (see below).
 jest.mock("@/lib/api/users", () => ({
   getCurrentUser: (...args: unknown[]) => getCurrentUserMock(...args),
-  getGarageVehicleStatus: (...args: unknown[]) =>
-    getGarageVehicleStatusMock(...args),
-}));
-
-jest.mock("@/lib/api/activity-logs", () => ({
-  getVehicleFavoriteStatus: (...args: unknown[]) =>
-    getVehicleFavoriteStatusMock(...args),
 }));
 
 jest.mock("next-intl/server", () => ({
@@ -49,18 +45,12 @@ jest.mock("next-intl/server", () => ({
 jest.mock("@/components/vehicle/vehicle-hero", () => ({
   VehicleHero: ({
     vehicle,
-    garageVehicleId,
-    isFavorited,
+    year,
   }: {
     vehicle: { brand: string; model: string };
-    garageVehicleId: string | null;
-    isFavorited: boolean;
+    year: number;
   }) => (
-    <div
-      data-testid="vehicle-hero"
-      data-garage-vehicle-id={garageVehicleId ?? ""}
-      data-is-favorited={String(isFavorited)}
-    >
+    <div data-testid="vehicle-hero" data-year={String(year)}>
       {vehicle.brand} {vehicle.model}
     </div>
   ),
@@ -79,17 +69,8 @@ jest.mock("@/components/vehicle/known-issues-summary", () => ({
 }));
 
 jest.mock("@/components/vehicle/known-issues-accordion", () => ({
-  KnownIssuesAccordion: ({
-    knownIssues,
-    currentUser,
-  }: {
-    knownIssues: unknown[];
-    currentUser: { name: string } | null;
-  }) => (
-    <div data-testid="known-issues-accordion">
-      {knownIssues.length}
-      {currentUser ? `:${currentUser.name}` : ""}
-    </div>
+  KnownIssuesAccordion: ({ knownIssues }: { knownIssues: unknown[] }) => (
+    <div data-testid="known-issues-accordion">{knownIssues.length}</div>
   ),
 }));
 
@@ -150,35 +131,23 @@ const pathParams = {
   engine: "1-0",
 };
 
-describe("VehiclePage", () => {
-  beforeEach(() => {
-    getCurrentUserMock.mockResolvedValue(null);
-    getGarageVehicleStatusMock.mockResolvedValue({
-      vehicleModelId: "veh-polo-6n1",
-      year: 1996,
-      inGarage: false,
-      userVehicleId: null,
-    });
-    getVehicleFavoriteStatusMock.mockResolvedValue({
-      vehicleModelId: "veh-polo-6n1",
-      favorited: false,
-    });
+describe("caching", () => {
+  it("is generated on the first visit and refreshed every 3 hours", () => {
+    expect(generateStaticParams()).toEqual([]);
+    expect(revalidate).toBe(3 * 60 * 60);
   });
+});
 
+describe("VehiclePage", () => {
   afterEach(() => {
     getVehicleLookupByPathMock.mockReset();
     getCurrentUserMock.mockReset();
-    getGarageVehicleStatusMock.mockReset();
-    getVehicleFavoriteStatusMock.mockReset();
   });
 
   it("renders the hero, specs, summary and known issues for a matching vehicle", async () => {
     getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
 
-    const jsx = await VehiclePage({
-      params: Promise.resolve(pathParams),
-      searchParams: Promise.resolve({}),
-    });
+    const jsx = await VehiclePage({ params: Promise.resolve(pathParams) });
     render(jsx);
 
     expect(getVehicleLookupByPathMock).toHaveBeenCalledWith({
@@ -207,109 +176,16 @@ describe("VehiclePage", () => {
     ).toHaveLength(2);
   });
 
-  it("passes the current user through to the known issues accordion", async () => {
+  it("never reads the session, so one cached render serves every visitor", async () => {
     getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
-    getCurrentUserMock.mockResolvedValue({
-      id: "u1",
-      name: "Ana Silva",
-      email: "ana@example.com",
-      role: "user",
-      avatarUrl: null,
-      createdAt: "2026-01-01T00:00:00.000Z",
-      updatedAt: "2026-01-01T00:00:00.000Z",
-    });
 
-    const jsx = await VehiclePage({
-      params: Promise.resolve(pathParams),
-      searchParams: Promise.resolve({}),
-    });
+    const jsx = await VehiclePage({ params: Promise.resolve(pathParams) });
     render(jsx);
 
-    expect(screen.getByTestId("known-issues-accordion")).toHaveTextContent(
-      "2:Ana Silva"
-    );
-  });
-
-  it("does not fetch garage or favorite state for guests", async () => {
-    getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
-
-    await VehiclePage({
-      params: Promise.resolve(pathParams),
-      searchParams: Promise.resolve({}),
-    });
-
-    expect(getGarageVehicleStatusMock).not.toHaveBeenCalled();
-    expect(getVehicleFavoriteStatusMock).not.toHaveBeenCalled();
-  });
-
-  it("uses the point garage status and favorite status with year for a logged-in user", async () => {
-    getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
-    getCurrentUserMock.mockResolvedValue({
-      id: "u1",
-      name: "Ana Silva",
-      email: "ana@example.com",
-      role: "user",
-      avatarUrl: null,
-      createdAt: "2026-01-01T00:00:00.000Z",
-      updatedAt: "2026-01-01T00:00:00.000Z",
-    });
-    getGarageVehicleStatusMock.mockResolvedValue({
-      vehicleModelId: "veh-polo-6n1",
-      year: 1996,
-      inGarage: true,
-      userVehicleId: "uv-match",
-    });
-    getVehicleFavoriteStatusMock.mockResolvedValue({
-      vehicleModelId: "veh-polo-6n1",
-      favorited: true,
-    });
-
-    const jsx = await VehiclePage({
-      params: Promise.resolve(pathParams),
-      searchParams: Promise.resolve({}),
-    });
-    render(jsx);
-
-    expect(getGarageVehicleStatusMock).toHaveBeenCalledWith(
-      "veh-polo-6n1",
-      1996
-    );
-    expect(getVehicleFavoriteStatusMock).toHaveBeenCalledWith(
-      "veh-polo-6n1",
-      1996
-    );
-    const hero = screen.getByTestId("vehicle-hero");
-    expect(hero).toHaveAttribute("data-garage-vehicle-id", "uv-match");
-    expect(hero).toHaveAttribute("data-is-favorited", "true");
-  });
-
-  it("leaves the garage vehicle id null when no saved vehicle matches the year", async () => {
-    getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
-    getCurrentUserMock.mockResolvedValue({
-      id: "u1",
-      name: "Ana Silva",
-      email: "ana@example.com",
-      role: "user",
-      avatarUrl: null,
-      createdAt: "2026-01-01T00:00:00.000Z",
-      updatedAt: "2026-01-01T00:00:00.000Z",
-    });
-    getGarageVehicleStatusMock.mockResolvedValue({
-      vehicleModelId: "veh-polo-6n1",
-      year: 1996,
-      inGarage: false,
-      userVehicleId: null,
-    });
-
-    const jsx = await VehiclePage({
-      params: Promise.resolve(pathParams),
-      searchParams: Promise.resolve({}),
-    });
-    render(jsx);
-
+    expect(getCurrentUserMock).not.toHaveBeenCalled();
     expect(screen.getByTestId("vehicle-hero")).toHaveAttribute(
-      "data-garage-vehicle-id",
-      ""
+      "data-year",
+      "1996"
     );
   });
 
@@ -318,7 +194,6 @@ describe("VehiclePage", () => {
 
     await VehiclePage({
       params: Promise.resolve({ ...pathParams, locale: "es-ES" }),
-      searchParams: Promise.resolve({}),
     });
 
     expect(getVehicleLookupByPathMock).toHaveBeenCalledWith(
@@ -331,7 +206,6 @@ describe("VehiclePage", () => {
 
     const jsx = await VehiclePage({
       params: Promise.resolve({ ...pathParams, locale: "pt-BR" }),
-      searchParams: Promise.resolve({}),
     });
     render(jsx);
 
@@ -350,10 +224,7 @@ describe("VehiclePage", () => {
   it("does not show the Mercado Livre products box outside pt-BR", async () => {
     getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
 
-    const jsx = await VehiclePage({
-      params: Promise.resolve(pathParams),
-      searchParams: Promise.resolve({}),
-    });
+    const jsx = await VehiclePage({ params: Promise.resolve(pathParams) });
     render(jsx);
 
     expect(
@@ -361,19 +232,6 @@ describe("VehiclePage", () => {
         name: /faults\.vehicle\.mercadoLivre\.title/,
       })
     ).not.toBeInTheDocument();
-  });
-
-  it("passes doors through when present in the query", async () => {
-    getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
-
-    await VehiclePage({
-      params: Promise.resolve(pathParams),
-      searchParams: Promise.resolve({ doors: "3" }),
-    });
-
-    expect(getVehicleLookupByPathMock).toHaveBeenCalledWith(
-      expect.objectContaining({ doors: 3 })
-    );
   });
 
   it("shows a no-known-issues message and skips the FAQ structured data when there are none", async () => {
@@ -389,7 +247,6 @@ describe("VehiclePage", () => {
         model: "model-3",
         year: "2022",
       }),
-      searchParams: Promise.resolve({}),
     });
     render(jsx);
 
@@ -402,7 +259,7 @@ describe("VehiclePage", () => {
     ).toHaveLength(1);
   });
 
-  it("triggers a not-found response when the API returns an error", async () => {
+  it("propagates API errors instead of rendering a cacheable not-found page", async () => {
     getVehicleLookupByPathMock.mockRejectedValue(
       new Error("Failed to load vehicle lookup: 500")
     );
@@ -410,9 +267,8 @@ describe("VehiclePage", () => {
     await expect(
       VehiclePage({
         params: Promise.resolve(pathParams),
-        searchParams: Promise.resolve({}),
       })
-    ).rejects.toThrow();
+    ).rejects.toThrow("Failed to load vehicle lookup: 500");
   });
 
   it("triggers a not-found response when the lookup is not found (null)", async () => {
@@ -421,7 +277,6 @@ describe("VehiclePage", () => {
     await expect(
       VehiclePage({
         params: Promise.resolve(pathParams),
-        searchParams: Promise.resolve({}),
       })
     ).rejects.toThrow();
   });
@@ -451,7 +306,6 @@ describe("generateMetadata", () => {
 
     const metadata = await generateMetadata({
       params: Promise.resolve(pathParams),
-      searchParams: Promise.resolve({}),
     });
 
     expect(metadata.title).toContain("seo.vehiclePage.titleTemplate");
@@ -468,7 +322,6 @@ describe("generateMetadata", () => {
 
     const metadata = await generateMetadata({
       params: Promise.resolve(pathParams),
-      searchParams: Promise.resolve({}),
     });
 
     expect(findCatalogVehicleMock).toHaveBeenCalledWith({
@@ -493,7 +346,6 @@ describe("generateMetadata", () => {
 
     const metadata = await generateMetadata({
       params: Promise.resolve(pathParams),
-      searchParams: Promise.resolve({}),
     });
 
     expect(metadata.robots).toBeUndefined();
@@ -508,7 +360,6 @@ describe("generateMetadata", () => {
 
     const metadata = await generateMetadata({
       params: Promise.resolve(pathParams),
-      searchParams: Promise.resolve({}),
     });
 
     expect(metadata.robots).toEqual({ index: false, follow: true });
@@ -532,7 +383,6 @@ describe("generateMetadata", () => {
         model: "model-3",
         year: "2018",
       }),
-      searchParams: Promise.resolve({}),
     });
 
     expect(metadata).toEqual({});

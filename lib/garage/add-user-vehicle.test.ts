@@ -23,24 +23,21 @@ describe("addUserVehicleAction", () => {
     jest.clearAllMocks();
   });
 
-  it("creates the vehicle and revalidates the garage and current pages", async () => {
+  it("creates the vehicle, revalidates the garage and returns the new id", async () => {
     createCurrentUserVehicleMock.mockResolvedValue({ id: "uv-1" });
 
-    const result = await addUserVehicleAction(
-      "pt-PT",
-      "/pt-PT/defects/vw/polo/1996",
-      { vehicleModelId: "vm-1", year: 1996 }
-    );
+    const result = await addUserVehicleAction("pt-PT", {
+      vehicleModelId: "vm-1",
+      year: 1996,
+    });
 
-    expect(result).toEqual({ ok: true });
+    expect(result).toEqual({ ok: true, userVehicleId: "uv-1" });
     expect(createCurrentUserVehicleMock).toHaveBeenCalledWith({
       vehicleModelId: "vm-1",
       year: 1996,
     });
+    expect(revalidatePathMock).toHaveBeenCalledTimes(1);
     expect(revalidatePathMock).toHaveBeenCalledWith("/pt-PT/garage");
-    expect(revalidatePathMock).toHaveBeenCalledWith(
-      "/pt-PT/defects/vw/polo/1996"
-    );
   });
 
   it("returns a conflict error without revalidating when the vehicle is already in the garage", async () => {
@@ -48,11 +45,10 @@ describe("addUserVehicleAction", () => {
       new UserVehicleConflictError()
     );
 
-    const result = await addUserVehicleAction(
-      "pt-PT",
-      "/pt-PT/defects/vw/polo/1996",
-      { vehicleModelId: "vm-1", year: 1996 }
-    );
+    const result = await addUserVehicleAction("pt-PT", {
+      vehicleModelId: "vm-1",
+      year: 1996,
+    });
 
     expect(result).toEqual({ ok: false, error: "conflict" });
     expect(revalidatePathMock).not.toHaveBeenCalled();
@@ -61,11 +57,10 @@ describe("addUserVehicleAction", () => {
   it("returns an unknown error without revalidating on unexpected failures", async () => {
     createCurrentUserVehicleMock.mockRejectedValue(new Error("network down"));
 
-    const result = await addUserVehicleAction(
-      "pt-PT",
-      "/pt-PT/defects/vw/polo/1996",
-      { vehicleModelId: "vm-1", year: 1996 }
-    );
+    const result = await addUserVehicleAction("pt-PT", {
+      vehicleModelId: "vm-1",
+      year: 1996,
+    });
 
     expect(result).toEqual({ ok: false, error: "unknown" });
     expect(revalidatePathMock).not.toHaveBeenCalled();
