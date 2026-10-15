@@ -202,7 +202,9 @@ describe("IssueComments", () => {
       .mockResolvedValueOnce({ items: [comment], nextCursor: "c2" })
       .mockResolvedValueOnce({ items: [secondComment], nextCursor: null });
 
-    let observerCallback: IntersectionObserverCallback | null = null;
+    // Assigned inside the mock's constructor, which TypeScript's narrowing
+    // can't see; the cast keeps it from treating the variable as always null.
+    let observerCallback = null as IntersectionObserverCallback | null;
     class MockIntersectionObserver {
       constructor(callback: IntersectionObserverCallback) {
         observerCallback = callback;
