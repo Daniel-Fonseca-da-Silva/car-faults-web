@@ -20,6 +20,15 @@ import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
 
 const TOP_FAULTS_LIMIT = 9;
 
+// Generated on the first visit, then served from the cache and refreshed in
+// the background at most this often (seconds; matches the catalog fetch
+// cache). Admin edits refresh it sooner through the public catalog tag.
+export const revalidate = 10800;
+
+export function generateStaticParams(): BrandHubPageParams[] {
+  return [];
+}
+
 interface BrandHubPageParams {
   locale: Locale;
   make: string;

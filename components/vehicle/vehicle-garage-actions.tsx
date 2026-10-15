@@ -2,8 +2,9 @@
 
 import { Check, Loader2, Plus, Star } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 
+import { useCurrentUser } from "@/components/auth/current-user-provider";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import {
@@ -13,29 +14,31 @@ import {
 import { addUserVehicleAction } from "@/lib/garage/add-user-vehicle";
 import { removeUserVehicleFromVehiclePageAction } from "@/lib/garage/remove-user-vehicle";
 import { cn } from "@/lib/utils";
-import type { UserProfile } from "@/types/user";
+import {
+  fetchVehicleUserStatus,
+  type VehicleUserStatus,
+} from "@/lib/vehicle/fetch-vehicle-user-status";
 
 interface VehicleGarageActionsProps {
   vehicleModelId: string;
   vehicleLabel: string;
   year: number;
-  currentUser: UserProfile | null;
-  garageVehicleId: string | null;
-  isFavorited: boolean;
-  currentPath: string;
 }
 
+/**
+ * The vehicle page is cached and shared by every visitor, so the user and
+ * their garage/favorite state for this vehicle are loaded here, in the
+ * browser, after the page is shown.
+ */
 export function VehicleGarageActions({
   vehicleModelId,
   vehicleLabel,
   year,
-  currentUser,
-  garageVehicleId,
-  isFavorited,
-  currentPath,
 }: VehicleGarageActionsProps) {
   const t = useTranslations("faults.vehicle.actions");
   const locale = useLocale();
+  const { user: currentUser, isLoading: isUserLoading } = useCurrentUser();
+  const [status, setStatus] = useState<VehicleUserStatus | null>(null);
   const [isGaragePending, startGarageTransition] = useTransition();
   const [isFavoritePending, startFavoriteTransition] = useTransition();
   const [garageError, setGarageError] = useState<
@@ -43,27 +46,47 @@ export function VehicleGarageActions({
   >(null);
   const [favoriteError, setFavoriteError] = useState(false);
 
+  const userId = currentUser?.id ?? null;
+
+  useEffect(() => {
+    if (!userId) return;
+
+    let cancelled = false;
+    fetchVehicleUserStatus(vehicleModelId, year).then((nextStatus) => {
+      if (!cancelled) setStatus(nextStatus);
+    });
+
+    return () => {
+      cancelled = true;
+      setStatus(null);
+    };
+  }, [userId, vehicleModelId, year]);
+
+  const garageVehicleId = status?.garageVehicleId ?? null;
+  const isFavorited = status?.isFavorited ?? false;
   const inGarage = garageVehicleId !== null;
 
   function handleGarageClick() {
     setGarageError(null);
     startGarageTransition(async () => {
       if (garageVehicleId) {
-        await removeUserVehicleFromVehiclePageAction(
-          locale,
-          currentPath,
-          garageVehicleId
-        );
+        await removeUserVehicleFromVehiclePageAction(locale, garageVehicleId);
+        setStatus((current) => current && { ...current, garageVehicleId: null });
         return;
       }
 
-      const result = await addUserVehicleAction(locale, currentPath, {
+      const result = await addUserVehicleAction(locale, {
         vehicleModelId,
         year,
       });
       if (!result.ok) {
         setGarageError(result.error);
+        return;
       }
+      setStatus(
+        (current) =>
+          current && { ...current, garageVehicleId: result.userVehicleId }
+      );
     });
   }
 
@@ -72,27 +95,20 @@ export function VehicleGarageActions({
     startFavoriteTransition(async () => {
       try {
         if (isFavorited) {
-          await unfavoriteVehicleAction(
-            locale,
-            currentPath,
-            vehicleModelId,
-            year
-          );
+          await unfavoriteVehicleAction(locale, vehicleModelId, year);
         } else {
-          await favoriteVehicleAction(
-            locale,
-            currentPath,
-            vehicleModelId,
-            year
-          );
+          await favoriteVehicleAction(locale, vehicleModelId, year);
         }
+        setStatus(
+          (current) => current && { ...current, isFavorited: !isFavorited }
+        );
       } catch {
         setFavoriteError(true);
       }
     });
   }
 
-  if (!currentUser) {
+  if (!isUserLoading && !currentUser) {
     return (
       <div className="flex flex-wrap items-center gap-3">
         <Button
@@ -120,6 +136,10 @@ export function VehicleGarageActions({
     );
   }
 
+  // Until the user and their state are known, show the signed-in buttons
+  // disabled rather than flashing the guest ones.
+  const isStatusLoading = status === null;
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center gap-2">
@@ -128,7 +148,7 @@ export function VehicleGarageActions({
           size="sm"
           variant={inGarage ? "outline" : "default"}
           onClick={handleGarageClick}
-          disabled={isGaragePending}
+          disabled={isStatusLoading || isGaragePending}
           aria-pressed={inGarage}
           aria-label={t(
             inGarage ? "removeFromGarageAriaLabel" : "addToGarageAriaLabel",
@@ -149,7 +169,7 @@ export function VehicleGarageActions({
           size="sm"
           variant="outline"
           onClick={handleFavoriteClick}
-          disabled={isFavoritePending}
+          disabled={isStatusLoading || isFavoritePending}
           aria-pressed={isFavorited}
           aria-label={t(
             isFavorited ? "unfavoriteAriaLabel" : "favoriteAriaLabel",

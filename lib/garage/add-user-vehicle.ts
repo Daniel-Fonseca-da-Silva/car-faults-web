@@ -13,16 +13,20 @@ export interface AddUserVehicleInput {
 }
 
 export type AddUserVehicleResult =
-  | { ok: true }
+  | { ok: true; userVehicleId: string }
   | { ok: false; error: "conflict" | "unknown" };
 
+/**
+ * Only the garage page is revalidated: the vehicle page is shared by every
+ * visitor, so its garage button keeps its own state from the returned id.
+ */
 export async function addUserVehicleAction(
   locale: string,
-  currentPath: string,
   input: AddUserVehicleInput
 ): Promise<AddUserVehicleResult> {
+  let userVehicleId: string;
   try {
-    await createCurrentUserVehicle(input);
+    ({ id: userVehicleId } = await createCurrentUserVehicle(input));
   } catch (err) {
     if (err instanceof UserVehicleConflictError) {
       return { ok: false, error: "conflict" };
@@ -31,6 +35,5 @@ export async function addUserVehicleAction(
   }
 
   revalidatePath(`/${locale}/garage`);
-  revalidatePath(currentPath);
-  return { ok: true };
+  return { ok: true, userVehicleId };
 }

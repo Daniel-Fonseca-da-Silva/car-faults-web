@@ -4,6 +4,7 @@ import { AlertTriangle, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
+import { useCurrentUser } from "@/components/auth/current-user-provider";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,6 +25,7 @@ import { deleteCurrentUserAccount } from "@/lib/api/account";
 export function ProfileDangerZone() {
   const t = useTranslations("profile.dangerZone");
   const router = useRouter();
+  const { setUser } = useCurrentUser();
   const [open, setOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,6 +39,7 @@ export function ProfileDangerZone() {
     try {
       await deleteCurrentUserAccount();
       await logout();
+      setUser(null);
       router.push("/login");
     } catch {
       setError(t("deleteError"));

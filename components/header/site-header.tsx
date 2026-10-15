@@ -2,7 +2,6 @@ import { getTranslations } from "next-intl/server";
 
 import { Logo } from "@/components/brand/logo";
 import { Link } from "@/i18n/navigation";
-import { getCurrentUser } from "@/lib/api/users";
 import { NAV_ITEMS } from "@/lib/nav-items";
 
 import { LocaleSwitcher } from "./locale-switcher";
@@ -11,7 +10,6 @@ import { UserMenu } from "./user-menu";
 
 export async function SiteHeader() {
   const t = await getTranslations("nav");
-  const user = await getCurrentUser();
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
@@ -37,12 +35,12 @@ export async function SiteHeader() {
 
         <div className="hidden items-center gap-3 md:flex">
           <LocaleSwitcher />
-          <UserMenu user={user} />
+          <UserMenu />
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
           <LocaleSwitcher />
-          <MobileNav user={user} />
+          <MobileNav />
         </div>
       </div>
     </header>

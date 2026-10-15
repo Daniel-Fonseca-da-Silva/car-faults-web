@@ -10,13 +10,6 @@ export interface UserVehiclesQuery extends CursorQuery {
   language?: LookupLanguage;
 }
 
-export interface GarageVehicleStatus {
-  vehicleModelId: string;
-  year: number;
-  inGarage: boolean;
-  userVehicleId: string | null;
-}
-
 export async function getCurrentUser(): Promise<UserProfile | null> {
   try {
     const response = await serverApiFetch("/v1/users/me");
@@ -59,29 +52,6 @@ export async function getCurrentUserVehicles(
   }
 
   return (await response.json()) as CursorPage<UserVehicle>;
-}
-
-export async function getGarageVehicleStatus(
-  vehicleModelId: string,
-  year: number
-): Promise<GarageVehicleStatus> {
-  try {
-    const params = new URLSearchParams({
-      vehicleModelId,
-      year: String(year),
-    });
-    const response = await serverApiFetch(
-      `/v1/user-vehicles/status?${params.toString()}`
-    );
-
-    if (!response.ok) {
-      return { vehicleModelId, year, inGarage: false, userVehicleId: null };
-    }
-
-    return (await response.json()) as GarageVehicleStatus;
-  } catch {
-    return { vehicleModelId, year, inGarage: false, userVehicleId: null };
-  }
 }
 
 export async function getCurrentUserVehicle(

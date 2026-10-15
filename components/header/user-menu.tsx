@@ -3,6 +3,7 @@
 import { LogIn, LogOut, ShieldCheck, Star, User, Warehouse } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { useCurrentUser } from "@/components/auth/current-user-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,23 +13,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Link, useRouter } from "@/i18n/navigation";
 import { logout } from "@/lib/auth/logout";
 import { getInitials } from "@/lib/utils";
-import type { UserProfile } from "@/types/user";
 
-type UserMenuProps = {
-  user: UserProfile | null;
-};
-
-export function UserMenu({ user }: UserMenuProps) {
+export function UserMenu() {
   const t = useTranslations("nav");
   const router = useRouter();
+  const { user, isLoading, setUser } = useCurrentUser();
 
   async function handleLogout() {
     await logout();
+    setUser(null);
     router.push("/login");
     router.refresh();
+  }
+
+  // Same footprint as the button, so the header doesn't shift once the
+  // user is known.
+  if (isLoading) {
+    return <Skeleton aria-hidden="true" className="h-9 w-28 rounded-full" />;
   }
 
   if (!user) {

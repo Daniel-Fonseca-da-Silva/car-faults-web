@@ -1,6 +1,6 @@
+import { getApiBaseUrl } from "@/lib/api/config";
 import { mapPlatformFaultsPage } from "@/lib/api/platform-query";
 import { publicApiFetch } from "@/lib/api/public-client";
-import { serverApiFetch } from "@/lib/api/server-client";
 import type { TopFaultDto } from "@/lib/api/platform-map";
 import type { CursorPage } from "@/types/cursor";
 
@@ -107,9 +107,19 @@ export async function getPlatformVehicles(
   return (await response.json()) as PlatformVehiclesPage;
 }
 
+/** How long the home page's "database up" indicator may lag behind. */
+export const DATABASE_STATUS_REVALIDATE_SECONDS = 60;
+
+/**
+ * Checked through the API's health endpoint (which pings the database) and
+ * cached briefly, so the home page that shows it can still be served from
+ * the cache instead of calling the API on every visit.
+ */
 export async function getDatabaseStatus(): Promise<boolean> {
   try {
-    const response = await serverApiFetch("/v1/platform/stats");
+    const response = await fetch(`${getApiBaseUrl()}/v1/health`, {
+      next: { revalidate: DATABASE_STATUS_REVALIDATE_SECONDS },
+    });
     return response.ok;
   } catch {
     return false;

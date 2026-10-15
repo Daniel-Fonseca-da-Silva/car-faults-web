@@ -3,26 +3,17 @@ import Image from "next/image";
 
 import { VehicleGarageActions } from "@/components/vehicle/vehicle-garage-actions";
 import type { VehicleLookup } from "@/types/lookup";
-import type { UserProfile } from "@/types/user";
 
 const FALLBACK_IMAGE_SRC = "/show/citroen-2CV.webp";
 
 interface VehicleHeroProps {
   vehicle: VehicleLookup;
   year: number;
-  currentUser: UserProfile | null;
-  garageVehicleId: string | null;
-  isFavorited: boolean;
-  currentPath: string;
 }
 
 export async function VehicleHero({
   vehicle,
   year,
-  currentUser,
-  garageVehicleId,
-  isFavorited,
-  currentPath,
 }: VehicleHeroProps) {
   const t = await getTranslations("faults.vehicle");
   const title = `${vehicle.brand} ${vehicle.model}`;
@@ -63,10 +54,6 @@ export async function VehicleHero({
             vehicleModelId={vehicle.id}
             vehicleLabel={title}
             year={year}
-            currentUser={currentUser}
-            garageVehicleId={garageVehicleId}
-            isFavorited={isFavorited}
-            currentPath={currentPath}
           />
         </div>
       </div>
