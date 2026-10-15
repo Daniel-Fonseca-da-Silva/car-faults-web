@@ -1,7 +1,8 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 
+import { PUBLIC_CATALOG_TAG } from "@/lib/api/public-client";
 import { serverApiFetch } from "@/lib/api/server-client";
 import type { AdminKnownIssue } from "@/types/admin";
 import type { IssueSeverity } from "@/types/lookup";
@@ -30,6 +31,7 @@ export async function createAdminKnownIssue(
     throw new Error(`Failed to create known issue: ${response.status}`);
   }
 
+  updateTag(PUBLIC_CATALOG_TAG);
   revalidatePath(`/${appLocale}/admin/vehicles/${input.vehicleModelId}`);
 
   return (await response.json()) as AdminKnownIssue;
@@ -49,6 +51,8 @@ export async function updateAdminKnownIssue(
     throw new Error(`Failed to update known issue: ${response.status}`);
   }
 
+  updateTag(PUBLIC_CATALOG_TAG);
+
   return (await response.json()) as AdminKnownIssue;
 }
 
@@ -64,5 +68,6 @@ export async function deleteAdminKnownIssue(
     throw new Error(`Failed to delete known issue: ${response.status}`);
   }
 
+  updateTag(PUBLIC_CATALOG_TAG);
   revalidatePath(`/${appLocale}/admin/vehicles/${vehicleModelId}`);
 }

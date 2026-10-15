@@ -1,3 +1,4 @@
+import { publicApiFetch } from "@/lib/api/public-client";
 import { serverApiFetch } from "@/lib/api/server-client";
 import type { LookupLanguage } from "@/lib/lookup/map-lookup-language";
 import type { LookupResponse } from "@/types/lookup";
@@ -62,7 +63,7 @@ export async function getVehicleLookupByPath(
   if (params.language) query.set("language", params.language);
 
   try {
-    const response = await serverApiFetch(
+    const response = await publicApiFetch(
       `/v1/lookups/by-path?${query.toString()}`
     );
 

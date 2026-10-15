@@ -1,3 +1,5 @@
+import { cache } from "react";
+
 import { locales as allLocales, type Locale } from "@/i18n/locales";
 import { getPlatformVehicles } from "@/lib/api/platform";
 import { slugify } from "@/lib/utils";
@@ -25,21 +27,27 @@ export interface CatalogSlugName {
   name: string;
 }
 
-export async function fetchAllPlatformVehicles(): Promise<CatalogVehicle[]> {
-  const items: CatalogVehicle[] = [];
-  let cursor: string | null = null;
+/**
+ * The whole catalog. Hub and vehicle pages call this several times per
+ * render, so it is memoized per request on top of the fetch data cache.
+ */
+export const fetchAllPlatformVehicles = cache(
+  async (): Promise<CatalogVehicle[]> => {
+    const items: CatalogVehicle[] = [];
+    let cursor: string | null = null;
 
-  do {
-    const result = await getPlatformVehicles({
-      cursor,
-      limit: CATALOG_PAGE_LIMIT,
-    });
-    items.push(...result.items);
-    cursor = result.nextCursor;
-  } while (cursor);
+    do {
+      const result = await getPlatformVehicles({
+        cursor,
+        limit: CATALOG_PAGE_LIMIT,
+      });
+      items.push(...result.items);
+      cursor = result.nextCursor;
+    } while (cursor);
 
-  return items;
-}
+    return items;
+  }
+);
 
 /** Treats a vehicle without `locales` (older API) as having content everywhere. */
 export function hasContentInLocale(
