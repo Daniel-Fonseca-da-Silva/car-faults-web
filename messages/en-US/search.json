@@ -11,7 +11,7 @@
     "year": "Year",
     "yearPlaceholder": "e.g. 2018",
     "engine": "Engine",
-    "enginePlaceholder": "e.g. 2.0 TDI",
+    "enginePlaceholder": "Select engine size (liters)",
     "fuel": "Fuel",
     "fuelPlaceholder": "Select fuel type",
     "doors": "Doors (optional)",
