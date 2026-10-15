@@ -187,6 +187,14 @@ describe("VehicleSearchForm", () => {
     expect(screen.queryByText("Database unavailable")).not.toBeInTheDocument();
   });
 
+  it("keeps the status badge out of search snippets", () => {
+    render(<VehicleSearchForm isDatabaseUp={true} />);
+
+    expect(
+      screen.getByText("Database active").closest("[data-nosnippet]")
+    ).not.toBeNull();
+  });
+
   it("shows the inactive status badge when the database is down", () => {
     render(<VehicleSearchForm isDatabaseUp={false} />);
 
