@@ -244,21 +244,18 @@ describe("getPlatformVehicles", () => {
     expect(publicApiFetchMock).toHaveBeenCalledWith("/v1/platform/vehicles");
   });
 
-  it("returns an empty page on an error response", async () => {
+  it("rejects on an error response", async () => {
     publicApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
 
     await expect(
       getPlatformVehicles({ cursor: "c3", limit: 50 })
-    ).resolves.toEqual({ items: [], nextCursor: null });
+    ).rejects.toThrow("500");
   });
 
-  it("returns an empty page with defaults when the request throws", async () => {
+  it("rejects when the request throws", async () => {
     publicApiFetchMock.mockRejectedValue(new Error("network error"));
 
-    await expect(getPlatformVehicles()).resolves.toEqual({
-      items: [],
-      nextCursor: null,
-    });
+    await expect(getPlatformVehicles()).rejects.toThrow("network error");
   });
 });
 
