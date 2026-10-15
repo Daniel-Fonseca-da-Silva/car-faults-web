@@ -36,7 +36,7 @@ jest.mock("next-intl", () => ({
       "fields.year": "Year",
       "fields.yearPlaceholder": "e.g. 2018",
       "fields.engine": "Engine",
-      "fields.enginePlaceholder": "e.g. 2.0 TDI",
+      "fields.enginePlaceholder": "Select engine size (litres)",
       "fields.fuel": "Fuel",
       "fields.fuelPlaceholder": "Select fuel type",
       "fields.doors": "Doors (optional)",
@@ -150,7 +150,7 @@ async function fillFullSearchFields(
     make = "Volkswagen",
     model = "Golf",
     year = "2018",
-    engine = "2.0 TDI",
+    engine = "2.0",
     fuel = "diesel",
     doors,
   } = options;
@@ -160,7 +160,7 @@ async function fillFullSearchFields(
   await user.type(labelledControl("Year"), year);
   await user.selectOptions(labelledControl("Fuel"), fuel);
   if (fuel !== "electric") {
-    await user.type(labelledControl("Engine"), engine);
+    await user.selectOptions(labelledControl("Engine"), engine);
   }
   if (doors) {
     await user.selectOptions(labelledControl("Doors (optional)"), doors);
@@ -246,7 +246,7 @@ describe("VehicleSearchForm", () => {
       fetchMock.mockResolvedValue({
         ok: true,
         json: async () => ({
-          href: "/defects/volkswagen/golf/2018/diesel/2-0-tdi",
+          href: "/defects/volkswagen/golf/2018/diesel/2-0",
         }),
       });
       const user = createUser();
@@ -264,7 +264,7 @@ describe("VehicleSearchForm", () => {
             brand: "Volkswagen",
             model: "Golf",
             year: 2018,
-            engine: "2.0 TDI",
+            engine: "2.0",
             fuelType: "diesel",
             doors: null,
             language: "en-GB",
@@ -274,7 +274,7 @@ describe("VehicleSearchForm", () => {
       );
       await waitFor(() =>
         expect(pushMock).toHaveBeenCalledWith(
-          "/defects/volkswagen/golf/2018/diesel/2-0-tdi"
+          "/defects/volkswagen/golf/2018/diesel/2-0"
         )
       );
     },
@@ -287,7 +287,7 @@ describe("VehicleSearchForm", () => {
       fetchMock.mockResolvedValue({
         ok: true,
         json: async () => ({
-          href: "/defects/volkswagen/golf/2018/diesel/2-0-tdi?doors=5",
+          href: "/defects/volkswagen/golf/2018/diesel/2-0?doors=5",
         }),
       });
       const user = createUser();
@@ -304,7 +304,7 @@ describe("VehicleSearchForm", () => {
             brand: "Volkswagen",
             model: "Golf",
             year: 2018,
-            engine: "2.0 TDI",
+            engine: "2.0",
             fuelType: "diesel",
             doors: 5,
             language: "en-GB",
@@ -314,7 +314,7 @@ describe("VehicleSearchForm", () => {
       );
       await waitFor(() =>
         expect(pushMock).toHaveBeenCalledWith(
-          "/defects/volkswagen/golf/2018/diesel/2-0-tdi?doors=5"
+          "/defects/volkswagen/golf/2018/diesel/2-0?doors=5"
         )
       );
     },
@@ -478,13 +478,13 @@ describe("VehicleSearchForm", () => {
       resolveFetch?.({
         ok: true,
         json: async () => ({
-          href: "/defects/volkswagen/golf/2018/diesel/2-0-tdi",
+          href: "/defects/volkswagen/golf/2018/diesel/2-0",
         }),
       });
 
       await waitFor(() =>
         expect(pushMock).toHaveBeenCalledWith(
-          "/defects/volkswagen/golf/2018/diesel/2-0-tdi"
+          "/defects/volkswagen/golf/2018/diesel/2-0"
         )
       );
 
@@ -761,11 +761,11 @@ describe("VehicleSearchForm", () => {
     const user = createUser();
     render(<VehicleSearchForm isDatabaseUp={true} />);
 
-    await user.type(labelledControl("Engine"), "2.0 TDI");
+    await user.selectOptions(labelledControl("Engine"), "2.0");
     await user.selectOptions(labelledControl("Fuel"), "electric");
     await user.selectOptions(labelledControl("Fuel"), "diesel");
 
-    expect(labelledControl("Engine")).toHaveValue("2.0 TDI");
+    expect(labelledControl("Engine")).toHaveValue("2.0");
   });
 
   it("shows errors for the remaining required fields when only a make is selected from the dropdown", async () => {
@@ -816,7 +816,7 @@ describe("VehicleSearchForm", () => {
     render(<VehicleSearchForm isDatabaseUp={true} />);
 
     await chooseMake(user, "Volkswagen");
-    await user.type(labelledControl("Engine"), "2.0 TDI");
+    await user.selectOptions(labelledControl("Engine"), "2.0");
     await user.selectOptions(labelledControl("Fuel"), "diesel");
     await user.selectOptions(labelledControl("Doors (optional)"), "5");
     await user.click(screen.getByRole("button", { name: "Search faults" }));
