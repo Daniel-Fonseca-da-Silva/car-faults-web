@@ -9,6 +9,7 @@ import { CookieConsentModal } from "@/components/cookies/cookie-consent-modal";
 import { CookieConsentProvider } from "@/components/cookies/cookie-consent-provider";
 import { SiteFooter } from "@/components/footer/site-footer";
 import { SiteHeader } from "@/components/header/site-header";
+import { HtmlDocument } from "@/components/layout/html-document";
 import { routing } from "@/i18n/routing";
 
 export function generateStaticParams() {
@@ -33,17 +34,19 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   return (
-    <NextIntlClientProvider>
-      <CookieConsentProvider>
-        <CurrentUserProvider>
-          <AdSenseScript />
-          <ConsentGatedAnalytics />
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-          <CookieConsentModal />
-        </CurrentUserProvider>
-      </CookieConsentProvider>
-    </NextIntlClientProvider>
+    <HtmlDocument lang={locale}>
+      <NextIntlClientProvider>
+        <CookieConsentProvider>
+          <CurrentUserProvider>
+            <AdSenseScript />
+            <ConsentGatedAnalytics />
+            <SiteHeader />
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+            <CookieConsentModal />
+          </CurrentUserProvider>
+        </CookieConsentProvider>
+      </NextIntlClientProvider>
+    </HtmlDocument>
   );
 }

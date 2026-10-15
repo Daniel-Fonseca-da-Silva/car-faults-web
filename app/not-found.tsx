@@ -1,18 +1,50 @@
-import { NextIntlClientProvider } from "next-intl";
+import Link from "next/link";
 
-import LocaleNotFound from "./[locale]/not-found";
+import { HtmlDocument } from "@/components/layout/html-document";
+import {
+  BACK_HOME_LINK_CLASS_NAME,
+  NotFoundContent,
+} from "@/components/layout/not-found-content";
+import { buttonVariants } from "@/components/ui/button";
+import { defaultLocale } from "@/i18n/locales";
+import common from "@/messages/pt-PT/common.json";
 
 // Fallback for requests that skip the proxy (static asset extensions, e.g. a
 // missing /foo.png): they never get a locale prefix and the [locale] layout
 // rejects them before its own not-found boundary applies. Without this file
-// Next would render its generic 404. The header is left out on purpose: it
-// fetches the current user, and these hits rarely come from real visitors.
+// Next would render its generic 404. The root layout renders no <html>, so
+// this page brings its own.
+//
+// Next renders this boundary as part of every page, outside the [locale]
+// segment where setRequestLocale runs. next-intl's request APIs
+// (getTranslations, its server Link and NextIntlClientProvider) would fall
+// back to reading the locale from the request headers here, which turns
+// every cached page dynamic and fails it with DYNAMIC_SERVER_USAGE. So this
+// page reads the default locale's messages directly and uses next/link ("/"
+// lets the proxy pick the visitor's locale).
 export default function RootNotFound() {
+  const t = common.notFound;
+
   return (
-    <NextIntlClientProvider>
+    <HtmlDocument lang={defaultLocale}>
       <main className="flex-1">
-        <LocaleNotFound />
+        <NotFoundContent
+          title={t.title}
+          description={t.description}
+          imageAlt={t.imageAlt}
+          homeLink={
+            <Link
+              href="/"
+              className={buttonVariants({
+                size: "lg",
+                className: BACK_HOME_LINK_CLASS_NAME,
+              })}
+            >
+              {t.backHome}
+            </Link>
+          }
+        />
       </main>
-    </NextIntlClientProvider>
+    </HtmlDocument>
   );
 }
