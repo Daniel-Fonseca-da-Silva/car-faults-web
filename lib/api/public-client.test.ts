@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 import {
+  INTERNAL_API_KEY_HEADER,
   PUBLIC_CATALOG_REVALIDATE_SECONDS,
   PUBLIC_CATALOG_TAG,
   publicApiFetch,
@@ -9,6 +10,7 @@ import {
 
 describe("publicApiFetch", () => {
   const originalEnv = process.env.NEXT_PUBLIC_API_URL;
+  const originalInternalApiKey = process.env.INTERNAL_API_KEY;
   let fetchMock: jest.Mock;
 
   beforeEach(() => {
@@ -19,6 +21,7 @@ describe("publicApiFetch", () => {
 
   afterEach(() => {
     process.env.NEXT_PUBLIC_API_URL = originalEnv;
+    process.env.INTERNAL_API_KEY = originalInternalApiKey;
     jest.resetAllMocks();
   });
 
@@ -39,5 +42,25 @@ describe("publicApiFetch", () => {
 
     const [, init] = fetchMock.mock.calls[0];
     expect(new Headers(init.headers).get("Authorization")).toBeNull();
+  });
+
+  it("sends the internal API key when configured", async () => {
+    process.env.INTERNAL_API_KEY = "internal-key";
+
+    await publicApiFetch("/v1/platform/stats");
+
+    const [, init] = fetchMock.mock.calls[0];
+    expect(new Headers(init.headers).get(INTERNAL_API_KEY_HEADER)).toBe(
+      "internal-key"
+    );
+  });
+
+  it("omits the internal API key header when unset", async () => {
+    delete process.env.INTERNAL_API_KEY;
+
+    await publicApiFetch("/v1/platform/stats");
+
+    const [, init] = fetchMock.mock.calls[0];
+    expect(new Headers(init.headers).get(INTERNAL_API_KEY_HEADER)).toBeNull();
   });
 });
