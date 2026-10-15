@@ -1,10 +1,14 @@
 import {
   fetchAllPlatformVehicles,
+  findCatalogVehicle,
   getCatalogBrand,
   getCatalogBrands,
+  getCatalogBrandVehicles,
   getCatalogModel,
   getCatalogModels,
   getCatalogVariants,
+  getContentLocales,
+  hasContentInLocale,
 } from "./platform-catalog";
 
 const getPlatformVehiclesMock = jest.fn();
@@ -192,5 +196,103 @@ describe("getCatalogVariants", () => {
     });
 
     expect(await getCatalogVariants("tesla", "model-3")).toEqual([]);
+  });
+});
+
+describe("hasContentInLocale", () => {
+  it("is true only for the vehicle's content locales", () => {
+    const vehicle = { ...golf, locales: ["pt-PT"] };
+
+    expect(hasContentInLocale(vehicle, "pt-PT")).toBe(true);
+    expect(hasContentInLocale(vehicle, "de-DE")).toBe(false);
+  });
+
+  it("treats a vehicle without locales (older API) as having content everywhere", () => {
+    expect(hasContentInLocale(golf, "de-DE")).toBe(true);
+  });
+});
+
+describe("getContentLocales", () => {
+  it("returns the union of the vehicles' locales in site order, ignoring unknown ones", () => {
+    expect(
+      getContentLocales([
+        { ...golf, locales: ["en-US", "xx-XX"] },
+        { ...classeC, locales: ["pt-BR", "pt-PT"] },
+      ])
+    ).toEqual(["pt-PT", "pt-BR", "en-US"]);
+  });
+
+  it("returns no locales for an empty list", () => {
+    expect(getContentLocales([])).toEqual([]);
+  });
+});
+
+describe("locale filters", () => {
+  const golfPt = { ...golf, locales: ["pt-PT"] };
+  const golfUs = { ...golf, engine: "1.8 TSI", locales: ["en-US"] };
+  const poloUs = { ...golf, model: "Polo", locales: ["en-US"] };
+
+  beforeEach(() => {
+    getPlatformVehiclesMock.mockResolvedValue({
+      items: [golfPt, golfUs, poloUs, classeC],
+      nextCursor: null,
+    });
+  });
+
+  it("getCatalogModels keeps only models with content in the locale", async () => {
+    expect(await getCatalogModels("volkswagen", "pt-PT")).toEqual([
+      { slug: "golf", name: "Golf" },
+    ]);
+  });
+
+  it("getCatalogVariants keeps only variants with content in the locale", async () => {
+    expect(await getCatalogVariants("volkswagen", "golf", "en-US")).toEqual([
+      golfUs,
+    ]);
+  });
+
+  it("getCatalogBrandVehicles returns every vehicle of the brand", async () => {
+    expect(await getCatalogBrandVehicles("volkswagen")).toEqual([
+      golfPt,
+      golfUs,
+      poloUs,
+    ]);
+  });
+});
+
+describe("findCatalogVehicle", () => {
+  it("matches on model, year, fuel type and engine slug", async () => {
+    const golfTsi = { ...golf, engine: "1.5 TSI", fuelType: "gasoline" };
+    getPlatformVehiclesMock.mockResolvedValue({
+      items: [golf, golfTsi, classeC],
+      nextCursor: null,
+    });
+
+    expect(
+      await findCatalogVehicle({
+        makeSlug: "volkswagen",
+        modelSlug: "golf",
+        yearFrom: 2018,
+        fuelType: "gasoline",
+        engineSlug: "1-5-tsi",
+      })
+    ).toEqual(golfTsi);
+  });
+
+  it("returns null when nothing matches", async () => {
+    getPlatformVehiclesMock.mockResolvedValue({
+      items: vehicles,
+      nextCursor: null,
+    });
+
+    expect(
+      await findCatalogVehicle({
+        makeSlug: "volkswagen",
+        modelSlug: "golf",
+        yearFrom: 2012,
+        fuelType: "diesel",
+        engineSlug: "2-0-tdi",
+      })
+    ).toBeNull();
   });
 });

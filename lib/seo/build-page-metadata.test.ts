@@ -77,4 +77,33 @@ describe("buildPageMetadata", () => {
 
     expect(metadata.robots).toEqual({ index: false, follow: false });
   });
+
+  it("marks the page as noindex but followed when noIndexFollow is set", () => {
+    const metadata = buildPageMetadata({
+      title: "Golf",
+      description: "No known issues yet.",
+      path: "/defects/volkswagen/golf",
+      locale: "de-DE",
+      noIndexFollow: true,
+    });
+
+    expect(metadata.robots).toEqual({ index: false, follow: true });
+  });
+
+  it("keeps the canonical on the current locale when it is not among the alternates", () => {
+    const metadata = buildPageMetadata({
+      title: "Golf",
+      description: "Golf issues.",
+      path: "/defects/volkswagen/golf",
+      locale: "de-DE",
+      alternateLocales: ["pt-PT"],
+    });
+
+    expect(metadata.alternates?.canonical).toBe(
+      "http://localhost:3000/de-DE/defects/volkswagen/golf"
+    );
+    expect(metadata.alternates?.languages).toEqual({
+      "pt-PT": "http://localhost:3000/pt-PT/defects/volkswagen/golf",
+    });
+  });
 });

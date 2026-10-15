@@ -14,6 +14,8 @@ jest.mock("@/lib/api/platform-catalog", () => ({
   getCatalogBrand: (...args: unknown[]) => getCatalogBrandMock(...args),
   getCatalogModel: (...args: unknown[]) => getCatalogModelMock(...args),
   getCatalogVariants: (...args: unknown[]) => getCatalogVariantsMock(...args),
+  getContentLocales: jest.requireActual("@/lib/api/platform-catalog")
+    .getContentLocales,
 }));
 
 jest.mock("@/lib/api/platform", () => ({
@@ -143,6 +145,11 @@ describe("ModelHubPage", () => {
       screen.getByRole("link", { name: "2015 · 1.6 TDI" })
     ).toHaveAttribute("href", "/defects/volkswagen/golf/2015/diesel/1-6-tdi");
     expect(screen.getByTestId("fault-card-grid")).toHaveTextContent("1");
+    expect(getCatalogVariantsMock).toHaveBeenCalledWith(
+      "volkswagen",
+      "golf",
+      "pt-PT"
+    );
     expect(getPlatformFaultsMock).toHaveBeenCalledWith({
       locale: "pt-PT",
       brand: "Volkswagen",
@@ -234,14 +241,26 @@ describe("ModelHubPage", () => {
 });
 
 describe("generateMetadata", () => {
+  const golfVariant = {
+    brand: "Volkswagen",
+    model: "Golf",
+    yearFrom: 2012,
+    engine: "1.6 TDI",
+    fuelType: "diesel",
+  };
+
   afterEach(() => {
     getCatalogBrandMock.mockReset();
     getCatalogModelMock.mockReset();
+    getCatalogVariantsMock.mockReset();
   });
 
   it("builds a localized title, description and canonical path for a known model", async () => {
     getCatalogBrandMock.mockResolvedValue(volkswagenBrand);
     getCatalogModelMock.mockResolvedValue(golfModel);
+    getCatalogVariantsMock.mockResolvedValue([
+      { ...golfVariant, locales: ["pt-PT"] },
+    ]);
 
     const metadata = await generateMetadata({
       params: Promise.resolve({
@@ -257,6 +276,27 @@ describe("generateMetadata", () => {
     expect(metadata.alternates?.canonical).toBe(
       "http://localhost:3000/pt-PT/defects/volkswagen/golf"
     );
+  });
+
+  it("is noindex (but followed) in a locale where no variant has content", async () => {
+    getCatalogBrandMock.mockResolvedValue(volkswagenBrand);
+    getCatalogModelMock.mockResolvedValue(golfModel);
+    getCatalogVariantsMock.mockResolvedValue([
+      { ...golfVariant, locales: ["en-US"] },
+    ]);
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve({
+        locale: "pt-PT",
+        make: "volkswagen",
+        model: "golf",
+      }),
+    });
+
+    expect(metadata.robots).toEqual({ index: false, follow: true });
+    expect(metadata.alternates?.languages).toEqual({
+      "en-US": "http://localhost:3000/en-US/defects/volkswagen/golf",
+    });
   });
 
   it("returns an empty object when the brand or model doesn't match the catalog", async () => {

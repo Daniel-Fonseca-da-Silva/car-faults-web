@@ -26,4 +26,20 @@ describe("buildHreflangLanguages", () => {
       "x-default": "http://localhost:3000/",
     });
   });
+
+  it("restricts the alternates to the given locales and drops x-default", () => {
+    expect(
+      buildHreflangLanguages("/defects/volkswagen/golf", ["pt-BR", "pt-PT"])
+    ).toEqual({
+      "pt-PT": "http://localhost:3000/pt-PT/defects/volkswagen/golf",
+      "pt-BR": "http://localhost:3000/pt-BR/defects/volkswagen/golf",
+    });
+  });
+
+  it("keeps x-default when the given locales cover every supported locale", () => {
+    expect(buildHreflangLanguages("/defects", [...locales])).toHaveProperty(
+      "x-default",
+      "http://localhost:3000/defects"
+    );
+  });
 });

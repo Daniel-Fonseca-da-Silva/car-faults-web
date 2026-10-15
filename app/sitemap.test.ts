@@ -162,4 +162,55 @@ describe("sitemap", () => {
       ).toBe(true);
     }
   });
+
+  it("lists vehicle and hub URLs only for the locales where the vehicles have content", async () => {
+    getPlatformVehiclesMock.mockResolvedValue({
+      items: [
+        { ...vehicles[0], locales: ["pt-PT", "pt-BR"] },
+        { ...vehicles[1], locales: ["en-US"] },
+      ],
+      nextCursor: null,
+    });
+
+    const entries = await sitemap();
+    const urls = entries.map((entry) => entry.url);
+    const localesOf = (path: string) =>
+      locales.filter((locale) =>
+        urls.includes(`http://localhost:3000/${locale}${path}`)
+      );
+
+    expect(localesOf("/defects/volkswagen/golf/2018/diesel/2-0-tdi")).toEqual([
+      "pt-PT",
+      "pt-BR",
+    ]);
+    expect(localesOf("/defects/volkswagen")).toEqual(["pt-PT", "pt-BR"]);
+    expect(localesOf("/defects/volkswagen/golf")).toEqual(["pt-PT", "pt-BR"]);
+    expect(
+      localesOf("/defects/mercedes-benz/classe-c/2017/diesel/c220-d-2-1")
+    ).toEqual(["en-US"]);
+    expect(localesOf("/defects/mercedes-benz")).toEqual(["en-US"]);
+    expect(entries).toHaveLength(locales.length * 6 + 2 * 3 + 1 * 3);
+  });
+
+  it("merges a hub's locales across all of its vehicles", async () => {
+    getPlatformVehiclesMock.mockResolvedValue({
+      items: [
+        { ...vehicles[0], locales: ["pt-PT"] },
+        { ...vehicles[0], engine: "1.6 TDI", locales: ["en-US"] },
+      ],
+      nextCursor: null,
+    });
+
+    const urls = (await sitemap()).map((entry) => entry.url);
+
+    expect(urls).toContain(
+      "http://localhost:3000/pt-PT/defects/volkswagen/golf"
+    );
+    expect(urls).toContain(
+      "http://localhost:3000/en-US/defects/volkswagen/golf"
+    );
+    expect(urls).not.toContain(
+      "http://localhost:3000/de-DE/defects/volkswagen/golf"
+    );
+  });
 });

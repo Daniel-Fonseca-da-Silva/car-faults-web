@@ -9,10 +9,17 @@ const getVehicleLookupByPathMock = jest.fn();
 const getCurrentUserMock = jest.fn();
 const getGarageVehicleStatusMock = jest.fn();
 const getVehicleFavoriteStatusMock = jest.fn();
+const findCatalogVehicleMock = jest.fn();
 
 jest.mock("@/lib/api/lookups", () => ({
   getVehicleLookupByPath: (...args: unknown[]) =>
     getVehicleLookupByPathMock(...args),
+}));
+
+jest.mock("@/lib/api/platform-catalog", () => ({
+  findCatalogVehicle: (...args: unknown[]) => findCatalogVehicleMock(...args),
+  getContentLocales: jest.requireActual("@/lib/api/platform-catalog")
+    .getContentLocales,
 }));
 
 jest.mock("@/lib/api/users", () => ({
@@ -421,8 +428,22 @@ describe("VehiclePage", () => {
 });
 
 describe("generateMetadata", () => {
+  const poloCatalogVehicle = {
+    brand: "Volkswagen",
+    model: "Polo",
+    yearFrom: 1994,
+    engine: "1.0",
+    fuelType: "gasoline",
+    locales: ["pt-BR", "pt-PT"],
+  };
+
+  beforeEach(() => {
+    findCatalogVehicleMock.mockResolvedValue(poloCatalogVehicle);
+  });
+
   afterEach(() => {
     getVehicleLookupByPathMock.mockReset();
+    findCatalogVehicleMock.mockReset();
   });
 
   it("builds a localized title, description and canonical path for a known vehicle", async () => {
@@ -440,6 +461,65 @@ describe("generateMetadata", () => {
     expect(metadata.alternates?.canonical).toBe(
       "http://localhost:3000/pt-PT/defects/volkswagen/polo/1996/gasoline/1-0"
     );
+  });
+
+  it("stays indexable with hreflang only for the locales that have known issues", async () => {
+    getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve(pathParams),
+      searchParams: Promise.resolve({}),
+    });
+
+    expect(findCatalogVehicleMock).toHaveBeenCalledWith({
+      makeSlug: "volkswagen",
+      modelSlug: "polo",
+      yearFrom: 1994,
+      fuelType: "gasoline",
+      engineSlug: "1-0",
+    });
+    expect(metadata.robots).toBeUndefined();
+    expect(metadata.alternates?.languages).toEqual({
+      "pt-PT":
+        "http://localhost:3000/pt-PT/defects/volkswagen/polo/1996/gasoline/1-0",
+      "pt-BR":
+        "http://localhost:3000/pt-BR/defects/volkswagen/polo/1996/gasoline/1-0",
+    });
+  });
+
+  it("falls back to every locale in hreflang when the vehicle isn't in the catalog", async () => {
+    getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
+    findCatalogVehicleMock.mockResolvedValue(null);
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve(pathParams),
+      searchParams: Promise.resolve({}),
+    });
+
+    expect(metadata.robots).toBeUndefined();
+    expect(metadata.alternates?.languages).toHaveProperty("x-default");
+  });
+
+  it("is noindex (but followed) when there are no known issues in this locale", async () => {
+    getVehicleLookupByPathMock.mockResolvedValue({
+      ...poloLookup,
+      knownIssues: [],
+    });
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve(pathParams),
+      searchParams: Promise.resolve({}),
+    });
+
+    expect(metadata.robots).toEqual({ index: false, follow: true });
+    expect(findCatalogVehicleMock).not.toHaveBeenCalled();
+    expect(metadata.alternates?.canonical).toBe(
+      "http://localhost:3000/pt-PT/defects/volkswagen/polo/1996/gasoline/1-0"
+    );
+    expect(metadata.alternates?.languages).toEqual({
+      "pt-PT":
+        "http://localhost:3000/pt-PT/defects/volkswagen/polo/1996/gasoline/1-0",
+    });
   });
 
   it("returns an empty object when the lookup is not found", async () => {
