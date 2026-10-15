@@ -13,6 +13,7 @@ import {
   getCatalogBrand,
   getCatalogModel,
   getCatalogVariants,
+  getContentLocales,
 } from "@/lib/api/platform-catalog";
 import { buildLookupHref } from "@/lib/lookup/build-lookup-href";
 import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
@@ -47,17 +48,23 @@ export async function generateMetadata({
   const resolved = await resolveBrandAndModel(make, model);
   if (!resolved) return {};
 
-  const t = await getTranslations({ locale, namespace: "seo.modelPage" });
+  const [t, variants] = await Promise.all([
+    getTranslations({ locale, namespace: "seo.modelPage" }),
+    getCatalogVariants(make, model),
+  ]);
   const templateValues = {
     make: resolved.brand.name,
     model: resolved.catalogModel.name,
   };
+  const contentLocales = getContentLocales(variants);
 
   return buildPageMetadata({
     title: t("titleTemplate", templateValues),
     description: t("descriptionTemplate", templateValues),
     path: `/defects/${make}/${model}`,
     locale,
+    noIndexFollow: !contentLocales.includes(locale),
+    alternateLocales: contentLocales,
   });
 }
 
@@ -72,7 +79,7 @@ export default async function ModelHubPage({ params }: ModelHubPageProps) {
   const { brand, catalogModel } = resolved;
 
   const [variants, t, tNav, tCommon] = await Promise.all([
-    getCatalogVariants(make, model),
+    getCatalogVariants(make, model, locale),
     getTranslations("faults.modelHub"),
     getTranslations("nav"),
     getTranslations("common"),

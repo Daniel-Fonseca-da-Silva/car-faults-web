@@ -31,6 +31,8 @@ interface PlatformVehicleItemDto {
   engine: string;
   fuelType: string;
   doors?: number;
+  /** Locales with known issues; absent on API versions that predate the field. */
+  locales?: string[];
 }
 
 export type PlatformVehiclesPage = CursorPage<PlatformVehicleItemDto>;

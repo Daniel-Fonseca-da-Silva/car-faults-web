@@ -7,11 +7,16 @@ import BrandHubPage, { generateMetadata } from "./page";
 
 const getCatalogBrandMock = jest.fn();
 const getCatalogModelsMock = jest.fn();
+const getCatalogBrandVehiclesMock = jest.fn();
 const getPlatformFaultsMock = jest.fn();
 
 jest.mock("@/lib/api/platform-catalog", () => ({
   getCatalogBrand: (...args: unknown[]) => getCatalogBrandMock(...args),
   getCatalogModels: (...args: unknown[]) => getCatalogModelsMock(...args),
+  getCatalogBrandVehicles: (...args: unknown[]) =>
+    getCatalogBrandVehiclesMock(...args),
+  getContentLocales: jest.requireActual("@/lib/api/platform-catalog")
+    .getContentLocales,
 }));
 
 jest.mock("@/lib/api/platform", () => ({
@@ -122,6 +127,7 @@ describe("BrandHubPage", () => {
       "/defects/volkswagen/polo"
     );
     expect(screen.getByTestId("fault-card-grid")).toHaveTextContent("1");
+    expect(getCatalogModelsMock).toHaveBeenCalledWith("volkswagen", "pt-PT");
     expect(getPlatformFaultsMock).toHaveBeenCalledWith({
       locale: "pt-PT",
       brand: "Volkswagen",
@@ -181,12 +187,24 @@ describe("BrandHubPage", () => {
 });
 
 describe("generateMetadata", () => {
+  const golfVehicle = {
+    brand: "Volkswagen",
+    model: "Golf",
+    yearFrom: 2012,
+    engine: "1.6 TDI",
+    fuelType: "diesel",
+  };
+
   afterEach(() => {
     getCatalogBrandMock.mockReset();
+    getCatalogBrandVehiclesMock.mockReset();
   });
 
   it("builds a localized title, description and canonical path for a known brand", async () => {
     getCatalogBrandMock.mockResolvedValue(volkswagenBrand);
+    getCatalogBrandVehiclesMock.mockResolvedValue([
+      { ...golfVehicle, locales: ["pt-BR", "pt-PT"] },
+    ]);
 
     const metadata = await generateMetadata({
       params: Promise.resolve({ locale: "pt-PT", make: "volkswagen" }),
@@ -195,6 +213,39 @@ describe("generateMetadata", () => {
     expect(metadata.title).toBe(
       'seo.brandPage.titleTemplate({"make":"Volkswagen"})'
     );
+    expect(metadata.alternates?.canonical).toBe(
+      "http://localhost:3000/pt-PT/defects/volkswagen"
+    );
+  });
+
+  it("stays indexable and lists hreflang only for locales with content", async () => {
+    getCatalogBrandMock.mockResolvedValue(volkswagenBrand);
+    getCatalogBrandVehiclesMock.mockResolvedValue([
+      { ...golfVehicle, locales: ["pt-BR", "pt-PT"] },
+    ]);
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ locale: "pt-PT", make: "volkswagen" }),
+    });
+
+    expect(metadata.robots).toBeUndefined();
+    expect(metadata.alternates?.languages).toEqual({
+      "pt-PT": "http://localhost:3000/pt-PT/defects/volkswagen",
+      "pt-BR": "http://localhost:3000/pt-BR/defects/volkswagen",
+    });
+  });
+
+  it("is noindex (but followed) in a locale where no vehicle has content", async () => {
+    getCatalogBrandMock.mockResolvedValue(volkswagenBrand);
+    getCatalogBrandVehiclesMock.mockResolvedValue([
+      { ...golfVehicle, locales: ["en-US"] },
+    ]);
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ locale: "pt-PT", make: "volkswagen" }),
+    });
+
+    expect(metadata.robots).toEqual({ index: false, follow: true });
     expect(metadata.alternates?.canonical).toBe(
       "http://localhost:3000/pt-PT/defects/volkswagen"
     );

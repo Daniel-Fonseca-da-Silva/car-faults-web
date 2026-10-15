@@ -24,6 +24,13 @@ export interface BuildPageMetadataParams {
   locale: Locale;
   /** Marks the page as private: excluded from indexing (login, garage, admin, ...). */
   noIndex?: boolean;
+  /**
+   * Excludes the page from indexing while still letting crawlers follow its
+   * links - for public pages with no content in this locale.
+   */
+  noIndexFollow?: boolean;
+  /** Restricts hreflang alternates to the locales where the page has content. */
+  alternateLocales?: readonly Locale[];
   /** Set when `title` already contains the site name, to skip the root layout's "%s | {siteName}" template. */
   titleIsAbsolute?: boolean;
 }
@@ -34,9 +41,11 @@ export function buildPageMetadata({
   path,
   locale,
   noIndex,
+  noIndexFollow,
+  alternateLocales,
   titleIsAbsolute,
 }: BuildPageMetadataParams): Metadata {
-  const languages = buildHreflangLanguages(path);
+  const languages = buildHreflangLanguages(path, alternateLocales);
   const canonical = languages[locale] ?? `${getSiteUrl()}/${locale}${path}`;
 
   return {
@@ -68,6 +77,10 @@ export function buildPageMetadata({
       description,
       images: [OG_IMAGE_PATH],
     },
-    ...(noIndex ? { robots: { index: false, follow: false } } : {}),
+    ...(noIndex
+      ? { robots: { index: false, follow: false } }
+      : noIndexFollow
+        ? { robots: { index: false, follow: true } }
+        : {}),
   };
 }

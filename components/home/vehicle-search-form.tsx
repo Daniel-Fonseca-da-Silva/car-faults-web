@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/native-select";
 import { Spinner } from "@/components/ui/spinner";
 import { useRouter } from "@/i18n/navigation";
+import { ENGINE_OPTIONS } from "@/lib/lookup/engine-options";
 import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
 import { EUROPEAN_VEHICLE_MAKES } from "@/lib/mocks/vehicle-makes";
 import type { LookupFuelType } from "@/types/lookup";
@@ -343,7 +344,7 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
                   <FieldLabel htmlFor="vehicle-engine" required>
                     {t("fields.engine")}
                   </FieldLabel>
-                  <Input
+                  <NativeSelect
                     id="vehicle-engine"
                     name="engine"
                     value={engine}
@@ -351,9 +352,17 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
                       setEngine(event.target.value);
                       clearFieldError("engine", event.target.value);
                     }}
-                    placeholder={t("fields.enginePlaceholder")}
-                    className="h-11"
-                  />
+                    className="h-11 [&_select]:h-11"
+                  >
+                    <NativeSelectOption value="">
+                      {t("fields.enginePlaceholder")}
+                    </NativeSelectOption>
+                    {ENGINE_OPTIONS.map((option) => (
+                      <NativeSelectOption key={option} value={option}>
+                        {option}
+                      </NativeSelectOption>
+                    ))}
+                  </NativeSelect>
                   {invalidFields.has("engine") && (
                     <FieldError>{t("errors.required")}</FieldError>
                   )}

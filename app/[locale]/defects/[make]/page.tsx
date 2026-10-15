@@ -9,7 +9,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import type { Locale } from "@/i18n/locales";
 import { Link } from "@/i18n/navigation";
 import { getPlatformFaults } from "@/lib/api/platform";
-import { getCatalogBrand, getCatalogModels } from "@/lib/api/platform-catalog";
+import {
+  getCatalogBrand,
+  getCatalogBrandVehicles,
+  getCatalogModels,
+  getContentLocales,
+} from "@/lib/api/platform-catalog";
 import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
 import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
 
@@ -31,14 +36,20 @@ export async function generateMetadata({
   const brand = await getCatalogBrand(make);
   if (!brand) return {};
 
-  const t = await getTranslations({ locale, namespace: "seo.brandPage" });
+  const [t, brandVehicles] = await Promise.all([
+    getTranslations({ locale, namespace: "seo.brandPage" }),
+    getCatalogBrandVehicles(make),
+  ]);
   const templateValues = { make: brand.name };
+  const contentLocales = getContentLocales(brandVehicles);
 
   return buildPageMetadata({
     title: t("titleTemplate", templateValues),
     description: t("descriptionTemplate", templateValues),
     path: `/defects/${make}`,
     locale,
+    noIndexFollow: !contentLocales.includes(locale),
+    alternateLocales: contentLocales,
   });
 }
 
@@ -52,7 +63,7 @@ export default async function BrandHubPage({ params }: BrandHubPageProps) {
   }
 
   const [models, t, tNav, tCommon] = await Promise.all([
-    getCatalogModels(make),
+    getCatalogModels(make, locale),
     getTranslations("faults.brandHub"),
     getTranslations("nav"),
     getTranslations("common"),
