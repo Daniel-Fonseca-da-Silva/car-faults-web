@@ -17,7 +17,7 @@
   },
   "vehiclePage": {
     "titleTemplate": "Pannes {make} {model}{variant} {year}",
-    "descriptionTemplate": "Problèmes fréquents et pannes connues signalés pour la {make} {model}{variant} {year} : gravité, solutions et retours de vrais propriétaires."
+    "descriptionTemplate": "Problèmes fréquents et pannes connues de la {make} {model}{variant} {year} : gravité et solutions, à partir de témoignages de propriétaires, de sources publiques et d'analyses par IA."
   },
   "about": {
     "title": "À propos",

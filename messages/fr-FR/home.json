@@ -4,7 +4,7 @@
     "titleBeforeHighlight": "Connaissez les",
     "titleHighlight": "pannes",
     "titleAfterHighlight": "avant d'acheter",
-    "subtitle": "Recherchez les problèmes chroniques par marque, modèle, année et moteur - signalés par des milliers de vrais propriétaires."
+    "subtitle": "Recherchez les problèmes chroniques par marque, modèle, année et moteur - à partir de témoignages de propriétaires, de sources publiques en ligne et d'analyses par IA."
   },
   "stats": {
     "reports": { "label": "Signalements de propriétaires" },
@@ -15,7 +15,7 @@
     "badge": "Fiche véhicule complète",
     "titleLead": "Cherchez mieux.",
     "titleHighlight": "Achetez en confiance.",
-    "subtitle": "Chaque fiche véhicule réunit caractéristiques, pannes chroniques et témoignages réels de propriétaires, pour savoir exactement ce que vous achetez.",
+    "subtitle": "Chaque fiche véhicule réunit caractéristiques, pannes chroniques, témoignages de propriétaires, sources publiques et analyses par IA, pour savoir exactement ce que vous achetez.",
     "primaryCta": "Voir les pannes",
     "secondaryCta": "Comment ça marche",
     "features": {

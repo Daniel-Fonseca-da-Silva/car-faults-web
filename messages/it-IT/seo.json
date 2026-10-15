@@ -17,7 +17,7 @@
   },
   "vehiclePage": {
     "titleTemplate": "Difetti {make} {model}{variant} {year}",
-    "descriptionTemplate": "Problemi comuni e difetti noti segnalati per {make} {model}{variant} {year}: gravità, soluzioni e segnalazioni reali dei proprietari."
+    "descriptionTemplate": "Problemi comuni e difetti noti di {make} {model}{variant} {year}: gravità e soluzioni, da segnalazioni dei proprietari, fonti pubbliche e analisi con IA."
   },
   "about": {
     "title": "Chi siamo",

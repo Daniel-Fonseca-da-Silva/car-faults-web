@@ -206,7 +206,8 @@ export function VehicleSearchForm({ isDatabaseUp }: VehicleSearchFormProps) {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between gap-3">
         <h2 className="text-lg font-semibold text-foreground">{t("title")}</h2>
-        <Badge variant="secondary" className="gap-1.5">
+        {/* A live status, not content: keep it out of search snippets. */}
+        <Badge variant="secondary" className="gap-1.5" data-nosnippet="">
           <span
             className={
               isDatabaseUp
