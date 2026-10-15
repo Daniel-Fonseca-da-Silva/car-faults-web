@@ -4,7 +4,7 @@
     "titleBeforeHighlight": "Conhece os",
     "titleHighlight": "defeitos",
     "titleAfterHighlight": "antes de comprar",
-    "subtitle": "Pesquisa avarias crónicas por marca, modelo, ano e motor, reportadas por milhares de proprietários reais."
+    "subtitle": "Pesquisa avarias crónicas por marca, modelo, ano e motor, com base em relatos de proprietários, informação pública da internet e análises de IA."
   },
   "stats": {
     "reports": { "label": "Relatos de proprietários" },
@@ -15,7 +15,7 @@
     "badge": "Perfil completo do veículo",
     "titleLead": "Pesquisa melhor.",
     "titleHighlight": "Compra com confiança.",
-    "subtitle": "Cada perfil de veículo junta especificações, avarias crónicas e relatos reais de proprietários, para saberes exatamente o que estás a comprar.",
+    "subtitle": "Cada perfil de veículo junta especificações e avarias crónicas, com base em relatos de proprietários, informação pública e análises de IA, para saberes exatamente o que estás a comprar.",
     "primaryCta": "Ver defeitos",
     "secondaryCta": "Como funciona",
     "features": {

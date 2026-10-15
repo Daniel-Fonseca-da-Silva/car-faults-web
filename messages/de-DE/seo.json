@@ -17,7 +17,7 @@
   },
   "vehiclePage": {
     "titleTemplate": "{make} {model}{variant} {year} Mängel",
-    "descriptionTemplate": "Häufige Probleme und bekannte Mängel des {make} {model}{variant} {year}: Schweregrad, Lösungen und echte Berichte von Besitzern."
+    "descriptionTemplate": "Häufige Probleme und bekannte Mängel des {make} {model}{variant} {year}: Schweregrad und Lösungen, auf Basis von Besitzerberichten, öffentlichen Quellen und KI-Analysen."
   },
   "about": {
     "title": "Über uns",

@@ -4,7 +4,7 @@
     "titleBeforeHighlight": "Kennen Sie die",
     "titleHighlight": "Mängel",
     "titleAfterHighlight": "vor dem Kauf",
-    "subtitle": "Suchen Sie chronische Probleme nach Marke, Modell, Baujahr und Motor - gemeldet von Tausenden echter Besitzer."
+    "subtitle": "Suchen Sie chronische Probleme nach Marke, Modell, Baujahr und Motor - auf Basis von Besitzerberichten, öffentlichen Online-Quellen und KI-Analysen."
   },
   "stats": {
     "reports": {
@@ -21,7 +21,7 @@
     "badge": "Komplettes Fahrzeugprofil",
     "titleLead": "Klüger suchen.",
     "titleHighlight": "Sicher kaufen.",
-    "subtitle": "Jedes Fahrzeugprofil bündelt technische Daten, typische Mängel und echte Halterberichte, damit Sie genau wissen, worauf Sie sich einlassen.",
+    "subtitle": "Jedes Fahrzeugprofil bündelt technische Daten, typische Mängel, Halterberichte, öffentliche Quellen und KI-Analysen, damit Sie genau wissen, worauf Sie sich einlassen.",
     "primaryCta": "Mängel ansehen",
     "secondaryCta": "So funktioniert's",
     "features": {

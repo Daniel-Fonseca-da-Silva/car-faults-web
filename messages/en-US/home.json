@@ -4,7 +4,7 @@
     "titleBeforeHighlight": "Know the",
     "titleHighlight": "faults",
     "titleAfterHighlight": "before you buy",
-    "subtitle": "Search chronic issues by make, model, year and engine - reported by thousands of real owners."
+    "subtitle": "Search chronic issues by make, model, year and engine - drawn from owner reports, public online sources and AI analysis."
   },
   "stats": {
     "reports": { "label": "Owner reports" },
@@ -15,7 +15,7 @@
     "badge": "Full vehicle profile",
     "titleLead": "Search smarter.",
     "titleHighlight": "Buy with confidence.",
-    "subtitle": "Every vehicle profile brings together its specs, chronic issues and real owner reports, so you know exactly what you're getting into.",
+    "subtitle": "Every vehicle profile brings together its specs and chronic issues, drawn from owner reports, public sources and AI analysis, so you know exactly what you're getting into.",
     "primaryCta": "Browse defects",
     "secondaryCta": "How it works",
     "features": {

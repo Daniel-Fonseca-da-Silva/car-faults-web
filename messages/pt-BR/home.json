@@ -4,7 +4,7 @@
     "titleBeforeHighlight": "Conheça os",
     "titleHighlight": "defeitos",
     "titleAfterHighlight": "antes de comprar",
-    "subtitle": "Pesquise falhas crônicas por marca, modelo, ano e motor, reportadas por milhares de proprietários reais."
+    "subtitle": "Pesquise falhas crônicas por marca, modelo, ano e motor, com base em relatos de proprietários, informações públicas da internet e análises de IA."
   },
   "stats": {
     "reports": { "label": "Relatos de proprietários" },
@@ -15,7 +15,7 @@
     "badge": "Perfil completo do veículo",
     "titleLead": "Pesquise melhor.",
     "titleHighlight": "Compre com confiança.",
-    "subtitle": "Cada perfil de veículo reúne especificações, defeitos crônicos e relatos reais de proprietários, para você saber exatamente o que está comprando.",
+    "subtitle": "Cada perfil de veículo reúne especificações e defeitos crônicos, com base em relatos de proprietários, informações públicas e análises de IA, para você saber exatamente o que está comprando.",
     "primaryCta": "Ver defeitos",
     "secondaryCta": "Como funciona",
     "features": {
