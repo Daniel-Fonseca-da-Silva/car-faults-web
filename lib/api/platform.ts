@@ -34,6 +34,11 @@ interface PlatformVehicleItemDto {
   doors?: number;
   /** Locales with known issues; absent on API versions that predate the field. */
   locales?: string[];
+  /**
+   * Latest change to the vehicle, its known issues or their fixes (ISO 8601).
+   * Absent on API versions that predate the field.
+   */
+  updatedAt?: string;
 }
 
 export type PlatformVehiclesPage = CursorPage<PlatformVehicleItemDto>;
