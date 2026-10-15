@@ -45,6 +45,14 @@ jest.mock("@/components/auth/current-user-provider", () => ({
   ),
 }));
 
+jest.mock("@/components/layout/html-document", () => ({
+  HtmlDocument: ({ lang, children }: { lang: string; children: ReactNode }) => (
+    <div data-testid="html-document" data-lang={lang}>
+      {children}
+    </div>
+  ),
+}));
+
 jest.mock("@/components/analytics/consent-gated-analytics", () => ({
   ConsentGatedAnalytics: () => <div data-testid="consent-gated-analytics" />,
 }));
@@ -85,6 +93,18 @@ describe("LocaleLayout", () => {
     const provider = screen.getByTestId("current-user-provider");
     expect(provider).toContainElement(screen.getByTestId("site-header"));
     expect(provider).toContainElement(screen.getByText("page content"));
+  });
+
+  it("renders the html document with the locale from the route", async () => {
+    const jsx = await LocaleLayout({
+      children: <p>page content</p>,
+      params: Promise.resolve({ locale: "pt-BR" }),
+    });
+    render(jsx);
+
+    const document = screen.getByTestId("html-document");
+    expect(document).toHaveAttribute("data-lang", "pt-BR");
+    expect(document).toContainElement(screen.getByTestId("site-header"));
   });
 
   it("triggers a not-found response for an unsupported locale", async () => {

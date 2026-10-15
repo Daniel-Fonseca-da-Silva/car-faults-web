@@ -1,65 +1,23 @@
-import { render, within } from '@testing-library/react'
 import RootLayout from './layout'
-
-jest.mock('next/font/google', () => ({
-  Geist: () => ({ variable: '--font-geist-sans' }),
-  Geist_Mono: () => ({ variable: '--font-geist-mono' }),
-}))
 
 jest.mock('next-intl/server', () => ({
   getLocale: jest.fn(async () => 'en-GB'),
 }))
 
-jest.mock('@/components/scripts/ssr-inline-script', () => ({
-  SsrInlineScript: (props: { id: string; html: string }) => (
-    <script
-      id={props.id}
-      data-testid="google-consent-mode-script"
-      dangerouslySetInnerHTML={{ __html: props.html }}
-    />
-  ),
-}))
-
-// React 19 treats <html> as a singleton and renders it to document.documentElement,
-// not inside the RTL container div. Suppress the expected nesting warning.
-beforeAll(() => {
-  jest.spyOn(console, 'error').mockImplementation(() => {})
-})
-
-afterAll(() => {
-  jest.restoreAllMocks()
-})
-
 describe('RootLayout', () => {
-  it('renders children', async () => {
-    const jsx = await RootLayout({ children: <p>page content</p> })
-    const { getByText } = render(jsx)
-    expect(getByText('page content')).toBeInTheDocument()
+  it('renders the children without an html document of its own', () => {
+    const children = <p>page content</p>
+
+    expect(RootLayout({ children })).toBe(children)
   })
 
-  it('sets lang from the negotiated locale on the html element', async () => {
-    const jsx = await RootLayout({ children: <span /> })
-    render(jsx)
-    expect(document.documentElement).toHaveAttribute('lang', 'en-GB')
-  })
+  // Reading the locale here falls back to the request headers, which fails
+  // every cached page with DYNAMIC_SERVER_USAGE.
+  it('does not resolve the locale from the request', async () => {
+    const { getLocale } = jest.requireMock('next-intl/server')
 
-  it('applies the dark theme class and font variables to the html element', async () => {
-    const jsx = await RootLayout({ children: <span /> })
-    render(jsx)
-    expect(document.documentElement.className).toContain('dark')
-    expect(document.documentElement.className).toContain('--font-geist-sans')
-    expect(document.documentElement.className).toContain('--font-geist-mono')
-  })
+    RootLayout({ children: <span /> })
 
-  it('renders the Google Consent Mode default script with denied defaults', async () => {
-    const jsx = await RootLayout({ children: <span /> })
-    render(jsx)
-    // The script lives in <head>, outside the RTL container.
-    const script = within(document.head).getByTestId('google-consent-mode-script')
-
-    expect(script).toHaveAttribute('id', 'google-consent-mode-default')
-    expect(script.innerHTML).toContain("ad_storage: 'denied'")
-    expect(script.innerHTML).toContain("analytics_storage: 'denied'")
-    expect(script.innerHTML).toContain('cookie_consent')
+    expect(getLocale).not.toHaveBeenCalled()
   })
 })

@@ -1,6 +1,15 @@
 import { render, screen } from "@testing-library/react";
+import type { ReactNode } from "react";
 
 import RootNotFound from "./not-found";
+
+jest.mock("@/components/layout/html-document", () => ({
+  HtmlDocument: ({ lang, children }: { lang: string; children: ReactNode }) => (
+    <div data-testid="html-document" data-lang={lang}>
+      {children}
+    </div>
+  ),
+}));
 
 // The root boundary renders outside the [locale] segment: next-intl's request
 // APIs would read the request headers there and make every page dynamic.
@@ -10,9 +19,13 @@ jest.mock("next-intl/server", () => ({
 }));
 
 describe("RootNotFound", () => {
-  it("renders the default locale's 404", () => {
+  it("renders the default locale's 404 in its own html document", () => {
     render(<RootNotFound />);
 
+    expect(screen.getByTestId("html-document")).toHaveAttribute(
+      "data-lang",
+      "pt-PT"
+    );
     expect(
       screen.getByRole("heading", { name: "Página não encontrada" })
     ).toBeInTheDocument();

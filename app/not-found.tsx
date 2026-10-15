@@ -1,16 +1,19 @@
 import Link from "next/link";
 
+import { HtmlDocument } from "@/components/layout/html-document";
 import {
   BACK_HOME_LINK_CLASS_NAME,
   NotFoundContent,
 } from "@/components/layout/not-found-content";
 import { buttonVariants } from "@/components/ui/button";
+import { defaultLocale } from "@/i18n/locales";
 import common from "@/messages/pt-PT/common.json";
 
 // Fallback for requests that skip the proxy (static asset extensions, e.g. a
 // missing /foo.png): they never get a locale prefix and the [locale] layout
 // rejects them before its own not-found boundary applies. Without this file
-// Next would render its generic 404.
+// Next would render its generic 404. The root layout renders no <html>, so
+// this page brings its own.
 //
 // Next renders this boundary as part of every page, outside the [locale]
 // segment where setRequestLocale runs. next-intl's request APIs
@@ -23,23 +26,25 @@ export default function RootNotFound() {
   const t = common.notFound;
 
   return (
-    <main className="flex-1">
-      <NotFoundContent
-        title={t.title}
-        description={t.description}
-        imageAlt={t.imageAlt}
-        homeLink={
-          <Link
-            href="/"
-            className={buttonVariants({
-              size: "lg",
-              className: BACK_HOME_LINK_CLASS_NAME,
-            })}
-          >
-            {t.backHome}
-          </Link>
-        }
-      />
-    </main>
+    <HtmlDocument lang={defaultLocale}>
+      <main className="flex-1">
+        <NotFoundContent
+          title={t.title}
+          description={t.description}
+          imageAlt={t.imageAlt}
+          homeLink={
+            <Link
+              href="/"
+              className={buttonVariants({
+                size: "lg",
+                className: BACK_HOME_LINK_CLASS_NAME,
+              })}
+            >
+              {t.backHome}
+            </Link>
+          }
+        />
+      </main>
+    </HtmlDocument>
   );
 }
