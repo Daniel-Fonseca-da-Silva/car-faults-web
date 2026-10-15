@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
 import type { VehicleLookup } from "@/types/lookup";
-import type { UserProfile } from "@/types/user";
 
 import { VehicleHero } from "./vehicle-hero";
 
@@ -28,22 +27,8 @@ jest.mock("@/components/vehicle/vehicle-garage-actions", () => ({
   ),
 }));
 
-const currentUser: UserProfile = {
-  id: "u1",
-  email: "ana@example.com",
-  name: "Ana Silva",
-  role: "user",
-  avatarUrl: null,
-  createdAt: "2026-01-01T00:00:00.000Z",
-  updatedAt: "2026-01-01T00:00:00.000Z",
-};
-
 const baseHeroProps = {
   year: 1996,
-  currentUser,
-  garageVehicleId: null,
-  isFavorited: false,
-  currentPath: "/pt-PT/defects/vw/polo/1996",
 };
 
 const baseVehicle: VehicleLookup = {

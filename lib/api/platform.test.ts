@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 import {
+  DATABASE_STATUS_REVALIDATE_SECONDS,
   getDatabaseStatus,
   getPlatformFaults,
   getPlatformStats,
@@ -9,14 +10,9 @@ import {
 } from "./platform";
 
 const publicApiFetchMock = jest.fn();
-const serverApiFetchMock = jest.fn();
 
 jest.mock("./public-client", () => ({
   publicApiFetch: (...args: unknown[]) => publicApiFetchMock(...args),
-}));
-
-jest.mock("./server-client", () => ({
-  serverApiFetch: (...args: unknown[]) => serverApiFetchMock(...args),
 }));
 
 function jsonResponse(body: unknown, status = 200): Response {
@@ -244,44 +240,52 @@ describe("getPlatformVehicles", () => {
     expect(publicApiFetchMock).toHaveBeenCalledWith("/v1/platform/vehicles");
   });
 
-  it("returns an empty page on an error response", async () => {
+  it("rejects on an error response", async () => {
     publicApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
 
     await expect(
       getPlatformVehicles({ cursor: "c3", limit: 50 })
-    ).resolves.toEqual({ items: [], nextCursor: null });
+    ).rejects.toThrow("500");
   });
 
-  it("returns an empty page with defaults when the request throws", async () => {
+  it("rejects when the request throws", async () => {
     publicApiFetchMock.mockRejectedValue(new Error("network error"));
 
-    await expect(getPlatformVehicles()).resolves.toEqual({
-      items: [],
-      nextCursor: null,
-    });
+    await expect(getPlatformVehicles()).rejects.toThrow("network error");
   });
 });
 
 describe("getDatabaseStatus", () => {
-  afterEach(() => {
-    serverApiFetchMock.mockReset();
+  const originalApiUrl = process.env.NEXT_PUBLIC_API_URL;
+  let fetchMock: jest.Mock;
+
+  beforeEach(() => {
+    process.env.NEXT_PUBLIC_API_URL = "https://api.example.com";
+    fetchMock = jest.fn();
+    global.fetch = fetchMock;
   });
 
-  it("returns true when the stats endpoint responds successfully", async () => {
-    serverApiFetchMock.mockResolvedValue(jsonResponse({}));
+  afterEach(() => {
+    process.env.NEXT_PUBLIC_API_URL = originalApiUrl;
+  });
+
+  it("returns true when the health check passes, caching it briefly", async () => {
+    fetchMock.mockResolvedValue(jsonResponse({ status: "ok" }));
 
     await expect(getDatabaseStatus()).resolves.toBe(true);
-    expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/platform/stats");
+    expect(fetchMock).toHaveBeenCalledWith("https://api.example.com/v1/health", {
+      next: { revalidate: DATABASE_STATUS_REVALIDATE_SECONDS },
+    });
   });
 
-  it("returns false on an error response", async () => {
-    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
+  it("returns false when the health check fails", async () => {
+    fetchMock.mockResolvedValue(jsonResponse({ status: "error" }, 503));
 
     await expect(getDatabaseStatus()).resolves.toBe(false);
   });
 
   it("returns false when the request throws", async () => {
-    serverApiFetchMock.mockRejectedValue(new Error("network error"));
+    fetchMock.mockRejectedValue(new Error("network error"));
 
     await expect(getDatabaseStatus()).resolves.toBe(false);
   });

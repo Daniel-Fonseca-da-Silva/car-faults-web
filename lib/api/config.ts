@@ -8,6 +8,14 @@ export function getApiBaseUrl(): string {
   return url;
 }
 
+/**
+ * Server-only shared secret the API checks to skip its per-IP throttling
+ * (see publicApiFetch). Returns undefined when unset, e.g. in local dev.
+ */
+export function getInternalApiKey(): string | undefined {
+  return process.env.INTERNAL_API_KEY || undefined;
+}
+
 export function getTurnstileSiteKey(): string {
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 

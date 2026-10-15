@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 
+import { useCurrentUser } from "@/components/auth/current-user-provider";
 import {
   Accordion,
   AccordionContent,
@@ -16,11 +17,9 @@ import { IssueSources } from "@/components/vehicle/issue-sources";
 import { SeverityBadge } from "@/components/vehicle/severity-badge";
 import type { AmazonStore } from "@/lib/affiliate/amazon";
 import type { KnownIssue } from "@/types/lookup";
-import type { UserProfile } from "@/types/user";
 
 interface KnownIssuesAccordionProps {
   knownIssues: KnownIssue[];
-  currentUser: UserProfile | null;
   /** Prefix for the parts search (e.g. "SEAT León"); links show only with a store. */
   vehicleLabel?: string;
   amazonStore?: AmazonStore | null;
@@ -28,11 +27,12 @@ interface KnownIssuesAccordionProps {
 
 export function KnownIssuesAccordion({
   knownIssues,
-  currentUser,
   vehicleLabel,
   amazonStore,
 }: KnownIssuesAccordionProps) {
   const t = useTranslations("faults");
+  // Loaded in the browser: the page itself is shared by every visitor.
+  const { user: currentUser } = useCurrentUser();
 
   return (
     <Accordion className="mt-4">

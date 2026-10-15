@@ -1,6 +1,6 @@
+import { getApiBaseUrl } from "@/lib/api/config";
 import { mapPlatformFaultsPage } from "@/lib/api/platform-query";
 import { publicApiFetch } from "@/lib/api/public-client";
-import { serverApiFetch } from "@/lib/api/server-client";
 import type { TopFaultDto } from "@/lib/api/platform-map";
 import type { CursorPage } from "@/types/cursor";
 
@@ -88,27 +88,38 @@ export async function getPlatformFaults(
   }
 }
 
+/**
+ * Rejects when the API fails. The catalog decides which hub pages exist, so
+ * an empty fallback would turn an outage (or a failure halfway through
+ * paging) into 404s for every brand and model.
+ */
 export async function getPlatformVehicles(
   query: PlatformVehiclesQuery = {}
 ): Promise<PlatformVehiclesPage> {
-  try {
-    const response = await publicApiFetch(
-      `/v1/platform/vehicles${buildPlatformVehiclesSearch(query)}`
-    );
+  const response = await publicApiFetch(
+    `/v1/platform/vehicles${buildPlatformVehiclesSearch(query)}`
+  );
 
-    if (!response.ok) {
-      return EMPTY_CURSOR_PAGE;
-    }
-
-    return (await response.json()) as PlatformVehiclesPage;
-  } catch {
-    return EMPTY_CURSOR_PAGE;
+  if (!response.ok) {
+    throw new Error(`Failed to load platform vehicles: ${response.status}`);
   }
+
+  return (await response.json()) as PlatformVehiclesPage;
 }
 
+/** How long the home page's "database up" indicator may lag behind. */
+export const DATABASE_STATUS_REVALIDATE_SECONDS = 60;
+
+/**
+ * Checked through the API's health endpoint (which pings the database) and
+ * cached briefly, so the home page that shows it can still be served from
+ * the cache instead of calling the API on every visit.
+ */
 export async function getDatabaseStatus(): Promise<boolean> {
   try {
-    const response = await serverApiFetch("/v1/platform/stats");
+    const response = await fetch(`${getApiBaseUrl()}/v1/health`, {
+      next: { revalidate: DATABASE_STATUS_REVALIDATE_SECONDS },
+    });
     return response.ok;
   } catch {
     return false;

@@ -106,6 +106,7 @@ See [.env.example](.env.example) for the full list. Summary:
 | Variable | Purpose |
 |----------|---------|
 | `NEXT_PUBLIC_API_URL` | `car-faults-api` base URL (no trailing slash) |
+| `INTERNAL_API_KEY` | Server-only secret sent on public catalog requests so the API's per-IP throttling doesn't block the site's own server; must match the API's `INTERNAL_API_KEY` |
 | `NEXT_PUBLIC_SITE_URL` | Public site URL, used for sitemap/robots |
 | `NEXT_PUBLIC_SITE_NAME` | Public brand name (SEO, Open Graph, JSON-LD) |
 | `NEXT_PUBLIC_SITE_CONTACT_EMAIL` | Public contact email for the brand |

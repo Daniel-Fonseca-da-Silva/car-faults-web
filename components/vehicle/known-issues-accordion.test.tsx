@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import { CurrentUserContext } from "@/components/auth/current-user-provider";
 import type { KnownIssue } from "@/types/lookup";
 import type { UserProfile } from "@/types/user";
 
@@ -104,7 +105,7 @@ function clickTrigger(title: string) {
 describe("KnownIssuesAccordion", () => {
   it("lists every known issue with its severity and solution count", () => {
     render(
-      <KnownIssuesAccordion knownIssues={knownIssues} currentUser={null} />
+      <KnownIssuesAccordion knownIssues={knownIssues} />
     );
 
     expect(screen.getByText("Problematic gearbox")).toBeInTheDocument();
@@ -118,7 +119,7 @@ describe("KnownIssuesAccordion", () => {
   it("reveals the description, sources and fix cards once expanded", async () => {
     const user = userEvent.setup();
     render(
-      <KnownIssuesAccordion knownIssues={knownIssues} currentUser={null} />
+      <KnownIssuesAccordion knownIssues={knownIssues} />
     );
 
     expect(
@@ -140,7 +141,7 @@ describe("KnownIssuesAccordion", () => {
   it("does not render a community solutions section when there are no fixes", async () => {
     const user = userEvent.setup();
     render(
-      <KnownIssuesAccordion knownIssues={knownIssues} currentUser={null} />
+      <KnownIssuesAccordion knownIssues={knownIssues} />
     );
 
     await user.click(clickTrigger("Minor electrical fault"));
@@ -153,7 +154,7 @@ describe("KnownIssuesAccordion", () => {
   it("renders the comments section for the expanded issue as a guest", async () => {
     const user = userEvent.setup();
     render(
-      <KnownIssuesAccordion knownIssues={knownIssues} currentUser={null} />
+      <KnownIssuesAccordion knownIssues={knownIssues} />
     );
 
     await user.click(clickTrigger("Problematic gearbox"));
@@ -166,7 +167,7 @@ describe("KnownIssuesAccordion", () => {
   it("renders the reviews section for the expanded issue as a guest", async () => {
     const user = userEvent.setup();
     render(
-      <KnownIssuesAccordion knownIssues={knownIssues} currentUser={null} />
+      <KnownIssuesAccordion knownIssues={knownIssues} />
     );
 
     await user.click(clickTrigger("Problematic gearbox"));
@@ -188,10 +189,11 @@ describe("KnownIssuesAccordion", () => {
       updatedAt: "2026-01-01T00:00:00.000Z",
     };
     render(
-      <KnownIssuesAccordion
-        knownIssues={knownIssues}
-        currentUser={currentUser}
-      />
+      <CurrentUserContext
+        value={{ user: currentUser, isLoading: false, setUser: jest.fn() }}
+      >
+        <KnownIssuesAccordion knownIssues={knownIssues} />
+      </CurrentUserContext>
     );
 
     await user.click(clickTrigger("Problematic gearbox"));
@@ -209,7 +211,6 @@ describe("KnownIssuesAccordion", () => {
     render(
       <KnownIssuesAccordion
         knownIssues={knownIssues}
-        currentUser={null}
         vehicleLabel="SEAT Leon"
         amazonStore={{ domain: "www.amazon.es", tag: "autocronica17-21" }}
       />
@@ -228,7 +229,7 @@ describe("KnownIssuesAccordion", () => {
   it("omits the Amazon parts link without a store", async () => {
     const user = userEvent.setup();
     render(
-      <KnownIssuesAccordion knownIssues={knownIssues} currentUser={null} />
+      <KnownIssuesAccordion knownIssues={knownIssues} />
     );
 
     await user.click(clickTrigger("Problematic gearbox"));

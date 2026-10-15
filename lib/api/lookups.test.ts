@@ -169,21 +169,38 @@ describe("getVehicleLookupByPath", () => {
     ).resolves.toBeNull();
   });
 
-  it("returns null on other error responses", async () => {
-    publicApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
+  it("returns null on a 400 response (invalid path)", async () => {
+    publicApiFetchMock.mockResolvedValue(new Response(null, { status: 400 }));
 
     await expect(
       getVehicleLookupByPath({
         make: "fiat",
         model: "uno",
         year: 2007,
-        fuelType: "gasoline",
+        fuelType: "not-a-fuel",
         engine: "1-0",
       })
     ).resolves.toBeNull();
   });
 
-  it("returns null when the request throws", async () => {
+  it.each([429, 500, 503])(
+    "rejects on a %i response so the page isn't rendered as missing",
+    async (status) => {
+      publicApiFetchMock.mockResolvedValue(new Response(null, { status }));
+
+      await expect(
+        getVehicleLookupByPath({
+          make: "fiat",
+          model: "uno",
+          year: 2007,
+          fuelType: "gasoline",
+          engine: "1-0",
+        })
+      ).rejects.toThrow(String(status));
+    }
+  );
+
+  it("rejects when the request throws", async () => {
     publicApiFetchMock.mockRejectedValue(new Error("network error"));
 
     await expect(
@@ -194,6 +211,6 @@ describe("getVehicleLookupByPath", () => {
         fuelType: "gasoline",
         engine: "1-0",
       })
-    ).resolves.toBeNull();
+    ).rejects.toThrow("network error");
   });
 });

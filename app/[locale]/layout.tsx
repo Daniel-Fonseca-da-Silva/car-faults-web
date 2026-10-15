@@ -3,6 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 import { AdSenseScript } from "@/components/ads/adsense-script";
+import { CurrentUserProvider } from "@/components/auth/current-user-provider";
 import { ConsentGatedAnalytics } from "@/components/analytics/consent-gated-analytics";
 import { CookieConsentModal } from "@/components/cookies/cookie-consent-modal";
 import { CookieConsentProvider } from "@/components/cookies/cookie-consent-provider";
@@ -34,12 +35,14 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider>
       <CookieConsentProvider>
-        <AdSenseScript />
-        <ConsentGatedAnalytics />
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
-        <CookieConsentModal />
+        <CurrentUserProvider>
+          <AdSenseScript />
+          <ConsentGatedAnalytics />
+          <SiteHeader />
+          <main className="flex-1">{children}</main>
+          <SiteFooter />
+          <CookieConsentModal />
+        </CurrentUserProvider>
       </CookieConsentProvider>
     </NextIntlClientProvider>
   );

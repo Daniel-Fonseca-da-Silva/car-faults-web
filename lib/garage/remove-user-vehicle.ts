@@ -14,12 +14,11 @@ export async function removeUserVehicleAction(
   redirect(`/${locale}/garage`);
 }
 
+/** The vehicle page is shared by every visitor, so only the garage is revalidated. */
 export async function removeUserVehicleFromVehiclePageAction(
   locale: string,
-  currentPath: string,
   id: string
 ): Promise<void> {
   await deleteCurrentUserVehicle(id);
   revalidatePath(`/${locale}/garage`);
-  revalidatePath(currentPath);
 }

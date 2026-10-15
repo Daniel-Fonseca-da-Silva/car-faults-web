@@ -5,11 +5,6 @@ import type { FavoriteVehicle } from "@/types/favorite-vehicle";
 
 const VEHICLE_FAVORITE_TYPE = "vehicle_favorite";
 
-export interface FavoriteStatus {
-  vehicleModelId: string;
-  favorited: boolean;
-}
-
 export async function favoriteVehicle(
   vehicleModelId: string,
   year: number
@@ -40,25 +35,6 @@ export async function unfavoriteVehicle(
 
   if (!response.ok) {
     throw new Error(`Failed to unfavorite vehicle: ${response.status}`);
-  }
-}
-
-export async function getVehicleFavoriteStatus(
-  vehicleModelId: string,
-  year: number
-): Promise<FavoriteStatus> {
-  try {
-    const response = await serverApiFetch(
-      `/v1/activity-logs/favorites/${vehicleModelId}?year=${year}`
-    );
-
-    if (!response.ok) {
-      return { vehicleModelId, favorited: false };
-    }
-
-    return (await response.json()) as FavoriteStatus;
-  } catch {
-    return { vehicleModelId, favorited: false };
   }
 }
 

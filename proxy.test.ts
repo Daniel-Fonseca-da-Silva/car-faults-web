@@ -96,4 +96,43 @@ describe("proxy", () => {
 
     expect(intlMiddlewareMock).toHaveBeenCalledWith(request);
   });
+
+  it("rewrites a vehicle page with ?doors= to its cacheable doors variant", () => {
+    const request = new NextRequest(
+      "https://web.example.com/pt-PT/defects/volkswagen/golf/2015/diesel/2-0-tdi?doors=3"
+    );
+
+    const response = proxy(request);
+
+    expect(response.headers.get("x-middleware-rewrite")).toBe(
+      "https://web.example.com/pt-PT/defects/volkswagen/golf/2015/diesel/2-0-tdi/doors/3"
+    );
+    expect(intlMiddlewareMock).not.toHaveBeenCalled();
+  });
+
+  it("keeps other query params when rewriting the doors variant", () => {
+    const request = new NextRequest(
+      "https://web.example.com/en-GB/defects/fiat/uno/2007/gasoline/1-0/?doors=5&utm_source=x"
+    );
+
+    const response = proxy(request);
+
+    expect(response.headers.get("x-middleware-rewrite")).toBe(
+      "https://web.example.com/en-GB/defects/fiat/uno/2007/gasoline/1-0/doors/5?utm_source=x"
+    );
+  });
+
+  it.each([
+    "https://web.example.com/pt-PT/defects/volkswagen/golf/2015/diesel/2-0-tdi",
+    "https://web.example.com/pt-PT/defects/volkswagen/golf/2015/diesel/2-0-tdi?doors=abc",
+    "https://web.example.com/pt-PT/defects/volkswagen/golf/2015?doors=3",
+    "https://web.example.com/pt-PT/defects?doors=3",
+    "https://web.example.com/xx-XX/defects/volkswagen/golf/2015/diesel/2-0-tdi?doors=3",
+  ])("does not rewrite %s", (url) => {
+    const request = new NextRequest(url);
+
+    proxy(request);
+
+    expect(intlMiddlewareMock).toHaveBeenCalledWith(request);
+  });
 });

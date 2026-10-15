@@ -1,6 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
+
+import { CurrentUserContext } from "@/components/auth/current-user-provider";
+import type { UserProfile } from "@/types/user";
 
 import { SiteHeader } from "./site-header";
 
@@ -67,24 +70,42 @@ jest.mock("@/lib/api/users", () => ({
   getCurrentUser: () => getCurrentUserMock(),
 }));
 
+const signedInUser: UserProfile = {
+  id: "u1",
+  email: "ana@example.com",
+  name: "Ana Silva",
+  role: "user",
+  avatarUrl: null,
+  createdAt: "2026-01-01T00:00:00.000Z",
+  updatedAt: "2026-01-01T00:00:00.000Z",
+};
+
+/** The header gets the user from the browser-side provider, not the server. */
+function renderWithUser(jsx: ReactElement, user: UserProfile | null) {
+  return render(
+    <CurrentUserContext
+      value={{ user, isLoading: false, setUser: jest.fn() }}
+    >
+      {jsx}
+    </CurrentUserContext>
+  );
+}
+
 describe("SiteHeader", () => {
   beforeEach(() => {
     pushMock.mockClear();
     getCurrentUserMock.mockReset();
-    getCurrentUserMock.mockResolvedValue({
-      id: "u1",
-      email: "ana@example.com",
-      name: "Ana Silva",
-      role: "user",
-      avatarUrl: null,
-      createdAt: "2026-01-01T00:00:00.000Z",
-      updatedAt: "2026-01-01T00:00:00.000Z",
-    });
+  });
+
+  it("does not read the session while rendering, so pages stay cacheable", async () => {
+    await SiteHeader();
+
+    expect(getCurrentUserMock).not.toHaveBeenCalled();
   });
 
   it("renders the primary navigation links", async () => {
     const jsx = await SiteHeader();
-    render(jsx);
+    renderWithUser(jsx, signedInUser);
 
     for (const label of ["Defects", "About"]) {
       expect(screen.getAllByText(label).length).toBeGreaterThan(0);
@@ -93,7 +114,7 @@ describe("SiteHeader", () => {
 
   it("renders the brand logo linking to the homepage", async () => {
     const jsx = await SiteHeader();
-    render(jsx);
+    renderWithUser(jsx, signedInUser);
 
     const homeLinks = screen
       .getAllByRole("link")
@@ -105,7 +126,7 @@ describe("SiteHeader", () => {
   it("opens the account menu with a profile link when signed in", async () => {
     const user = userEvent.setup();
     const jsx = await SiteHeader();
-    render(jsx);
+    renderWithUser(jsx, signedInUser);
 
     await user.click(
       screen.getByRole("button", { name: "Account menu for Ana" })
@@ -117,9 +138,8 @@ describe("SiteHeader", () => {
   });
 
   it("shows a sign-in call to action when signed out", async () => {
-    getCurrentUserMock.mockResolvedValue(null);
     const jsx = await SiteHeader();
-    render(jsx);
+    renderWithUser(jsx, null);
 
     const signInCtas = screen.getAllByRole("button", { name: "Sign in" });
     expect(signInCtas.length).toBeGreaterThan(0);
@@ -129,7 +149,7 @@ describe("SiteHeader", () => {
   it("opens the mobile navigation sheet when the menu button is pressed", async () => {
     const user = userEvent.setup();
     const jsx = await SiteHeader();
-    render(jsx);
+    renderWithUser(jsx, signedInUser);
 
     expect(screen.getAllByText("Defects")).toHaveLength(1);
 

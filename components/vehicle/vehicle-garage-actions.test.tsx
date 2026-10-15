@@ -2,9 +2,18 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
 
+import { CurrentUserContext } from "@/components/auth/current-user-provider";
+import type { VehicleUserStatus } from "@/lib/vehicle/fetch-vehicle-user-status";
 import type { UserProfile } from "@/types/user";
 
 import { VehicleGarageActions } from "./vehicle-garage-actions";
+
+const fetchVehicleUserStatusMock = jest.fn();
+
+jest.mock("@/lib/vehicle/fetch-vehicle-user-status", () => ({
+  fetchVehicleUserStatus: (...args: unknown[]) =>
+    fetchVehicleUserStatusMock(...args),
+}));
 
 const addUserVehicleActionMock = jest.fn();
 const removeUserVehicleFromVehiclePageActionMock = jest.fn();
@@ -84,8 +93,35 @@ const baseProps = {
   vehicleModelId: "vm-1",
   vehicleLabel: "Volkswagen Polo",
   year: 1996,
-  currentPath: "/pt-PT/defects/vw/polo/1996",
 };
+
+const notSaved: VehicleUserStatus = {
+  garageVehicleId: null,
+  isFavorited: false,
+};
+
+function renderActions(
+  user: UserProfile | null,
+  { isLoading = false }: { isLoading?: boolean } = {}
+) {
+  return render(
+    <CurrentUserContext value={{ user, isLoading, setUser: jest.fn() }}>
+      <VehicleGarageActions {...baseProps} />
+    </CurrentUserContext>
+  );
+}
+
+/** Signed in, with the buttons enabled once the user's status has loaded. */
+async function renderSignedIn(status: VehicleUserStatus) {
+  fetchVehicleUserStatusMock.mockResolvedValue(status);
+  renderActions(currentUser);
+
+  await waitFor(() => {
+    for (const button of screen.getAllByRole("button")) {
+      expect(button).toBeEnabled();
+    }
+  });
+}
 
 describe("VehicleGarageActions", () => {
   afterEach(() => {
@@ -93,14 +129,7 @@ describe("VehicleGarageActions", () => {
   });
 
   it("renders outline buttons linking to login for guests", () => {
-    render(
-      <VehicleGarageActions
-        {...baseProps}
-        currentUser={null}
-        garageVehicleId={null}
-        isFavorited={false}
-      />
-    );
+    renderActions(null);
 
     expect(
       screen.getByRole("button", { name: "Adicionar à garagem" })
@@ -111,30 +140,60 @@ describe("VehicleGarageActions", () => {
     expect(
       screen.getByText("Entra para guardar este veículo")
     ).toBeInTheDocument();
+    expect(fetchVehicleUserStatusMock).not.toHaveBeenCalled();
   });
 
-  it("adds the vehicle to the garage when not yet saved", async () => {
-    const user = userEvent.setup();
-    addUserVehicleActionMock.mockResolvedValue({ ok: true });
+  it("shows disabled buttons, not the guest links, while the user is loading", () => {
+    renderActions(null, { isLoading: true });
 
-    render(
-      <VehicleGarageActions
-        {...baseProps}
-        currentUser={currentUser}
-        garageVehicleId={null}
-        isFavorited={false}
-      />
-    );
+    expect(
+      screen.queryByText("Entra para guardar este veículo")
+    ).not.toBeInTheDocument();
+    for (const button of screen.getAllByRole("button")) {
+      expect(button).toBeDisabled();
+    }
+  });
+
+  it("loads the signed-in user's garage and favorite status for this vehicle", async () => {
+    await renderSignedIn({ garageVehicleId: "uv-1", isFavorited: true });
+
+    expect(fetchVehicleUserStatusMock).toHaveBeenCalledWith("vm-1", 1996);
+    expect(
+      screen.getByRole("button", { name: "Remover Volkswagen Polo da garagem" })
+    ).toHaveAttribute("aria-pressed", "true");
+    expect(
+      screen.getByRole("button", { name: "Remover Volkswagen Polo dos favoritos" })
+    ).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("adds the vehicle to the garage and then offers to remove it", async () => {
+    const user = userEvent.setup();
+    addUserVehicleActionMock.mockResolvedValue({
+      ok: true,
+      userVehicleId: "uv-9",
+    });
+    removeUserVehicleFromVehiclePageActionMock.mockResolvedValue(undefined);
+    await renderSignedIn(notSaved);
 
     await user.click(
       screen.getByRole("button", { name: "Adicionar Volkswagen Polo à garagem" })
     );
 
+    expect(addUserVehicleActionMock).toHaveBeenCalledWith("pt-PT", {
+      vehicleModelId: "vm-1",
+      year: 1996,
+    });
+
+    await user.click(
+      await screen.findByRole("button", {
+        name: "Remover Volkswagen Polo da garagem",
+      })
+    );
+
     await waitFor(() => {
-      expect(addUserVehicleActionMock).toHaveBeenCalledWith(
+      expect(removeUserVehicleFromVehiclePageActionMock).toHaveBeenCalledWith(
         "pt-PT",
-        "/pt-PT/defects/vw/polo/1996",
-        { vehicleModelId: "vm-1", year: 1996 }
+        "uv-9"
       );
     });
   });
@@ -145,15 +204,7 @@ describe("VehicleGarageActions", () => {
       ok: false,
       error: "conflict",
     });
-
-    render(
-      <VehicleGarageActions
-        {...baseProps}
-        currentUser={currentUser}
-        garageVehicleId={null}
-        isFavorited={false}
-      />
-    );
+    await renderSignedIn(notSaved);
 
     await user.click(
       screen.getByRole("button", { name: "Adicionar Volkswagen Polo à garagem" })
@@ -167,15 +218,7 @@ describe("VehicleGarageActions", () => {
   it("removes the vehicle from the garage when already saved", async () => {
     const user = userEvent.setup();
     removeUserVehicleFromVehiclePageActionMock.mockResolvedValue(undefined);
-
-    render(
-      <VehicleGarageActions
-        {...baseProps}
-        currentUser={currentUser}
-        garageVehicleId="uv-1"
-        isFavorited={false}
-      />
-    );
+    await renderSignedIn({ garageVehicleId: "uv-1", isFavorited: false });
 
     await user.click(
       screen.getByRole("button", { name: "Remover Volkswagen Polo da garagem" })
@@ -184,24 +227,20 @@ describe("VehicleGarageActions", () => {
     await waitFor(() => {
       expect(removeUserVehicleFromVehiclePageActionMock).toHaveBeenCalledWith(
         "pt-PT",
-        "/pt-PT/defects/vw/polo/1996",
         "uv-1"
       );
     });
+    expect(
+      await screen.findByRole("button", {
+        name: "Adicionar Volkswagen Polo à garagem",
+      })
+    ).toBeInTheDocument();
   });
 
   it("favorites the vehicle when not yet favorited", async () => {
     const user = userEvent.setup();
     favoriteVehicleActionMock.mockResolvedValue(undefined);
-
-    render(
-      <VehicleGarageActions
-        {...baseProps}
-        currentUser={currentUser}
-        garageVehicleId={null}
-        isFavorited={false}
-      />
-    );
+    await renderSignedIn(notSaved);
 
     await user.click(
       screen.getByRole("button", { name: "Favoritar Volkswagen Polo" })
@@ -210,25 +249,21 @@ describe("VehicleGarageActions", () => {
     await waitFor(() => {
       expect(favoriteVehicleActionMock).toHaveBeenCalledWith(
         "pt-PT",
-        "/pt-PT/defects/vw/polo/1996",
         "vm-1",
         1996
       );
     });
+    expect(
+      await screen.findByRole("button", {
+        name: "Remover Volkswagen Polo dos favoritos",
+      })
+    ).toBeInTheDocument();
   });
 
   it("unfavorites the vehicle when already favorited", async () => {
     const user = userEvent.setup();
     unfavoriteVehicleActionMock.mockResolvedValue(undefined);
-
-    render(
-      <VehicleGarageActions
-        {...baseProps}
-        currentUser={currentUser}
-        garageVehicleId={null}
-        isFavorited
-      />
-    );
+    await renderSignedIn({ garageVehicleId: null, isFavorited: true });
 
     await user.click(
       screen.getByRole("button", { name: "Remover Volkswagen Polo dos favoritos" })
@@ -237,7 +272,6 @@ describe("VehicleGarageActions", () => {
     await waitFor(() => {
       expect(unfavoriteVehicleActionMock).toHaveBeenCalledWith(
         "pt-PT",
-        "/pt-PT/defects/vw/polo/1996",
         "vm-1",
         1996
       );
@@ -247,15 +281,7 @@ describe("VehicleGarageActions", () => {
   it("shows an inline error when favoriting fails", async () => {
     const user = userEvent.setup();
     favoriteVehicleActionMock.mockRejectedValue(new Error("network error"));
-
-    render(
-      <VehicleGarageActions
-        {...baseProps}
-        currentUser={currentUser}
-        garageVehicleId={null}
-        isFavorited={false}
-      />
-    );
+    await renderSignedIn(notSaved);
 
     await user.click(
       screen.getByRole("button", { name: "Favoritar Volkswagen Polo" })
@@ -266,5 +292,8 @@ describe("VehicleGarageActions", () => {
         "Não foi possível atualizar os favoritos. Tenta novamente."
       )
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Favoritar Volkswagen Polo" })
+    ).toHaveAttribute("aria-pressed", "false");
   });
 });

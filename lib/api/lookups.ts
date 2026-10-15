@@ -49,6 +49,10 @@ export interface GetVehicleLookupByPathParams {
   language?: LookupLanguage;
 }
 
+/**
+ * Resolves to null only when the vehicle doesn't exist; rejects when the API
+ * is unreachable or failing.
+ */
 export async function getVehicleLookupByPath(
   params: GetVehicleLookupByPathParams
 ): Promise<LookupResponse | null> {
@@ -62,17 +66,22 @@ export async function getVehicleLookupByPath(
   if (params.doors != null) query.set("doors", String(params.doors));
   if (params.language) query.set("language", params.language);
 
-  try {
-    const response = await publicApiFetch(
-      `/v1/lookups/by-path?${query.toString()}`
-    );
+  const response = await publicApiFetch(
+    `/v1/lookups/by-path?${query.toString()}`
+  );
 
-    if (!response.ok) {
-      return null;
-    }
-
-    return (await response.json()) as LookupResponse;
-  } catch {
+  // 404: no such vehicle; 400: the path's slugs/year/fuel type are invalid.
+  if (response.status === 404 || response.status === 400) {
     return null;
   }
+
+  // Anything else is the API failing, not a missing page. Throwing (instead
+  // of returning null) keeps the page from rendering a 404 that would be
+  // cached and seen by crawlers: a failed revalidation keeps serving the
+  // last good version instead.
+  if (!response.ok) {
+    throw new Error(`Failed to load vehicle lookup: ${response.status}`);
+  }
+
+  return (await response.json()) as LookupResponse;
 }

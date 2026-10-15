@@ -57,19 +57,18 @@ describe("removeUserVehicleFromVehiclePageAction", () => {
     jest.clearAllMocks();
   });
 
-  it("deletes the vehicle and revalidates the garage and current pages without redirecting", async () => {
+  it("deletes the vehicle and revalidates only the garage without redirecting", async () => {
     deleteCurrentUserVehicleMock.mockResolvedValue(undefined);
 
     await removeUserVehicleFromVehiclePageAction(
       "pt-PT",
-      "/pt-PT/defects/vw/polo/1996",
       "uv-1"
     );
 
     expect(deleteCurrentUserVehicleMock).toHaveBeenCalledWith("uv-1");
     expect(revalidatePathMock).toHaveBeenCalledWith("/pt-PT/garage");
-    expect(revalidatePathMock).toHaveBeenCalledWith(
-      "/pt-PT/defects/vw/polo/1996"
+    expect(revalidatePathMock).not.toHaveBeenCalledWith(
+      expect.stringContaining("/defects/")
     );
     expect(redirectMock).not.toHaveBeenCalled();
   });
@@ -80,7 +79,6 @@ describe("removeUserVehicleFromVehiclePageAction", () => {
     await expect(
       removeUserVehicleFromVehiclePageAction(
         "pt-PT",
-        "/pt-PT/defects/vw/polo/1996",
         "uv-1"
       )
     ).rejects.toThrow("delete failed");

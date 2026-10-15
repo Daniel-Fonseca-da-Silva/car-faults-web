@@ -10,8 +10,38 @@ const PROTECTED_PATH_PATTERN = /^\/([^/]+)\/(profile|garage|admin|favorites)(\/|
 const LOCALE_PREFIX_PATTERN = new RegExp(
   `^/(${routing.locales.join("|")})(/|$)`,
 );
+// /<locale>/defects/<make>/<model>/<year>/<fuelType>/<engine>
+const VEHICLE_PAGE_PATTERN = new RegExp(
+  `^/(${routing.locales.join("|")})/defects(/[^/]+){5}/?$`,
+);
+const DOORS_PATTERN = /^\d{1,2}$/;
 // next-intl's default locale cookie name (routing.localeCookie).
 const LOCALE_COOKIE_NAME = "NEXT_LOCALE";
+
+/**
+ * Vehicle links may carry `?doors=N` to pick a body variant. Reading the
+ * query string would make the page render on every request, so the variant
+ * is rewritten (invisibly, the URL stays the same) to an internal path that
+ * is cached like any other page.
+ */
+function vehicleDoorsRewriteUrl(request: NextRequest): URL | null {
+  const { pathname, searchParams } = request.nextUrl;
+  const doors = searchParams.get("doors");
+
+  if (
+    !doors ||
+    !DOORS_PATTERN.test(doors) ||
+    !VEHICLE_PAGE_PATTERN.test(pathname)
+  ) {
+    return null;
+  }
+
+  // A plain URL: NextURL would keep the request's trailing slash.
+  const url = new URL(request.nextUrl.href);
+  url.pathname = `${pathname.replace(/\/$/, "")}/doors/${doors}`;
+  url.searchParams.delete("doors");
+  return url;
+}
 
 export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -20,6 +50,11 @@ export default function proxy(request: NextRequest) {
   if (match && !request.cookies.get(SESSION_COOKIE_NAME)) {
     const locale = match[1];
     return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
+  }
+
+  const doorsRewriteUrl = vehicleDoorsRewriteUrl(request);
+  if (doorsRewriteUrl) {
+    return NextResponse.rewrite(doorsRewriteUrl);
   }
 
   // Without a locale prefix in the URL, next-intl would otherwise prefer a

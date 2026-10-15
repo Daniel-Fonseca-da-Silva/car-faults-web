@@ -3,6 +3,7 @@
 import { LogIn, LogOut, Menu, ShieldCheck, Star, Warehouse } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { useCurrentUser } from "@/components/auth/current-user-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,18 +18,15 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { logout } from "@/lib/auth/logout";
 import { NAV_ITEMS } from "@/lib/nav-items";
 import { getInitials } from "@/lib/utils";
-import type { UserProfile } from "@/types/user";
 
-type MobileNavProps = {
-  user: UserProfile | null;
-};
-
-export function MobileNav({ user }: MobileNavProps) {
+export function MobileNav() {
   const t = useTranslations("nav");
   const router = useRouter();
+  const { user, isLoading, setUser } = useCurrentUser();
 
   async function handleLogout() {
     await logout();
+    setUser(null);
     router.push("/login");
     router.refresh();
   }
@@ -51,7 +49,7 @@ export function MobileNav({ user }: MobileNavProps) {
         <SheetHeader>
           <SheetTitle>{t("menu")}</SheetTitle>
         </SheetHeader>
-        {!user && (
+        {!isLoading && !user && (
           <SheetClose
             nativeButton={false}
             render={
