@@ -12,9 +12,14 @@ import {
 } from "./admin-vehicles.server";
 
 const serverApiFetchMock = jest.fn();
+const updateTagMock = jest.fn();
 
 jest.mock("./server-client", () => ({
   serverApiFetch: (...args: unknown[]) => serverApiFetchMock(...args),
+}));
+
+jest.mock("next/cache", () => ({
+  updateTag: (tag: string) => updateTagMock(tag),
 }));
 
 function jsonResponse(body: unknown, status = 200): Response {
@@ -24,6 +29,7 @@ function jsonResponse(body: unknown, status = 200): Response {
 describe("getAdminVehicleModels", () => {
   afterEach(() => {
     serverApiFetchMock.mockReset();
+    updateTagMock.mockReset();
   });
 
   it("builds the query string from the given filters", async () => {
@@ -72,6 +78,7 @@ describe("getAdminVehicleModels", () => {
 describe("getAdminVehicleModel", () => {
   afterEach(() => {
     serverApiFetchMock.mockReset();
+    updateTagMock.mockReset();
   });
 
   it("returns the vehicle model detail", async () => {
@@ -114,6 +121,7 @@ describe("getAdminVehicleModel", () => {
 describe("createAdminVehicleModel", () => {
   afterEach(() => {
     serverApiFetchMock.mockReset();
+    updateTagMock.mockReset();
   });
 
   it("posts the input and returns the created vehicle model", async () => {
@@ -132,6 +140,7 @@ describe("createAdminVehicleModel", () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(input),
     });
+    expect(updateTagMock).toHaveBeenCalledWith("public-catalog");
   });
 
   it("throws on an error response", async () => {
@@ -145,12 +154,14 @@ describe("createAdminVehicleModel", () => {
         engine: "1.0",
       })
     ).rejects.toThrow("Failed to create vehicle model: 400");
+    expect(updateTagMock).not.toHaveBeenCalled();
   });
 });
 
 describe("updateAdminVehicleModel", () => {
   afterEach(() => {
     serverApiFetchMock.mockReset();
+    updateTagMock.mockReset();
   });
 
   it("patches the vehicle model and returns it", async () => {
@@ -165,6 +176,7 @@ describe("updateAdminVehicleModel", () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ brand: "Škoda" }),
     });
+    expect(updateTagMock).toHaveBeenCalledWith("public-catalog");
   });
 
   it("throws on an error response", async () => {
@@ -173,12 +185,14 @@ describe("updateAdminVehicleModel", () => {
     await expect(
       updateAdminVehicleModel("missing", { brand: "x" })
     ).rejects.toThrow("Failed to update vehicle model: 404");
+    expect(updateTagMock).not.toHaveBeenCalled();
   });
 });
 
 describe("deleteAdminVehicleModel", () => {
   afterEach(() => {
     serverApiFetchMock.mockReset();
+    updateTagMock.mockReset();
   });
 
   it("deletes the vehicle model", async () => {
@@ -189,6 +203,7 @@ describe("deleteAdminVehicleModel", () => {
     expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/admin/vehicle-models/vm-1", {
       method: "DELETE",
     });
+    expect(updateTagMock).toHaveBeenCalledWith("public-catalog");
   });
 
   it("throws on an error response", async () => {
@@ -197,5 +212,6 @@ describe("deleteAdminVehicleModel", () => {
     await expect(deleteAdminVehicleModel("missing")).rejects.toThrow(
       "Failed to delete vehicle model: 404"
     );
+    expect(updateTagMock).not.toHaveBeenCalled();
   });
 });

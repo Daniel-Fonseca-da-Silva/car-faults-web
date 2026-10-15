@@ -4,9 +4,14 @@
 import { createAdminFix, deleteAdminFix, updateAdminFix } from "./admin-fixes";
 
 const serverApiFetchMock = jest.fn();
+const updateTagMock = jest.fn();
 
 jest.mock("./server-client", () => ({
   serverApiFetch: (...args: unknown[]) => serverApiFetchMock(...args),
+}));
+
+jest.mock("next/cache", () => ({
+  updateTag: (tag: string) => updateTagMock(tag),
 }));
 
 function jsonResponse(body: unknown, status = 200): Response {
@@ -16,6 +21,7 @@ function jsonResponse(body: unknown, status = 200): Response {
 describe("createAdminFix", () => {
   afterEach(() => {
     serverApiFetchMock.mockReset();
+    updateTagMock.mockReset();
   });
 
   it("posts the input and returns the created fix", async () => {
@@ -33,6 +39,7 @@ describe("createAdminFix", () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(input),
     });
+    expect(updateTagMock).toHaveBeenCalledWith("public-catalog");
   });
 
   it("throws on an error response", async () => {
@@ -45,12 +52,14 @@ describe("createAdminFix", () => {
         steps: "y",
       })
     ).rejects.toThrow("Failed to create fix: 404");
+    expect(updateTagMock).not.toHaveBeenCalled();
   });
 });
 
 describe("updateAdminFix", () => {
   afterEach(() => {
     serverApiFetchMock.mockReset();
+    updateTagMock.mockReset();
   });
 
   it("patches the fix and returns it", async () => {
@@ -65,6 +74,7 @@ describe("updateAdminFix", () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ summary: "Updated summary" }),
     });
+    expect(updateTagMock).toHaveBeenCalledWith("public-catalog");
   });
 
   it("throws on an error response", async () => {
@@ -73,12 +83,14 @@ describe("updateAdminFix", () => {
     await expect(
       updateAdminFix("missing", { summary: "x" })
     ).rejects.toThrow("Failed to update fix: 404");
+    expect(updateTagMock).not.toHaveBeenCalled();
   });
 });
 
 describe("deleteAdminFix", () => {
   afterEach(() => {
     serverApiFetchMock.mockReset();
+    updateTagMock.mockReset();
   });
 
   it("deletes the fix", async () => {
@@ -89,6 +101,7 @@ describe("deleteAdminFix", () => {
     expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/admin/fixes/fix-1", {
       method: "DELETE",
     });
+    expect(updateTagMock).toHaveBeenCalledWith("public-catalog");
   });
 
   it("throws on an error response", async () => {
@@ -97,5 +110,6 @@ describe("deleteAdminFix", () => {
     await expect(deleteAdminFix("missing")).rejects.toThrow(
       "Failed to delete fix: 404"
     );
+    expect(updateTagMock).not.toHaveBeenCalled();
   });
 });
