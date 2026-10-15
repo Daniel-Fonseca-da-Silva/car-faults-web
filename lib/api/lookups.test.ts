@@ -4,9 +4,14 @@
 import { getVehicleLookup, getVehicleLookupByPath } from "./lookups";
 
 const serverApiFetchMock = jest.fn();
+const publicApiFetchMock = jest.fn();
 
 jest.mock("./server-client", () => ({
   serverApiFetch: (...args: unknown[]) => serverApiFetchMock(...args),
+}));
+
+jest.mock("./public-client", () => ({
+  publicApiFetch: (...args: unknown[]) => publicApiFetchMock(...args),
 }));
 
 function jsonResponse(body: unknown, status = 200): Response {
@@ -105,7 +110,7 @@ describe("getVehicleLookup", () => {
 
 describe("getVehicleLookupByPath", () => {
   afterEach(() => {
-    serverApiFetchMock.mockReset();
+    publicApiFetchMock.mockReset();
   });
 
   it("builds the query string from path slugs and returns the lookup on success", async () => {
@@ -113,7 +118,7 @@ describe("getVehicleLookupByPath", () => {
       vehicle: { id: "veh-1", brand: "Volkswagen", model: "Polo" },
       knownIssues: [],
     };
-    serverApiFetchMock.mockResolvedValue(jsonResponse(lookup));
+    publicApiFetchMock.mockResolvedValue(jsonResponse(lookup));
 
     await expect(
       getVehicleLookupByPath({
@@ -127,13 +132,13 @@ describe("getVehicleLookupByPath", () => {
       })
     ).resolves.toEqual(lookup);
 
-    expect(serverApiFetchMock).toHaveBeenCalledWith(
+    expect(publicApiFetchMock).toHaveBeenCalledWith(
       "/v1/lookups/by-path?make=volkswagen&model=polo&year=2001&fuelType=gasoline&engine=1-0&doors=3&language=en-GB"
     );
   });
 
   it("omits optional doors and language when not given", async () => {
-    serverApiFetchMock.mockResolvedValue(
+    publicApiFetchMock.mockResolvedValue(
       jsonResponse({ vehicle: {}, knownIssues: [] })
     );
 
@@ -145,13 +150,13 @@ describe("getVehicleLookupByPath", () => {
       engine: "1-0",
     });
 
-    expect(serverApiFetchMock).toHaveBeenCalledWith(
+    expect(publicApiFetchMock).toHaveBeenCalledWith(
       "/v1/lookups/by-path?make=fiat&model=uno&year=2007&fuelType=gasoline&engine=1-0"
     );
   });
 
   it("returns null on a 404 response", async () => {
-    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
+    publicApiFetchMock.mockResolvedValue(new Response(null, { status: 404 }));
 
     await expect(
       getVehicleLookupByPath({
@@ -165,7 +170,7 @@ describe("getVehicleLookupByPath", () => {
   });
 
   it("returns null on other error responses", async () => {
-    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
+    publicApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
 
     await expect(
       getVehicleLookupByPath({
@@ -179,7 +184,7 @@ describe("getVehicleLookupByPath", () => {
   });
 
   it("returns null when the request throws", async () => {
-    serverApiFetchMock.mockRejectedValue(new Error("network error"));
+    publicApiFetchMock.mockRejectedValue(new Error("network error"));
 
     await expect(
       getVehicleLookupByPath({

@@ -1,5 +1,8 @@
 "use server";
 
+import { updateTag } from "next/cache";
+
+import { PUBLIC_CATALOG_TAG } from "@/lib/api/public-client";
 import { serverApiFetch } from "@/lib/api/server-client";
 import type { AdminFix } from "@/types/admin";
 
@@ -22,6 +25,8 @@ export async function createAdminFix(
     throw new Error(`Failed to create fix: ${response.status}`);
   }
 
+  updateTag(PUBLIC_CATALOG_TAG);
+
   return (await response.json()) as AdminFix;
 }
 
@@ -39,6 +44,8 @@ export async function updateAdminFix(
     throw new Error(`Failed to update fix: ${response.status}`);
   }
 
+  updateTag(PUBLIC_CATALOG_TAG);
+
   return (await response.json()) as AdminFix;
 }
 
@@ -50,4 +57,6 @@ export async function deleteAdminFix(id: string): Promise<void> {
   if (!response.ok) {
     throw new Error(`Failed to delete fix: ${response.status}`);
   }
+
+  updateTag(PUBLIC_CATALOG_TAG);
 }

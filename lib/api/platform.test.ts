@@ -8,7 +8,12 @@ import {
   getPlatformVehicles,
 } from "./platform";
 
+const publicApiFetchMock = jest.fn();
 const serverApiFetchMock = jest.fn();
+
+jest.mock("./public-client", () => ({
+  publicApiFetch: (...args: unknown[]) => publicApiFetchMock(...args),
+}));
 
 jest.mock("./server-client", () => ({
   serverApiFetch: (...args: unknown[]) => serverApiFetchMock(...args),
@@ -20,19 +25,19 @@ function jsonResponse(body: unknown, status = 200): Response {
 
 describe("getPlatformStats", () => {
   afterEach(() => {
-    serverApiFetchMock.mockReset();
+    publicApiFetchMock.mockReset();
   });
 
   it("returns the platform stats on success", async () => {
     const stats = { reportsCount: 128340, vehiclesCount: 8400, faultsCount: 34000 };
-    serverApiFetchMock.mockResolvedValue(jsonResponse(stats));
+    publicApiFetchMock.mockResolvedValue(jsonResponse(stats));
 
     await expect(getPlatformStats()).resolves.toEqual(stats);
-    expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/platform/stats");
+    expect(publicApiFetchMock).toHaveBeenCalledWith("/v1/platform/stats");
   });
 
   it("returns zeroed stats on an error response", async () => {
-    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
+    publicApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
 
     await expect(getPlatformStats()).resolves.toEqual({
       reportsCount: 0,
@@ -42,7 +47,7 @@ describe("getPlatformStats", () => {
   });
 
   it("returns zeroed stats when the request throws", async () => {
-    serverApiFetchMock.mockRejectedValue(new Error("network error"));
+    publicApiFetchMock.mockRejectedValue(new Error("network error"));
 
     await expect(getPlatformStats()).resolves.toEqual({
       reportsCount: 0,
@@ -54,11 +59,11 @@ describe("getPlatformStats", () => {
 
 describe("getPlatformFaults", () => {
   afterEach(() => {
-    serverApiFetchMock.mockReset();
+    publicApiFetchMock.mockReset();
   });
 
   it("builds the query string and maps items to TopFaultEntry", async () => {
-    serverApiFetchMock.mockResolvedValue(
+    publicApiFetchMock.mockResolvedValue(
       jsonResponse({
         items: [
           {
@@ -83,7 +88,7 @@ describe("getPlatformFaults", () => {
 
     const result = await getPlatformFaults({ locale: "en-GB", limit: 9 });
 
-    expect(serverApiFetchMock).toHaveBeenCalledWith(
+    expect(publicApiFetchMock).toHaveBeenCalledWith(
       "/v1/platform/faults?locale=en-GB&limit=9"
     );
     expect(result).toEqual({
@@ -109,7 +114,7 @@ describe("getPlatformFaults", () => {
   });
 
   it("omits fuelType and doors when the API does not return them", async () => {
-    serverApiFetchMock.mockResolvedValue(
+    publicApiFetchMock.mockResolvedValue(
       jsonResponse({
         items: [
           {
@@ -137,7 +142,7 @@ describe("getPlatformFaults", () => {
   });
 
   it("includes the filter query params when given", async () => {
-    serverApiFetchMock.mockResolvedValue(
+    publicApiFetchMock.mockResolvedValue(
       jsonResponse({ items: [], nextCursor: null })
     );
 
@@ -153,25 +158,25 @@ describe("getPlatformFaults", () => {
       engine: "1.6 TDI",
     });
 
-    expect(serverApiFetchMock).toHaveBeenCalledWith(
+    expect(publicApiFetchMock).toHaveBeenCalledWith(
       "/v1/platform/faults?locale=pt-PT&limit=9&cursor=c2&brand=Volkswagen&model=Golf&year=2018&fuelType=diesel&doors=5&engine=1.6+TDI"
     );
   });
 
   it("omits optional query params when not given", async () => {
-    serverApiFetchMock.mockResolvedValue(
+    publicApiFetchMock.mockResolvedValue(
       jsonResponse({ items: [], nextCursor: null })
     );
 
     await getPlatformFaults({ locale: "pt-PT" });
 
-    expect(serverApiFetchMock).toHaveBeenCalledWith(
+    expect(publicApiFetchMock).toHaveBeenCalledWith(
       "/v1/platform/faults?locale=pt-PT"
     );
   });
 
   it("returns an empty items array when there are no items", async () => {
-    serverApiFetchMock.mockResolvedValue(
+    publicApiFetchMock.mockResolvedValue(
       jsonResponse({ items: [], nextCursor: null })
     );
 
@@ -182,7 +187,7 @@ describe("getPlatformFaults", () => {
   });
 
   it("returns an empty page on an error response", async () => {
-    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
+    publicApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
 
     await expect(
       getPlatformFaults({ locale: "en-GB", cursor: "c2", limit: 9 })
@@ -190,7 +195,7 @@ describe("getPlatformFaults", () => {
   });
 
   it("returns an empty page with defaults when the request throws", async () => {
-    serverApiFetchMock.mockRejectedValue(new Error("network error"));
+    publicApiFetchMock.mockRejectedValue(new Error("network error"));
 
     await expect(getPlatformFaults({ locale: "en-GB" })).resolves.toEqual({
       items: [],
@@ -201,7 +206,7 @@ describe("getPlatformFaults", () => {
 
 describe("getPlatformVehicles", () => {
   afterEach(() => {
-    serverApiFetchMock.mockReset();
+    publicApiFetchMock.mockReset();
   });
 
   it("builds the query string and returns the paginated catalog on success", async () => {
@@ -218,29 +223,29 @@ describe("getPlatformVehicles", () => {
       ],
       nextCursor: null,
     };
-    serverApiFetchMock.mockResolvedValue(jsonResponse(page));
+    publicApiFetchMock.mockResolvedValue(jsonResponse(page));
 
     await expect(
       getPlatformVehicles({ limit: 50 })
     ).resolves.toEqual(page);
 
-    expect(serverApiFetchMock).toHaveBeenCalledWith(
+    expect(publicApiFetchMock).toHaveBeenCalledWith(
       "/v1/platform/vehicles?limit=50"
     );
   });
 
   it("omits query params when not given", async () => {
-    serverApiFetchMock.mockResolvedValue(
+    publicApiFetchMock.mockResolvedValue(
       jsonResponse({ items: [], nextCursor: null })
     );
 
     await getPlatformVehicles();
 
-    expect(serverApiFetchMock).toHaveBeenCalledWith("/v1/platform/vehicles");
+    expect(publicApiFetchMock).toHaveBeenCalledWith("/v1/platform/vehicles");
   });
 
   it("returns an empty page on an error response", async () => {
-    serverApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
+    publicApiFetchMock.mockResolvedValue(new Response(null, { status: 500 }));
 
     await expect(
       getPlatformVehicles({ cursor: "c3", limit: 50 })
@@ -248,7 +253,7 @@ describe("getPlatformVehicles", () => {
   });
 
   it("returns an empty page with defaults when the request throws", async () => {
-    serverApiFetchMock.mockRejectedValue(new Error("network error"));
+    publicApiFetchMock.mockRejectedValue(new Error("network error"));
 
     await expect(getPlatformVehicles()).resolves.toEqual({
       items: [],

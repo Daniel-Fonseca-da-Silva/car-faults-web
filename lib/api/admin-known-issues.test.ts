@@ -10,6 +10,7 @@ import { getAdminKnownIssue } from "./admin-known-issues.server";
 
 const serverApiFetchMock = jest.fn();
 const revalidatePathMock = jest.fn();
+const updateTagMock = jest.fn();
 
 jest.mock("./server-client", () => ({
   serverApiFetch: (...args: unknown[]) => serverApiFetchMock(...args),
@@ -17,6 +18,7 @@ jest.mock("./server-client", () => ({
 
 jest.mock("next/cache", () => ({
   revalidatePath: (path: string) => revalidatePathMock(path),
+  updateTag: (tag: string) => updateTagMock(tag),
 }));
 
 function jsonResponse(body: unknown, status = 200): Response {
@@ -26,6 +28,7 @@ function jsonResponse(body: unknown, status = 200): Response {
 describe("getAdminKnownIssue", () => {
   afterEach(() => {
     serverApiFetchMock.mockReset();
+    updateTagMock.mockReset();
   });
 
   it("returns the known issue detail", async () => {
@@ -57,6 +60,7 @@ describe("createAdminKnownIssue", () => {
   afterEach(() => {
     serverApiFetchMock.mockReset();
     revalidatePathMock.mockReset();
+    updateTagMock.mockReset();
   });
 
   it("posts the input, revalidates the vehicle page, and returns the created known issue", async () => {
@@ -80,6 +84,7 @@ describe("createAdminKnownIssue", () => {
     expect(revalidatePathMock).toHaveBeenCalledWith(
       "/en-GB/admin/vehicles/vm-1"
     );
+    expect(updateTagMock).toHaveBeenCalledWith("public-catalog");
   });
 
   it("throws on an error response without revalidating", async () => {
@@ -96,6 +101,7 @@ describe("createAdminKnownIssue", () => {
         { appLocale: "en-GB" }
       )
     ).rejects.toThrow("Failed to create known issue: 404");
+    expect(updateTagMock).not.toHaveBeenCalled();
     expect(revalidatePathMock).not.toHaveBeenCalled();
   });
 });
@@ -103,6 +109,7 @@ describe("createAdminKnownIssue", () => {
 describe("updateAdminKnownIssue", () => {
   afterEach(() => {
     serverApiFetchMock.mockReset();
+    updateTagMock.mockReset();
   });
 
   it("patches the known issue and returns it", async () => {
@@ -117,6 +124,7 @@ describe("updateAdminKnownIssue", () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title: "New title" }),
     });
+    expect(updateTagMock).toHaveBeenCalledWith("public-catalog");
   });
 
   it("throws on an error response", async () => {
@@ -125,6 +133,7 @@ describe("updateAdminKnownIssue", () => {
     await expect(
       updateAdminKnownIssue("missing", { title: "x" })
     ).rejects.toThrow("Failed to update known issue: 404");
+    expect(updateTagMock).not.toHaveBeenCalled();
   });
 });
 
@@ -132,6 +141,7 @@ describe("deleteAdminKnownIssue", () => {
   afterEach(() => {
     serverApiFetchMock.mockReset();
     revalidatePathMock.mockReset();
+    updateTagMock.mockReset();
   });
 
   it("deletes the known issue and revalidates the vehicle page", async () => {
@@ -148,6 +158,7 @@ describe("deleteAdminKnownIssue", () => {
     expect(revalidatePathMock).toHaveBeenCalledWith(
       "/en-GB/admin/vehicles/vm-1"
     );
+    expect(updateTagMock).toHaveBeenCalledWith("public-catalog");
   });
 
   it("throws on an error response without revalidating", async () => {
@@ -159,6 +170,7 @@ describe("deleteAdminKnownIssue", () => {
         vehicleModelId: "vm-1",
       })
     ).rejects.toThrow("Failed to delete known issue: 404");
+    expect(updateTagMock).not.toHaveBeenCalled();
     expect(revalidatePathMock).not.toHaveBeenCalled();
   });
 });

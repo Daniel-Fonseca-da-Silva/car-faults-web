@@ -1,5 +1,8 @@
 "use server";
 
+import { updateTag } from "next/cache";
+
+import { PUBLIC_CATALOG_TAG } from "@/lib/api/public-client";
 import { serverApiFetch } from "@/lib/api/server-client";
 import type { AdminVehicleModel } from "@/types/admin";
 import type { LookupFuelType, VehicleTechSpecs } from "@/types/lookup";
@@ -30,6 +33,8 @@ export async function createAdminVehicleModel(
     throw new Error(`Failed to create vehicle model: ${response.status}`);
   }
 
+  updateTag(PUBLIC_CATALOG_TAG);
+
   return (await response.json()) as AdminVehicleModel;
 }
 
@@ -47,6 +52,8 @@ export async function updateAdminVehicleModel(
     throw new Error(`Failed to update vehicle model: ${response.status}`);
   }
 
+  updateTag(PUBLIC_CATALOG_TAG);
+
   return (await response.json()) as AdminVehicleModel;
 }
 
@@ -58,4 +65,6 @@ export async function deleteAdminVehicleModel(id: string): Promise<void> {
   if (!response.ok) {
     throw new Error(`Failed to delete vehicle model: ${response.status}`);
   }
+
+  updateTag(PUBLIC_CATALOG_TAG);
 }

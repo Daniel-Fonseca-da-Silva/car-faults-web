@@ -1,4 +1,5 @@
 import { mapPlatformFaultsPage } from "@/lib/api/platform-query";
+import { publicApiFetch } from "@/lib/api/public-client";
 import { serverApiFetch } from "@/lib/api/server-client";
 import type { TopFaultDto } from "@/lib/api/platform-map";
 import type { CursorPage } from "@/types/cursor";
@@ -33,6 +34,11 @@ interface PlatformVehicleItemDto {
   doors?: number;
   /** Locales with known issues; absent on API versions that predate the field. */
   locales?: string[];
+  /**
+   * Latest change to the vehicle, its known issues or their fixes (ISO 8601).
+   * Absent on API versions that predate the field.
+   */
+  updatedAt?: string;
 }
 
 export type PlatformVehiclesPage = CursorPage<PlatformVehicleItemDto>;
@@ -47,7 +53,7 @@ const EMPTY_CURSOR_PAGE = { items: [], nextCursor: null };
 
 export async function getPlatformStats(): Promise<PlatformStats> {
   try {
-    const response = await serverApiFetch("/v1/platform/stats");
+    const response = await publicApiFetch("/v1/platform/stats");
 
     if (!response.ok) {
       return EMPTY_PLATFORM_STATS;
@@ -63,7 +69,7 @@ export async function getPlatformFaults(
   query: PlatformFaultsQuery
 ): Promise<PlatformFaultsPage> {
   try {
-    const response = await serverApiFetch(
+    const response = await publicApiFetch(
       `/v1/platform/faults${buildPlatformFaultsSearch(query)}`
     );
 
@@ -86,7 +92,7 @@ export async function getPlatformVehicles(
   query: PlatformVehiclesQuery = {}
 ): Promise<PlatformVehiclesPage> {
   try {
-    const response = await serverApiFetch(
+    const response = await publicApiFetch(
       `/v1/platform/vehicles${buildPlatformVehiclesSearch(query)}`
     );
 
