@@ -8,6 +8,7 @@ import VehiclePage, {
   generateStaticParams,
   revalidate,
 } from "./page";
+import { VehiclePageView } from "./vehicle-page";
 
 const getVehicleLookupByPathMock = jest.fn();
 const getCurrentUserMock = jest.fn();
@@ -139,6 +140,15 @@ describe("caching", () => {
 });
 
 describe("VehiclePage", () => {
+  it("renders the vehicle view with the resolved params", async () => {
+    const jsx = await VehiclePage({ params: Promise.resolve(pathParams) });
+
+    expect(jsx.type).toBe(VehiclePageView);
+    expect(jsx.props).toEqual({ params: pathParams });
+  });
+});
+
+describe("VehiclePageView", () => {
   afterEach(() => {
     getVehicleLookupByPathMock.mockReset();
     getCurrentUserMock.mockReset();
@@ -147,7 +157,7 @@ describe("VehiclePage", () => {
   it("renders the hero, specs, summary and known issues for a matching vehicle", async () => {
     getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
 
-    const jsx = await VehiclePage({ params: Promise.resolve(pathParams) });
+    const jsx = await VehiclePageView({ params: pathParams });
     render(jsx);
 
     expect(getVehicleLookupByPathMock).toHaveBeenCalledWith({
@@ -179,7 +189,7 @@ describe("VehiclePage", () => {
   it("never reads the session, so one cached render serves every visitor", async () => {
     getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
 
-    const jsx = await VehiclePage({ params: Promise.resolve(pathParams) });
+    const jsx = await VehiclePageView({ params: pathParams });
     render(jsx);
 
     expect(getCurrentUserMock).not.toHaveBeenCalled();
@@ -192,8 +202,8 @@ describe("VehiclePage", () => {
   it("passes the es-ES locale through as the API request language", async () => {
     getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
 
-    await VehiclePage({
-      params: Promise.resolve({ ...pathParams, locale: "es-ES" }),
+    await VehiclePageView({
+      params: { ...pathParams, locale: "es-ES" },
     });
 
     expect(getVehicleLookupByPathMock).toHaveBeenCalledWith(
@@ -204,8 +214,8 @@ describe("VehiclePage", () => {
   it("shows the Mercado Livre products box on pt-BR pages", async () => {
     getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
 
-    const jsx = await VehiclePage({
-      params: Promise.resolve({ ...pathParams, locale: "pt-BR" }),
+    const jsx = await VehiclePageView({
+      params: { ...pathParams, locale: "pt-BR" },
     });
     render(jsx);
 
@@ -224,7 +234,7 @@ describe("VehiclePage", () => {
   it("does not show the Mercado Livre products box outside pt-BR", async () => {
     getVehicleLookupByPathMock.mockResolvedValue(poloLookup);
 
-    const jsx = await VehiclePage({ params: Promise.resolve(pathParams) });
+    const jsx = await VehiclePageView({ params: pathParams });
     render(jsx);
 
     expect(
@@ -240,13 +250,13 @@ describe("VehiclePage", () => {
       knownIssues: [],
     });
 
-    const jsx = await VehiclePage({
-      params: Promise.resolve({
+    const jsx = await VehiclePageView({
+      params: {
         ...pathParams,
         make: "tesla",
         model: "model-3",
         year: "2022",
-      }),
+      },
     });
     render(jsx);
 
@@ -265,8 +275,8 @@ describe("VehiclePage", () => {
     );
 
     await expect(
-      VehiclePage({
-        params: Promise.resolve(pathParams),
+      VehiclePageView({
+        params: pathParams,
       })
     ).rejects.toThrow("Failed to load vehicle lookup: 500");
   });
@@ -275,8 +285,8 @@ describe("VehiclePage", () => {
     getVehicleLookupByPathMock.mockResolvedValue(null);
 
     await expect(
-      VehiclePage({
-        params: Promise.resolve(pathParams),
+      VehiclePageView({
+        params: pathParams,
       })
     ).rejects.toThrow();
   });
