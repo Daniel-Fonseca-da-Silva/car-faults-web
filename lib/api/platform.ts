@@ -88,22 +88,23 @@ export async function getPlatformFaults(
   }
 }
 
+/**
+ * Rejects when the API fails. The catalog decides which hub pages exist, so
+ * an empty fallback would turn an outage (or a failure halfway through
+ * paging) into 404s for every brand and model.
+ */
 export async function getPlatformVehicles(
   query: PlatformVehiclesQuery = {}
 ): Promise<PlatformVehiclesPage> {
-  try {
-    const response = await publicApiFetch(
-      `/v1/platform/vehicles${buildPlatformVehiclesSearch(query)}`
-    );
+  const response = await publicApiFetch(
+    `/v1/platform/vehicles${buildPlatformVehiclesSearch(query)}`
+  );
 
-    if (!response.ok) {
-      return EMPTY_CURSOR_PAGE;
-    }
-
-    return (await response.json()) as PlatformVehiclesPage;
-  } catch {
-    return EMPTY_CURSOR_PAGE;
+  if (!response.ok) {
+    throw new Error(`Failed to load platform vehicles: ${response.status}`);
   }
+
+  return (await response.json()) as PlatformVehiclesPage;
 }
 
 export async function getDatabaseStatus(): Promise<boolean> {

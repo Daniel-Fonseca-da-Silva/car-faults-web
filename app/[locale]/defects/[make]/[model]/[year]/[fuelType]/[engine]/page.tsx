@@ -59,7 +59,7 @@ async function resolveLookup(
     engine: params.engine,
     doors: doors ? Number(doors) : undefined,
     language: mapLookupLanguage(params.locale),
-  }).catch(() => null);
+  });
 }
 
 export async function generateMetadata({
@@ -99,7 +99,7 @@ export async function generateMetadata({
         yearFrom: lookup.vehicle.yearFrom,
         fuelType: resolvedParams.fuelType,
         engineSlug: resolvedParams.engine,
-      }).catch(() => null)
+      })
     : null;
 
   return buildPageMetadata({
