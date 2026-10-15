@@ -15,6 +15,10 @@ import { getAmazonStore } from "@/lib/affiliate/amazon";
 import { getMercadoLivreProducts } from "@/lib/affiliate/mercado-livre";
 import { getVehicleFavoriteStatus } from "@/lib/api/activity-logs";
 import { getVehicleLookupByPath } from "@/lib/api/lookups";
+import {
+  findCatalogVehicle,
+  getContentLocales,
+} from "@/lib/api/platform-catalog";
 import { getCurrentUser, getGarageVehicleStatus } from "@/lib/api/users";
 import { countSeverities } from "@/lib/lookup/count-severities";
 import { mapLookupLanguage } from "@/lib/lookup/map-lookup-language";
@@ -84,11 +88,31 @@ export async function generateMetadata({
 
   const path = `/defects/${resolvedParams.make}/${resolvedParams.model}/${resolvedParams.year}/${resolvedParams.fuelType}/${resolvedParams.engine}`;
 
+  // Known issues are per locale and this page doesn't generate missing ones,
+  // so a locale without issues is an empty page: keep it out of the index and
+  // point hreflang only at the locales that have content.
+  const hasKnownIssues = lookup.knownIssues.length > 0;
+  const catalogVehicle = hasKnownIssues
+    ? await findCatalogVehicle({
+        makeSlug: resolvedParams.make,
+        modelSlug: resolvedParams.model,
+        yearFrom: lookup.vehicle.yearFrom,
+        fuelType: resolvedParams.fuelType,
+        engineSlug: resolvedParams.engine,
+      }).catch(() => null)
+    : null;
+
   return buildPageMetadata({
     title: t("titleTemplate", templateValues),
     description: t("descriptionTemplate", templateValues),
     path,
     locale: resolvedParams.locale,
+    noIndexFollow: !hasKnownIssues,
+    alternateLocales: hasKnownIssues
+      ? catalogVehicle
+        ? getContentLocales([catalogVehicle])
+        : undefined
+      : [resolvedParams.locale],
   });
 }
 

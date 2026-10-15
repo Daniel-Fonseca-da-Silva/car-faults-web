@@ -1,7 +1,11 @@
 import type { MetadataRoute } from "next";
 
 import { routing } from "@/i18n/routing";
-import { fetchAllPlatformVehicles } from "@/lib/api/platform-catalog";
+import {
+  type CatalogVehicle,
+  fetchAllPlatformVehicles,
+  getContentLocales,
+} from "@/lib/api/platform-catalog";
 import { getSiteUrl } from "@/lib/seo/get-site-url";
 import { slugify } from "@/lib/utils";
 
@@ -39,43 +43,55 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const vehicles = await fetchAllPlatformVehicles().catch(() => []);
 
-  const brandSlugs = new Set<string>();
-  const modelSlugs = new Set<string>();
+  // Vehicle pages only show known issues in their own locale, so every URL is
+  // listed only for the locales where it has content. Hubs follow their
+  // vehicles: a brand/model hub is listed for a locale when at least one of
+  // its vehicles has content there.
+  const vehiclesByBrand = new Map<string, CatalogVehicle[]>();
+  const vehiclesByModel = new Map<string, CatalogVehicle[]>();
 
   for (const vehicle of vehicles) {
     const makeSlug = slugify(vehicle.brand);
-    brandSlugs.add(makeSlug);
-    modelSlugs.add(`${makeSlug}/${slugify(vehicle.model)}`);
+    const makeModelSlug = `${makeSlug}/${slugify(vehicle.model)}`;
+    vehiclesByBrand.set(makeSlug, [
+      ...(vehiclesByBrand.get(makeSlug) ?? []),
+      vehicle,
+    ]);
+    vehiclesByModel.set(makeModelSlug, [
+      ...(vehiclesByModel.get(makeModelSlug) ?? []),
+      vehicle,
+    ]);
   }
 
-  const brandEntries: MetadataRoute.Sitemap = routing.locales.flatMap(
-    (locale) =>
-      Array.from(brandSlugs).map((makeSlug) => ({
-        url: `${baseUrl}/${locale}/defects/${makeSlug}`,
-        lastModified,
-        changeFrequency: "weekly",
-        priority: BRAND_HUB_PRIORITY,
-      }))
+  const brandEntries: MetadataRoute.Sitemap = Array.from(
+    vehiclesByBrand
+  ).flatMap(([makeSlug, brandVehicles]) =>
+    getContentLocales(brandVehicles).map((locale) => ({
+      url: `${baseUrl}/${locale}/defects/${makeSlug}`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: BRAND_HUB_PRIORITY,
+    }))
   );
 
-  const modelEntries: MetadataRoute.Sitemap = routing.locales.flatMap(
-    (locale) =>
-      Array.from(modelSlugs).map((makeModelSlug) => ({
-        url: `${baseUrl}/${locale}/defects/${makeModelSlug}`,
-        lastModified,
-        changeFrequency: "weekly",
-        priority: MODEL_HUB_PRIORITY,
-      }))
+  const modelEntries: MetadataRoute.Sitemap = Array.from(
+    vehiclesByModel
+  ).flatMap(([makeModelSlug, modelVehicles]) =>
+    getContentLocales(modelVehicles).map((locale) => ({
+      url: `${baseUrl}/${locale}/defects/${makeModelSlug}`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: MODEL_HUB_PRIORITY,
+    }))
   );
 
-  const vehicleEntries: MetadataRoute.Sitemap = routing.locales.flatMap(
-    (locale) =>
-      vehicles.map((vehicle) => ({
-        url: `${baseUrl}/${locale}/defects/${slugify(vehicle.brand)}/${slugify(vehicle.model)}/${vehicle.yearFrom}/${vehicle.fuelType}/${slugify(vehicle.engine)}`,
-        lastModified,
-        changeFrequency: "monthly",
-        priority: VEHICLE_PRIORITY,
-      }))
+  const vehicleEntries: MetadataRoute.Sitemap = vehicles.flatMap((vehicle) =>
+    getContentLocales([vehicle]).map((locale) => ({
+      url: `${baseUrl}/${locale}/defects/${slugify(vehicle.brand)}/${slugify(vehicle.model)}/${vehicle.yearFrom}/${vehicle.fuelType}/${slugify(vehicle.engine)}`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: VEHICLE_PRIORITY,
+    }))
   );
 
   return [
